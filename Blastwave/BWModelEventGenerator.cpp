@@ -92,13 +92,10 @@ void BWModelEventGenerator::initialize()
   }
   else {
     useAllKinds = false;
-
     double ptMin = config->pT_Min;
     double ptMax = config->pT_Max;
-
     TParticle pion = TParticle();
     pion.SetPdgCode(211);
-
     if (config->useBGBlastWave)
       ptSpectraProtons = GetBGBWSpectra_FN("PtSpectraPions",pion.GetMass(),config->temperaturePions,config->betaAvgBGBW,config->betaProfileBGBW,ptMin,ptMax);
     else
@@ -120,7 +117,8 @@ void BWModelEventGenerator::initialize()
     else
       ptSpectraProtons = GetExponentialSpectra_FN("PtSpectraProtons",proton.GetMass(),config->temperatureProtons,ptMin,ptMax);
 
-    if (config->useFlow) {
+    if (config->useFlow)
+      {
       useFlow = true;
 
       azimuthalAnglePions = new TF1("fAzimuthalAnglePions","1+2.*[1]*TMath::Cos(x-[0])+2.*[2]*TMath::Cos(2*(x-[0]))+2.*[3]*TMath::Cos(3*(x-[0]))+2.*[4]*TMath::Cos(4*(x-[0]))+2.*[5]*TMath::Cos(5*(x-[0]))",0.,2.*TMath::Pi());
@@ -162,11 +160,12 @@ void BWModelEventGenerator::initialize()
       azimuthalAngleProtons->SetParName(5,"Pentangular flow");
       azimuthalAngleProtons->SetParameter(5,config->pentangularFlowProtons);
     }
-    else {
+    else
+      {
       useFlow = false;
-      azimuthalAnglePions = new TF1("fAzimuthalAnglePions","1",0.,2.*TMath::Pi());
-      azimuthalAngleKaons = new TF1("fAzimuthalAngleKaons","1",0.,2.*TMath::Pi());
-      azimuthalAngleProtons= new TF1("fAzimuthalAngleProtons","1",0.,2.*TMath::Pi());
+      azimuthalAnglePions   = new TF1("fAzimuthalAnglePions","1",0.,2.*TMath::Pi());
+      azimuthalAngleKaons   = new TF1("fAzimuthalAngleKaons","1",0.,2.*TMath::Pi());
+      azimuthalAngleProtons = new TF1("fAzimuthalAngleProtons","1",0.,2.*TMath::Pi());
     }
   }
   if (reportDebug())  cout << "BWModelEventGenerator::initialize() Completed" << endl;
@@ -197,25 +196,26 @@ void BWModelEventGenerator::execute()
 
   /* event multiplicity */
   int multiplicity = int(gRandom->Gaus(config->totalMultiplicityMean,config->totalMultiplicitySigma));
-  int netcharge = int(gRandom->Gaus(config->netChargeMean,config->netChargeSigma));
-
-  int ntogenplus = int(multiplicity/2.0) + netcharge;
-  int ntogenminus = multiplicity - ntogenplus;
+  int netcharge    = int(gRandom->Gaus(config->netChargeMean,config->netChargeSigma));
+  int ntogenplus   = int(multiplicity/2.0) + netcharge;
+  int ntogenminus  = multiplicity - ntogenplus;
 
   double reactionplane = TMath::TwoPi()*gRandom->Rndm();
-  if (useAllKinds) {
+  if (useAllKinds)
+    {
     azimuthalAngleAllKinds->SetParameter(0,reactionplane);
-  }
-  else {
+    }
+  else
+    {
     azimuthalAnglePions->SetParameter(0,reactionplane);
     azimuthalAngleKaons->SetParameter(0,reactionplane);
     azimuthalAngleProtons->SetParameter(0,reactionplane);
   }
 
   /* generate particles */
-  int ngenerated = 0;
-  int ngenplus = 0;
-  int ngenminus = 0;
+  int nGenerated = 0;
+  int nGeneratedPlus = 0;
+  int nGeneratedMinus = 0;
   double etaMin = config->particleEta_Min;
   double etaMax = config->particleEta_Max;
   TParticle pion = TParticle();
@@ -236,22 +236,24 @@ void BWModelEventGenerator::execute()
     int charge = 0;
     if (double(ntogenplus)/double(multiplicity) < gRandom->Rndm()) {
       charge = -1;
-      ngenminus++;
+      nGeneratedMinus++;
     }
     else {
       charge = 1;
-      ngenplus++;
+      nGeneratedPlus++;
     }
 
     /* momentum and azimuthal angle */
     double phi;
     double pT;
     double mass;
+    double pid;
     if (useAllKinds)
       {
       pT = ptSpectraAllKinds->GetRandom();
       phi = azimuthalAngleAllKinds->GetRandom();
       mass = pion.GetMass();
+      pid  = pion.GetPdgCode();
       }
     else
       {
@@ -260,18 +262,21 @@ void BWModelEventGenerator::execute()
         pT = ptSpectraPions->GetRandom();
         phi = azimuthalAnglePions->GetRandom();
         mass = pion.GetMass();
+        pid  = pion.GetPdgCode();
       }
       else if (species < pionPercentage + kaonPercentage)
         {
         pT = ptSpectraKaons->GetRandom();
         phi = azimuthalAngleKaons->GetRandom();
         mass = kaon.GetMass();
+          pid  = kaon.GetPdgCode();
         }
       else
         {
         pT = ptSpectraProtons->GetRandom();
         phi = azimuthalAngleProtons->GetRandom();
         mass = proton.GetMass();
+          pid  = proton.GetPdgCode();
         }
       }
     Particle *particle = particleFactory->getNextObject();
@@ -279,16 +284,15 @@ void BWModelEventGenerator::execute()
     double py = pT*TMath::Sin(phi);
     double pz = pT*TMath::SinH(eta);
     double E = TMath::Sqrt(mass*mass+px*px+py*py+pz*pz);
-    particle->setPidPxPyPzE( 1 , charge, px,py,pz,E);
+    particle->setPidPxPyPzE( pid , charge, px,py,pz,E);
     particle->boost(0.0,0.0,(pz < 0) ? -lbeta : lbeta);
-    ngenerated++;
+    nGenerated++;
     if (reportDebug()) particle->printProperties(cout);
   }
-  event->nParticles = ngenerated;
-  event->multiplicity = ngenerated;
-  if (reportDebug())  cout << "BWModelEventGenerator::execute() " << ngenerated << " particles, " << ngenplus << " positive, " << ngenminus << " negative" << endl;
+  event->nParticles = nGenerated;
+  event->multiplicity = nGenerated;
+  if (reportDebug())  cout << "BWModelEventGenerator::execute() " << nGenerated << " particles, " << nGeneratedPlus << " positive, " << nGeneratedMinus << " negative" << endl;
   if (reportDebug())  cout << "BWModelEventGenerator::execute() event completed!" << endl;
-  return;
 }
 
 TF1 *  BWModelEventGenerator::GetExponentialSpectra_FN(const char *name, double mass, double temp, double xmin, double xmax) {
