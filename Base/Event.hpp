@@ -1,0 +1,50 @@
+// Author: Claude Pruneau   09/25/2019
+
+/*************************************************************************
+ * Copyright (C) 2019, Claude Pruneau.
+ * All rights reserved.
+ * Based on the ROOT package and environment
+ *
+ * For the licensing terms see LICENSE.
+ *************************************************************************/
+
+#ifndef Event_hpp
+#define Event_hpp
+#include "Particle.hpp"
+
+class Event
+{
+protected:
+
+  Event();
+  static Event * event;
+
+  public:
+
+  ~Event();
+  virtual void clear();
+  virtual void reset();
+  virtual void printProperties(ostream & output);
+
+  Particle * getParticleAt(int index);
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Data Members
+  //////////////////////////////////////////////////////////////////////////////
+  long   index;
+  int    nParticles;
+  double centrality;
+  double multiplicity;
+  double impactParameter;
+  double other;
+
+  static Event * getEvent();
+
+  ClassDef(Event,0)
+
+};
+
+
+
+
+#endif /* Event_hpp */
