@@ -56,6 +56,13 @@ public:
   TString outputPath;
   TString rootOuputFileName;
 
+  TString dataInputPath;
+  TString dataInputFileName;
+  TString dataInputTreeName;
+  int dataInputFileMinIndex;
+  int dataInputFileMaxIndex;
+
+
   ClassDef(TaskConfiguration,0)
 };
 

@@ -17,6 +17,17 @@
 ClassImp(MessageLogger);
 
 
+bool MessageLogger::reportDebug(TString & className, TString & fctName, TString & taskName, ostream & output)
+{
+ if (reportLevel<=Debug)
+   {
+   output << " <DEBUG> " << className << "(" << taskName << ")::" << fctName << "  ";
+   return true;
+   }
+ else
+   return false;
+}
+
 bool MessageLogger::reportDebug(ostream & output)
 {
   if (reportLevel<=Debug)

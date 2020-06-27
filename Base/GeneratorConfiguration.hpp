@@ -18,6 +18,13 @@ public:
   // ////////////////////////////////////////////
   //  Data Members
   // ////////////////////////////////////////////
+
+  TString dataInputPath;
+   TString dataInputFileName; // can use templates...
+   int dataFileMinIndex;
+  int dataFileMaxIndex;
+
+
   double   impactParameterMinimum;
   double   impactParameterMaximum;
   double   ptMinimum;

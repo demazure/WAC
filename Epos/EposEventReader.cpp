@@ -41,14 +41,32 @@ void EposEventReader::initialize()
 {
   if (reportDebug()) cout << "EposEventReader::initialize() Started" << endl;
 
-  TChain *chain = new TChain("tree"," ");
-  for(int ifl=0; ifl<45; ifl++)
-    {
-    //chain->Add(Form("/local/victor/PROJECTS/EPOSWSU/DATA/epos_pbpb_urqmd_on_%i.root",ifl+1));
-    //chain->Add(Form("/Users/sumit/Desktop/macros_epos/root_maker/epos_pbpb_urqmd_on_%i.root",ifl+1));
-    //chain->Add(Form("/Users/sumit/Desktop/ampt/PbPb_SM_1_2760GeV_0%i.root",ifl+135));
-    chain->Add(Form("/media/victor/victor/epos_rootfile/epos_pbpb_urqmd_on_%i.root",ifl+1));
-    }
+  TaskConfiguration * genConfig = getTaskConfiguration();
+   if (!genConfig)
+     {
+     if (reportFatal()) cout << "EposEventReader::initialize() genConfig is a null pointer" << endl;
+     postTaskFatal();
+     return;
+     }
+   TChain *chain = new TChain(genConfig->dataInputTreeName," ");
+   if (!chain)
+      {
+      if (reportFatal()) cout << "EposEventReader::initialize() chain is a null pointer" << endl;
+      postTaskFatal();
+      return;
+      }
+
+   TString dataInputFileName = genConfig->dataInputPath;
+   dataInputFileName += "/";
+   dataInputFileName += genConfig->dataInputFileName;
+
+   for(int ifl=genConfig->dataInputFileMinIndex; ifl<genConfig->dataInputFileMaxIndex; ifl++)
+     {
+     //chain->Add(Form("/local/victor/PROJECTS/EPOSWSU/DATA/epos_pbpb_urqmd_on_%i.root",ifl+1));
+     //chain->Add(Form("/Users/sumit/Desktop/macros_epos/root_maker/epos_pbpb_urqmd_on_%i.root",ifl+1));
+     cout << "EposEventReader::initialize() Form:" << Form(dataInputFileName,ifl) << endl;
+     chain->Add(Form(dataInputFileName,ifl));
+     }
   Init(chain);
   jentry = 0;
 

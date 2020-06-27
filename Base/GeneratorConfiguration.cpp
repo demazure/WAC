@@ -19,6 +19,10 @@ ClassImp(GeneratorConfiguration);
 GeneratorConfiguration::GeneratorConfiguration(const TString & name, const TString & type, const TString & version)
 :
 TaskConfiguration(name,type,version),
+ dataInputPath(""),
+ dataFileMinIndex(0),
+ dataFileMaxIndex(1),
+
 impactParameterMinimum( 0.000),
 impactParameterMaximum( 1000.0),
 ptMinimum    (0.0001),

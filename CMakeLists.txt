@@ -50,7 +50,7 @@ set_target_properties(EGPythiaLib PROPERTIES IMPORTED_LOCATION ${EGPYTHIA8})
 
 add_subdirectory(Base)
 #add_subdirectory(Cluster)
-add_subdirectory(Pythia)
+#add_subdirectory(Pythia)
 add_subdirectory(Ampt)
 add_subdirectory(Blastwave)
 #add_subdirectory(Eccentricity)

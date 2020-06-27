@@ -30,7 +30,7 @@ int main()
   ac->resetHistograms  = false;
   ac->clearHistograms  = false;
   ac->forceHistogramsRewrite  = true;
-  ac->inputPath = "./";
+
   ac->configurationFileName = "configuration";
   ac->rootInputFileName = "";
   ac->outputPath = "./";
@@ -67,6 +67,14 @@ int main()
   ac->fillQ3D          = false;
   ac->fillY            = true;
 
+
+  TaskConfiguration * genConfig = new TaskConfiguration();
+  genConfig->dataInputPath = "/Volumes/ClaudeDisc3/Simulations/ampt";
+  genConfig->dataInputFileName = "PbPb_SM_1_2760GeV_0%i.root";
+  genConfig->dataInputFileMinIndex = 135;
+  genConfig->dataInputFileMaxIndex = 135+45;
+  genConfig->dataInputTreeName = "tree";
+
   EventFilter     * eventFilter      = new EventFilter(EventFilter::MinBias,0.0,0.0);
 
   ParticleFilter  * particleFilter   = new ParticleFilter(ParticleFilter::Hadron, ParticleFilter::Charged,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
@@ -80,7 +88,7 @@ int main()
   ParticleFilter  * particleFilter8  = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
 
   Event * event = Event::getEvent();
-  AmptEventReader * gen  = new AmptEventReader("Ampt",0, event,eventFilter,particleFilter);
+  AmptEventReader * gen  = new AmptEventReader("Ampt",genConfig, event,eventFilter,particleFilter);
   TwoPartCorrelationAnalyzer  * ana1 = new TwoPartCorrelationAnalyzer ("Ampt_TPCA_ALL",  ac,  event, eventFilter,particleFilter1,particleFilter2);
   TwoPartCorrelationAnalyzer  * ana2 = new TwoPartCorrelationAnalyzer ("Ampt_TPCA_PiPi", ac,  event, eventFilter,particleFilter3,particleFilter4);
   TwoPartCorrelationAnalyzer  * ana3 = new TwoPartCorrelationAnalyzer ("Ampt_TPCA_KK",   ac,  event, eventFilter,particleFilter5,particleFilter6);
