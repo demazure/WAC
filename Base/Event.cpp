@@ -36,14 +36,18 @@ ClassImp(Event);
 
 Event::Event()
  :
- index(0),
- nParticles(0),
- centrality(0),
- multiplicity(0),
- impactParameter(0),
- other(0)
- {
- }
+index(0),
+eventNumber(0),
+nProjectile(0),
+nTarget(0),
+nParticleTotal(0),
+nParticles(0),
+centrality(0),
+multiplicity(0),
+impactParameter(0),
+other(0)
+{
+}
 
  //////////////////////////
  // DTOR
@@ -59,7 +63,15 @@ void Event::clear()
  {
  index      = 0;
  nParticles = 0;
- //getParticleFactory()->reset();
+ eventNumber = 0;
+ nProjectile = 0;
+ nTarget = 0;
+ nParticleTotal = 0;
+ nParticles = 0;
+ centrality = 0;
+ multiplicity = 0;
+ impactParameter = 0;
+ other = 0;
  Particle::getFactory()->reset();
  }
 
@@ -70,7 +82,15 @@ void Event::clear()
  {
  index++;
  nParticles = 0;
- //getParticleFactory()->reset();
+ eventNumber = 0;
+ nProjectile = 0;
+ nTarget = 0;
+ nParticleTotal = 0;
+ nParticles = 0;
+ centrality = 0;
+ multiplicity = 0;
+ impactParameter = 0;
+ other = 0;
  Particle::getFactory()->reset();
  }
 
@@ -95,8 +115,16 @@ void Event::clear()
  ///////////////////////////////////////////////////////
 void Event::printProperties(ostream & output)
  {
- output << "      Event# " << index << endl;
- output << " nParticles: " << nParticles << endl;
+ output << "                 Event# " << index << endl;
+ output << " nParticles(Accepted) : " << nParticles << endl;
+ output << "          eventNumber : " << eventNumber << endl;
+ output << "          nProjectile : " << nProjectile << endl;
+ output << "              nTarget : " << nTarget << endl;
+ output << "       nParticleTotal : " << nParticleTotal << endl;
+ output << "           centrality : " << centrality << endl;
+ output << "         multiplicity : " << multiplicity << endl;
+ output << "      impactParameter : " << impactParameter << endl;
+ output << "                other : " << other << endl;
 
  for (int iParticle=0; iParticle<nParticles; iParticle++)
    {

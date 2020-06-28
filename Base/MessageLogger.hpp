@@ -46,7 +46,7 @@ public:
   bool reportError(ostream & output=cout);
   bool reportFatal(ostream & output=cout);
 
-  bool reportDebug(TString & className, TString & fctName, TString & taskName, ostream & output=cout);
+  bool reportDebug(TString  className, TString  fctName, TString  taskName, ostream & output=cout);
 
 
   ClassDef(MessageLogger,0)

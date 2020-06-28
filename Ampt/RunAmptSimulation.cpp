@@ -18,8 +18,9 @@ int main()
 {
   cout << "<INFO> AMPT Analysis - Starting" << endl;
 
-  long nEventsRequested = 1000000;
-  int  nEventsReport    = 10000;
+  //long nEventsRequested = 1000000;
+   long nEventsRequested = 100;
+   int  nEventsReport    = 10;
 
   AnalysisConfiguration * ac = new AnalysisConfiguration("Ampt","Ampt","1.0");
   ac->loadHistograms  = false;
@@ -83,11 +84,14 @@ int main()
   ParticleFilter  * particleFilter3  = new ParticleFilter(ParticleFilter::Pion,   ParticleFilter::Positive,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
   ParticleFilter  * particleFilter4  = new ParticleFilter(ParticleFilter::Pion,   ParticleFilter::Negative,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
   ParticleFilter  * particleFilter5  = new ParticleFilter(ParticleFilter::Kaon,   ParticleFilter::Positive,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
-  ParticleFilter  * particleFilter6  = new ParticleFilter(ParticleFilter::Kaon,   ParticleFilter::Negative,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only ParticleFilter  * particleFilter5  = new ParticleFilter(ParticleFilter::Pion, ParticleFilter::Positive,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
+  ParticleFilter  * particleFilter6  = new ParticleFilter(ParticleFilter::Kaon,   ParticleFilter::Negative,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
   ParticleFilter  * particleFilter7  = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Positive,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
   ParticleFilter  * particleFilter8  = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
 
+  Particle::factorySize = 15000;
   Event * event = Event::getEvent();
+  cout << " Particle Store Capacity set to: " << Particle::getFactory()->getCapacity() << endl;
+  //if (1) exit(0);
   AmptEventReader * gen  = new AmptEventReader("Ampt",genConfig, event,eventFilter,particleFilter);
   TwoPartCorrelationAnalyzer  * ana1 = new TwoPartCorrelationAnalyzer ("Ampt_TPCA_ALL",  ac,  event, eventFilter,particleFilter1,particleFilter2);
   TwoPartCorrelationAnalyzer  * ana2 = new TwoPartCorrelationAnalyzer ("Ampt_TPCA_PiPi", ac,  event, eventFilter,particleFilter3,particleFilter4);

@@ -56,6 +56,7 @@ protected:
 
   void initialize(int initialCapacity)
   {
+  if (objects) delete[] objects;
     capacity = initialCapacity;
     objects = new T*[capacity];
     for (int k=0; k<capacity; k++)
@@ -97,7 +98,7 @@ protected:
     }
   else
     {
-    cout << "-FATAL- CellFactory::getObject() Object stored is exhausted" << endl;
+    cout << "<FATAL> Factory::getObject() Object stored is exhausted for capacity: " << capacity << endl;
     return 0;
     }
   }

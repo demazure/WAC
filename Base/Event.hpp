@@ -32,7 +32,11 @@ protected:
   // Data Members
   //////////////////////////////////////////////////////////////////////////////
   long   index;
-  int    nParticles;
+  int    eventNumber;
+  int    nProjectile;
+  int    nTarget;
+  int    nParticleTotal;
+  int    nParticles; // number of particles to analyze
   double centrality;
   double multiplicity;
   double impactParameter;

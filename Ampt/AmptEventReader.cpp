@@ -103,7 +103,6 @@ void AmptEventReader::reset()
 void AmptEventReader::execute()
 {
   if (reportDebug()) cout << "AmptEventReader::execute() Started" << endl;
-
   if (!fChain)
     {
     if (reportFatal()) cout << " AmptEventReader::execute() no TChain available" << endl;
@@ -127,71 +126,61 @@ void AmptEventReader::execute()
       return;
       }
     nb = fChain->GetEntry(jentry);   nbytes += nb;
-    //cout<<"sumit : "<<Mult<<endl;
-    // check if the event is acceptable.
+    if (mult > arraySize)
+         {
+         if (reportError()) cout<< "AmptEventReader::execute() n particles is " << mult << " and exceeds capacity " << arraySize << endl;
+         postTaskError();
+         return;
+         }
+    event->eventNumber     = eventNo;
     event->impactParameter = impact;
+    event->nProjectile     = Nproj;
+    event->nTarget         = Ntarg;
+    event->nParticleTotal  = Nparttotal;
+    event->multiplicity    = mult;
     if (eventFilter->accept(*event)) seekingEvent = false;
     }
-
-  if (mult > arraySize)
-    {
-    if (reportError()) cout<< "AmptEventReader::execute() n particles is " << mult << " and exceeds capacity " << arraySize << endl;
-    postTaskError();
-    return;
-    }
-  if (reportDebug())  cout<< "AmptEventReader::execute() Impact par: "<<impact<<"  "<<mult<<endl;
-
   int thePid;
   double charge, p_x, p_y, p_z, p_e, mass;
+  Particle aParticle;
   Particle * particle;
   int particleAccepted = 0;
 
-  //------------------- Randomizing the particle phi --------------Starts
+   //------------------- Randomizing the particle phi --------------Starts
   double eventAngle= TMath::TwoPi() * gRandom->Rndm();
   double cosPhi = cos(eventAngle);
   double sinPhi = sin(eventAngle);
 
-  // load particles from TTree and copy those that are selected into
-  // event
-  int iParticle=0;
-  bool readingEvent = true;
-  while (readingEvent)
+   for (int iParticle; iParticle<mult; iParticle++)
     {
-    particle = particleFactory->getNextObject();
-    bool seekParticle = true;
-    while (seekParticle)
+    thePid = pid[iParticle];
+    if ( thePid == 211 || thePid == 321  || thePid ==2212 )
+      charge = 1;
+    else if (thePid ==-211 || thePid ==-321 || thePid==-2212)
+      charge = -1;
+    else
+      charge = 0;
+    p_x  = cosPhi*px[iParticle] - sinPhi*py[iParticle];
+    p_y  = sinPhi*px[iParticle] + cosPhi*py[iParticle];
+    p_z  = pz[iParticle];
+    mass = m[iParticle];
+    p_e  =sqrt(p_x*p_x + p_y*p_y + p_z*p_z + mass*mass);
+    aParticle.setPidPxPyPzE(thePid, charge, p_x,p_y,p_z,p_e);
+    //if (reportDebug("AmptEventReader","execute()",getName())) aParticle.printProperties(cout);
+    if (particleFilter->accept(aParticle))
       {
-      thePid = pid[iParticle];
-      if ( thePid == 211 || thePid == 321  || thePid ==2212 )
-        charge = 1;
-      else if (thePid ==-211 || thePid ==-321 || thePid==-2212)
-        charge = -1;
-      else
-        charge = 0;
-      // only accept charged particles
-      if (charge==0) continue;
-      p_x  = cosPhi*px[iParticle] - sinPhi*py[iParticle];
-      p_y  = sinPhi*px[iParticle] + cosPhi*py[iParticle];
-      p_z  = pz[iParticle];
-      mass = m[iParticle];
-      p_e  =sqrt(p_x*p_x + p_y*p_y + p_z*p_z + mass*mass);
-      particle->setPidPxPyPzE(thePid, charge, p_x,p_y,p_z,p_e);
-      if (particleFilter->accept(*particle)) seekParticle = false;
-      if (reportDebug()) particle->printProperties(cout);
+      particle = particleFactory->getNextObject();
+      *particle = aParticle;
       particleAccepted++;
-      iParticle++;
-      if (iParticle>=mult)
-        {
-        seekParticle = false;
-        readingEvent = false;
-        }
       }
     }
   event->nParticles = particleAccepted;
-  if (reportDebug()) cout << "AmptEventReader::execute() No of accepted Particles : "<< particleAccepted<<endl;
-  if (reportDebug()) cout << "AmptEventReader::execute() event completed!" << endl;
+  if (reportDebug("AmptEventReader","execute()",getName()))
+    {
+    event->printProperties(cout);
+    cout << "AmptEventReader::execute() event completed!" << endl;
+    }
 }
-
 
 Int_t AmptEventReader::GetEntry(Long64_t entry)
 {
