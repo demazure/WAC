@@ -47,6 +47,10 @@ public:
   bool reportFatal(ostream & output=cout);
 
   bool reportDebug(TString  className, TString  fctName, TString  taskName, ostream & output=cout);
+  bool reportInfo(TString  className, TString  fctName, TString  taskName, ostream & output=cout);
+  bool reportWarning(TString  className, TString  fctName, TString  taskName, ostream & output=cout);
+  bool reportError(TString  className, TString  fctName, TString  taskName, ostream & output=cout);
+  bool reportFatal(TString  className, TString  fctName, TString  taskName, ostream & output=cout);
 
 
   ClassDef(MessageLogger,0)

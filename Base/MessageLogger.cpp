@@ -28,6 +28,54 @@ bool MessageLogger::reportDebug(TString className, TString fctName, TString task
    return false;
 }
 
+bool MessageLogger::reportInfo(TString  className, TString  fctName, TString  taskName, ostream & output)
+{
+ if (reportLevel<=Info)
+   {
+   output << " <INFO> " << className << "(" << taskName << ")::" << fctName << "  ";
+   return true;
+   }
+ else
+   return false;
+}
+
+
+bool MessageLogger::reportWarning(TString  className, TString  fctName, TString  taskName, ostream & output)
+{
+ if (reportLevel<=Warning)
+   {
+   output << " <WARNING> " << className << "(" << taskName << ")::" << fctName << "  ";
+   return true;
+   }
+ else
+   return false;
+}
+
+
+bool MessageLogger::reportError(TString  className, TString  fctName, TString  taskName, ostream & output)
+{
+ if (reportLevel<=Error)
+   {
+   output << " <ERROR> " << className << "(" << taskName << ")::" << fctName << "  ";
+   return true;
+   }
+ else
+   return false;
+}
+
+bool MessageLogger::reportFatal(TString  className, TString  fctName, TString  taskName, ostream & output)
+{
+ if (reportLevel<=Fatal)
+   {
+   output << " <FATAL> " << className << "(" << taskName << ")::" << fctName << "  ";
+   return true;
+   }
+ else
+   return false;
+}
+
+
+
 bool MessageLogger::reportDebug(ostream & output)
 {
   if (reportLevel<=Debug)

@@ -160,9 +160,9 @@ void NuDynTask::execute()
     return;
     }
 
-  if (reportDebug()) cout <<"NuDynTask::analyze(...) check if event is acceptable" << endl;
+  //if (reportDebug()) cout <<"NuDynTask::analyze(...) check if event is acceptable" << endl;
   if (!eventFilter->accept(*event)) return;
-  if (reportDebug()) cout <<"NuDynTask::analyze(...) acceptable event" << endl;
+  //if (reportDebug()) cout <<"NuDynTask::analyze(...) acceptable event" << endl;
 
   AnalysisConfiguration * ac = (AnalysisConfiguration *) getTaskConfiguration();
   if (!ac)
@@ -174,19 +174,20 @@ void NuDynTask::execute()
 
   bool accept1;
   bool accept2;
-  int n1 = 0.0;
-  int n2 = 0.0;
+  double n1 = 0.0;
+  double n2 = 0.0;
   for (int iParticle=0; iParticle<event->nParticles; iParticle++)
     {
     Particle & particle = * event->getParticleAt(iParticle);
+    if (reportDebug())  particle.printProperties(cout);
     accept1 = particleFilter1->accept(particle);
     accept2 = particleFilter2->accept(particle);
-    if (reportDebug())  cout << "  accept1:" << accept1<< endl;
-    if (reportDebug())  cout << "  accept2:" << accept2<< endl;
+//    if (reportDebug())  cout << "  accept1:" << accept1<< endl;
+//    if (reportDebug())  cout << "  accept2:" << accept2<< endl;
     if (accept1)  n1++;
     if (accept2)  n2++;
     }
-  //cout << " mult:" << event->multiplicity << "   cent:" << event->centrality << " n1:" << n1 << " n2:" << n2 << endl;
+  cout << " mult:" << event->multiplicity << "   cent:" << event->centrality << " n1:" << n1 << " n2:" << n2 << endl;
   nuDynHistos->fill(event->multiplicity,event->centrality,n1,n2,1.0);
   eventsProcessed++;
   if (reportDebug()) cout << "NuDyn::execute() Completed" << endl;

@@ -58,4 +58,5 @@ add_subdirectory(Blastwave)
 #add_subdirectory(LambdaAnalysis)
 #add_subdirectory(Music)
 #add_subdirectory(Urqmd)
+add_subdirectory(Plots)
 

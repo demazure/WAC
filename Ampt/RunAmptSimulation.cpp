@@ -19,7 +19,7 @@ int main()
   cout << "<INFO> AMPT Analysis - Starting" << endl;
 
   //long nEventsRequested = 1000000;
-   long nEventsRequested = 100;
+   long nEventsRequested = 1000000;
    int  nEventsReport    = 10;
 
   AnalysisConfiguration * ac = new AnalysisConfiguration("Ampt","Ampt","1.0");
@@ -68,6 +68,15 @@ int main()
   ac->fillQ3D          = false;
   ac->fillY            = true;
 
+  ac->nuDynVsMult     = true;
+   ac->nuDynVsCent     = false;
+   ac->nBins_mult   = 500;
+   ac->min_mult     = 0.0;
+   ac->max_mult     = 25000.0;
+   ac->nBins_cent   = 20;
+   ac->min_cent     = 0.0;
+   ac->max_cent     = 100.0;
+
 
   TaskConfiguration * genConfig = new TaskConfiguration();
   genConfig->dataInputPath = "/Volumes/ClaudeDisc3/Simulations/ampt";
@@ -88,7 +97,7 @@ int main()
   ParticleFilter  * particleFilter7  = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Positive,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
   ParticleFilter  * particleFilter8  = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
 
-  Particle::factorySize = 15000;
+  Particle::factorySize = 25000;
   Event * event = Event::getEvent();
   cout << " Particle Store Capacity set to: " << Particle::getFactory()->getCapacity() << endl;
   //if (1) exit(0);
