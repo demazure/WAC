@@ -17,8 +17,6 @@
 
 #include "Event.hpp"
 
-ClassImp(Factory<Particle>);
-
 //Factory<Particle> * particleFactory = 0;
 //
 //extern Factory<Particle> * getParticleFactory(int nParticleMax=5000)
@@ -142,6 +140,4 @@ Event * Event::getEvent()
     }
   return event;
 }
-
-ClassImp(Factory<Particle>);
 

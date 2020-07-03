@@ -28,6 +28,7 @@ public:
   void printProperties(ostream & output);
   void setPxPyPzE(double p_x, double p_y, double p_z, double p_e);
   void setPidPxPyPzE(double pid, double charge, double p_x, double p_y, double p_z, double p_e);
+  
   void boost(double ax, double ay, double az);
   void boostRapidity(double boost);
 
@@ -42,8 +43,6 @@ public:
   static int factorySize;
   static Factory<Particle> * factory;
   static Factory<Particle> * getFactory();
-
-  ClassDef(Particle,0)
 };
 
 

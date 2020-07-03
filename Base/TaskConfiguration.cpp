@@ -15,7 +15,6 @@
  */
 
 #include "TaskConfiguration.hpp"
-ClassImp(TaskConfiguration);
 
 TaskConfiguration::TaskConfiguration()
 :

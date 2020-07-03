@@ -17,9 +17,6 @@
 #include "TLorentzVector.h"
 #include "Particle.hpp"
 
-ClassImp(Particle);
-
-
 Particle::Particle()
   :
   pid(0),

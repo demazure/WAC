@@ -1,2 +1,8 @@
-
+# hidden directories
 .DS_Store
+.vscode
+
+# install directories
+bin
+lib
+build
