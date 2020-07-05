@@ -10,7 +10,6 @@
 
 
 add_executable(PlotNuDynHistos PlotNuDynHistos.cpp)
-target_include_directories(PlotNuDynHistos PUBLIC Base Cluster Pythia Ampt  ${EXTRA_INCLUDES})
 target_include_directories(PlotNuDynHistos PUBLIC Base   ${EXTRA_INCLUDES})
 target_link_libraries(PlotNuDynHistos Base  ${CMAKE_DL_LIBS})
 
