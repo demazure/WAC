@@ -90,8 +90,8 @@ int main()
   ParticleFilter  * particleFilter8  = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
 
   ParticleFilter  * particleFilterPiC  = new ParticleFilter(ParticleFilter::Pion, ParticleFilter::Charged,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
-  ParticleFilter  * particleFilterKC   = new ParticleFilter(ParticleFilter::Pion, ParticleFilter::Charged,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
-  ParticleFilter  * particleFilterPC   = new ParticleFilter(ParticleFilter::Pion, ParticleFilter::Charged,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
+  ParticleFilter  * particleFilterKC   = new ParticleFilter(ParticleFilter::Kaon, ParticleFilter::Charged,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
+  ParticleFilter  * particleFilterPC   = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Charged,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
 
 
   Event * event = Event::getEvent();
