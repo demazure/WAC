@@ -148,7 +148,7 @@ void NuDynTask::saveHistograms(TFile * outputFile)
 
 void NuDynTask::execute()
 {
-  if (reportDebug())  cout << "NuDynTask::analyze(...) Starting" << endl;
+//  if (reportDebug())  cout << "NuDynTask::analyze(...) Starting" << endl;
   if (event != NULL)
     {
     if (reportDebug()) cout << "NuDynTask::analyze(...) analyzing " << event->nParticles << " particles" << endl;
@@ -187,10 +187,10 @@ void NuDynTask::execute()
     if (accept1)  n1++;
     if (accept2)  n2++;
     }
-  cout << " mult:" << event->multiplicity << "   cent:" << event->centrality << " n1:" << n1 << " n2:" << n2 << endl;
+  //cout << " mult:" << event->multiplicity << "   cent:" << event->centrality << " n1:" << n1 << " n2:" << n2 << endl;
   nuDynHistos->fill(event->multiplicity,event->centrality,n1,n2,1.0);
   eventsProcessed++;
-  if (reportDebug()) cout << "NuDyn::execute() Completed" << endl;
+//  if (reportDebug()) cout << "NuDyn::execute() Completed" << endl;
 }
 
 

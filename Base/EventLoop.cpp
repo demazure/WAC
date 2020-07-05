@@ -19,7 +19,7 @@ ClassImp(EventLoop);
 
 EventLoop::EventLoop()
 :
-TaskCollection("EventLoop",nullptr,10)
+TaskCollection("EventLoop",nullptr,100)
 {
   if (reportDebug())  cout << "EventLoop::CTOR Started" << endl;
 }
@@ -34,12 +34,12 @@ EventLoop::~EventLoop()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void EventLoop::run(long nEvents, int nReport)
 {
-  if (reportInfo()) cout << "EventLoop::run(...) Running for nEvents: " << nEvents << endl;
+  if (reportInfo("EventLoop",getName(),"run(...)")) cout << "Running for nEvents: " << nEvents << endl;
   postTaskOk();
   initialize();
   if (!isTaskOk())
     {
-    if (reportWarning()) cout << "EventLoop::run(...) Initialization failed. Abort." << endl;
+    if (reportWarning("EventLoop",getName(),"run(...)")) cout << "Initialization failed. Abort." << endl;
     return;
     }
   for (long iEvent=0; iEvent<nEvents; iEvent++)
@@ -48,12 +48,12 @@ void EventLoop::run(long nEvents, int nReport)
     if (isTaskOk()) execute();
     if (isTaskOk() && iEvent%nReport==0 )
       {
-      if (reportInfo()) cout << "EventLoop::run() Completed event # " << iEvent << endl;
+      if (reportInfo("EventLoop",getName(),"run(...)")) cout << "Completed event # " << iEvent << endl;
       }
     }
   if (isTaskOk()) finalize();
 
-  if (reportInfo())  cout << "EventLoop::run(...) Completed nEvents: " << nEvents << endl;
-  if (reportInfo())  cout << "EventLoop::run(...) Task finished with status : " << getTaskStatusName() << endl;
-  if (reportDebug()) cout << "EventLoop::run(...) Completed." << endl;
+  if (reportInfo("EventLoop",getName(),"run(...)"))  cout << "Completed nEvents: " << nEvents << endl;
+  if (reportInfo("EventLoop",getName(),"run(...)"))  cout << "Task finished with status : " << getTaskStatusName() << endl;
+  if (reportDebug("EventLoop",getName(),"run(...)")) cout << "Completed." << endl;
 }

@@ -39,7 +39,7 @@ public:
                  double maxEta,
                  double minY,
                  double maxY);
-  ~ParticleFilter();
+  virtual ~ParticleFilter();
   bool accept(Particle & particle);
   TString getName();
   TString getTitle();

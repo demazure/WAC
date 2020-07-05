@@ -29,6 +29,7 @@ public:
   // Member functions
   /////////////////////////////////////////////////////////////
   RandomGenerator(TRandom * rg);
+  virtual ~RandomGenerator(){}
   /////////////////////////////////////////////////////////////
   // Data Members
   /////////////////////////////////////////////////////////////
@@ -44,6 +45,8 @@ class ScalarIntRandomGenerator : public RandomGenerator
 {
 public:
   ScalarIntRandomGenerator(int min, int max, TRandom * rg);
+  virtual ~ScalarIntRandomGenerator(){}
+
   virtual int generate();
 
   /////////////////////////////////////////////////////////////
@@ -64,6 +67,7 @@ class FixedScalarIntRandomGenerator : public ScalarIntRandomGenerator
 {
 public:
   FixedScalarIntRandomGenerator(int fixedValue);
+  virtual ~FixedScalarIntRandomGenerator(){}
   virtual int generate();
 
   ClassDef(FixedScalarIntRandomGenerator,0)
@@ -86,6 +90,7 @@ public:
   ExpScalarIntRandomGenerator(int    minimum,
                               double theSlope,
                               TRandom * rg);
+  virtual ~ExpScalarIntRandomGenerator(){}
   virtual int generate();
 
   ClassDef(ExpScalarIntRandomGenerator,0)
@@ -105,6 +110,7 @@ public:
   /////////////////////////////////////////////////////////////
 
   ScalarDoubleRandomGenerator(double min,double max,TRandom * rg);
+ virtual ~ScalarDoubleRandomGenerator(){}
   virtual double generate();
 
   /////////////////////////////////////////////////////////////
@@ -129,6 +135,7 @@ public:
   // Member functions
   /////////////////////////////////////////////////////////////
   FixedScalarDoubleRandomGenerator(double fixedValue);
+  virtual ~FixedScalarDoubleRandomGenerator(){}
   virtual double generate();
 
   ClassDef(FixedScalarDoubleRandomGenerator,0)
@@ -142,6 +149,7 @@ public:
   /////////////////////////////////////////////////////////////
 
   LinearScalarDoubleRandomGenerator(double minimum,double maximum, TRandom * randomGenerator);
+  virtual ~LinearScalarDoubleRandomGenerator(){}
   virtual double  generate();
 
   ClassDef(LinearScalarDoubleRandomGenerator,0)
@@ -159,6 +167,7 @@ public:
   ExpScalarDoubleRandomGenerator(double minimum,
                                  double slope,
                                  TRandom * randomGenerator);
+  virtual ~ExpScalarDoubleRandomGenerator(){}
   virtual double  generate();
 
   ClassDef(ExpScalarDoubleRandomGenerator,0)
@@ -178,6 +187,7 @@ public:
   /////////////////////////////////////////////////////////////
 
   HistoScalarDoubleRandomGenerator(TH1 * theHistogram);
+  virtual ~HistoScalarDoubleRandomGenerator(){}
   virtual double  generate();
 
   ClassDef(HistoScalarDoubleRandomGenerator,0)
@@ -195,6 +205,7 @@ public:
   /////////////////////////////////////////////////////////////
 
   VectorRandomGenerator(TRandom * rg);
+  virtual ~VectorRandomGenerator(){}
   virtual void generate(double &theta, double &phi, double & ax, double & ay,double & az);
 
   ClassDef(VectorRandomGenerator,0)

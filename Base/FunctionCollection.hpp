@@ -46,7 +46,7 @@ public:
   /////////////////////////////////////////////////////////////
   FunctionCollection(int functionCapacity=20);
   FunctionCollection(const FunctionCollection & a);
-  ~FunctionCollection();
+  virtual ~FunctionCollection();
   void addToList(TF1 * f);
   TF1 * getFunction(int i);
   void setDefaultOptions(bool color=0);

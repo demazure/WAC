@@ -21,7 +21,7 @@ protected:
 
   public:
 
-  ~Event();
+  virtual ~Event();
   virtual void clear();
   virtual void reset();
   virtual void printProperties(ostream & output);

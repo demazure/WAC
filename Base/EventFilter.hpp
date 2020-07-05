@@ -22,7 +22,7 @@ public:
    EventFilter(EventSelection eventSelectionRequested,
                double minimum,
                double maximum);
-  ~EventFilter();
+  virtual ~EventFilter();
   virtual bool accept(Event & event);
 
   TString getName();

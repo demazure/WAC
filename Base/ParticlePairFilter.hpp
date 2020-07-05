@@ -34,7 +34,7 @@ public:
                 double maxDphi,
                 double minDeta,
                      double maxDeta);
-  ~ParticlePairFilter();
+  virtual ~ParticlePairFilter();
   bool accept(Particle & particle1, Particle &  particle2);
 
   //////////////////////////////////////////////////////////////////////////////////////////

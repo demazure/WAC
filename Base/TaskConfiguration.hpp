@@ -24,7 +24,7 @@ public:
 
   TaskConfiguration();
   TaskConfiguration(const TString & theName, const TString & theType, const TString & theVersion);
-  ~TaskConfiguration();
+  virtual ~TaskConfiguration();
 
   TString getName() const;
   TString getType() const;

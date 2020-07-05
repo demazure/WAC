@@ -19,6 +19,7 @@ int main()
 {
   cout << "<INFO> PYTHIA Model Analysis - Starting" << endl;
 
+//  long nEventsRequested = 100;
   long nEventsRequested = 10000000;
   int  nEventsReport    = 10000;
 
@@ -34,8 +35,8 @@ int main()
   ac->inputPath = "./";
   ac->configurationFileName = "configuration";
   ac->rootInputFileName = "";
-  ac->outputPath = "./";
-  ac->rootOuputFileName =  "output";
+  ac->outputPath = "/Users/claudeapruneau/Documents/GitHub/run/";
+  ac->rootOuputFileName =  "newOutput";
   ac->histoBaseName =  "pythia";
 
   ac->nBins_pt    = 40;
@@ -69,9 +70,9 @@ int main()
 
   ac->nuDynVsMult     = true;
   ac->nuDynVsCent     = false;
-  ac->nBins_mult   = 400;
+  ac->nBins_mult   = 500;
   ac->min_mult     = 0.0;
-  ac->max_mult     = 400.0;
+  ac->max_mult     = 500.0;
   ac->nBins_cent   = 20;
   ac->min_cent     = 0.0;
   ac->max_cent     = 100.0;
@@ -88,6 +89,11 @@ int main()
   ParticleFilter  * particleFilter7  = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Positive,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
   ParticleFilter  * particleFilter8  = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
 
+  ParticleFilter  * particleFilterPiC  = new ParticleFilter(ParticleFilter::Pion, ParticleFilter::Charged,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
+  ParticleFilter  * particleFilterKC   = new ParticleFilter(ParticleFilter::Pion, ParticleFilter::Charged,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
+  ParticleFilter  * particleFilterPC   = new ParticleFilter(ParticleFilter::Pion, ParticleFilter::Charged,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y); // +ve only
+
+
   Event * event = Event::getEvent();
   PythiaEventGenerator * gen  = new PythiaEventGenerator("PYTHIA",0, event,eventFilter,particleFilter);
   TwoPartCorrelationAnalyzer  * ana1 = new TwoPartCorrelationAnalyzer ("PYTHIA_TPCA_ALL",  ac,  event, eventFilter,particleFilter1,particleFilter2);
@@ -100,6 +106,11 @@ int main()
   NuDynTask * nudyn3 = new NuDynTask("PYTHIA_NuDyn_KK",     ac,  event, eventFilter,particleFilter5,particleFilter6);
   NuDynTask * nudyn4 = new NuDynTask("PYTHIA_NuDyn_PP",     ac,  event, eventFilter,particleFilter7,particleFilter8);
 
+  NuDynTask * nudyn5 = new NuDynTask("PYTHIA_NuDyn_PiCKC",   ac,  event, eventFilter,particleFilterPiC,particleFilterKC);
+  NuDynTask * nudyn6 = new NuDynTask("PYTHIA_NuDyn_PiCPC",   ac,  event, eventFilter,particleFilterPiC,particleFilterPC);
+  NuDynTask * nudyn7 = new NuDynTask("PYTHIA_NuDyn_KCPC",   ac,  event, eventFilter,particleFilterKC,particleFilterPC);
+
+
   EventLoop * eventLoop = new EventLoop();
 
   gen->setReportLevel(MessageLogger::Info);
@@ -111,6 +122,9 @@ int main()
   nudyn2->setReportLevel(MessageLogger::Info);
   nudyn3->setReportLevel(MessageLogger::Info);
   nudyn4->setReportLevel(MessageLogger::Info);
+  nudyn5->setReportLevel(MessageLogger::Info);
+  nudyn6->setReportLevel(MessageLogger::Info);
+  nudyn7->setReportLevel(MessageLogger::Info);
   eventLoop->setReportLevel(MessageLogger::Info);
 
   eventLoop->addTask(gen);
@@ -122,6 +136,9 @@ int main()
   eventLoop->addTask(nudyn2);
   eventLoop->addTask(nudyn3);
   eventLoop->addTask(nudyn4);
+  eventLoop->addTask(nudyn5);
+  eventLoop->addTask(nudyn6);
+  eventLoop->addTask(nudyn7);
   eventLoop->run(nEventsRequested,nEventsReport);
 
   cout << "<INFO> PYTHIA Analysis - Completed" << endl;

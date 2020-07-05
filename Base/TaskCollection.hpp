@@ -34,7 +34,7 @@ public:
 
   TaskCollection(const TString & name,
                  TaskConfiguration * configuration,
-                 int             nTasksMax = 10);
+                 int             nTasksMax = 100);
   virtual ~TaskCollection();
   virtual void initialize();
   virtual void execute();

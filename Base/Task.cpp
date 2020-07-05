@@ -182,7 +182,10 @@ void Task::loadHistograms()
 
 void Task::loadHistograms(TFile * inputFile)
 {
- if (reportDebug()) cout << "Task::loadHistograms() No ops." << endl;
+  if (!inputFile)
+    {
+    if (reportError("Task",getName(),"loadHistograms(TFile * inputFile)")) cout << "Null pointer supplied." << endl;
+    }
 }
 
 void Task::resetHistograms()

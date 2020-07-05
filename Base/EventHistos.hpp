@@ -26,7 +26,7 @@ public:
               const TString & name,
               AnalysisConfiguration * configuration,
               LogLevel  debugLevel);
-  ~EventHistos();
+  virtual ~EventHistos();
   virtual void initialize();
   void loadHistograms(TFile * inputFile);
   void fill(double mult, double weight);

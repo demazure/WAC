@@ -71,6 +71,8 @@ public:
   GraphConfiguration(int d=1, int type=1);
   GraphConfiguration(const GraphConfiguration & source);
 
+  virtual ~GraphConfiguration(){}
+
   ClassDef(GraphConfiguration,0)
 };
 

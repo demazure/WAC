@@ -37,8 +37,6 @@ EventFilter::~EventFilter()
 //////////////////////////////////////////////////////////////////////////////////////////
 bool EventFilter::accept(Event & event)
 {
-  bool accepting = true;
-
   if (eventSelectionRequested==MinBias) return true;
   double condition = 0.0;
   switch (eventSelectionRequested)

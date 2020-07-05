@@ -50,6 +50,9 @@ public:
   
   
   RapidityGenerator(int opt, int pair, double max, double s=10.0, double minSep=0.1);
+
+  virtual ~RapidityGenerator() {}
+
   void reset();
   double generate();
 
