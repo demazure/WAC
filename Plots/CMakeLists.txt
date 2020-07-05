@@ -1,5 +1,5 @@
 ################################################################################################
-# Project WAC/Cluster
+# Project WAC/plotters
 ################################################################################################
 
 
@@ -11,7 +11,8 @@
 
 add_executable(PlotNuDynHistos PlotNuDynHistos.cpp)
 target_include_directories(PlotNuDynHistos PUBLIC Base Cluster Pythia Ampt  ${EXTRA_INCLUDES})
-target_link_libraries(PlotNuDynHistos Base Cluster Pythia Ampt  ${CMAKE_DL_LIBS})
+target_include_directories(PlotNuDynHistos PUBLIC Base   ${EXTRA_INCLUDES})
+target_link_libraries(PlotNuDynHistos Base  ${CMAKE_DL_LIBS})
 
 #install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/libCluster.rootmap" "${CMAKE_CURRENT_BINARY_DIR}/libCluster_rdict.pcm" DESTINATION /Users/claudeapruneau/opt/WAC/lib)
 #install(TARGETS Cluster  LIBRARY DESTINATION /Users/claudeapruneau/opt/WAC/lib) 
