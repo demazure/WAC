@@ -17,9 +17,6 @@
 #include "TLorentzVector.h"
 #include "Particle.hpp"
 
-ClassImp(Particle);
-
-
 Particle::Particle()
   :
   pid(0),
@@ -129,7 +126,7 @@ Particle & Particle::operator=(const Particle & other)
 
   }
 
-  void Particle::setPidPxPyPzE(double thePid, double theCharge, double p_x, double p_y, double p_z, double p_e)
+  void Particle::setPidPxPyPzE(long thePid, long theCharge, double p_x, double p_y, double p_z, double p_e)
 {
   pid = thePid;
   charge = theCharge;
@@ -151,6 +148,22 @@ Particle & Particle::operator=(const Particle & other)
   else
     y = 0.5 * log( plus/minus );
 }
+
+  void Particle::setPidPtPhiYEta(long _id,long _ch,double _pT,double _phi,double _y,double _eta) {
+    pid = _id;
+    charge = _ch;
+    phi = TVector2::Phi_0_2pi(_phi);
+    pt = TMath::Abs(_pT);
+    eta = _eta;
+    y = _y;
+    px = pt*cos(phi);
+    py = pt*sin(phi);
+    pz = pt/TMath::Tan(2.0*TMath::ATan(TMath::Exp(-eta)));
+    e = 1.0/TMath::TanH(_y);
+    ixEtaPhi = -1;
+    ixYPhi = -1;
+  }
+
 
   void Particle::boost(double ax, double ay, double az)
   {

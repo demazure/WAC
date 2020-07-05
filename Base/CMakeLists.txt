@@ -11,10 +11,11 @@ ROOT_GENERATE_DICTIONARY(G__Base CanvasCollection.hpp CanvasConfiguration.hpp Ta
 ################################################################################################
 # Create a shared library with geneated dictionary
 ################################################################################################
+add_compile_options(-Wall -Wextra -pedantic)
 add_library(Base SHARED CanvasCollection.cpp CanvasConfiguration.cpp TaskConfiguration.cpp EnhancedGraph.cpp  Factory.cpp FunctionCollection.cpp  GraphConfiguration.cpp HistogramCollection.cpp Histograms.cpp RandomGenerators.cpp RapidityGenerator.cpp Task.cpp TaskCollection.cpp Property.cpp MessageLogger.cpp AnalysisConfiguration.cpp Event.cpp EventFilter.cpp  EventHistos.cpp EventLoop.cpp GeneralizedGaussianConfiguration.cpp GeneralizedGaussianProfile.cpp GeneratorConfiguration.cpp TwoPartCorrelationAnalyzer.cpp Particle.cpp  ParticleFilter.cpp ParticleHistos.cpp ParticlePairCombinedHistos.cpp ParticlePairDerivedHistos.cpp ParticlePairFilter.cpp ParticlePairHistos.cpp TrackAndPairConfiguration.cpp  NuDynTask.cpp NuDynHistos.cpp NuDynDerivedHistos.cpp G__Base.cxx)
 target_link_libraries(Base ${ROOT_LIBRARIES} ${EXTRA_LIBS} )
 target_include_directories(Base  PUBLIC Base ${EXTRA_INCLUDES} )  ###)
 
-install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/libBase.rootmap" "${CMAKE_CURRENT_BINARY_DIR}/libBase_rdict.pcm" DESTINATION /Users/claudeapruneau/opt/WAC/lib)
-install(TARGETS Base  LIBRARY DESTINATION "${WAC_LIB}")
-install(TARGETS Base  LIBRARY DESTINATION /Users/claudeapruneau/opt/WAC/lib) 
+install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/libBase.rootmap" "${CMAKE_CURRENT_BINARY_DIR}/libBase_rdict.pcm" DESTINATION "$ENV{WAC_LIB}")
+install(TARGETS Base  LIBRARY DESTINATION "$ENV{WAC_LIB}")
+

@@ -15,7 +15,7 @@ add_executable(RunAmptSimulation RunAmptSimulation.cpp)
 target_include_directories(RunAmptSimulation PUBLIC Base Ampt ${EXTRA_INCLUDES})
 target_link_libraries(RunAmptSimulation Base Ampt ${CMAKE_DL_LIBS})
 
-install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/libAmpt.rootmap" "${CMAKE_CURRENT_BINARY_DIR}/libAmpt_rdict.pcm" DESTINATION /Users/claudeapruneau/opt/WAC/lib)
-install(TARGETS Ampt  LIBRARY DESTINATION /Users/claudeapruneau/opt/WAC/lib) 
-install(TARGETS RunAmptSimulation DESTINATION /Users/claudeapruneau/opt/WAC/bin) 
+install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/libAmpt.rootmap" "${CMAKE_CURRENT_BINARY_DIR}/libAmpt_rdict.pcm" DESTINATION "$ENV{WAC_LIB}")
+install(TARGETS Ampt  LIBRARY DESTINATION "$ENV{WAC_LIB}") 
+install(TARGETS RunAmptSimulation DESTINATION "$ENV{WAC_BIN}") 
 

@@ -27,23 +27,23 @@ public:
   Particle & operator=(const Particle & other);
   void printProperties(ostream & output);
   void setPxPyPzE(double p_x, double p_y, double p_z, double p_e);
-  void setPidPxPyPzE(double pid, double charge, double p_x, double p_y, double p_z, double p_e);
+  void setPidPxPyPzE(long pid, long charge, double p_x, double p_y, double p_z, double p_e);
+  void setPidPtPhiYEta(long _id,long _ch,double _pT,double _phi,double _y,double _eta);
+
   void boost(double ax, double ay, double az);
   void boostRapidity(double boost);
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Data Members
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  double pid;
-  double charge;
+  long pid;
+  long charge;
   double px, py, pz, e, pt, y, eta, phi;
   int ixEtaPhi, ixYPhi;
 
   static int factorySize;
   static Factory<Particle> * factory;
   static Factory<Particle> * getFactory();
-
-  ClassDef(Particle,0)
 };
 
 

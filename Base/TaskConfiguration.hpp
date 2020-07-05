@@ -61,9 +61,6 @@ public:
   TString dataInputTreeName;
   int dataInputFileMinIndex;
   int dataInputFileMaxIndex;
-
-
-  ClassDef(TaskConfiguration,0)
 };
 
 #endif /* TaskConfiguration_hpp */

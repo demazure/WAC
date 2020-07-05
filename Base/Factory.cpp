@@ -14,3 +14,7 @@
  Class used to define a generic object factory
  */
 #include "Factory.hpp"
+#include "Particle.hpp"
+
+ClassImp(Factory<Particle>);
+

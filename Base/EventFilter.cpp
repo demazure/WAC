@@ -50,7 +50,7 @@ bool EventFilter::accept(Event & event)
       case Other:           condition = event.other; break;
     }
 
-  return (condition >= minimum) && (condition < minimum);
+  return (condition >= minimum) && (condition < maximum);
 }
 
 //enum EventSelection   { MinBias, Centrality, Multiplicity, ImpactParameter, Other };
@@ -69,8 +69,8 @@ TString EventFilter::getName()
  if (eventSelectionRequested==MinBias) return name;
 
   TString minName;
-  int minLim = int(1000.0*minimum);
-  int maxLim = int(1000.0*maximum);
+  int minLim = int(minimum);
+  int maxLim = int(maximum);
   name += minLim;
   name += "to";
   name += maxLim;

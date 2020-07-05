@@ -2,7 +2,7 @@
 ####################################################################################################
 echo "Setting up WAC"
 ####################################################################################################
-export WAC_ROOT="/Users/claudeapruneau/Documents/MyProjects/AnalysisCode/WAC2"
+export WAC_ROOT=`pwd`
 export WAC_SOURCE="$WAC_ROOT"
 export WAC_BIN="$WAC_ROOT/bin"
 export WAC_LIB="$WAC_ROOT/lib"
