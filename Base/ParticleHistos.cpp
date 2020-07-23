@@ -92,7 +92,7 @@ void ParticleHistos::loadHistograms(TFile * inputFile)
     return;
     }
   AnalysisConfiguration & ac = *getConfiguration();
-  TString & bn = ac.histoBaseName;
+  TString bn = getHistoBaseName();
   h_n1_pt      = loadH1(inputFile,bn+TString("n1_pt")    ,true);
   h_n1_ptXS    = loadH1(inputFile,bn+TString("n1_ptXS")  ,true);
   h_n1_eta     = loadH1(inputFile,bn+TString("n1_eta")   ,true);
