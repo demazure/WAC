@@ -341,12 +341,11 @@ int StatStudyPlots()
 
 
   int nSubSamples = 4000;
-
- 
-  TString inputPath = "/Users/claudeapruneau/Documents/GitHub/run/";
+  TString inputPath = "/Users/claudeapruneau/Documents/GitHub/run/StatStudy/";
   TString outputPath = "./"; // /Users/claudeapruneau/Documents/GitHub/run/";
   TString baseName  = "output";
-  TString inputFileName = "StatStudyNew.root";
+  TString inputFileName = "StatStudySet4.root";
+  TString canvasNameBase = "Set4_";
 
   HistogramCollection * hc = new HistogramCollection("Collection",100);
   hc->setDefaultOptions(1);
@@ -363,7 +362,12 @@ int StatStudyPlots()
     gc1d[i] = new GraphConfiguration(1,i);
     }
 
-  TFile * inputFile = new TFile(inputFileName,"OLD");
+  TFile * inputFile = new TFile(inputPath+inputFileName,"OLD");
+  if (!inputFile)
+    {
+    cout << "File " << inputPath+inputFileName << " not found. Abort." << endl;
+    return 1;
+    }
 
   TH1* f1_1     = hc->loadH1( inputFile,   "f1_1");
   TH1* f1_2     = hc->loadH1( inputFile,   "f1_2");
@@ -395,6 +399,23 @@ int StatStudyPlots()
   TH1* r2_22Ratio    = hc->loadH1( inputFile, "r2_22Ratio");
   TH1* nudyn_12Ratio = hc->loadH1( inputFile, "nudyn_12Ratio");
 
+  TH1* r2_11_vsSub    = hc->loadH1( inputFile, "r2_11_vsSub");
+   TH1* r2_12_vsSub    = hc->loadH1( inputFile, "r2_12_vsSub");
+   TH1* r2_22_vsSub    = hc->loadH1( inputFile, "r2_22_vsSub");
+   TH1* nudyn_12_vsSub = hc->loadH1( inputFile, "nudyn_12_vsSub");
+
+
+  TH1* f1_1Ratio_vsSub     = hc->loadH1( inputFile, "f1_1Ratio_vsSub");
+   TH1* f1_2Ratio_vsSub     = hc->loadH1( inputFile, "f1_2Ratio_vsSub");
+   TH1* f2_11Ratio_vsSub    = hc->loadH1( inputFile, "f2_11Ratio_vsSub");
+   TH1* f2_12Ratio_vsSub    = hc->loadH1( inputFile, "f2_12Ratio_vsSub");
+   TH1* f2_22Ratio_vsSub    = hc->loadH1( inputFile, "f2_22Ratio_vsSub");
+   TH1* r2_11Ratio_vsSub    = hc->loadH1( inputFile, "r2_11Ratio_vsSub");
+   TH1* r2_12Ratio_vsSub    = hc->loadH1( inputFile, "r2_12Ratio_vsSub");
+   TH1* r2_22Ratio_vsSub    = hc->loadH1( inputFile, "r2_22Ratio_vsSub");
+   TH1* nudyn_12Ratio_vsSub = hc->loadH1( inputFile, "nudyn_12Ratio_vsSub");
+
+
 //  cout << "     f1_1Mean: " <<  f1_1Mean     << " f1_1Std : "    <<   f1_1Std << endl;
 //  cout << "     f1_2Mean: " <<  f1_2Mean     << " f1_2Std : "    <<   f1_2Std << endl;
 //  cout << "    f2_11Mean: " <<  f2_11Mean    << " f2_11Std : "   <<   f2_11Std << endl;
@@ -405,8 +426,7 @@ int StatStudyPlots()
 //  cout << "    r2_22Mean: " <<  r2_22Mean    << " r2_22Std: "    <<   r2_22Std << endl;
 //  cout << " nudyn_12Mean: " <<  nudyn_12Mean << " nudyn_12Std: " <<   nudyn_12Std << endl;
 
-  TString canvasNameBase = "Set1_";
-  TCanvas * canvas;
+   TCanvas * canvas;
 
   canvas = canvasCollection->createCanvas(canvasNameBase+"f1",*cc1d);
   TLegend * legend1 = canvasCollection->createLegend(0.20, 0.4, 0.35, 0.8, 0, 0.055);
@@ -416,18 +436,18 @@ int StatStudyPlots()
   hc->setHistoProperties(f1_2Eff, *gc1d[3]);
   f1_1->GetXaxis()->SetTitle("< n_{1} >");
   f1_1->GetYaxis()->SetTitle("Events");
-  f1_1->GetXaxis()->SetRangeUser(0.8,0.9);
+  //f1_1->GetXaxis()->SetRangeUser(0.8,0.9);
   f1_1->SetMinimum(0.0);
-  f1_1->SetMaximum(2500000.0);
+  f1_1->SetMaximum(1000000.0);
 
   f1_1->Fit("gaus");
   f1_2->Fit("gaus");
   f1_1Eff->Fit("gaus");
   f1_2Eff->Fit("gaus");
-  f1_1->Draw();         legend1->AddEntry(f1_1,"f_{1}^{(1)}");
-  f1_2->Draw("SAME");   legend1->AddEntry(f1_2,"f_{1}^{(2)}");
-  f1_1Eff->Draw("SAME");legend1->AddEntry(f1_1Eff,"f_{1}^{(1),Eff}");
-  f1_2Eff->Draw("SAME");legend1->AddEntry(f1_2Eff,"f_{1}^{(2),Eff}");
+  f1_1->Draw();         legend1->AddEntry(f1_1,"n_{1}^{(1)}");
+  f1_2->Draw("SAME");   legend1->AddEntry(f1_2,"n_{1}^{(2)}");
+  f1_1Eff->Draw("SAME");legend1->AddEntry(f1_1Eff,"n_{1}^{(1),Eff}");
+  f1_2Eff->Draw("SAME");legend1->AddEntry(f1_2Eff,"n_{1}^{(2),Eff}");
   legend1->Draw();
 
   canvas = canvasCollection->createCanvas(canvasNameBase+"f1Ratio",*cc1d);
@@ -436,11 +456,11 @@ int StatStudyPlots()
   hc->setHistoProperties(f1_2Ratio,    *gc1d[1]);
   f1_1Ratio->Fit("gaus");
   f1_2Ratio->Fit("gaus");
-  f1_1Ratio->GetXaxis()->SetTitle("< n_{1}^{Eff} >/< n_{1} >");
+  f1_1Ratio->GetXaxis()->SetTitle("f_{1}^{Eff}/f_{1}");
   f1_1Ratio->GetYaxis()->SetTitle("Events");
   f1_1Ratio->GetXaxis()->SetRangeUser(0.84,0.88);
   f1_1Ratio->SetMinimum(0.0);
-  f1_1Ratio->SetMaximum(800.0);
+  f1_1Ratio->SetMaximum(200.0);
   f1_1Ratio->Draw();         legend1a->AddEntry(f1_1Ratio,"f_{1}^{(1,Eff)}/f_{1}^{(1)}");
   f1_2Ratio->Draw("SAME");   legend1a->AddEntry(f1_2,"f_{1}^{(2,Eff)}/f_{1}^{(2)}");
   legend1a->Draw();
@@ -470,7 +490,7 @@ int StatStudyPlots()
   f2_11->GetXaxis()->SetTitle("< n_{2} >");
   f2_11->GetYaxis()->SetTitle("Events");
   f2_11->SetMinimum(0.0);
-  f2_11->SetMaximum(3000000.0);
+  f2_11->SetMaximum(1000000.0);
   f2_11->Draw();       legend2->AddEntry(f2_11,"f_{2}^{(11)}");
   f2_12->Draw("SAME"); legend2->AddEntry(f2_12,"f_{2}^{(12)}");
   f2_22->Draw("SAME"); legend2->AddEntry(f2_22,"f_{2}^{(22)}");
@@ -490,7 +510,7 @@ int StatStudyPlots()
    f2_11Ratio->GetXaxis()->SetTitle("< n_{2}^{Eff} >/< n_{2} >");
    f2_11Ratio->GetYaxis()->SetTitle("Events");
    f2_11Ratio->SetMinimum(0.0);
-   f2_11Ratio->SetMaximum(2500.0);
+   f2_11Ratio->SetMaximum(600.0);
    f2_11Ratio->GetXaxis()->SetRangeUser(0.7,0.8);
    f2_11Ratio->Draw();       legend2a->AddEntry(f2_11Ratio,"f_{2}^{(11,Eff)}/f_{2}^{(11)}");
    f2_12Ratio->Draw("SAME"); legend2a->AddEntry(f2_12Ratio,"f_{2}^{(12,Eff)}/f_{2}^{(12)}");
@@ -498,24 +518,24 @@ int StatStudyPlots()
    legend2a->Draw();
 
   canvas = canvasCollection->createCanvas(canvasNameBase+"R2",*cc1d);
-  TLegend * legend3 = canvasCollection->createLegend(0.20, 0.35, 0.45, 0.9, 0, 0.055);
+  TLegend * legend3 = canvasCollection->createLegend(0.20, 0.35, 0.35, 0.9, 0, 0.055);
   hc->setHistoProperties(r2_11,    *gc1d[0]);
   hc->setHistoProperties(r2_12,    *gc1d[1]);
   hc->setHistoProperties(r2_12,    *gc1d[2]);
   hc->setHistoProperties(r2_11Eff, *gc1d[3]);
   hc->setHistoProperties(r2_12Eff, *gc1d[4]);
   hc->setHistoProperties(r2_12Eff, *gc1d[5]);
-  r2_11->Fit("gaus");
-  r2_12->Fit("gaus");
-  r2_22->Fit("gaus");
-  r2_11Eff->Fit("gaus");
-  r2_12Eff->Fit("gaus");
-  r2_22Eff->Fit("gaus");
+//  r2_11->Fit("gaus");
+//  r2_12->Fit("gaus");
+//  r2_22->Fit("gaus");
+//  r2_11Eff->Fit("gaus");
+//  r2_12Eff->Fit("gaus");
+//  r2_22Eff->Fit("gaus");
   r2_11->GetXaxis()->SetTitle("r_{2}");
   r2_11->GetYaxis()->SetTitle("Events");
   r2_11->SetMinimum(0.0);
-  r2_11->SetMaximum(600.0);
-  r2_11->GetXaxis()->SetRangeUser(0.999,1.003);
+  r2_11->SetMaximum(300.0);
+  r2_11->GetXaxis()->SetRangeUser(0.0, 0.003);
 
   r2_11->Draw();       legend3->AddEntry(r2_11,"r_{2}^{(11)}");
   r2_12->Draw("SAME"); legend3->AddEntry(r2_12,"r_{2}^{(12)}");
@@ -526,18 +546,18 @@ int StatStudyPlots()
   legend3->Draw();
 
   canvas = canvasCollection->createCanvas(canvasNameBase+"R2Ratio",*cc1d);
-  TLegend * legend3a = canvasCollection->createLegend(0.20, 0.4, 0.45, 0.9, 0, 0.055);
+  TLegend * legend3a = canvasCollection->createLegend(0.20, 0.4, 0.35, 0.9, 0, 0.055);
   hc->setHistoProperties(r2_11Ratio,    *gc1d[0]);
   hc->setHistoProperties(r2_12Ratio,    *gc1d[1]);
   hc->setHistoProperties(r2_22Ratio,    *gc1d[2]);
+  r2_11Ratio->GetXaxis()->SetTitle("r_{2}^{Eff}/r_{2}");
+  r2_11Ratio->GetYaxis()->SetTitle("Events");
   r2_11Ratio->Fit("gaus");
   r2_12Ratio->Fit("gaus");
   r2_22Ratio->Fit("gaus");
-  r2_11Ratio->GetXaxis()->SetTitle("r_{2}");
-  r2_11Ratio->GetYaxis()->SetTitle("Events");
   r2_11Ratio->SetMinimum(0.0);
-  r2_11Ratio->SetMaximum(800.0);
-  r2_11Ratio->GetXaxis()->SetRangeUser(0.998,1.002);
+  r2_11Ratio->SetMaximum(60.0);
+  r2_11Ratio->GetXaxis()->SetRangeUser(0.8,1.2);
   r2_11Ratio->Draw();       legend3a->AddEntry(r2_11Ratio,"r_{2}^{(11,Eff)}/r_{2}^{(11)}");
   r2_12Ratio->Draw("SAME"); legend3a->AddEntry(r2_12Ratio,"r_{2}^{(12,Eff)}/r_{2}^{(12)}");
   r2_22Ratio->Draw("SAME"); legend3a->AddEntry(r2_22Ratio,"r_{2}^{(22),Eff}/r_{2}^{(22)}");
@@ -554,7 +574,7 @@ int StatStudyPlots()
   nudyn_12->GetXaxis()->SetTitle("#nu_{dyn}");
   nudyn_12->GetYaxis()->SetTitle("Events");
   nudyn_12->SetMinimum(0.0);
-  nudyn_12->SetMaximum(500.0);
+  nudyn_12->SetMaximum(140.0);
   nudyn_12->GetXaxis()->SetRangeUser(-0.01,0.01);
   nudyn_12->Draw();          legend5->AddEntry(nudyn_12,"#nu_{dyn}");
   nudyn_12Eff->Draw("SAME"); legend5->AddEntry(nudyn_12Eff,"#nu_{dyn}^{Eff}");
@@ -567,102 +587,162 @@ int StatStudyPlots()
   nudyn_12Ratio->GetXaxis()->SetTitle("#nu_{dyn}^{Eff}/#nu_{dyn}");
   nudyn_12Ratio->GetYaxis()->SetTitle("Events");
   nudyn_12Ratio->SetMinimum(0.0);
-  nudyn_12Ratio->SetMaximum(800.0);
-  nudyn_12Ratio->GetXaxis()->SetRangeUser(0.998,1.002);
+  nudyn_12Ratio->SetMaximum(20.0);
+  nudyn_12Ratio->GetXaxis()->SetRangeUser(0.5,1.5);
   nudyn_12Ratio->Draw(); legend6->AddEntry(nudyn_12Ratio,"#nu_{dyn}^{Eff}/#nu_{dyn}");
   legend6->Draw();
 
-  double f1_1_mean,  f1_2_mean;
-  double f1_1_sigma, f1_2_sigma;
-  double f2_11_mean,  f2_12_mean,  f2_22_mean;
-  double f2_11_sigma, f2_12_sigma, f2_22_sigma;
-  double r2_11_mean,  r2_12_mean,  r2_22_mean;
-  double r2_11_sigma, r2_12_sigma, r2_22_sigma;
-  double nudyn_12_mean, nudyn_12_sigma;
-
-  double f1_1Eff_mean,  f1_2Eff_mean;
-  double f1_1Eff_sigma, f1_2Eff_sigma;
-  double f2_11Eff_mean,  f2_12Eff_mean,  f2_22Eff_mean;
-  double f2_11Eff_sigma, f2_12Eff_sigma, f2_22Eff_sigma;
-  double r2_11Eff_mean,  r2_12Eff_mean,  r2_22Eff_mean;
-  double r2_11Eff_sigma, r2_12Eff_sigma, r2_22Eff_sigma;
-  double nudyn_12Eff_mean, nudyn_12Eff_sigma;
-
-  double f1_1Ratio_mean,  f1_2Ratio_mean;
-  double f1_1Ratio_sigma, f1_2Ratio_sigma;
-  double f2_11Ratio_mean,  f2_12Ratio_mean,  f2_22Ratio_mean;
-  double f2_11Ratio_sigma, f2_12Ratio_sigma, f2_22Ratio_sigma;
-  double r2_11Ratio_mean,  r2_12Ratio_mean,  r2_22Ratio_mean;
-  double r2_11Ratio_sigma, r2_12Ratio_sigma, r2_22Ratio_sigma;
-  double nudyn_12Ratio_mean, nudyn_12Ratio_sigma;
-
-  double nEvents = 4000;
-  double scaling = sqrt(nEvents);
-
-  extractGauss(f1_1,  f1_1_mean,  f1_1_sigma);  f1_1_sigma = f1_1_sigma/scaling;
-  extractGauss(f1_2,  f1_2_mean,  f1_2_sigma);  f1_2_sigma = f1_2_sigma/scaling;
-  extractGauss(f2_11, f2_11_mean, f2_11_sigma);  f2_11_sigma = f2_11_sigma/scaling;
-  extractGauss(f2_12, f2_12_mean, f2_12_sigma);  f2_12_sigma = f2_12_sigma/scaling;
-  extractGauss(f2_22, f2_22_mean, f2_22_sigma);  f2_22_sigma = f2_22_sigma/scaling;
-  extractGauss(r2_11, r2_11_mean, r2_11_sigma);  //r2_11_sigma = r2_11_sigma/scaling;
-  extractGauss(r2_12, r2_12_mean, r2_12_sigma);  //r2_12_sigma = r2_12_sigma/scaling;
-  extractGauss(r2_22, r2_22_mean, r2_22_sigma);  //r2_22_sigma = r2_22_sigma/scaling;
-  extractGauss(nudyn_12, nudyn_12_mean, nudyn_12_sigma);  //nudyn_12_sigma = nudyn_12_sigma/scaling;
-
-  extractGauss(f1_1Eff,  f1_1Eff_mean,  f1_1Eff_sigma);  f1_1Eff_sigma = f1_1Eff_sigma/scaling;
-  extractGauss(f1_2Eff,  f1_2Eff_mean,  f1_2Eff_sigma);  f1_2Eff_sigma = f1_2Eff_sigma/scaling;
-  extractGauss(f2_11Eff, f2_11Eff_mean, f2_11Eff_sigma);  f2_11Eff_sigma = f2_11Eff_sigma/scaling;
-  extractGauss(f2_12Eff, f2_12Eff_mean, f2_12Eff_sigma);  f2_12Eff_sigma = f2_12Eff_sigma/scaling;
-  extractGauss(f2_22Eff, f2_22Eff_mean, f2_22Eff_sigma);  f2_22Eff_sigma = f2_22Eff_sigma/scaling;
-  extractGauss(r2_11Eff, r2_11Eff_mean, r2_11Eff_sigma);  //r2_11Eff_sigma = r2_11Eff_sigma/scaling;
-  extractGauss(r2_12Eff, r2_12Eff_mean, r2_12Eff_sigma);  //r2_12Eff_sigma = r2_12Eff_sigma/scaling;
-  extractGauss(r2_22Eff, r2_22Eff_mean, r2_22Eff_sigma);  //r2_22Eff_sigma = r2_22Eff_sigma/scaling;
-  extractGauss(nudyn_12Eff, nudyn_12Eff_mean, nudyn_12Eff_sigma);  //nudyn_12Eff_sigma = nudyn_12Eff_sigma/scaling;
-
- extractGauss(f1_1Ratio,  f1_1Ratio_mean,  f1_1Ratio_sigma);
-  extractGauss(f1_2Ratio,  f1_2Ratio_mean,  f1_2Ratio_sigma);
-  extractGauss(f2_11Ratio, f2_11Ratio_mean, f2_11Ratio_sigma);
-  extractGauss(f2_12Ratio, f2_12Ratio_mean, f2_12Ratio_sigma);
-  extractGauss(f2_22Ratio, f2_22Ratio_mean, f2_22Ratio_sigma);
-  extractGauss(r2_11Ratio, r2_11Ratio_mean, r2_11Ratio_sigma);
-  extractGauss(r2_12Ratio, r2_12Ratio_mean, r2_12Ratio_sigma);
-  extractGauss(r2_22Ratio, r2_22Ratio_mean, r2_22Ratio_sigma);
-  extractGauss(nudyn_12Ratio, nudyn_12Ratio_mean, nudyn_12Ratio_sigma);
-
-  double predictedR2_11_mean, predictedR2_11_sigma;
-  double predictedR2_12_mean, predictedR2_12_sigma;
-  double predictedR2_22_mean, predictedR2_22_sigma;
-
-  double predictedF1_1Ratio_mean, predictedF1_1Ratio_sigma;
-  double predictedF1_2Ratio_mean, predictedF1_2Ratio_sigma;
-  double predictedF2_11Ratio_mean, predictedF2_11Ratio_sigma;
-  double predictedF2_12Ratio_mean, predictedF2_12Ratio_sigma;
-  double predictedF2_22Ratio_mean, predictedF2_22Ratio_sigma;
-  double predictedR2_11Ratio_mean, predictedR2_11Ratio_sigma;
-  double predictedR2_12Ratio_mean, predictedR2_12Ratio_sigma;
-  double predictedR2_22Ratio_mean, predictedR2_22Ratio_sigma;
-  double predictedNudyn_12Ratio_mean, predictedNudyn_12Ratio_sigma;
-
-  compareR2("r2_11", f2_11_mean, f2_11_sigma, f1_1_mean, f1_1_sigma, predictedR2_11_mean, predictedR2_11_sigma, r2_11_mean, r2_11_sigma);
-  compareR2("r2_22", f2_22_mean, f2_22_sigma, f1_2_mean, f1_2_sigma, predictedR2_12_mean, predictedR2_12_sigma, r2_22_mean, r2_22_sigma);
-  compareR2("r2_12", f2_12_mean, f2_12_sigma, f1_1_mean, f1_1_sigma, f1_2_mean, f1_2_sigma, predictedR2_22_mean, predictedR2_22_sigma, r2_12_mean, r2_12_sigma);
-
- // compareNudyn("nudyn_12", r2_11_mean, r2_11_sigma, r2_11_mean, r2_11_sigma, r2_11_mean, r2_11_sigma, nudyn_12_mean, nudyn_12_sigma);
+//===
+//  TH1* f1_1Ratio_vsSub     = hc->loadH1( inputFile, "f1_1Ratio_vsSub");
+//    TH1* f1_2Ratio_vsSub     = hc->loadH1( inputFile, "f1_2Ratio_vsSub");
+//    TH1* f2_11Ratio_vsSub    = hc->loadH1( inputFile, "f2_11Ratio_vsSub");
+//    TH1* f2_12Ratio_vsSub    = hc->loadH1( inputFile, "f2_12Ratio_vsSub");
+//    TH1* f2_22Ratio_vsSub    = hc->loadH1( inputFile, "f2_22Ratio_vsSub");
+//    TH1* r2_11Ratio_vsSub    = hc->loadH1( inputFile, "r2_11Ratio_vsSub");
+//    TH1* r2_12Ratio_vsSub    = hc->loadH1( inputFile, "r2_12Ratio_vsSub");
+//    TH1* r2_22Ratio_vsSub    = hc->loadH1( inputFile, "r2_22Ratio_vsSub");
+//    TH1* nudyn_12Ratio_vsSub = hc-
 
 
+  canvas = canvasCollection->createCanvas(canvasNameBase+"f1_1Ratio_vsSub_Zoom",*cc1d);
+   TLegend * legend7 = canvasCollection->createLegend(0.20, 0.7, 0.45, 0.9, 0, 0.055);
+   hc->setHistoProperties(f1_1Ratio_vsSub,    *gc1d[0]);
+   f1_1Ratio_vsSub->SetMinimum(0.86);
+   f1_1Ratio_vsSub->SetMaximum(0.88);
+  f1_1Ratio_vsSub->GetXaxis()->SetRangeUser(980.0,1010.0);
+   f1_1Ratio_vsSub->Draw(); legend7->AddEntry(f1_1Ratio_vsSub,"f_{1}^{Eff}/f_{1}");
+   legend7->Draw();
+//  canvas = canvasCollection->createCanvas(canvasNameBase+"f1_1Ratio_vsSub_zoom",*cc1d);
+//   TLegend * legend7a = canvasCollection->createLegend(0.20, 0.7, 0.45, 0.9, 0, 0.055);
+//   hc->setHistoProperties(f1_1Ratio_vsSub,    *gc1d[0]);
+//   f1_1Ratio_vsSub->SetMinimum(0.86);
+//   f1_1Ratio_vsSub->SetMaximum(0.88);
+//  f1_1Ratio_vsSub->GetXaxis()->SetRangeUser(3980.0, 4010.0);
+//   f1_1Ratio_vsSub->Draw(); legend7a->AddEntry(f1_1Ratio_vsSub,"f_{1}^{Eff}/f_{1}");
+//   legend7a->Draw();
 
-  compareRatio("f1_1", f1_1Eff_mean, f1_1Eff_sigma, f1_1_mean, f1_1_sigma, predictedF1_1Ratio_mean, predictedF1_1Ratio_sigma, f1_1Ratio_mean, f1_1Ratio_sigma);
-  compareRatio("f1_2", f1_2Eff_mean, f1_2Eff_sigma, f1_2_mean, f1_2_sigma, predictedF1_2Ratio_mean, predictedF1_2Ratio_sigma, f1_2Ratio_mean, f1_2Ratio_sigma);
+  canvas = canvasCollection->createCanvas(canvasNameBase+"r2_11_vsSub",*cc1d);
+   TLegend * legend7a = canvasCollection->createLegend(0.20, 0.7, 0.45, 0.9, 0, 0.055);
+   hc->setHistoProperties(r2_11_vsSub,    *gc1d[0]);
+//   r2_11_vsSub->SetMinimum(0.8);
+//   r2_11_vsSub->SetMaximum(1.2);
+   //r2_11Ratio_vsSub->GetXaxis()->SetRangeUser(3980.0, 4010.0);
+   r2_11_vsSub->Draw(); legend7a->AddEntry(r2_11_vsSub,"r_{2}^{11}");
+   legend7a->Draw();
 
-  compareRatio("f2_11", f2_11Eff_mean, f2_11Eff_sigma, f2_11_mean, f2_11_sigma, predictedF2_11Ratio_mean, predictedF2_11Ratio_sigma, f2_11Ratio_mean, f2_11Ratio_sigma);
-  compareRatio("f2_12", f2_12Eff_mean, f2_12Eff_sigma, f2_12_mean, f2_12_sigma, predictedF2_12Ratio_mean, predictedF2_12Ratio_sigma, f2_12Ratio_mean, f2_12Ratio_sigma);
-  compareRatio("f2_22", f2_22Eff_mean, f2_22Eff_sigma, f2_22_mean, f2_22_sigma, predictedF2_22Ratio_mean, predictedF2_22Ratio_sigma, f2_22Ratio_mean, f2_22Ratio_sigma);
 
-  compareRatio("r2_11", r2_11Eff_mean, r2_11Eff_sigma, r2_11_mean, r2_11_sigma, predictedR2_11Ratio_mean, predictedR2_11Ratio_sigma, r2_11Ratio_mean, r2_11Ratio_sigma);
-  compareRatio("r2_12", r2_12Eff_mean, r2_12Eff_sigma, r2_12_mean, r2_12_sigma, predictedR2_12Ratio_mean, predictedR2_11Ratio_sigma, r2_12Ratio_mean, r2_12Ratio_sigma);
-  compareRatio("r2_22", r2_22Eff_mean, r2_22Eff_sigma, r2_22_mean, r2_22_sigma, predictedR2_22Ratio_mean, predictedR2_11Ratio_sigma, r2_22Ratio_mean, r2_22Ratio_sigma);
-  compareRatio("nudyn_12", nudyn_12Eff_mean, nudyn_12Eff_sigma, nudyn_12_mean, nudyn_12_sigma, predictedNudyn_12Ratio_mean, predictedNudyn_12Ratio_sigma, nudyn_12Ratio_mean, nudyn_12Ratio_sigma);
+  canvas = canvasCollection->createCanvas(canvasNameBase+"r2_11Ratio_vsSub_zoom",*cc1d);
+   //canvas = canvasCollection->createCanvas(canvasNameBase+"r2_11Ratio_vsSub",*cc1d);
+   TLegend * legend8 = canvasCollection->createLegend(0.20, 0.7, 0.45, 0.9, 0, 0.055);
+   hc->setHistoProperties(r2_11Ratio_vsSub,    *gc1d[0]);
+   r2_11Ratio_vsSub->SetMinimum(0.8);
+   r2_11Ratio_vsSub->SetMaximum(1.2);
+   r2_11Ratio_vsSub->GetXaxis()->SetRangeUser(980.0, 1010.0);
+   r2_11Ratio_vsSub->Draw(); legend8->AddEntry(r2_11Ratio_vsSub,"r_{2}^{11,Eff}/r_{2}^{11}");
+   legend8->Draw();
 
+  canvas = canvasCollection->createCanvas(canvasNameBase+"nudyn_12Ratio_vsSub_zoom",*cc1d);
+   TLegend * legend9 = canvasCollection->createLegend(0.20, 0.7, 0.45, 0.9, 0, 0.055);
+   hc->setHistoProperties(nudyn_12Ratio_vsSub,    *gc1d[0]);
+   nudyn_12Ratio_vsSub->SetMinimum(0.5);
+   nudyn_12Ratio_vsSub->SetMaximum(1.5);
+   nudyn_12Ratio_vsSub->GetXaxis()->SetRangeUser(980.0, 1010.0);
+   nudyn_12Ratio_vsSub->Draw(); legend9->AddEntry(nudyn_12Ratio_vsSub,"#nu_{\rm Dyn}^{12,Eff}/#nu_{\rm Dyn}^{12}");
+   legend9->Draw();
+
+  //return 0;
+
+//  double f1_1_mean,  f1_2_mean;
+//  double f1_1_sigma, f1_2_sigma;
+//  double f2_11_mean,  f2_12_mean,  f2_22_mean;
+//  double f2_11_sigma, f2_12_sigma, f2_22_sigma;
+//  double r2_11_mean,  r2_12_mean,  r2_22_mean;
+//  double r2_11_sigma, r2_12_sigma, r2_22_sigma;
+//  double nudyn_12_mean, nudyn_12_sigma;
+//
+//  double f1_1Eff_mean,  f1_2Eff_mean;
+//  double f1_1Eff_sigma, f1_2Eff_sigma;
+//  double f2_11Eff_mean,  f2_12Eff_mean,  f2_22Eff_mean;
+//  double f2_11Eff_sigma, f2_12Eff_sigma, f2_22Eff_sigma;
+//  double r2_11Eff_mean,  r2_12Eff_mean,  r2_22Eff_mean;
+//  double r2_11Eff_sigma, r2_12Eff_sigma, r2_22Eff_sigma;
+//  double nudyn_12Eff_mean, nudyn_12Eff_sigma;
+//
+//  double f1_1Ratio_mean,  f1_2Ratio_mean;
+//  double f1_1Ratio_sigma, f1_2Ratio_sigma;
+//  double f2_11Ratio_mean,  f2_12Ratio_mean,  f2_22Ratio_mean;
+//  double f2_11Ratio_sigma, f2_12Ratio_sigma, f2_22Ratio_sigma;
+//  double r2_11Ratio_mean,  r2_12Ratio_mean,  r2_22Ratio_mean;
+//  double r2_11Ratio_sigma, r2_12Ratio_sigma, r2_22Ratio_sigma;
+//  double nudyn_12Ratio_mean, nudyn_12Ratio_sigma;
+//
+//  double nEvents = 4000;
+//  double scaling = sqrt(nEvents);
+//
+//  extractGauss(f1_1,  f1_1_mean,  f1_1_sigma);  f1_1_sigma = f1_1_sigma/scaling;
+//  extractGauss(f1_2,  f1_2_mean,  f1_2_sigma);  f1_2_sigma = f1_2_sigma/scaling;
+//  extractGauss(f2_11, f2_11_mean, f2_11_sigma);  f2_11_sigma = f2_11_sigma/scaling;
+//  extractGauss(f2_12, f2_12_mean, f2_12_sigma);  f2_12_sigma = f2_12_sigma/scaling;
+//  extractGauss(f2_22, f2_22_mean, f2_22_sigma);  f2_22_sigma = f2_22_sigma/scaling;
+//  extractGauss(r2_11, r2_11_mean, r2_11_sigma);  //r2_11_sigma = r2_11_sigma/scaling;
+//  extractGauss(r2_12, r2_12_mean, r2_12_sigma);  //r2_12_sigma = r2_12_sigma/scaling;
+//  extractGauss(r2_22, r2_22_mean, r2_22_sigma);  //r2_22_sigma = r2_22_sigma/scaling;
+//  extractGauss(nudyn_12, nudyn_12_mean, nudyn_12_sigma);  //nudyn_12_sigma = nudyn_12_sigma/scaling;
+//
+//  extractGauss(f1_1Eff,  f1_1Eff_mean,  f1_1Eff_sigma);  f1_1Eff_sigma = f1_1Eff_sigma/scaling;
+//  extractGauss(f1_2Eff,  f1_2Eff_mean,  f1_2Eff_sigma);  f1_2Eff_sigma = f1_2Eff_sigma/scaling;
+//  extractGauss(f2_11Eff, f2_11Eff_mean, f2_11Eff_sigma);  f2_11Eff_sigma = f2_11Eff_sigma/scaling;
+//  extractGauss(f2_12Eff, f2_12Eff_mean, f2_12Eff_sigma);  f2_12Eff_sigma = f2_12Eff_sigma/scaling;
+//  extractGauss(f2_22Eff, f2_22Eff_mean, f2_22Eff_sigma);  f2_22Eff_sigma = f2_22Eff_sigma/scaling;
+//  extractGauss(r2_11Eff, r2_11Eff_mean, r2_11Eff_sigma);  //r2_11Eff_sigma = r2_11Eff_sigma/scaling;
+//  extractGauss(r2_12Eff, r2_12Eff_mean, r2_12Eff_sigma);  //r2_12Eff_sigma = r2_12Eff_sigma/scaling;
+//  extractGauss(r2_22Eff, r2_22Eff_mean, r2_22Eff_sigma);  //r2_22Eff_sigma = r2_22Eff_sigma/scaling;
+//  extractGauss(nudyn_12Eff, nudyn_12Eff_mean, nudyn_12Eff_sigma);  //nudyn_12Eff_sigma = nudyn_12Eff_sigma/scaling;
+//
+// extractGauss(f1_1Ratio,  f1_1Ratio_mean,  f1_1Ratio_sigma);
+//  extractGauss(f1_2Ratio,  f1_2Ratio_mean,  f1_2Ratio_sigma);
+//  extractGauss(f2_11Ratio, f2_11Ratio_mean, f2_11Ratio_sigma);
+//  extractGauss(f2_12Ratio, f2_12Ratio_mean, f2_12Ratio_sigma);
+//  extractGauss(f2_22Ratio, f2_22Ratio_mean, f2_22Ratio_sigma);
+//  extractGauss(r2_11Ratio, r2_11Ratio_mean, r2_11Ratio_sigma);
+//  extractGauss(r2_12Ratio, r2_12Ratio_mean, r2_12Ratio_sigma);
+//  extractGauss(r2_22Ratio, r2_22Ratio_mean, r2_22Ratio_sigma);
+//  extractGauss(nudyn_12Ratio, nudyn_12Ratio_mean, nudyn_12Ratio_sigma);
+//
+//  double predictedR2_11_mean, predictedR2_11_sigma;
+//  double predictedR2_12_mean, predictedR2_12_sigma;
+//  double predictedR2_22_mean, predictedR2_22_sigma;
+//
+//  double predictedF1_1Ratio_mean, predictedF1_1Ratio_sigma;
+//  double predictedF1_2Ratio_mean, predictedF1_2Ratio_sigma;
+//  double predictedF2_11Ratio_mean, predictedF2_11Ratio_sigma;
+//  double predictedF2_12Ratio_mean, predictedF2_12Ratio_sigma;
+//  double predictedF2_22Ratio_mean, predictedF2_22Ratio_sigma;
+//  double predictedR2_11Ratio_mean, predictedR2_11Ratio_sigma;
+//  double predictedR2_12Ratio_mean, predictedR2_12Ratio_sigma;
+//  double predictedR2_22Ratio_mean, predictedR2_22Ratio_sigma;
+//  double predictedNudyn_12Ratio_mean, predictedNudyn_12Ratio_sigma;
+//
+//  compareR2("r2_11", f2_11_mean, f2_11_sigma, f1_1_mean, f1_1_sigma, predictedR2_11_mean, predictedR2_11_sigma, r2_11_mean, r2_11_sigma);
+//  compareR2("r2_22", f2_22_mean, f2_22_sigma, f1_2_mean, f1_2_sigma, predictedR2_12_mean, predictedR2_12_sigma, r2_22_mean, r2_22_sigma);
+//  compareR2("r2_12", f2_12_mean, f2_12_sigma, f1_1_mean, f1_1_sigma, f1_2_mean, f1_2_sigma, predictedR2_22_mean, predictedR2_22_sigma, r2_12_mean, r2_12_sigma);
+//
+// // compareNudyn("nudyn_12", r2_11_mean, r2_11_sigma, r2_11_mean, r2_11_sigma, r2_11_mean, r2_11_sigma, nudyn_12_mean, nudyn_12_sigma);
+//
+//
+//
+//  compareRatio("f1_1", f1_1Eff_mean, f1_1Eff_sigma, f1_1_mean, f1_1_sigma, predictedF1_1Ratio_mean, predictedF1_1Ratio_sigma, f1_1Ratio_mean, f1_1Ratio_sigma);
+//  compareRatio("f1_2", f1_2Eff_mean, f1_2Eff_sigma, f1_2_mean, f1_2_sigma, predictedF1_2Ratio_mean, predictedF1_2Ratio_sigma, f1_2Ratio_mean, f1_2Ratio_sigma);
+//
+//  compareRatio("f2_11", f2_11Eff_mean, f2_11Eff_sigma, f2_11_mean, f2_11_sigma, predictedF2_11Ratio_mean, predictedF2_11Ratio_sigma, f2_11Ratio_mean, f2_11Ratio_sigma);
+//  compareRatio("f2_12", f2_12Eff_mean, f2_12Eff_sigma, f2_12_mean, f2_12_sigma, predictedF2_12Ratio_mean, predictedF2_12Ratio_sigma, f2_12Ratio_mean, f2_12Ratio_sigma);
+//  compareRatio("f2_22", f2_22Eff_mean, f2_22Eff_sigma, f2_22_mean, f2_22_sigma, predictedF2_22Ratio_mean, predictedF2_22Ratio_sigma, f2_22Ratio_mean, f2_22Ratio_sigma);
+//
+//  compareRatio("r2_11", r2_11Eff_mean, r2_11Eff_sigma, r2_11_mean, r2_11_sigma, predictedR2_11Ratio_mean, predictedR2_11Ratio_sigma, r2_11Ratio_mean, r2_11Ratio_sigma);
+//  compareRatio("r2_12", r2_12Eff_mean, r2_12Eff_sigma, r2_12_mean, r2_12_sigma, predictedR2_12Ratio_mean, predictedR2_11Ratio_sigma, r2_12Ratio_mean, r2_12Ratio_sigma);
+//  compareRatio("r2_22", r2_22Eff_mean, r2_22Eff_sigma, r2_22_mean, r2_22_sigma, predictedR2_22Ratio_mean, predictedR2_11Ratio_sigma, r2_22Ratio_mean, r2_22Ratio_sigma);
+//  compareRatio("nudyn_12", nudyn_12Eff_mean, nudyn_12Eff_sigma, nudyn_12_mean, nudyn_12_sigma, predictedNudyn_12Ratio_mean, predictedNudyn_12Ratio_sigma, nudyn_12Ratio_mean, nudyn_12Ratio_sigma);
+//
 
 
   canvasCollection->printAllCanvas(outputPath);

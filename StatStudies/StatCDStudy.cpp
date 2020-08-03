@@ -206,13 +206,20 @@ void fillMeanErrStd(TH1 * h, int n)
   cout << "  typicalError:" << typicalError << endl;
   cout << "   errorOnMean:" << errorOnMean << endl;
   cout << "           std:" << std << endl;
-  h->SetBinContent(n-2,mean); h->SetBinError(n-2,typicalError);
-  h->SetBinContent(n-1,mean); h->SetBinError(n-1,errorOnMean);
-  h->SetBinContent(n,  mean); h->SetBinError(n,  std);
+  h->SetBinContent(n+1,mean); h->SetBinError(n+1,typicalError);
+  h->SetBinContent(n+2,mean); h->SetBinError(n+2,errorOnMean);
+  h->SetBinContent(n+3,mean); h->SetBinError(n+3,  std);
 
 }
 
-
+void fillHist(TH1 * source, TH1 * target, int n)
+{
+for (int i=1; i<=n; i++)
+  {
+  double v  = source->GetBinContent(i);
+  target->Fill(v);
+  }
+}
 
 int StatCDStudy()
 {
@@ -256,21 +263,21 @@ int StatCDStudy()
 
 
   long nEvents = 10000;
-  int nSubSamples = 4000;
+  int nSubSamples = 1000;
 
-  // Set 1
-//  double nPlusAvg = 100;
-//   double nMinusAvg = 100;
-//   double nPlusPlusAvg = 20;
-//   double nMinusMinusAvg = 20;
-//   double nPlusMinusAvg = 60;
+  // Set 3
+  double nPlusAvg = 100;
+   double nMinusAvg = 100;
+   double nPlusPlusAvg = 20;
+   double nMinusMinusAvg = 20;
+   double nPlusMinusAvg = 60;
 
   // Set 2
-  double nPlusAvg = 10;
-   double nMinusAvg = 10;
-   double nPlusPlusAvg = 2;
-   double nMinusMinusAvg = 2;
-   double nPlusMinusAvg = 6;
+//  double nPlusAvg = 10;
+//   double nMinusAvg = 10;
+//   double nPlusPlusAvg = 2;
+//   double nMinusMinusAvg = 2;
+//   double nPlusMinusAvg = 6;
 
   double plusEfficiency  = 0.87;
   double minusEfficiency = 0.85;
@@ -289,17 +296,17 @@ int StatCDStudy()
   double f2_12_Mean = nPlusAvg*nMinusAvg  + nPlusMinusAvg;
   double f2_22_Mean = nMinusAvg*nMinusAvg + 2.0*nMinusMinusAvg;
 
-  double f1_min = 50;
-  double f1_max = 300;
+  double f1_min = 0;
+  double f1_max = 400;
   int nBins = f1_max - f1_min;
   double f2_min = f1_min*f1_min;
   double f2_max = f1_max*f1_max;
   int    nBins2 = (f2_max - f2_min)/4.0;
 
-  TString inputPath = "/Users/claudeapruneau/Documents/GitHub/run/";
-  TString outputPath = "/Users/claudeapruneau/Documents/GitHub/run/";
+  TString inputPath = "/Users/claudeapruneau/Documents/GitHub/run/StatStudy/";
+  TString outputPath = "/Users/claudeapruneau/Documents/GitHub/run/StatStudy/";
   TString baseName  = "output";
-  TString outputFileName = "StatStudyNew.root";
+  TString outputFileName = "StatStudySet4.root";
 
   HistogramCollection * hc = new HistogramCollection("Collection",100);
 
@@ -310,9 +317,9 @@ int StatCDStudy()
   TH1* f2_12    = hc->createHistogram("f2_12",   nBins2, f2_min, f2_max, "<n_{2}^{(12)}>", "Counts");
   TH1* f2_22    = hc->createHistogram("f2_22",   nBins2, f2_min, f2_max, "<n_{2}^{(22)}>", "Counts");
   nBins = 1000;
-  TH1* r2_11    = hc->createHistogram("r2_11",   nBins, 0.99,  1.01,    "<r_{2}^{(11)}>", "Counts");
-  TH1* r2_12    = hc->createHistogram("r2_12",   nBins, 0.99,  1.01,    "<r_{2}^{(12)}>", "Counts");
-  TH1* r2_22    = hc->createHistogram("r2_22",   nBins, 0.99,  1.01,    "<r_{2}^{(22)}>", "Counts");
+  TH1* r2_11    = hc->createHistogram("r2_11",   nBins, -0.02,  0.02,    "<r_{2}^{(11)}>", "Counts");
+  TH1* r2_12    = hc->createHistogram("r2_12",   nBins, -0.02,  0.02,     "<r_{2}^{(12)}>", "Counts");
+  TH1* r2_22    = hc->createHistogram("r2_22",   nBins, -0.02,  0.02,     "<r_{2}^{(22)}>", "Counts");
   TH1* nudyn_12 = hc->createHistogram("nudyn_12",nBins, -0.02,   0.02,    "<#nu_{dyn}^{(12)}>", "Counts");
 
   nBins = 150;
@@ -322,9 +329,9 @@ int StatCDStudy()
   TH1* f2_12Eff    = hc->createHistogram("f2_12Eff",   nBins2, f2_min, f2_max, "<n_{2}^{(12)}>", "Counts");
   TH1* f2_22Eff    = hc->createHistogram("f2_22Eff",   nBins2, f2_min, f2_max, "<n_{2}^{(22)}>", "Counts");
   nBins = 1000;
-  TH1* r2_11Eff    = hc->createHistogram("r2_11Eff",   nBins, 0.99,  1.01,    "<r_{2}^{(11)}>", "Counts");
-  TH1* r2_12Eff    = hc->createHistogram("r2_12Eff",   nBins, 0.99,  1.01,    "<r_{2}^{(12)}>", "Counts");
-  TH1* r2_22Eff    = hc->createHistogram("r2_22Eff",   nBins, 0.99,  1.01,    "<r_{2}^{(22)}>", "Counts");
+  TH1* r2_11Eff    = hc->createHistogram("r2_11Eff",   nBins, -0.02,  0.02,    "<r_{2}^{(11)}>", "Counts");
+  TH1* r2_12Eff    = hc->createHistogram("r2_12Eff",   nBins, -0.02,  0.02,    "<r_{2}^{(12)}>", "Counts");
+  TH1* r2_22Eff    = hc->createHistogram("r2_22Eff",   nBins, -0.02,  0.02,     "<r_{2}^{(22)}>", "Counts");
   TH1* nudyn_12Eff = hc->createHistogram("nudyn_12Eff",nBins, -0.02,   0.02,  "<#nu_{dyn}^{(12)}>", "Counts");
 
   nBins = 1000;
@@ -334,10 +341,10 @@ int StatCDStudy()
   TH1* f2_12Ratio    = hc->createHistogram("f2_12Ratio",   nBins,0.5,   1.00, "<n_{2}^{(12,eff)}>/<n_{2}^{(12)}>", "Counts");
   TH1* f2_22Ratio    = hc->createHistogram("f2_22Ratio",   nBins,0.5,   1.00, "<n_{2}^{(22,eff)}>/<n_{2}^{(22)}>", "Counts");
   nBins = 1000;
-  TH1* r2_11Ratio    = hc->createHistogram("r2_11Ratio",   nBins,0.99,  1.01, "<r_{2}^{(11,eff)}>/<r_{2}^{(11)}>", "Counts");
-  TH1* r2_12Ratio    = hc->createHistogram("r2_12Ratio",   nBins,0.99,  1.01, "<r_{2}^{(12,eff)}>/<r_{2}^{(12)}>", "Counts");
-  TH1* r2_22Ratio    = hc->createHistogram("r2_22Ratio",   nBins,0.99,  1.01, "<r_{2}^{(22,eff)}>/<r_{2}^{(22)}>", "Counts");
-  TH1* nudyn_12Ratio = hc->createHistogram("nudyn_12Ratio",nBins,0.99,  1.01, "<#nu_{dyn}^{(12,eff)}>/<#nu_{dyn}^{(12)}>", "Counts");
+  TH1* r2_11Ratio    = hc->createHistogram("r2_11Ratio",   nBins,0.00,  2.00, "<r_{2}^{(11,eff)}>/<r_{2}^{(11)}>", "Counts");
+  TH1* r2_12Ratio    = hc->createHistogram("r2_12Ratio",   nBins,0.00,  2.00, "<r_{2}^{(12,eff)}>/<r_{2}^{(12)}>", "Counts");
+  TH1* r2_22Ratio    = hc->createHistogram("r2_22Ratio",   nBins,0.00,  2.00, "<r_{2}^{(22,eff)}>/<r_{2}^{(22)}>", "Counts");
+  TH1* nudyn_12Ratio = hc->createHistogram("nudyn_12Ratio",nBins,0.00,  2.00, "<#nu_{dyn}^{(12,eff)}>/<#nu_{dyn}^{(12)}>", "Counts");
 
   ///
   nBins = nSubSamples+3;
@@ -384,15 +391,22 @@ int StatCDStudy()
       nPlusPlus   = int( gRandom->Gaus(nPlusPlusAvg,sqrt(nPlusPlusAvg))    );
       nPlusMinus  = int( gRandom->Gaus(nPlusMinusAvg,sqrt(nPlusMinusAvg))  );
       nMinusMinus = int( gRandom->Gaus(nMinusMinusAvg,sqrt(nMinusMinusAvg)));
-      //    cout << " nPlus:" << nPlus << endl;
-
       nPlus += 2.0*nPlusPlus;
       nPlus += nPlusMinus;
       nMinus += 2.0*nMinusMinus;
       nMinus += nPlusMinus;
-
       nPlusEff   = binomialLoss(nPlus,plusEfficiency);
       nMinusEff  = binomialLoss(nMinus,minusEfficiency);
+      f1_1_vsSub->Fill(sub, nPlus);
+      f1_2_vsSub->Fill(sub, nMinus);
+      f2_11_vsSub->Fill(sub, nPlus*(nPlus-1));
+      f2_12_vsSub->Fill(sub, nPlus*nMinus);
+      f2_22_vsSub->Fill(sub, nMinus*(nMinus-1));
+      f1_1Eff_vsSub->Fill(sub, nPlusEff);
+      f1_2Eff_vsSub->Fill(sub, nMinusEff);
+      f2_11Eff_vsSub->Fill(sub, nPlusEff*(nPlusEff-1));
+      f2_12Eff_vsSub->Fill(sub, nPlusEff*nMinusEff);
+      f2_22Eff_vsSub->Fill(sub, nMinusEff*(nMinusEff-1));
 
       f1_1->Fill(nPlus);
       f1_2->Fill(nMinus);
@@ -400,39 +414,24 @@ int StatCDStudy()
       f2_12->Fill(nPlus*nMinus);
       f2_22->Fill(nMinus*(nMinus-1));
 
-      f1_1_vsSub->Fill(sub, nPlus);
-      f1_2_vsSub->Fill(sub, nMinus);
-      f2_11_vsSub->Fill(sub, nPlus*(nPlus-1));
-      f2_12_vsSub->Fill(sub, nPlus*nMinus);
-      f2_22_vsSub->Fill(sub, nMinus*(nMinus-1));
-
       f1_1Eff->Fill(nPlusEff);
       f1_2Eff->Fill(nMinusEff);
       f2_11Eff->Fill(nPlusEff*(nPlusEff-1));
       f2_12Eff->Fill(nPlusEff*nMinusEff);
       f2_22Eff->Fill(nMinusEff*(nMinusEff-1));
-
-      f1_1Eff_vsSub->Fill(sub, nPlusEff);
-      f1_2Eff_vsSub->Fill(sub, nMinusEff);
-      f2_11Eff_vsSub->Fill(sub, nPlusEff*(nPlusEff-1));
-      f2_12Eff_vsSub->Fill(sub, nPlusEff*nMinusEff);
-      f2_22Eff_vsSub->Fill(sub, nMinusEff*(nMinusEff-1));
-
-
       }
-
     sub += 1.0;
     }
 
   calculateR2(f1_1_vsSub,     f2_11_vsSub,  r2_11_vsSub);
   calculateR2(f1_1_vsSub,     f1_2_vsSub,   f2_12_vsSub, r2_12_vsSub);
   calculateR2(f1_2_vsSub,     f2_22_vsSub,  r2_22_vsSub);
-  calculateNuDyn(r2_11_vsSub, r2_22_vsSub,  r2_12_vsSub, nudyn_12_vsSub);
+  calculateNuDyn(r2_11_vsSub, r2_12_vsSub,  r2_22_vsSub,   nudyn_12_vsSub);
 
   calculateR2(f1_1Eff_vsSub,     f2_11Eff_vsSub,  r2_11Eff_vsSub);
   calculateR2(f1_1Eff_vsSub,     f1_2Eff_vsSub,   f2_12Eff_vsSub, r2_12Eff_vsSub);
   calculateR2(f1_2Eff_vsSub,     f2_22Eff_vsSub,  r2_22Eff_vsSub);
-  calculateNuDyn(r2_11Eff_vsSub, r2_22Eff_vsSub,  r2_12Eff_vsSub, nudyn_12Eff_vsSub);
+  calculateNuDyn(r2_11Eff_vsSub, r2_12Eff_vsSub,  r2_22Eff_vsSub,  nudyn_12Eff_vsSub);
 
   calculateRatio(f1_1Eff_vsSub, f1_1_vsSub,  f1_1Ratio_vsSub);
   calculateRatio(f1_2Eff_vsSub, f1_2_vsSub,  f1_2Ratio_vsSub);
@@ -444,65 +443,37 @@ int StatCDStudy()
   calculateRatio(r2_22Eff_vsSub,r2_22_vsSub, r2_22Ratio_vsSub);
   calculateRatio(nudyn_12Eff_vsSub, nudyn_12_vsSub, nudyn_12Ratio_vsSub);
 
-  for (int iSub=1; iSub<=nSubSamples; iSub++)
-    {
-    double f1_1_value  = f1_1_vsSub->GetBinContent(iSub);
-    double f1_2_value  = f1_2_vsSub->GetBinContent(iSub);
-    double f2_11_value = f2_11_vsSub->GetBinContent(iSub);
-    double f2_12_value = f2_12_vsSub->GetBinContent(iSub);
-    double f2_22_value = f2_22_vsSub->GetBinContent(iSub);
 
-    if (f1_1_value <= 0.0 || f1_2_value <= 0.0) continue;
 
-    double r2_11_value = f2_11_value/(f1_1_value*f1_1_value);
-    double r2_12_value = f2_12_value/(f1_1_value*f1_2_value);
-    double r2_22_value = f2_22_value/(f1_2_value*f1_2_value);
-    double nudyn_value = r2_11_value  + r2_22_value - 2.0*r2_12_value;
+//  fillHist(f1_1_vsSub,  f1_1, nSubSamples);
+//  fillHist(f1_2_vsSub,  f1_2, nSubSamples);
+//  fillHist(f2_11_vsSub, f2_11, nSubSamples);
+//  fillHist(f2_12_vsSub, f2_12, nSubSamples);
+//  fillHist(f2_22_vsSub, f2_22, nSubSamples);
+  fillHist(r2_11_vsSub, r2_11, nSubSamples);
+  fillHist(r2_12_vsSub, r2_12, nSubSamples);
+  fillHist(r2_22_vsSub, r2_22, nSubSamples);
+  fillHist(nudyn_12_vsSub, nudyn_12, nSubSamples);
 
-    r2_11->Fill(r2_11_value);
-    r2_12->Fill(r2_12_value);
-    r2_22->Fill(r2_22_value);
-    nudyn_12->Fill(nudyn_value);
+//  fillHist(f1_1Eff_vsSub,  f1_1Eff, nSubSamples);
+//  fillHist(f1_2Eff_vsSub,  f1_2Eff, nSubSamples);
+//  fillHist(f2_11Eff_vsSub, f2_11Eff, nSubSamples);
+//  fillHist(f2_12Eff_vsSub, f2_12Eff, nSubSamples);
+//  fillHist(f2_22Eff_vsSub, f2_22Eff, nSubSamples);
+  fillHist(r2_11Eff_vsSub, r2_11Eff, nSubSamples);
+  fillHist(r2_12Eff_vsSub, r2_12Eff, nSubSamples);
+  fillHist(r2_22Eff_vsSub, r2_22Eff, nSubSamples);
+  fillHist(nudyn_12Eff_vsSub, nudyn_12Eff, nSubSamples);
 
-    double f1_1Eff_value  = f1_1Eff_vsSub->GetBinContent(iSub);
-    double f1_2Eff_value  = f1_2Eff_vsSub->GetBinContent(iSub);
-    double f2_11Eff_value = f2_11Eff_vsSub->GetBinContent(iSub);
-    double f2_12Eff_value = f2_12Eff_vsSub->GetBinContent(iSub);
-    double f2_22Eff_value = f2_22Eff_vsSub->GetBinContent(iSub);
-
-    if (f1_1Eff_value <= 0.0 || f1_2Eff_value <= 0.0) continue;
-
-    double r2_11Eff_value = f2_11Eff_value/(f1_1Eff_value*f1_1Eff_value);
-    double r2_12Eff_value = f2_12Eff_value/(f1_1Eff_value*f1_2Eff_value);
-    double r2_22Eff_value = f2_22Eff_value/(f1_2Eff_value*f1_2Eff_value);
-    double nudynEff_value = r2_11Eff_value  + r2_22Eff_value - 2.0*r2_12Eff_value;
-
-    r2_11Eff->Fill(r2_11Eff_value);
-    r2_12Eff->Fill(r2_12Eff_value);
-    r2_22Eff->Fill(r2_22Eff_value);
-    nudyn_12Eff->Fill(nudynEff_value);
-
-    double f1_1Ratio_value  = f1_1_value!=0 ? f1_1Eff_value/f1_1_value : 0.0;
-    double f1_2Ratio_value  = f1_2_value!=0 ? f1_2Eff_value/f1_2_value : 0.0;
-    double f2_11Ratio_value = f2_11_value!=0 ? f2_11Eff_value/f2_11_value : 0.0;
-    double f2_12Ratio_value = f2_12_value!=0 ? f2_12Eff_value/f2_12_value : 0.0;
-    double f2_22Ratio_value = f2_22_value!=0 ? f2_22Eff_value/f2_22_value : 0.0;
-    double r2_11Ratio_value = r2_11_value!=0 ? r2_11Eff_value/r2_11_value : 0.0;
-    double r2_12Ratio_value = r2_12_value!=0 ? r2_12Eff_value/r2_12_value : 0.0;
-    double r2_22Ratio_value = r2_22_value!=0 ? r2_22Eff_value/r2_22_value : 0.0;
-    double nudyn_12Ratio_value = nudyn_value!=0 ? nudynEff_value/nudyn_value : 0.0;
-
-    f1_1Ratio->Fill(f1_1Ratio_value);
-    f1_2Ratio->Fill(f1_2Ratio_value);
-    f2_11Ratio->Fill(f2_11Ratio_value);
-    f2_12Ratio->Fill(f2_12Ratio_value);
-    f2_22Ratio->Fill(f2_22Ratio_value);
-    r2_11Ratio->Fill(r2_11Ratio_value);
-    r2_12Ratio->Fill(r2_12Ratio_value);
-    r2_22Ratio->Fill(r2_22Ratio_value);
-    nudyn_12Ratio->Fill(r2_22Ratio_value);
-    }
-
+  fillHist(f1_1Ratio_vsSub,   f1_1Ratio, nSubSamples);
+  fillHist(f1_2Ratio_vsSub,   f1_2Ratio, nSubSamples);
+  fillHist(f2_11Ratio_vsSub, f2_11Ratio, nSubSamples);
+  fillHist(f2_12Ratio_vsSub,  f2_12Ratio, nSubSamples);
+  fillHist(f2_22Ratio_vsSub,  f2_22Ratio, nSubSamples);
+  fillHist(r2_11Ratio_vsSub,  r2_11Ratio, nSubSamples);
+  fillHist(r2_12Ratio_vsSub,  r2_12Ratio, nSubSamples);
+  fillHist(r2_22Ratio_vsSub,  r2_22Ratio, nSubSamples);
+  fillHist(nudyn_12Ratio_vsSub, nudyn_12Ratio, nSubSamples);
 
   fillMeanErrStd(f1_1_vsSub,nSubSamples);
   fillMeanErrStd(f1_2_vsSub,nSubSamples);
@@ -534,7 +505,7 @@ int StatCDStudy()
   fillMeanErrStd(r2_12Ratio_vsSub,nSubSamples);
   fillMeanErrStd(nudyn_12Ratio_vsSub,nSubSamples);
 
-  TFile * outputFile = new TFile(outputFileName,"RECREATE");
+  TFile * outputFile = new TFile(outputPath+outputFileName,"RECREATE");
 
   f1_1->Write();
   f1_2->Write();

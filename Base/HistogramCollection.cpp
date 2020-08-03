@@ -3189,3 +3189,632 @@ void HistogramCollection::resetDoubleArray(int n, double * array, double value)
     *ptr = value;
     }
 }
+
+
+int HistogramCollection::index2(int i1, int i2)
+{
+  int v;
+  switch (i1)
+    {
+      case 0:
+      switch (i2)
+        {
+          case 0: v = 0; break;
+          case 1: v = 1; break;
+          case 2: v = 2; break;
+          case 3: v = 3; break;
+          default: v = -1; break;
+        }
+      break;
+      case 1:
+      switch (i2)
+        {
+          case 1: v = 4; break;
+          case 2: v = 5; break;
+          case 3: v = 6; break;
+          default: v = -1; break;
+        }
+      break;
+      case 2:
+      switch (i2)
+        {
+          case 2: v = 7; break;
+          case 3: v = 8; break;
+          default: v = -1; break;
+        }
+      break;
+      case 3:
+      switch (i2)
+        {
+          case 3: v = 9; break;
+          default: v = -1; break;
+        }
+      break;
+      default: v = -1; break;
+    }
+  if (v<0) cout << "<E> HistogramCollection::index2(int i1, int i2) Combination i1:" << i1 << " i2:" << i2 << " is not allowed." << endl;
+  return v;
+}
+
+int HistogramCollection::index3(int i1, int i2, int i3)
+{
+  int v;
+  switch (i1)
+    {
+      case 0:
+      switch (i2)
+        {
+          case 0:
+          switch (i3)
+            {
+              case 0: v = 0; break;
+              case 1: v = 1; break;
+              case 2: v = 2; break;
+              case 3: v = 3; break;
+              default: v = -1; break;
+            }
+          break;
+          case 1:
+          switch (i3)
+            {
+              case 1: v = 4; break;
+              case 2: v = 5; break;
+              case 3: v = 6; break;
+              default: v = -1; break;
+            }
+          break;
+          case 2:
+          switch (i3)
+            {
+              case 2: v = 7; break;
+              case 3: v = 8; break;
+              default: v = -1; break;
+            }
+          break;
+          case 3:
+          switch (i3)
+            {
+              case 3: v = 9; break;
+              default: v = -1; break;
+            }
+          break;
+          default: v = -1; break;
+        }
+      break;
+      case 1:
+      switch (i2)
+        {
+          case 1:
+          switch (i3)
+            {
+              case 1: v = 10; break;
+              case 2: v = 11; break;
+              case 3: v = 12; break;
+              default: v = -1; break;
+            }
+          break;
+          case 2:
+          switch (i3)
+            {
+              case 2: v = 13; break;
+              case 3: v = 14; break;
+              default: v = -1; break;
+            }
+          break;
+          case 3:
+          switch (i3)
+            {
+              case 3: v = 15; break;
+              default: v = -1; break;
+            }
+          break;
+          default: v = -1; break;
+        }
+      break;
+      case 2:
+      switch (i2)
+        {
+          case 2:
+          switch (i3)
+            {
+              case 2: v = 16; break;
+              case 3: v = 17; break;
+              default: v = -1; break;
+            }
+          break;
+          case 3:
+          switch (i3)
+            {
+              case 3: v = 18; break;
+              default: v = -1; break;
+            }
+          break;
+          default: v = -1; break;
+        }
+      break;
+      case 3:
+      switch (i2)
+        {
+          case 3:
+          switch (i3)
+            {
+              case 3: v = 19; break;
+              default: v = -1; break;
+            }
+          break;
+          default: v = -1; break;
+        }
+      break;
+      default: v = -1; break;
+    }
+  if (v<0) cout << "<E> HistogramCollection::index3(int i1, int i2, int i3) Combination i1:" << i1 << " i2:" << i2 <<  " i3:" << i3 << " is not allowed." << endl;
+  return v;
+}
+
+int HistogramCollection::index4(int i1, int i2, int i3, int i4)
+{
+  int v;
+  switch (i1)
+    {
+      case 0:
+      switch (i2)
+        {
+          case 0:
+          switch (i3)
+            {
+              case 0:
+              switch (i4)
+                {
+                  case 0: v = 0; break;
+                  case 1: v = 1; break;
+                  case 2: v = 2; break;
+                  case 3: v = 3; break;
+                  default: v = -1; break;
+                }
+              break;
+              case 1:
+              switch (i4)
+                {
+                  case 1: v = 4; break;
+                  case 2: v = 5; break;
+                  case 3: v = 6; break;
+                  default: v = -1; break;
+                }
+              break;
+              case 2:
+              switch (i4)
+                {
+                  case 2: v = 7; break;
+                  case 3: v = 8; break;
+                  default: v = -1; break;
+                }
+              break;
+              case 3:
+              switch (i4)
+                {
+                  case 3: v = 9; break;
+                  default: v = -1; break;
+                }
+              break;
+              default: v = -1; break;
+            }
+          break;
+          case 1:
+          switch (i3)
+            {
+              case 1:
+              switch (i4)
+                {
+                  case 1: v = 10; break;
+                  case 2: v = 11; break;
+                  case 3: v = 12; break;
+                  default: v = -1; break;
+                }
+              break;
+              case 2:
+              switch (i4)
+                {
+                  case 2: v = 13; break;
+                  case 3: v = 14; break;
+                  default: v = -1; break;
+                }
+              break;
+              case 3:
+              switch (i4)
+                {
+                  case 3: v = 15; break;
+                  default: v = -1; break;
+                }
+              break;
+              default: v = -1; break;
+            }
+          break;
+          case 2:
+          switch (i3)
+            {
+              case 2:
+              switch (i4)
+                {
+                  case 2: v = 16; break;
+                  case 3: v = 17; break;
+                  default: v = -1; break;
+                }
+              break;
+              case 3:
+              switch (i4)
+                {
+                  case 3: v = 18; break;
+                  default: v = -1; break;
+                }
+              break;
+              default: v = -1; break;
+            }
+          break;
+          case 3:
+          switch (i3)
+            {
+              case 3:
+              switch (i4)
+                {
+                  case 3: v = 19; break;
+                  default: v = -1; break;
+                }
+              break;
+              default: v = -1; break;
+            }
+          break;
+          default: v = -1; break;
+        }
+      break;
+      case 1:
+      switch (i2)
+        {
+          case 1:
+          switch (i3)
+            {
+              case 1:
+              switch (i4)
+                {
+                  case 1: v = 20; break;
+                  case 2: v = 21; break;
+                  case 3: v = 22; break;
+                  default: v = -1; break;
+                }
+              break;
+              case 2:
+              switch (i4)
+                {
+                  case 2: v = 23; break;
+                  case 3: v = 24; break;
+                  default: v = -1; break;
+                }
+              break;
+              case 3:
+              switch (i4)
+                {
+                  case 3: v = 25; break;
+                  default: v = -1; break;
+                }
+              break;
+              default: v = -1; break;
+            }
+          break;
+          case 2:
+          switch (i3)
+            {
+              case 2:
+              switch (i4)
+                {
+                  case 2: v = 26; break;
+                  case 3: v = 27; break;
+                  default: v = -1; break;
+                }
+              break;
+              case 3:
+              switch (i4)
+                {
+                  case 3: v = 28; break;
+                  default: v = -1; break;
+                }
+              break;
+              default: v = -1; break;
+            }
+          break;
+          case 3:
+          switch (i3)
+            {
+              case 3:
+              switch (i4)
+                {
+                  case 3: v = 29; break;
+                  default: v = -1; break;
+                }
+              break;
+              default: v = -1; break;
+            }
+          break;
+          default: v = -1; break;
+        }
+      break;
+      case 2:
+      switch (i2)
+        {
+          case 2:
+          switch (i3)
+            {
+              case 2:
+              switch (i4)
+                {
+                  case 2: v = 30; break;
+                  case 3: v = 31; break;
+                  default: v = -1; break;
+                }
+              break;
+              case 3:
+              switch (i4)
+                {
+                  case 3: v = 32; break;
+                  default: v = -1; break;
+                }
+              break;
+              default: v = -1; break;
+            }
+          break;
+          case 3:
+          switch (i3)
+            {
+              case 3:
+              switch (i4)
+                {
+                  case 3: v = 33; break;
+                  default: v = -1; break;
+                }
+              break;
+              default: v = -1; break;
+            }
+          break;
+          default: v = -1; break;
+        }
+      break;
+      case 3:
+      switch (i2)
+        {
+          case 3:
+          switch (i3)
+            {
+              case 3:
+              switch (i4)
+                {
+                  case 3: v = 34; break;
+                  default: v = -1; break;
+                }
+              break;
+              default: v = -1; break;
+            }
+          break;
+          default: v = -1; break;
+        }
+      break;
+      default: v = -1; break;
+    }
+  if (v<0) cout << "<E> HistogramCollection::index3(int i1, int i2, int i3, int i4) Combination i1:" << i1 << " i2:" << i2 <<  " i3:" << i3 <<  " i4:" << i4 << " is not allowed." << endl;
+  return v;
+}
+
+void HistogramCollection::calculateF2R2(TH1* h_f1_1, TH1* h_f1_2, TH1* h_f2_12, TH1* h_F2_12, TH1* h_R2_12)
+{
+  double f1_1, ef1_1, f1_2, ef1_2;
+  double f2_12, ef2_12;
+  double F2_12, eF2_12, R2_12, eR2_12;
+  int nBins = h_f1_1->GetNbinsX();
+  for (int iBin = 1; iBin <=nBins; iBin++)
+    {
+    f1_1   = h_f1_1->GetBinContent(iBin);   ef1_1 =   h_f1_1->GetBinError(iBin);
+    f1_2   = h_f1_2->GetBinContent(iBin);   ef1_2  =  h_f1_2->GetBinError(iBin);
+    f2_12  = h_f2_12->GetBinContent(iBin);  ef2_12 =  h_f2_12->GetBinError(iBin);
+    calculateF2R2(f1_1,ef1_1,f1_2,ef1_2,f2_12,ef2_12, F2_12,eF2_12,R2_12,eR2_12);
+    h_F2_12->SetBinContent(iBin, F2_12);
+    h_F2_12->SetBinError(iBin,   eF2_12);
+    h_R2_12->SetBinContent(iBin, R2_12);
+    h_R2_12->SetBinError(iBin,   eR2_12);
+    }
+}
+
+void HistogramCollection::calculateNudyn(TH1* h_R2_11, TH1* h_R2_12, TH1* h_R2_22, TH1* h_nudyn_12)
+{
+  double R2_11, eR2_11, R2_12, eR2_12, R2_22, eR2_22, nudyn, enudyn;
+  int nBins = h_R2_11->GetNbinsX();
+  for (int iBin = 1; iBin <=nBins; iBin++)
+    {
+    R2_11   = h_R2_11->GetBinContent(iBin);  eR2_11  =  h_R2_11->GetBinError(iBin);
+    R2_12   = h_R2_12->GetBinContent(iBin);  eR2_12  =  h_R2_12->GetBinError(iBin);
+    R2_22   = h_R2_22->GetBinContent(iBin);  eR2_22  =  h_R2_22->GetBinError(iBin);
+    calculateNudyn(R2_11, eR2_11, R2_12, eR2_12, R2_22, eR2_22, nudyn, enudyn);
+    h_nudyn_12->SetBinContent(iBin, nudyn);
+    h_nudyn_12->SetBinError(iBin,   enudyn);
+    }
+}
+
+
+void HistogramCollection::calculateF3R3(TH1* h_f1_1, TH1* h_f1_2, TH1* h_f1_3,
+                                       TH1* h_f2_12, TH1* h_f2_13, TH1* h_f2_23,
+                                       TH1* h_f3_123,
+                                       TH1* h_F3_123, TH1* h_R3_123)
+{
+  double f1_1, ef1_1, f1_2, ef1_2, f1_3, ef1_3;
+  double f2_12, ef2_12, f2_13, ef2_13, f2_23, ef2_23;
+  double f3_123, ef3_123;
+  double F3_123, eF3_123, R3_123, eR3_123;
+  int nBins = h_f1_1->GetNbinsX();
+  for (int iBin = 1; iBin <=nBins; iBin++)
+    {
+    f1_1   = h_f1_1->GetBinContent(iBin);    ef1_1 =   h_f1_1->GetBinError(iBin);
+    f1_2   = h_f1_2->GetBinContent(iBin);    ef1_2  =  h_f1_2->GetBinError(iBin);
+    f1_3   = h_f1_3->GetBinContent(iBin);    ef1_3  =  h_f1_2->GetBinError(iBin);
+    f2_12  = h_f2_12->GetBinContent(iBin);   ef2_12 =  h_f2_12->GetBinError(iBin);
+    f2_13  = h_f2_13->GetBinContent(iBin);   ef2_13 =  h_f2_13->GetBinError(iBin);
+    f2_23  = h_f2_23->GetBinContent(iBin);   ef2_23 =  h_f2_23->GetBinError(iBin);
+    f3_123 = h_f3_123->GetBinContent(iBin);  ef3_123 =  h_f3_123->GetBinError(iBin);
+    calculateF3R3(f1_1,ef1_1,f1_2,ef1_2,f1_3,ef1_3,
+                  f2_12,ef2_12,f2_13,ef2_13,f2_23,ef2_23,
+                  f3_123,ef3_123,
+                  F3_123,eF3_123,R3_123,eR3_123);
+    h_F3_123->SetBinContent(iBin, F3_123);
+    h_F3_123->SetBinError(iBin,   eF3_123);
+    h_R3_123->SetBinContent(iBin, R3_123);
+    h_R3_123->SetBinError(iBin,   eR3_123);
+    }
+}
+
+void HistogramCollection::calculateF4R4(TH1* h_f1_1, TH1* h_f1_2, TH1* h_f1_3, TH1* h_f1_4,
+                                       TH1* h_f2_12, TH1* h_f2_13, TH1* h_f2_14, TH1* h_f2_23, TH1* h_f2_24, TH1* h_f2_34,
+                                       TH1* h_f3_123, TH1* h_f3_124, TH1* h_f3_134, TH1* h_f3_234,
+                                       TH1* h_f4_1234,
+                                       TH1* h_F4_1234, TH1* h_R4_1234)
+{
+  double f1_1, ef1_1, f1_2, ef1_2, f1_3, ef1_3, f1_4, ef1_4;
+  double f2_12, ef2_12, f2_13, ef2_13, f2_14, ef2_14, f2_23, ef2_23, f2_24, ef2_24, f2_34, ef2_34;
+  double f3_123, ef3_123, f3_124, ef3_124, f3_134, ef3_134, f3_234, ef3_234;
+  double f4_1234, ef4_1234;
+  double F4_1234, eF4_1234, R4_1234, eR4_1234;
+  int nBins = h_f1_1->GetNbinsX();
+  for (int iBin = 1; iBin <=nBins; iBin++)
+    {
+    f1_1    = h_f1_1->GetBinContent(iBin);   ef1_1   =  h_f1_1->GetBinError(iBin);
+    f1_2    = h_f1_2->GetBinContent(iBin);   ef1_2   =  h_f1_2->GetBinError(iBin);
+    f1_3    = h_f1_3->GetBinContent(iBin);   ef1_3   =  h_f1_3->GetBinError(iBin);
+    f1_4    = h_f1_4->GetBinContent(iBin);   ef1_4   =  h_f1_4->GetBinError(iBin);
+    f2_12   = h_f2_12->GetBinContent(iBin);  ef2_12  =  h_f2_12->GetBinError(iBin);
+    f2_13   = h_f2_13->GetBinContent(iBin);  ef2_13  =  h_f2_13->GetBinError(iBin);
+    f2_14   = h_f2_14->GetBinContent(iBin);  ef2_14  =  h_f2_14->GetBinError(iBin);
+    f2_23   = h_f2_23->GetBinContent(iBin);  ef2_23  =  h_f2_23->GetBinError(iBin);
+    f2_24   = h_f2_24->GetBinContent(iBin);  ef2_24  =  h_f2_24->GetBinError(iBin);
+    f2_34   = h_f2_34->GetBinContent(iBin);  ef2_34  =  h_f2_34->GetBinError(iBin);
+    f3_123  = h_f3_123->GetBinContent(iBin); ef3_123 =  h_f3_123->GetBinError(iBin);
+    f3_124  = h_f3_124->GetBinContent(iBin); ef3_124 =  h_f3_124->GetBinError(iBin);
+    f3_134  = h_f3_134->GetBinContent(iBin); ef3_134 =  h_f3_134->GetBinError(iBin);
+    f3_234  = h_f3_234->GetBinContent(iBin); ef3_234 =  h_f3_234->GetBinError(iBin);
+    f4_1234 = h_f4_1234->GetBinContent(iBin);ef4_1234 =  h_f4_1234->GetBinError(iBin);
+    calculateF4R4(f1_1,ef1_1,f1_2,ef1_2,f1_3,ef1_3,f1_4,ef1_4,
+                  f2_12,ef2_12, f2_13,ef2_13, f2_14,ef2_14, f2_23,ef2_23, f2_24,ef2_24, f2_34,ef2_34,
+                  f3_123,ef3_123, f3_124,ef3_124, f3_134,ef3_134, f3_234,ef3_234,
+                  f4_1234,ef4_1234,
+                  F4_1234,eF4_1234,R4_1234,eR4_1234);
+    h_F4_1234->SetBinContent(iBin, F4_1234);
+    h_F4_1234->SetBinError(iBin,   eF4_1234);
+    h_R4_1234->SetBinContent(iBin, R4_1234);
+    h_R4_1234->SetBinError(iBin,   eR4_1234);
+    }
+}
+
+
+void HistogramCollection::calculateF2R2(double f1_1,double ef1_1,double f1_2,double ef1_2, double f2_12,double ef2_12,
+                                       double & F2_12,double & eF2_12, double &  R2_12,double & eR2_12)
+{
+  // calculate  F2_12 = f2_12 - f1_1*f1_2  and R2 = f2/f1_1/f1_2 - 1
+  // errors are calculated assuming there are no correlations
+
+  double ref1_1, ref1_2, ref2_12;
+  if (f1_1<1E-20) f1_1 = 1E-20;
+  if (f1_2<1E-20) f1_2 = 1E-20;
+  F2_12     = f2_12 - f1_1*f1_2;
+  ref1_1    = ef1_1/f1_1;
+  ref1_2    = ef1_2/f1_2;
+  ref2_12   = ef2_12/f2_12;
+  eF2_12    = sqrt(f1_1*f1_2*f1_1*f1_2*(ref1_1*ref1_1 + ref1_2*ref1_2) + eF2_12*eF2_12);
+  R2_12     = F2_12/(f1_1*f1_2);
+  eR2_12    = R2_12*sqrt(ref1_1*ref1_1 + ref1_2*ref1_2 + ref2_12*ref2_12);
+}
+
+
+void HistogramCollection::calculateF3R3(double f1_1,double ef1_1,double f1_2,double ef1_2, double f1_3,double ef1_3,
+                                       double f2_12,double ef2_12,double f2_13,double ef2_13,double f2_23,double ef2_23,
+                                       double f3_123, double ef3_123,
+                                       double & F3_123,double & eF3_123, double &  R3_123,double & eR3_123)
+{
+  // calculate  F2_12 = f2_12 - f1_1*f1_2  and R2 = f2/f1_1/f1_2 - 1
+  // errors are calculated assuming there are no correlations
+
+  double ref1_1, ref1_2, ref1_3, ref2_12, ref2_13, ref2_23, reF3_123;
+  if (f1_1<1E-20) f1_1 = 1E-20;
+  if (f1_2<1E-20) f1_2 = 1E-20;
+  if (f1_3<1E-20) f1_3 = 1E-20;
+  F3_123    = f3_123 - f2_12*f1_3 - f2_13*f1_2 - f2_23*f1_1 + 2.0*f1_1*f1_2*f1_3;
+  ref1_1    = ef1_1/f1_1;
+  ref1_2    = ef1_2/f1_2;
+  ref1_3    = ef1_3/f1_3;
+  ref2_12   = ef2_12/f2_12;
+  ref2_13   = ef2_13/f2_13;
+  ref2_23   = ef2_23/f2_23;
+  eF3_123   = ef3_123*ef3_123;
+  eF3_123   += f2_12*f2_12*f1_3*f1_3*(ref2_12*ref2_12 + ref1_3*ref1_3);
+  eF3_123   += f2_13*f2_13*f1_2*f1_2*(ref2_13*ref2_13 + ref1_2*ref1_2);
+  eF3_123   += f2_23*f2_23*f1_1*f1_1*(ref2_23*ref2_23 + ref1_1*ref1_1);
+  eF3_123   += 4.0*f1_1*f1_1*f1_2*f1_2*f1_3*f1_3*sqrt(ref1_1*ref1_1+ref1_2*ref1_2+ref1_3*ref1_3);
+  eF3_123   = sqrt(eF3_123);
+  reF3_123   = eF3_123/F3_123;
+  R3_123     = F3_123/(f1_1*f1_2*f1_3);
+  eR3_123    = R3_123*reF3_123;
+}
+
+void HistogramCollection::calculateF4R4(double f1_1,double ef1_1,double f1_2,double ef1_2, double f1_3,double ef1_3, double f1_4,double ef1_4,
+                                        double f2_12,double ef2_12,double f2_13,double ef2_13,double f2_14,double ef2_14,double f2_23,double ef2_23,
+                                        double f2_24,double ef2_24,double f2_34,double ef2_34,
+                                        double f3_123, double ef3_123,double f3_124, double ef3_124, double f3_134, double ef3_134,double f3_234, double ef3_234,
+                                        double f4_1234, double ef4_1234,
+                                        double &F4_1234,double &eF4_1234, double &  R4_1234,double & eR4_1234)
+{
+  // calculate  F2_12 = f2_12 - f1_1*f1_2  and R2 = f2/f1_1/f1_2 - 1
+  // errors are calculated assuming there are no correlations
+
+  double ref1_1,  ref1_2,  ref1_3,  ref1_4;
+  double ref2_12, ref2_13, ref2_14, ref2_23, ref2_24, ref2_34;
+  double ref3_123, ref3_124, ref3_134, ref3_234;
+  double ref4_1234;
+  double reF4_1234;
+
+  if (f1_1<1E-20) f1_1 = 1E-20;
+  if (f1_2<1E-20) f1_2 = 1E-20;
+  if (f1_3<1E-20) f1_3 = 1E-20;
+  if (f1_4<1E-20) f1_4 = 1E-20;
+  F4_1234   = f4_1234 - f3_123*f1_4 - f3_124*f1_3 - f3_134*f1_2 - f3_234*f1_1
+  - 2.0*f2_12*f2_34 - 2.0*f2_13*f2_24 - 2.0*f2_14*f2_23
+  + 4.0*f2_12*f1_3*f1_4 + 4.0*f2_13*f1_2*f1_4 + 4.0*f2_14*f1_2*f1_3
+  - 6.0*f1_1*f1_2*f1_3*f1_4;
+  ref1_1    = ef1_1/f1_1;
+  ref1_2    = ef1_2/f1_2;
+  ref1_3    = ef1_3/f1_3;
+  ref1_4    = ef1_3/f1_4;
+  ref2_12   = ef2_12/f2_12;
+  ref2_13   = ef2_13/f2_13;
+  ref2_14   = ef2_14/f2_14;
+  ref2_23   = ef2_23/f2_23;
+  ref2_24   = ef2_24/f2_24;
+  ref2_34   = ef2_34/f2_34;
+  ref3_123  = ef3_123/f3_123;
+  ref3_124  = ef3_124/f3_124;
+  ref3_134  = ef3_134/f3_134;
+  ref3_234  = ef3_234/f3_234;
+  ref4_1234 = ef4_1234/f4_1234;
+
+  eF4_1234   = ef4_1234*ef4_1234
+  + f3_123*f3_123*f1_4*f1_4*(ref3_123*ref3_123 + ef1_4*ef1_4)
+  + f3_124*f3_124*f1_3*f1_3*(ref3_124*ref3_124 + ref1_3*ref1_3)
+  + f3_134*f3_134*f1_2*f1_2*(ref3_134*ref3_134 + ref1_2*ref1_2)
+  + f3_234*f3_234*f1_1*f1_1*(ref3_234*ref3_234 + ref1_1*ref1_1)
+  + 16.0*f2_12*f2_12*f2_34*f2_34*(ref2_12*ref2_12 + ef2_34*ef2_34)
+  + 16.0*f2_13*f2_13*f2_24*f2_24*(ref2_13*ref2_13 + ef2_24*ef2_24)
+  + 16.0*f2_14*f2_14*f2_23*f2_23*(ref2_14*ref2_14 + ef2_23*ef2_23);
+  // neglect singles term for now...
+  eF4_1234   = sqrt(eF4_1234);
+  reF4_1234  = eF4_1234/F4_1234;
+  R4_1234    = F4_1234/(f1_1*f1_2*f1_3*f1_4);
+  eR4_1234   = R4_1234*reF4_1234;
+}
+
+void HistogramCollection::calculateNudyn(double r2_11,double er2_11,double r2_12,double er2_12,double r2_22,double er2_22,double & nudyn,double & enudyn)
+{
+  nudyn = r2_11 + r2_22 - 2.0*r2_12;
+  enudyn = sqrt(er2_11*er2_11 + er2_22*er2_22 + 4.0*er2_12*er2_12);
+}
+

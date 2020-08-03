@@ -12,7 +12,7 @@ NuDynHistos::NuDynHistos(const TString & name,
                          AnalysisConfiguration * configuration,
                          LogLevel  debugLevel)
 :
-Histograms(name,configuration,100,debugLevel)
+Histograms(name,configuration,300,debugLevel)
 {
   initialize();
 }
@@ -22,7 +22,7 @@ NuDynHistos::NuDynHistos(TFile * inputFile,
                          AnalysisConfiguration * configuration,
                          LogLevel  debugLevel)
 :
-Histograms(name,configuration,100,debugLevel)
+Histograms(name,configuration,300,debugLevel)
 {
   loadHistograms(inputFile);
 }
@@ -49,34 +49,162 @@ void NuDynHistos::createHistograms()
   // h_r2_12 = <n1(n2-1)>/<n1><n2>
   // h_nudyn_12 = h_r2_11 + h_r2_22 -2*h_r2_12
 
-  // Min bias
+  int nPart =4;
+  h_f1 = new TProfile * [4];
+  h_f2 = new TProfile * [10];
+  h_f3 = new TProfile * [20];
+  h_f4 = new TProfile * [35];
+
+  if (ac.nuDynVsMult)
+    {
+    h_f1_vsMult = new TProfile * [4];
+    h_f2_vsMult = new TProfile * [10];
+    h_f3_vsMult = new TProfile * [20];
+    h_f4_vsMult = new TProfile * [35];
+    }
+
+  if (ac.nuDynVsCent)
+    {
+    h_f1_vsCent = new TProfile * [4];
+    h_f2_vsCent = new TProfile * [10];
+    h_f3_vsCent = new TProfile * [20];
+    h_f4_vsCent = new TProfile * [35];
+    }
+  TString histName;
+  TString histTitle;
+
   h_events   = createHistogram(bn+TString("Nevents"),1,ac.min_mult,  ac.max_mult,  "mult","n_{Events}");
-  h_f1_1     = createProfile(bn+TString("f1_1"),     1,ac.min_mult,  ac.max_mult,  "mult","<n_{1}>");
-  h_f1_2     = createProfile(bn+TString("f1_2"),     1,ac.min_mult,  ac.max_mult,  "mult","<n_{2}>");
-  h_f2_11    = createProfile(bn+TString("f2_11"),    1,ac.min_mult,  ac.max_mult,  "mult","<n_{1}(n_{1}-1)>");
-  h_f2_22    = createProfile(bn+TString("f2_22"),    1,ac.min_mult,  ac.max_mult,  "mult","<n_{2}(n_{2}-1)>");
-  h_f2_12    = createProfile(bn+TString("f2_12"),    1,ac.min_mult,  ac.max_mult,  "mult","<n_{1}n_{2}>");
+  if (ac.nuDynVsMult) h_events_vsMult = createHistogram(bn+TString("Nevents_vsMult"),ac.nBins_mult,ac.min_mult,  ac.max_mult,  "mult","n_{Events}");
+  if (ac.nuDynVsCent) h_events_vsCent = createHistogram(bn+TString("Nevents_vsCent"),ac.nBins_cent,ac.min_cent,  ac.max_cent,  "cent","n_{Events}");
 
-   if (ac.nuDynVsMult)
-   {
-   h_events_vsMult   = createHistogram(bn+TString("Nevents_vsMult"),ac.nBins_mult,ac.min_mult,  ac.max_mult,  "mult","n_{Events}");
-   h_f1_1_vsMult     = createProfile(bn+TString("f1_1_vsMult"),   ac.nBins_mult,ac.min_mult,  ac.max_mult,  "mult","<n_{1}>");
-   h_f1_2_vsMult     = createProfile(bn+TString("f1_2_vsMult"),   ac.nBins_mult,ac.min_mult,  ac.max_mult,  "mult","<n_{2}>");
-   h_f2_11_vsMult    = createProfile(bn+TString("f2_11_vsMult"),  ac.nBins_mult,ac.min_mult,  ac.max_mult,  "mult","<n_{1}(n_{1}-1)>");
-   h_f2_22_vsMult    = createProfile(bn+TString("f2_22_vsMult"),  ac.nBins_mult,ac.min_mult,  ac.max_mult,  "mult","<n_{2}(n_{2}-1)>");
-   h_f2_12_vsMult    = createProfile(bn+TString("f2_12_vsMult"),  ac.nBins_mult,ac.min_mult,  ac.max_mult,  "mult","<n_{1}n_{2}>");
-   }
+//  TString baseName = bn + "f1_";
+//  TString baseTitle = "f_{1}";
 
-   if (ac.nuDynVsCent)
-   {
-   h_events_vsCent   = createHistogram(bn+TString("Nevents_vsCent"),ac.nBins_cent,ac.min_cent,  ac.max_cent,  "cent","n_{Events}");
-   h_f1_1_vsCent     = createProfile(bn+TString("f1_1_vsCent"),   ac.nBins_cent,ac.min_cent,  ac.max_cent,  "cent","<n_{1}>");
-   h_f1_2_vsCent     = createProfile(bn+TString("f1_2_vsCent"),   ac.nBins_cent,ac.min_cent,  ac.max_cent,  "cent","<n_{2}>");
-   h_f2_11_vsCent    = createProfile(bn+TString("f2_11_vsCent"),  ac.nBins_cent,ac.min_cent,  ac.max_cent,  "cent","<n_{1}(n_{1}-1)>");
-   h_f2_22_vsCent    = createProfile(bn+TString("f2_22_vsCent"),  ac.nBins_cent,ac.min_cent,  ac.max_cent,  "cent","<n_{2}(n_{2}-1)>");
-   h_f2_12_vsCent    = createProfile(bn+TString("f2_12_vsCent"),  ac.nBins_cent,ac.min_cent,  ac.max_cent,  "cent","<n_{1}n_{2}>");
-   }
+  for (int i1=0; i1<nPart; i1++)
+    {
+    histName  = bn + "f1_";
+    histName  += i1;
+    histTitle = "f_{1}";
+    histTitle += "^{";
+    histTitle += i1;
+    histTitle += "}";
+    h_f1[i1]  = createProfile(histName, 1,ac.min_mult,ac.max_mult, "mult", histTitle);
+    if (ac.nuDynVsMult)
+      {
+      histName = bn + "f1_";
+      histName += i1;
+      histName += "_vsMult";
+      h_f1_vsMult[i1]  = createProfile(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "mult",  histTitle);
+      }
+    if (ac.nuDynVsCent)
+      {
+      histName = bn + "f1_";
+      histName += i1;
+      histName += "_vsCent";
+      h_f1_vsCent[i1]  = createProfile(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "cent",  histTitle);
+      }
+    for (int i2=i1; i2<nPart; i2++)
+      {
+      int index12 = index2(i1,i2);
+      histName  = bn + "f2_";
+      histName  += i1;
+      histName  += i2;
+      histTitle = "f_{2}";
+      histTitle += "^{";
+      histTitle += i1;
+      histTitle += i2;
+      histTitle += "}";
+      h_f2[index12]  = createProfile(histName, 1,ac.min_mult,ac.max_mult,"mult",histTitle);
+      if (ac.nuDynVsMult)
+        {
+        histName  = bn + "f2_";
+        histName  += i1;
+        histName  += i2;
+        histName += "_vsMult";
+        h_f2_vsMult[index12]  = createProfile(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "mult",histTitle);
+        }
+      if (ac.nuDynVsCent)
+        {
+        histName  = bn + "f2_";
+        histName  += i1;
+        histName  += i2;
+        histName += "_vsCent";
+        h_f2_vsCent[index12]  = createProfile(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "cent",histTitle);
+        }
+      for (int i3=i2; i3<nPart; i3++)
+        {
+        int index123 = index3(i1,i2,i3);
 
+        histName  = bn + "f3_";
+        histName  += i1;
+        histName  += i2;
+        histName  += i3;
+        histTitle = "f_{3}";
+        histTitle += "^{";
+        histTitle += i1;
+        histTitle += i2;
+        histTitle += i3;
+        histTitle += "}";
+        h_f3[index123]  = createProfile(histName, 1,ac.min_mult,ac.max_mult,"mult",histTitle);
+        if (ac.nuDynVsMult)
+          {
+          histName  = bn + "f3_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName += "_vsMult";
+          h_f3_vsMult[index123]  = createProfile(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "mult",histTitle);
+          }
+        if (ac.nuDynVsCent)
+          {
+          histName  = bn + "f3_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName += "_vsCent";
+          h_f3_vsCent[index123]  = createProfile(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "cent",histTitle);
+          }
+        for (int i4=i3; i4<nPart; i4++)
+          {
+          int index1234 = index4(i1,i2,i3,i4);
+
+          histName  = bn + "f4_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName  += i4;
+          histTitle = "f_{4}";
+          histTitle += "^{";
+          histTitle += i1;
+          histTitle += i2;
+          histTitle += i3;
+          histTitle += i4;
+          histTitle += "}";
+          h_f4[index1234]  = createProfile(histName, 1,ac.min_mult,ac.max_mult,"mult",histTitle);
+          if (ac.nuDynVsMult)
+            {
+            histName  = bn + "f4_";
+            histName  += i1;
+            histName  += i2;
+            histName  += i3;
+            histName  += i4;
+            histName += "_vsMult";
+            h_f4_vsMult[index1234]  = createProfile(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "mult",histTitle);
+            }
+          if (ac.nuDynVsCent)
+            {
+            histName  = bn + "f4_";
+            histName  += i1;
+            histName  += i2;
+            histName  += i3;
+            histName  += i4;
+            histName += "_vsCent";
+            h_f4_vsCent[index1234]  = createProfile(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "cent",histTitle);
+            }
+          }
+        }
+      }
+    }
 
 }
 
@@ -90,72 +218,211 @@ void NuDynHistos::loadHistograms(TFile * inputFile)
     }
   AnalysisConfiguration & ac = *getConfiguration();
   TString  bn = getHistoBaseName();
-  h_events    = loadH1(inputFile,bn+TString("Nevents"));
-   h_f1_1     = loadProfile(inputFile,bn+TString("f1_1"));
-   h_f1_2     = loadProfile(inputFile,bn+TString("f1_2"));
-   h_f2_11    = loadProfile(inputFile,bn+TString("f2_11"));
-   h_f2_22    = loadProfile(inputFile,bn+TString("f2_22"));
-   h_f2_12    = loadProfile(inputFile,bn+TString("f2_12"));
+  TString histName;
+  TString histTitle;
+
+  h_events   = loadH1(inputFile,bn+TString("Nevents"));
+  if (ac.nuDynVsMult) h_events_vsMult = loadH1(inputFile,bn+TString("Nevents_vsMult"),ac.nBins_mult,ac.min_mult,  ac.max_mult,  "mult","n_{Events}");
+  if (ac.nuDynVsCent) h_events_vsCent = loadH1(inputFile,bn+TString("Nevents_vsCent"),ac.nBins_cent,ac.min_cent,  ac.max_cent,  "cent","n_{Events}");
+
+//  baseName = bn + "f1_";
+//  baseTitle = "f_{1}";
+
+  int nPart =4;
+  h_f1 = new TProfile * [4];
+  h_f2 = new TProfile * [10];
+  h_f3 = new TProfile * [20];
+  h_f4 = new TProfile * [25];
 
   if (ac.nuDynVsMult)
-    {
-    h_events_vsMult   = loadH1(inputFile,bn+TString("Nevents_vsMult"));
-    h_f1_1_vsMult     = loadProfile(inputFile,bn+TString("f1_1_vsMult"));
-    h_f1_2_vsMult     = loadProfile(inputFile,bn+TString("f1_2_vsMult"));
-    h_f2_11_vsMult    = loadProfile(inputFile,bn+TString("f2_11_vsMult"));
-    h_f2_22_vsMult    = loadProfile(inputFile,bn+TString("f2_22_vsMult"));
-    h_f2_12_vsMult    = loadProfile(inputFile,bn+TString("f2_12_vsMult"));
-    }
+     {
+     h_f1_vsMult = new TProfile * [4];
+     h_f2_vsMult = new TProfile * [10];
+     h_f3_vsMult = new TProfile * [20];
+     h_f4_vsMult = new TProfile * [35];
+     }
 
-  if (ac.nuDynVsCent)
+   if (ac.nuDynVsCent)
+     {
+     h_f1_vsCent = new TProfile * [4];
+     h_f2_vsCent = new TProfile * [10];
+     h_f3_vsCent = new TProfile * [20];
+     h_f4_vsCent = new TProfile * [35];
+     }
+
+
+  for (int i1=0; i1<nPart; i1++)
     {
-    h_events_vsCent   = loadH1(inputFile,bn+TString("Nevents_vsCent"));
-    h_f1_1_vsCent     = loadProfile(inputFile,bn+TString("f1_1_vsCent"));
-    h_f1_2_vsCent     = loadProfile(inputFile,bn+TString("f1_2_vsCent"));
-    h_f2_11_vsCent    = loadProfile(inputFile,bn+TString("f2_11_vsCent"));
-    h_f2_22_vsCent    = loadProfile(inputFile,bn+TString("f2_22_vsCent"));
-    h_f2_12_vsCent    = loadProfile(inputFile,bn+TString("f2_12_vsCent"));
+    histName  = bn + "f1_";
+    histName  += i1;
+    histTitle = "f_{1}";
+    histTitle += "^{";
+    histTitle += i1;
+    histTitle += "}";
+    h_f1[i1]  = loadProfile(inputFile,histName);
+    if (ac.nuDynVsMult)
+      {
+      histName = bn + "f1_";
+      histName += i1;
+      histName += "_vsMult";
+      h_f1_vsMult[i1]  = loadProfile(inputFile,histName);
+      }
+    if (ac.nuDynVsCent)
+      {
+      histName = bn + "f1_";
+      histName += i1;
+      histName += "_vsCent";
+      h_f1_vsMult[i1]  = loadProfile(inputFile,histName);
+      }
+    for (int i2=i1; i2<nPart; i2++)
+      {
+      int index12 = index2(i1,i2);
+      histName  = bn + "f2_";
+      histName  += i1;
+      histName  += i2;
+      histTitle = "f_{2}";
+      histTitle += "^{";
+      histTitle += i1;
+      histTitle += i2;
+      histTitle += "}";
+      h_f2[index12]  = loadProfile(inputFile,histName);
+      if (ac.nuDynVsMult)
+        {
+        histName  = bn + "f2_";
+        histName  += i1;
+        histName  += i2;
+        histName += "_vsMult";
+        h_f2_vsMult[index12]  = loadProfile(inputFile,histName);
+        }
+      if (ac.nuDynVsCent)
+        {
+        histName  = bn + "f2_";
+        histName  += i1;
+        histName  += i2;
+        histName += "_vsCent";
+        h_f2_vsMult[index12]  = loadProfile(inputFile,histName);
+        }
+      for (int i3=i2; i3<nPart; i3++)
+        {
+         int index123 = index3(i1,i2,i3);
+        histName  = bn + "f3_";
+        histName  += i1;
+        histName  += i2;
+        histName  += i3;
+        histTitle = "f_{3}";
+        histTitle += "^{";
+        histTitle += i1;
+        histTitle += i2;
+        histTitle += i3;
+        histTitle += "}";
+        h_f3[index123]  = loadProfile(inputFile,histName);
+        if (ac.nuDynVsMult)
+          {
+          histName  = bn + "f3_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName += "_vsMult";
+          h_f3_vsMult[index123]  = loadProfile(inputFile,histName);
+          }
+        if (ac.nuDynVsCent)
+          {
+          histName  = bn + "f3_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName += "_vsCent";
+          h_f3_vsMult[index123]  = loadProfile(inputFile,histName);
+          }
+        for (int i4=i3; i4<nPart; i4++)
+          {
+          int index1234 = index4(i1,i2,i3,i4);
+          histName  = bn + "f4_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName  += i4;
+          histTitle = "f_{4}";
+          histTitle += "^{";
+          histTitle += i1;
+          histTitle += i2;
+          histTitle += i3;
+          histTitle += i4;
+          histTitle += "}";
+          h_f4[index1234]  = loadProfile(inputFile,histName);
+          if (ac.nuDynVsMult)
+            {
+            histName  = bn + "f3_";
+            histName  += i1;
+            histName  += i2;
+            histName  += i3;
+            histName  += i4;
+            histName += "_vsMult";
+            h_f4_vsMult[index1234]  = loadProfile(inputFile,histName);
+            }
+          if (ac.nuDynVsCent)
+            {
+            histName  = bn + "f3_";
+            histName  += i1;
+            histName  += i2;
+            histName  += i3;
+            histName  += i4;
+            histName += "_vsCent";
+            h_f4_vsMult[index1234]  = loadProfile(inputFile,histName);
+            }
+          }
+        }
+      }
     }
 }
 
 
-void NuDynHistos::fill(double mult, double cent, double n1, double n2, double weight)
+void NuDynHistos::fill(double mult, double cent, double * n, double weight)
 {
-  double f2_11 = n1*(n1-1);
-  double f2_12 = n1*n2;
-  double f2_22 = n2*(n2-1);
-  AnalysisConfiguration & ac = *getConfiguration();
-  if (ac.nuDynVsMult)
-    {
-    h_events->Fill(mult, weight);
-    h_f1_1->Fill(mult, n1, weight);
-    h_f1_2->Fill(mult, n2, weight);
-    h_f2_11->Fill(mult, f2_11, weight);
-    h_f2_22->Fill(mult, f2_22, weight);
-    h_f2_12->Fill(mult, f2_12, weight);
+   //if (reportDebug()) cout << "NuDynTask::fill(...) started " << endl;
+   AnalysisConfiguration & ac = *getConfiguration();
+   h_events->Fill(mult, weight);
+  //if (reportDebug()) cout << "NuDynTask::fill(...) 1 " << endl;
+  if (ac.nuDynVsMult) h_events_vsMult->Fill(mult, weight);
+  if (ac.nuDynVsCent) h_events_vsCent->Fill(cent, weight);
+  double fill;
+  int nPart = 4;
+  //if (reportDebug()) cout << "NuDynTask::fill(...) 2" << endl;
+  for (int i1=0; i1<nPart; i1++)
+  {
 
-    h_events_vsMult ->Fill(mult, weight);
-    h_f1_1_vsMult   ->Fill(mult, n1,    weight);
-    h_f1_2_vsMult   ->Fill(mult, n2,    weight);
-    h_f2_11_vsMult  ->Fill(mult, f2_11, weight);
-    h_f2_22_vsMult  ->Fill(mult, f2_22, weight);
-    h_f2_12_vsMult  ->Fill(mult, f2_12, weight);
-    }
-  if (ac.nuDynVsCent)
+  fill = n[i1];
+  h_f1[i1]->Fill(mult,fill,weight);
+  if (ac.nuDynVsMult) h_f1_vsMult[i1]->Fill(mult,fill,weight);
+  if (ac.nuDynVsCent) h_f1_vsCent[i1]->Fill(cent,fill,weight);
+  //if (reportDebug()) cout << "NuDynTask::fill(...) 3" << endl;
+  for (int i2=i1; i2<nPart; i2++)
     {
-    h_events_vsCent->Fill(cent, weight);
-    h_f1_1_vsCent->Fill(cent, n1, weight);
-    h_f1_2_vsCent->Fill(cent, n1, weight);
-    h_f2_11_vsCent->Fill(cent, f2_11, weight);
-    h_f2_22_vsCent->Fill(cent, f2_22, weight);
-    h_f2_12_vsCent->Fill(cent, f2_12, weight);
-
-    h_events_vsCent ->Fill(cent, weight);
-    h_f1_1_vsCent   ->Fill(cent, n1,    weight);
-    h_f1_2_vsCent   ->Fill(cent, n2,    weight);
-    h_f2_11_vsCent  ->Fill(cent, f2_11, weight);
-    h_f2_22_vsCent  ->Fill(cent, f2_22, weight);
-    h_f2_12_vsCent  ->Fill(cent, f2_12, weight);
+      int index12 = index2(i1,i2);
+    //if (reportDebug()) cout << "NuDynHistos::fill(...) i1:" << i1 << "  i2:" << i2 << " index12:" << index12 << endl;
+    fill = n[i1]* (n[i2] - (i1==i2?1:0));
+     h_f2[index12]->Fill(mult,fill,weight);
+     if (ac.nuDynVsMult) h_f2_vsMult[index12]->Fill(mult,fill,weight);
+     if (ac.nuDynVsCent) h_f2_vsCent[index12]->Fill(cent,fill,weight);
+    for (int i3=i2; i3<nPart; i3++)
+      {
+      int index123 = index3(i1,i2,i3);
+     //if (reportDebug()) cout << "NuDynTask::fill(...) i1:" << i1 << "  i2:" << i2 << "  i3:" << i3 << " index123:" << index123 << endl;
+      fill = n[i1]* (n[i2] - (i1==i2?1:0)) * (n[i3] - (i1==i3?1:0) - (i2==i3?1:0));
+     h_f3[index123]->Fill(mult,fill,weight);
+      if (ac.nuDynVsMult) h_f3_vsMult[index123]->Fill(mult,fill,weight);
+      if (ac.nuDynVsCent) h_f3_vsCent[index123]->Fill(cent,fill,weight);
+      for (int i4=i3; i4<nPart; i4++)
+        {
+           int index1234 = index4(i1,i2,i3,i4);
+    //if (reportDebug()) cout << "NuDynTask::fill(...) i1:" << i1 << "  i2:" << i2 << "  i3:" << i3 << "  i4:" << i4 << " index1234:" << index1234 << endl;
+        fill = n[i1] * (n[i2] - (i1==i2?1:0)) * (n[i3] - (i1==i3?1:0) - (i2==i3?1:0)) * ( n[i4] - (i1==i4?1:0) - (i2==i4?1:0) - (i3==i4?1:0)) ;
+        h_f4[index1234]->Fill(mult,fill,weight);
+        if (ac.nuDynVsMult) h_f4_vsMult[index1234]->Fill(mult,fill,weight);
+        if (ac.nuDynVsCent) h_f4_vsCent[index1234]->Fill(cent,fill,weight);
+        }
+      }
     }
+  }
 }
 
