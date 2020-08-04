@@ -18,10 +18,10 @@
 ClassImp(PythiaEventGenerator);
 
 PythiaEventGenerator::PythiaEventGenerator(const TString & name,
-                                 TaskConfiguration * configuration,
-                                 Event * event,
-                                 EventFilter * ef,
-                                 ParticleFilter * pf)
+                                           TaskConfiguration * configuration,
+                                           Event * event,
+                                           EventFilter * ef,
+                                           ParticleFilter * pf)
 :
 Task(name, configuration, event),
 eventFilter(ef),
@@ -32,7 +32,7 @@ particleFilter(pf)
 
 PythiaEventGenerator::~PythiaEventGenerator()
 {
-if (reportDebug()) cout << "PythiaEventGenerator::~PythiaEventGenerator(...) No ops" << endl;
+  if (reportDebug()) cout << "PythiaEventGenerator::~PythiaEventGenerator(...) No ops" << endl;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,10 +46,50 @@ void PythiaEventGenerator::initialize()
   particles = new TClonesArray("TParticle", nMax);
   pythia8 = new TPythia8();
 
+  pythia8->ReadString("Init:showChangedSettings = on");      // list changed settings
+  pythia8->ReadString("Init:showChangedParticleData = off"); // list changed particle data
+  pythia8->ReadString("Next:numberCount = 5000");            // print message every n events
+  pythia8->ReadString("Next:numberShowInfo = 2");            // print event information n times
+  pythia8->ReadString("Next:numberShowProcess = 0");         // print process record n times
+  pythia8->ReadString("Next:numberShowEvent = 0");
+
+  pythia8->ReadString("SoftQCD:all = on");                   // Allow total sigma = elastic/SD/DD/ND
+                                                             // Optionally only study one or a few processes at a time.
+                                                             //  pythia8->ReadString("SoftQCD:elastic = on");               // Elastic
+                                                             //  pythia8->ReadString("SoftQCD:singleDiffractive = on");     // Single diffractive
+                                                             //  pythia8->ReadString("SoftQCD:doubleDiffractive = on");     // Double diffractive
+                                                             //  pythia8->ReadString("SoftQCD:centralDiffractive = on");    // Central diffractive
+                                                             //  pythia8->ReadString("SoftQCD:nonDiffractive = on");        // Nondiffractive (inelastic)
+                                                             //  pythia8->ReadString("SoftQCD:inelastic = on");             // All inelastic
+                                                             // Optionally switch on hand-set cross section and Coulomb term.
+                                                             // Note: these values are illustrative only, not to be taken seriously.
+                                                             //  pythia8->ReadString("SigmaTotal:setOwn = on");              // set your own total/elastic/diffr. sigma
+                                                             //  pythia8->ReadString("SigmaTotal:sigmaTot = 106.0");         // total cross section (excluding Coulomb)
+                                                             //  pythia8->ReadString("SigmaTotal:sigmaXX = 5.0");        // reduce double diffractive cross section
+                                                             //  pythia8->ReadString("SigmaElastic:setOwn = on");        // suboption for Coulomb term in elastic
+                                                             //  pythia8->ReadString("SigmaElastic:tAbsMin = 4e-5");        // divergence requires lower cutoff
+
   pythia8->ReadString("HardQCD:all = on");
-  pythia8->ReadString("Random:setSeed = on");
+
+
+  //  Optionally select diffractive model.
+  //  pythia8->ReadString("SigmaDiffractive:mode = 2");           // the MBR model for diffraction
+
+  // Multiparton interactions and impact parameter picture.
+  // Note: these values are illustrative only, not to be taken seriously.
+  //  pythia8->ReadString("MultipartonInteractions:pT0Ref = 2.");
+  //  pythia8->ReadString("MultipartonInteractions:ecmRef = 1960.");
+  //  pythia8->ReadString("MultipartonInteractions:ecmPow = 0.16");
+  //  pythia8->ReadString("MultipartonInteractions:pTmin = 0.2");
+  //  pythia8->ReadString("MultipartonInteractions:bProfile = 2");
+  //  pythia8->ReadString("MultipartonInteractions:coreRadius = 0.4");
+  //  pythia8->ReadString("MultipartonInteractions:coreFraction = 0.5");
+  //  pythia8->ReadString("ultipartonInteractions:expPow = 1.");
+
   // use a reproducible seed: always the same results for the tutorial.
+  pythia8->ReadString("Random:setSeed = on");
   pythia8->ReadString("Random:seed = 42");
+
   // Initialize
   pythia8->Initialize(2212 /* p */, 2212 /* p */, 14000. /* TeV */);
 
@@ -93,11 +133,11 @@ void PythiaEventGenerator::execute()
     if (nparts>2) seekingEvent = false;
     }
   if (nparts>nMax)
-      {
-      if (reportError()) cout << " ARRAY TOO SMALL np>nMax. nparts:" << nparts << " nMax:" << nMax << endl;
-      postTaskFatal();
-      //exit(0);
-      }
+    {
+    if (reportError()) cout << " ARRAY TOO SMALL np>nMax. nparts:" << nparts << " nMax:" << nMax << endl;
+    postTaskFatal();
+    //exit(0);
+    }
 
   int thePid;
   double charge, mass, p_x, p_y, p_z, p_e;
@@ -136,11 +176,11 @@ void PythiaEventGenerator::execute()
     particle = particleFactory->getNextObject();
     *particle = aParticle;
     particleAccepted++;
-//    if (true)
-//      {
-//      cout << "PythiaEventGenerator::execute() particle: " << iParticle << " / " << particleAccepted << endl;
-//      particle->printProperties(cout);
-//      }
+    //    if (true)
+    //      {
+    //      cout << "PythiaEventGenerator::execute() particle: " << iParticle << " / " << particleAccepted << endl;
+    //      particle->printProperties(cout);
+    //      }
     }
 
   event->nParticles = particleAccepted;
