@@ -27,18 +27,20 @@ public:
   // CTOR
   //////////////////////////////////////////////////////////////
   NuDynTask(const TString &  name,
-        TaskConfiguration * configuration,
-        Event * event,
-        EventFilter * eventFilter,
-        ParticleFilter * particleFilter1,
-        ParticleFilter * particleFilter2);
+            TaskConfiguration * configuration,
+            Event * event,
+            EventFilter * eventFilter,
+            ParticleFilter * particleFilter1,
+            ParticleFilter * particleFilter2,
+            ParticleFilter * particleFilter3,
+            ParticleFilter * particleFilter4);
   virtual ~NuDynTask();
   virtual void execute();
   virtual void createHistograms();
   virtual void loadHistograms(TFile * inputFile);
   //virtual void loadBaseHistograms(TFile * inputFile);
   virtual void saveHistograms(TFile * outputFile);
-//  virtual void addHistogramsToExtList(TList *list, bool all=false);
+  //  virtual void addHistogramsToExtList(TList *list, bool all=false);
   virtual void scaleHistograms(double factor);
   virtual void calculateDerivedHistograms();
 
@@ -50,8 +52,12 @@ public:
   EventFilter     * eventFilter;
   ParticleFilter  * particleFilter1;
   ParticleFilter  * particleFilter2;
+  ParticleFilter  * particleFilter3;
+  ParticleFilter  * particleFilter4;
   TString partName1;
   TString partName2;
+  TString partName3;
+  TString partName4;
 
   ClassDef(NuDynTask,0)
 };

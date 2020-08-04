@@ -184,13 +184,13 @@ public:
                        bool ijNormalization, int nBins);
   void calculateSc(const TH1 * spp, const TH1 * n1n1, const TH1 * pt1pt1, TH1 * sean, bool ijNormalization);
   void calculateG2_H2H2H2H2(const TH2 * spp, const TH2 * n1n1, const TH2 * pt1pt1, TH2 * sean, bool ijNormalization, double a1, double a2);
-void calculateSean_H1H2H2H2(const TH1 * spp, const TH2 * n1n1, const TH2 * pt1pt1, TH2 * sean, bool ijNormalization, double a1, double a2);
+  void calculateSean_H1H2H2H2(const TH1 * spp, const TH2 * n1n1, const TH2 * pt1pt1, TH2 * sean, bool ijNormalization, double a1, double a2);
   int  calculateQ3DwPtPhiEta(double pt1, double phi1, double eta1,
                              double pt2, double phi2, double eta2,
                              double & Qlong, double & Qout, double & Qside);
   int  calculateQ3DwPtPhiY(double pt1, double phi1, double y1,
-                             double pt2, double phi2, double y2,
-                             double & Qlong, double & Qout, double & Qside);
+                           double pt2, double phi2, double y2,
+                           double & Qlong, double & Qout, double & Qside);
   void calculateN1N1H2H2_Q3D_MCY(TH2 * n1_1, TH2 * n1_2, TH3 * n1n1_Q3D, double a1, double a2);
   void calculateN1N1H2H2_Q3D_MCEta(TH2 * n1_1, TH2 * n1_2, TH3 * n1n1_Q3D, double a1, double a2);
   void calculateN1N1H2H2_Q3D(const TH2 * n1_1, const TH2 * n1_2, TH3 * n1n1_Q3D, double a1, double a2);
@@ -261,6 +261,33 @@ void calculateSean_H1H2H2H2(const TH1 * spp, const TH2 * n1n1, const TH2 * pt1pt
   double * getDoubleArray(int size, double v);
   void resetDoubleArray(int n, double * array, double value);
 
+  int index2(int i1, int i2);
+  int index3(int i1, int i2, int i3);
+  int index4(int i1, int i2, int i3, int i4);
+  void calculateF2R2(TH1* h_f1_1, TH1* h_f1_2, TH1* h_f2_12, TH1* h_F2_12, TH1* h_R2_12);
+  void calculateNudyn(TH1* h_R2_11, TH1* h_R2_12, TH1* h_R2_22, TH1* h_nudyn_12);
+  void calculateF3R3(TH1* h_f1_1, TH1* h_f1_2, TH1* h_f1_3,
+                     TH1* h_f2_12, TH1* h_f2_13, TH1* h_f2_23,
+                     TH1* h_f3_123,
+                     TH1* h_F3_123, TH1* h_R2_123);
+  void calculateF4R4(TH1* h_f1_1, TH1* h_f1_2, TH1* h_f1_3, TH1* h_f1_4,
+                     TH1* h_f2_12, TH1* h_f2_13, TH1* h_f2_14, TH1* h_f2_23, TH1* h_f2_24, TH1* h_f2_34,
+                     TH1* h_f3_123, TH1* h_f3_124, TH1* h_f3_134, TH1* h_f3_234,
+                     TH1* h_f4_1234,
+                     TH1* h_F4_1234, TH1* h_R4_1234);
+  void calculateF2R2(double f1_1,double ef1_1,double f1_2,double ef1_2, double f2_12,double ef2_12,double & F2_12,double & eF2_12, double &  R2_12,double & eR2_12);
+  void calculateF3R3(double f1_1,double ef1_1,double f1_2,double ef1_2, double f1_3,double ef1_3,
+                     double f2_12,double ef2_12,double f2_13,double ef2_13,double f2_23,double ef2_23,
+                     double f3_123, double ef3_123,
+                     double & F3_123,double & eF3_123, double &  R3_123,double & eR3_123);
+  void calculateF4R4(double f1_1,double ef1_1,double f1_2,double ef1_2, double f1_3,double ef1_3, double f1_4,double ef1_4,
+                     double f2_12,double ef2_12,double f2_13,double ef2_13,double f2_14,double ef2_14,double f2_23,double ef2_23,
+                     double f2_24,double ef2_24,double f2_34,double ef2_34,
+                     double f3_123, double ef3_123,double f3_124, double ef3_124, double f3_134, double ef3_134,double f3_234, double ef3_234,
+                     double f4_1234, double ef4_1234,
+                     double &F4_1234,double &eF4_1234, double &  R4_1234,double & eR4_1234);
+  void calculateNudyn(double r2_11,double er2_11,double r2_12,double er2_12,double r2_22,double er2_22,double & nudyn,double & enudyn);
+
   TString getName() const
   {
   return collectionName;
@@ -287,17 +314,17 @@ void calculateSean_H1H2H2H2(const TH1 * spp, const TH2 * n1n1, const TH2 * pt1pt
   ////////////////////////////////////////////////////////////////////////////
 
   
-    bool  scaled;    // = true;
-    bool  saved;     // = true;
-    bool  plotted;   // = true;
-    bool  printed;    //= true;
-    bool  notScaled;  //= false;
-    bool  notSaved;   //= false;
-    bool  notPlotted; //= false;
-    bool  notPrinted; //= false;
+  bool  scaled;    // = true;
+  bool  saved;     // = true;
+  bool  plotted;   // = true;
+  bool  printed;    //= true;
+  bool  notScaled;  //= false;
+  bool  notSaved;   //= false;
+  bool  notPlotted; //= false;
+  bool  notPrinted; //= false;
 
 
-   ClassDef(HistogramCollection,0);
+  ClassDef(HistogramCollection,0);
 
 }; // HistogramCollection
 

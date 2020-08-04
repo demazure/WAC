@@ -29,7 +29,9 @@ NuDynTask::NuDynTask(const TString &  name,
                      Event * event,
                      EventFilter * ef,
                      ParticleFilter * pf1,
-                     ParticleFilter * pf2)
+                     ParticleFilter * pf2,
+                     ParticleFilter * pf3,
+                     ParticleFilter * pf4)
 :
 Task(name,configuration,event),
 nuDynHistos(NULL),
@@ -37,17 +39,21 @@ nuDynDerivedHistos(NULL),
 eventFilter(ef),
 particleFilter1(pf1),
 particleFilter2(pf2),
+particleFilter3(pf3),
+particleFilter4(pf4),
 partName1("U"),
-partName2("U")
+partName2("U"),
+partName3("U"),
+partName4("U")
 {
   if (reportDebug())  cout << "NuDynTask::CTOR(...) Started." << endl;
 
-if (!eventFilter)
-  {
-   if (reportError()) cout << "NuDynTask::CTOR(...) eventFilter is null pointer." << endl;
-   postTaskError();
-   return;
-   }
+  if (!eventFilter)
+    {
+    if (reportError()) cout << "NuDynTask::CTOR(...) eventFilter is null pointer." << endl;
+    postTaskError();
+    return;
+    }
 
   if (!particleFilter1)
     {
@@ -68,6 +74,8 @@ if (!eventFilter)
   setName(newName);
   partName1 = particleFilter1->getName();
   partName2 = particleFilter2->getName();
+  partName3 = particleFilter3->getName();
+  partName4 = particleFilter4->getName();
 }
 
 //////////////////////////////////////////////////////////////
@@ -140,22 +148,22 @@ void NuDynTask::saveHistograms(TFile * outputFile)
   AnalysisConfiguration * ac = (AnalysisConfiguration *) getTaskConfiguration();
   nuDynHistos->saveHistograms(outputFile);
   if (ac->calculateDerivedHistograms)
-     {
-     nuDynDerivedHistos->saveHistograms(outputFile);
-     }
+    {
+    nuDynDerivedHistos->saveHistograms(outputFile);
+    }
   if (reportDebug()) cout << "NuDynTask::saveHistograms(...) Completed." << endl;
 }
 
 void NuDynTask::execute()
 {
-//  if (reportDebug())  cout << "NuDynTask::analyze(...) Starting" << endl;
+  //if (reportDebug())  cout << "NuDynTask::execute(...) Starting" << endl;
   if (event != NULL)
     {
-    if (reportDebug()) cout << "NuDynTask::analyze(...) analyzing " << event->nParticles << " particles" << endl;
+    if (reportDebug()) cout << "NuDynTask::execute(...) analyzing " << event->nParticles << " particles" << endl;
     }
   else
     {
-    if (reportError()) cout << "NuDynTask::analyze(...) event pointer is NULL. Abort." << endl;
+    if (reportError()) cout << "NuDynTask::execute(...) event pointer is NULL. Abort." << endl;
     postTaskError();
     return;
     }
@@ -167,30 +175,40 @@ void NuDynTask::execute()
   AnalysisConfiguration * ac = (AnalysisConfiguration *) getTaskConfiguration();
   if (!ac)
     {
-    if (reportError()) cout << "NuDynTask::analyze(...) analysisConfiguration null pointer" << endl;
+    if (reportError()) cout << "NuDynTask::execute(...) analysisConfiguration null pointer" << endl;
     postTaskError();
     return;
     }
 
   bool accept1;
   bool accept2;
-  double n1 = 0.0;
-  double n2 = 0.0;
+  bool accept3;
+  bool accept4;
+  double n[4];
+  n[0] = 0;
+  n[1] = 0;
+  n[2] = 0;
+  n[3] = 0;
+
   for (int iParticle=0; iParticle<event->nParticles; iParticle++)
     {
     Particle & particle = * event->getParticleAt(iParticle);
-    if (reportDebug())  particle.printProperties(cout);
+    //if (reportDebug())  particle.printProperties(cout);
     accept1 = particleFilter1->accept(particle);
     accept2 = particleFilter2->accept(particle);
-//    if (reportDebug())  cout << "  accept1:" << accept1<< endl;
-//    if (reportDebug())  cout << "  accept2:" << accept2<< endl;
-    if (accept1)  n1++;
-    if (accept2)  n2++;
+    accept3 = particleFilter3->accept(particle);
+    accept4 = particleFilter4->accept(particle);
+    //    if (reportDebug())  cout << "  accept1:" << accept1<< endl;
+    //    if (reportDebug())  cout << "  accept2:" << accept2<< endl;
+    if (accept1)  n[0]++;
+    if (accept2)  n[1]++;
+    if (accept3)  n[2]++;
+    if (accept4)  n[3]++;
     }
   //cout << " mult:" << event->multiplicity << "   cent:" << event->centrality << " n1:" << n1 << " n2:" << n2 << endl;
-  nuDynHistos->fill(event->multiplicity,event->centrality,n1,n2,1.0);
+  nuDynHistos->fill(event->multiplicity,event->centrality,n,1.0);
   eventsProcessed++;
-//  if (reportDebug()) cout << "NuDyn::execute() Completed" << endl;
+  if (reportDebug()) cout << "NuDyn::execute() Completed" << endl;
 }
 
 

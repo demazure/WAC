@@ -10,21 +10,82 @@
 ClassImp(NuDynDerivedHistos);
 
 NuDynDerivedHistos::NuDynDerivedHistos(const TString & name,
-                                         AnalysisConfiguration * configuration,
-                                         LogLevel  debugLevel)
+                                       AnalysisConfiguration * configuration,
+                                       LogLevel  debugLevel)
 :
-Histograms(name,configuration,100,debugLevel)
+Histograms(name,configuration,400,debugLevel)
 {
+  h_F2 = new TH1 * [10];
+  h_F3 = new TH1 * [20];
+  h_F4 = new TH1 * [35];
+  h_R2 = new TH1 * [10];
+  h_R3 = new TH1 * [20];
+  h_R4 = new TH1 * [35];
+  h_nudyn = new TH1 * [10];
+
+  if (configuration->nuDynVsMult)
+    {
+    h_F2_vsMult = new TH1 * [10];
+    h_F3_vsMult = new TH1 * [20];
+    h_F4_vsMult = new TH1 * [35];
+    h_R2_vsMult = new TH1 * [10];
+    h_R3_vsMult = new TH1 * [20];
+    h_R4_vsMult = new TH1 * [35];
+    h_nudyn_vsMult = new TH1 * [10];
+    }
+
+  if (configuration->nuDynVsCent)
+    {
+    h_F2_vsCent = new TH1 * [10];
+    h_F3_vsCent = new TH1 * [20];
+    h_F4_vsCent = new TH1 * [35];
+    h_R2_vsCent = new TH1 * [10];
+    h_R3_vsCent = new TH1 * [20];
+    h_R4_vsCent = new TH1 * [35];
+    h_nudyn_vsCent = new TH1 * [10];
+    }
+
   initialize();
 }
 
 NuDynDerivedHistos::NuDynDerivedHistos(TFile * inputFile,
-                               const TString & name,
-                               AnalysisConfiguration * configuration,
-                               LogLevel  debugLevel)
+                                       const TString & name,
+                                       AnalysisConfiguration * configuration,
+                                       LogLevel  debugLevel)
 :
-Histograms(name,configuration,100,debugLevel)
+Histograms(name,configuration,200,debugLevel)
 {
+  h_F2 = new TH1 * [10];
+  h_F3 = new TH1 * [20];
+  h_F4 = new TH1 * [35];
+  h_R2 = new TH1 * [10];
+  h_R3 = new TH1 * [20];
+  h_R4 = new TH1 * [35];
+  h_nudyn = new TH1 * [10];
+
+  if (configuration->nuDynVsMult)
+    {
+    h_F2_vsMult = new TH1 * [10];
+    h_F3_vsMult = new TH1 * [20];
+    h_F4_vsMult = new TH1 * [35];
+    h_R2_vsMult = new TH1 * [10];
+    h_R3_vsMult = new TH1 * [20];
+    h_R4_vsMult = new TH1 * [35];
+    h_nudyn_vsMult = new TH1 * [10];
+    }
+
+  if (configuration->nuDynVsCent)
+    {
+    h_F2_vsCent = new TH1 * [10];
+    h_F3_vsCent = new TH1 * [20];
+    h_F4_vsCent = new TH1 * [35];
+    h_R2_vsCent = new TH1 * [10];
+    h_R3_vsCent = new TH1 * [20];
+    h_R4_vsCent = new TH1 * [35];
+    h_nudyn_vsCent = new TH1 * [10];
+    }
+
+
   loadHistograms(inputFile);
 }
 
@@ -38,40 +99,228 @@ void NuDynDerivedHistos::createHistograms()
 {
   AnalysisConfiguration & ac = *getConfiguration();
   TString bn = getHistoBaseName();
-  // n1 number of particles satisfying filter 1
-  // n2 number of particles satisfying filter 2
-  // h_f1_1 = <n1>
-  // h_f1_2 = <n2>
-  // h_f2_11 = <n1(n1-1)>
-  // h_f2_22 = <n2(n2-1)>
-  // h_f2_12 = <n2(n2-1)>
-  // h_r2_11 = <n1(n1-1)>/<n1><n1>
-  // h_r2_22 = <n2(n2-1)>/<n2><n2>
-  // h_r2_12 = <n1(n2-1)>/<n1><n2>
-  // h_nudyn_12 = h_r2_11 + h_r2_22 -2*h_r2_12
 
-  // Min bias
-  h_r2_11    = createHistogram(bn+TString("r2_11"),  1,ac.min_mult,  ac.max_mult,  "mult","<r_{2}^{11}>");
-  h_r2_22    = createHistogram(bn+TString("r2_22"),  1,ac.min_mult,  ac.max_mult,  "mult","<r_{2}^{22}>");
-  h_r2_12    = createHistogram(bn+TString("r2_12"),  1,ac.min_mult,  ac.max_mult,  "mult","<r_{2}^{12}>");
-  h_nudyn_12 = createHistogram(bn+TString("nudyn_12"),  1,ac.min_mult,  ac.max_mult,  "mult","#nu_{dyn}^{12}>");
-
-   if (ac.nuDynVsMult)
-     {
-     h_r2_11_vsMult    = createHistogram(bn+TString("r2_11_vsMult"),  ac.nBins_mult,ac.min_mult,  ac.max_mult,  "mult","<r_{2}^{11}>");
-     h_r2_22_vsMult    = createHistogram(bn+TString("r2_22_vsMult"),  ac.nBins_mult,ac.min_mult,  ac.max_mult,  "mult","<r_{2}^{22}>");
-     h_r2_12_vsMult    = createHistogram(bn+TString("r2_12_vsMult"),  ac.nBins_mult,ac.min_mult,  ac.max_mult,  "mult","<r_{2}^{12}>");
-     h_nudyn_12_vsMult = createHistogram(bn+TString("nudyn_12_vsMult"),  ac.nBins_mult,ac.min_mult,  ac.max_mult,  "mult","#nu_{dyn}^{12}>");
-     }
-
-  if (ac.nuDynVsCent)
+  int nPart =4;
+  TString histName;
+  TString histTitle;
+  for (int i1=0; i1<nPart; i1++)
     {
-    h_r2_11_vsCent    = createHistogram(bn+TString("r2_11_vsCent"),  ac.nBins_cent,ac.min_cent,  ac.max_cent,  "Cent","<r_{2}^{11}>");
-    h_r2_22_vsCent    = createHistogram(bn+TString("r2_22_vsCent"),  ac.nBins_cent,ac.min_cent,  ac.max_cent,  "Cent","<r_{2}^{22}>");
-    h_r2_12_vsCent    = createHistogram(bn+TString("r2_12_vsCent"),  ac.nBins_cent,ac.min_cent,  ac.max_cent,  "Cent","<r_{2}^{12}>");
-    h_nudyn_12_vsCent = createHistogram(bn+TString("nudyn_12_vsCent"),  ac.nBins_cent,ac.min_cent,  ac.max_cent,  "Cent","#nu_{dyn}^{12}>");
-    }
+    for (int i2=i1; i2<nPart; i2++)
+      {
+      int index12 = index2(i1,i2);
+      histName  = bn + "F2_";
+      histName  += i1;
+      histName  += i2;
+      histTitle = "F_{2}";
+      histTitle += "^{";
+      histTitle += i1;
+      histTitle += i2;
+      histTitle += "}";
+      h_F2[index12]  = createHistogram(histName, 1,ac.min_mult,ac.max_mult,"mult", histTitle);
+      if (ac.nuDynVsMult)
+        {
+        histName  = bn + "F2_";
+        histName  += i1;
+        histName  += i2;
+        histName += "_vsMult";
+        h_F2_vsMult[index12]  = createHistogram(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "mult", histTitle);
+        }
+      if (ac.nuDynVsCent)
+        {
+        histName  = bn + "F2_";
+        histName  += i1;
+        histName  += i2;
+        histName += "_vsCent";
+        h_F2_vsCent[index12]  = createHistogram(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "cent", histTitle);
+        }
+      histName  = bn + "R2_";
+      histName  += i1;
+      histName  += i2;
+      histTitle = "R_{2}";
+      histTitle += "^{";
+      histTitle += i1;
+      histTitle += i2;
+      histTitle += "}";
+      h_R2[index12]  = createHistogram(histName, 1,ac.min_mult,ac.max_mult,"mult", histTitle);
+      if (ac.nuDynVsMult)
+        {
+        histName  = bn + "R2_";
+        histName  += i1;
+        histName  += i2;
+        histName += "_vsMult";
+        h_R2_vsMult[index12]  = createHistogram(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "mult",histTitle);
+        }
+      if (ac.nuDynVsCent)
+        {
+        histName  = bn + "R2_";
+        histName  += i1;
+        histName  += i2;
+        histName += "_vsCent";
+        h_R2_vsCent[index12]  = createHistogram(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "cent",histTitle);
+        }
 
+      histName  = bn + "nudyn_";
+      histName  += i1;
+      histName  += i2;
+      histTitle = "#nu_{dyn}";
+      histTitle += "^{";
+      histTitle += i1;
+      histTitle += i2;
+      histTitle += "}";
+      h_nudyn[index12]  = createHistogram(histName, 1,ac.min_mult,ac.max_mult,"mult", histTitle);
+      if (ac.nuDynVsMult)
+        {
+        histName  = bn + "nudyn_";
+        histName  += i1;
+        histName  += i2;
+        histName += "_vsMult";
+        h_nudyn_vsMult[index12]  = createHistogram(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "mult",histTitle);
+        }
+      if (ac.nuDynVsCent)
+        {
+        histName  = bn + "nudyn_";
+        histName  += i1;
+        histName  += i2;
+        histName += "_vsCent";
+        h_nudyn_vsCent[index12]  = createHistogram(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "cent",histTitle);
+        }
+
+      for (int i3=i2; i3<nPart; i3++)
+        {
+        int index123 = index3(i1,i2,i3);
+
+        histName  = bn + "F3_";
+        histName  += i1;
+        histName  += i2;
+        histName  += i3;
+        histTitle = "F_{3}";
+        histTitle += "^{";
+        histTitle += i1;
+        histTitle += i2;
+        histTitle += i3;
+        histTitle += "}";
+        h_F3[index123]  = createHistogram(histName, 1,ac.min_mult,ac.max_mult,"mult", histTitle);
+        if (ac.nuDynVsMult)
+          {
+          histName  = bn + "F3_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName += "_vsMult";
+          h_F3_vsMult[index123]  = createHistogram(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "mult", histTitle);
+          }
+        if (ac.nuDynVsCent)
+          {
+          histName  = bn + "F3_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName += "_vsCent";
+          h_F3_vsCent[index123]  = createHistogram(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "cent", histTitle);
+          }
+        histName  = bn + "R3_";
+        histName  += i1;
+        histName  += i2;
+        histName  += i3;
+        histTitle = "R_{3}";
+        histTitle += "^{";
+        histTitle += i1;
+        histTitle += i2;
+        histTitle += i3;
+        histTitle += "}";
+        h_R3[index123]  = createHistogram(histName, 1,ac.min_mult,ac.max_mult,"mult", histTitle);
+        if (ac.nuDynVsMult)
+          {
+          histName  = bn + "R3_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName += "_vsMult";
+          h_R3_vsMult[index123]  = createHistogram(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "mult", histTitle);
+          }
+        if (ac.nuDynVsCent)
+          {
+          histName  = bn + "R3_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName += "_vsCent";
+          h_R3_vsCent[index123]  = createHistogram(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "cent", histTitle);
+          }
+        for (int i4=i3; i4<nPart; i4++)
+          {
+          int index1234 = index4(i1,i2,i3,i4);
+
+          histName  = bn + "F4_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName  += i4;
+          histTitle = "F_{4}";
+          histTitle += "^{";
+          histTitle += i1;
+          histTitle += i2;
+          histTitle += i3;
+          histTitle += i4;
+          histTitle += "}";
+          h_F4[index1234]  = createHistogram(histName, 1,ac.min_mult,ac.max_mult,"mult", histTitle);
+          if (ac.nuDynVsMult)
+            {
+            histName  = bn + "F4_";
+            histName  += i1;
+            histName  += i2;
+            histName  += i3;
+            histName  += i4;
+            histName += "_vsMult";
+            h_F4_vsMult[index1234]  = createHistogram(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "mult", histTitle);
+            }
+          if (ac.nuDynVsCent)
+            {
+            histName  = bn + "F4_";
+            histName  += i1;
+            histName  += i2;
+            histName  += i3;
+            histName  += i4;
+            histName += "_vsCent";
+            h_F4_vsCent[index1234]  = createHistogram(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "cent", histTitle);
+            }
+          histName  = bn + "R4_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName  += i4;
+          histTitle = "R_{4}";
+          histTitle += "^{";
+          histTitle += i1;
+          histTitle += i2;
+          histTitle += i3;
+          histTitle += i4;
+          histTitle += "}";
+          h_R4[index1234]  = createHistogram(histName, 1,ac.min_mult,ac.max_mult,"mult", histTitle);
+          if (ac.nuDynVsMult)
+            {
+            histName  = bn + "R4_";
+            histName  += i1;
+            histName  += i2;
+            histName  += i3;
+            histName  += i4;
+            histName += "_vsMult";
+            h_R4_vsMult[index1234]  = createHistogram(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult,"mult",  histTitle);
+            }
+          if (ac.nuDynVsCent)
+            {
+            histName  = bn + "R4_";
+            histName  += i1;
+            histName  += i2;
+            histName  += i3;
+            histName  += i4;
+            histName += "_vsCent";
+            h_R4_vsCent[index1234]  = createHistogram(histName,ac.nBins_mult,ac.min_mult,  ac.max_mult, "cent", histTitle);
+            }
+          }
+        }
+      }
+    }
 }
 
 //________________________________________________________________________
@@ -84,27 +333,198 @@ void NuDynDerivedHistos::loadHistograms(TFile * inputFile)
     }
   AnalysisConfiguration & ac = *getConfiguration();
   TString  bn = getHistoBaseName();
-   h_r2_11    = loadH1(inputFile,bn+TString("r2_11"));
-   h_r2_22    = loadH1(inputFile,bn+TString("r2_22"));
-   h_r2_12    = loadH1(inputFile,bn+TString("r2_12"));
-   h_nudyn_12 = loadH1(inputFile,bn+TString("nudyn_12"));
-
-  if (ac.nuDynVsMult)
+  int nPart =4;
+  TString histName;
+  TString histTitle;
+  for (int i1=1; i1<nPart; i1++)
     {
-    h_r2_11_vsMult    = loadH1(inputFile,bn+TString("r2_11_vsMult"));
-    h_r2_22_vsMult    = loadH1(inputFile,bn+TString("r2_22_vsMult"));
-    h_r2_12_vsMult    = loadH1(inputFile,bn+TString("r2_12_vsMult"));
-    h_nudyn_12_vsMult = loadH1(inputFile,bn+TString("nudyn_12_vsMult"));
+    for (int i2=i1; i2<nPart; i2++)
+      {
+      int index12 = index2(i1,i2);
+      histName  = bn + "F2_";
+      histName  += i1;
+      histName  += i2;
+      histTitle = "F_{2}";
+      histTitle += "^{";
+      histTitle += i1;
+      histTitle += i2;
+      histTitle += "}";
+      h_F2[index12]  = loadH1(inputFile,histName);
+      if (ac.nuDynVsMult)
+        {
+        histName  = bn + "F2_";
+        histName  += i1;
+        histName  += i2;
+        histName += "_vsMult";
+        h_F2_vsMult[index12]  = loadH1(inputFile,histName);
+        }
+      if (ac.nuDynVsCent)
+        {
+        histName  = bn + "F2_";
+        histName  += i1;
+        histName  += i2;
+        histName += "_vsCent";
+        h_F2_vsMult[index12]  = loadH1(inputFile,histName);
+        }
+      histName  = bn + "R2_";
+      histName  += i1;
+      histName  += i2;
+      histTitle = "R_{2}";
+      histTitle += "^{";
+      histTitle += i1;
+      histTitle += i2;
+      histTitle += "}";
+      h_R2[index12]  = loadH1(inputFile,histName);
+      if (ac.nuDynVsMult)
+        {
+        histName  = bn + "f2_";
+        histName  += i1;
+        histName  += i2;
+        histName += "_vsMult";
+        h_R2_vsMult[index12]  = loadH1(inputFile,histName);
+        }
+      if (ac.nuDynVsCent)
+        {
+        histName  = bn + "f2_";
+        histName  += i1;
+        histName  += i2;
+        histName += "_vsCent";
+        h_R2_vsCent[index12]  = loadH1(inputFile,histName);
+        }
+      for (int i3=i2; i3<nPart; i3++)
+        {
+        int index123 = index3(i1,i2,i3);
+        histName  = bn + "F3_";
+        histName  += i1;
+        histName  += i2;
+        histName  += i3;
+        histTitle = "F_{3}";
+        histTitle += "^{";
+        histTitle += i1;
+        histTitle += i2;
+        histTitle += i3;
+        histTitle += "}";
+        h_F3[index123]  = loadH1(inputFile,histName);
+        if (ac.nuDynVsMult)
+          {
+          histName  = bn + "F3_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName += "_vsMult";
+          h_F3_vsMult[index123]  = loadH1(inputFile,histName);
+          }
+        if (ac.nuDynVsCent)
+          {
+          histName  = bn + "F3_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName += "_vsCent";
+          h_F3_vsMult[index123]  = loadH1(inputFile,histName);
+          }
+        histName  = bn + "R3_";
+        histName  += i1;
+        histName  += i2;
+        histName  += i3;
+        histTitle = "R_{3}";
+        histTitle += "^{";
+        histTitle += i1;
+        histTitle += i2;
+        histTitle += i3;
+        histTitle += "}";
+        h_R3[index123]  = loadH1(inputFile,histName);
+        if (ac.nuDynVsMult)
+          {
+          histName  = bn + "R3_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName += "_vsMult";
+          h_R3_vsMult[index123]  = loadH1(inputFile,histName);
+          }
+        if (ac.nuDynVsCent)
+          {
+          histName  = bn + "R3_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName += "_vsCent";
+          h_R3_vsMult[index123]  = loadH1(inputFile,histName);
+          }
+        for (int i4=i3; i4<nPart; i4++)
+          {
+          int index1234 = index4(i1,i2,i3,i4);
+          histName  = bn + "F4_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName  += i4;
+          histTitle = "F_{4}";
+          histTitle += "^{";
+          histTitle += i1;
+          histTitle += i2;
+          histTitle += i3;
+          histTitle += i4;
+          histTitle += "}";
+          h_F4[index1234]  = loadH1(inputFile,histName);
+          if (ac.nuDynVsMult)
+            {
+            histName  = bn + "F4_";
+            histName  += i1;
+            histName  += i2;
+            histName  += i3;
+            histName  += i4;
+            histName += "_vsMult";
+            h_F4_vsMult[index1234]  = loadH1(inputFile,histName);
+            }
+          if (ac.nuDynVsCent)
+            {
+            histName  = bn + "F4_";
+            histName  += i1;
+            histName  += i2;
+            histName  += i3;
+            histName  += i4;
+            histName += "_vsCent";
+            h_F4_vsMult[index1234]  = loadH1(inputFile,histName);
+            }
+          histName  = bn + "R4_";
+          histName  += i1;
+          histName  += i2;
+          histName  += i3;
+          histName  += i4;
+          histTitle = "R_{4}";
+          histTitle += "^{";
+          histTitle += i1;
+          histTitle += i2;
+          histTitle += i3;
+          histTitle += i4;
+          histTitle += "}";
+          h_R4[index1234]  = loadH1(inputFile,histName);
+          if (ac.nuDynVsMult)
+            {
+            histName  = bn + "R4_";
+            histName  += i1;
+            histName  += i2;
+            histName  += i3;
+            histName  += i4;
+            histName += "_vsMult";
+            h_R4_vsMult[index1234]  = loadH1(inputFile,histName);
+            }
+          if (ac.nuDynVsCent)
+            {
+            histName  = bn + "R4_";
+            histName  += i1;
+            histName  += i2;
+            histName  += i3;
+            histName  += i4;
+            histName += "_vsCent";
+            h_R4_vsMult[index1234]  = loadH1(inputFile,histName);
+            }
+          }
+        }
+      }
     }
-
-  if (ac.nuDynVsCent)
-    {
-    h_r2_11_vsCent    = loadH1(inputFile,bn+TString("r2_11_vsCent"));
-    h_r2_22_vsCent    = loadH1(inputFile,bn+TString("r2_22_vsCent"));
-    h_r2_12_vsCent    = loadH1(inputFile,bn+TString("r2_12_vsCent"));
-    h_nudyn_12_vsCent = loadH1(inputFile,bn+TString("nudyn_12_vsCent"));
-    }
-
 }
 
 void NuDynDerivedHistos::calculateDerivedHistograms(NuDynHistos * source)
@@ -114,131 +534,72 @@ void NuDynDerivedHistos::calculateDerivedHistograms(NuDynHistos * source)
   // h_r2_12 = <n1(n2-1)>/<n1><n2>
   // h_nudyn_12 = h_r2_11 + h_r2_22 -2*h_r2_12
 
+  if (!source)
+    {
+     if (reportFatal()) cout << "-Fatal- NuDynDerivedHistos::calculateDerivedHistograms(NuDynHistos * source) Source is null." << endl;
+     return;
+     }
+
   AnalysisConfiguration & ac = *getConfiguration();
-
-  double f1_1, f1_2, f2_11, f2_12, f2_22;
-  double ef1_1, ef1_2, ef2_11, ef2_12, ef2_22;
-  double r2_11, r2_12, r2_22, nudyn;
-  double er2_11, er2_12, er2_22, enudyn;
-
-  // min bias
-  f1_1   = source->h_f1_1->GetBinContent(1);
-  ef1_1  = source->h_f1_1->GetBinError(1);
-  f1_2   = source->h_f1_2->GetBinContent(1);
-  ef1_2  = source->h_f1_2->GetBinError(1);
-  f2_11  = source->h_f2_11->GetBinContent(1);
-  ef2_11 = source->h_f2_11->GetBinError(1);
-  f2_12  = source->h_f2_12->GetBinContent(1);
-  ef2_12 = source->h_f2_12->GetBinError(1);
-  f2_22  = source->h_f2_22->GetBinContent(1);
-  ef2_22 = source->h_f2_22->GetBinError(1);
-  calculateR2(f1_1,ef1_1,f2_11,ef2_11,r2_11,er2_11);
-  calculateR2(f1_1,ef1_1,f1_2,ef1_2,f2_12,ef2_12,r2_12,er2_12);
-  calculateR2(f1_2,ef1_2,f2_22,ef2_22,r2_22,er2_22);
-  calculateNudyn(r2_11,er2_11,r2_12,er2_12,r2_22,er2_22,nudyn,enudyn);
-  h_r2_11->SetBinContent(1,r2_11);     h_r2_11->SetBinError(1,er2_11);
-  h_r2_12->SetBinContent(1,r2_12);     h_r2_11->SetBinError(1,er2_12);
-  h_r2_22->SetBinContent(1,r2_22);     h_r2_11->SetBinError(1,er2_22);
-  h_nudyn_12->SetBinContent(1,nudyn);  h_nudyn_12->SetBinError(1,enudyn);
-
-  if (ac.nuDynVsMult)
+  int nPart = 4;
+  for (int i1=0; i1<nPart; i1++)
     {
-    int nBins = source->h_f1_1_vsMult->GetNbinsX();
-    for (int i=1; i<=nBins; i++)
+    for (int i2=i1; i2<nPart; i2++)
       {
-      f1_1   = source->h_f1_1_vsMult->GetBinContent(i);
-      ef1_1  = source->h_f1_1_vsMult->GetBinError(i);
-      f1_2   = source->h_f1_2_vsMult->GetBinContent(i);
-      ef1_2  = source->h_f1_2_vsMult->GetBinError(i);
-      f2_11  = source->h_f2_11_vsMult->GetBinContent(i);
-      ef2_11 = source->h_f2_11_vsMult->GetBinError(i);
-      f2_12  = source->h_f2_12_vsMult->GetBinContent(i);
-      ef2_12 = source->h_f2_12_vsMult->GetBinError(i);
-      f2_22  = source->h_f2_22_vsMult->GetBinContent(i);
-      ef2_22 = source->h_f2_22_vsMult->GetBinError(i);
-      calculateR2(f1_1,ef1_1,f2_11,ef2_11,r2_11,er2_11);
-      calculateR2(f1_1,ef1_1,f1_2,ef1_2,f2_12,ef2_12,r2_12,er2_12);
-      calculateR2(f1_2,ef1_2,f2_22,ef2_22,r2_22,er2_22);
-      calculateNudyn(r2_11,er2_11,r2_12,er2_12,r2_22,er2_22,nudyn,enudyn);
-      h_r2_11_vsMult->SetBinContent(i,r2_11);     h_r2_11_vsMult->SetBinError(i,er2_11);
-      h_r2_12_vsMult->SetBinContent(i,r2_12);     h_r2_11_vsMult->SetBinError(i,er2_12);
-      h_r2_22_vsMult->SetBinContent(i,r2_22);     h_r2_11_vsMult->SetBinError(i,er2_22);
-      h_nudyn_12_vsMult->SetBinContent(i,nudyn);  h_nudyn_12_vsMult->SetBinError(i,enudyn);
+      int index12 = index2(i1,i2);
+      calculateF2R2(source->h_f1[i1],source->h_f1[i2],source->h_f2[index12], h_F2[index12], h_R2[index12]);
+      if (ac.nuDynVsMult) calculateF2R2(source->h_f1_vsMult[i1],source->h_f1_vsMult[i2],source->h_f2_vsMult[index12], h_F2_vsMult[index12], h_R2_vsMult[index12]);
+      if (ac.nuDynVsCent) calculateF2R2(source->h_f1_vsCent[i1],source->h_f1_vsCent[i2],source->h_f2_vsCent[index12], h_F2_vsCent[index12], h_R2_vsCent[index12]);
+      for (int i3=i2; i3<nPart; i3++)
+        {
+        int index13 = index2(i1,i3);
+        int index23 = index2(i2,i3);
+        int index123 = index3(i1,i2,i3);
+        calculateF3R3(source->h_f1[i1],source->h_f1[i2],source->h_f1[i3],
+                      source->h_f2[index12],source->h_f2[index13],source->h_f2[index23],
+                      source->h_f3[index123],
+                      h_F3[index123], h_R3[index123]);
+        if (ac.nuDynVsMult) calculateF3R3(source->h_f1_vsMult[i1],source->h_f1_vsMult[i2],source->h_f1_vsMult[i3],
+                                          source->h_f2_vsMult[index12],source->h_f2_vsMult[index13],source->h_f2_vsMult[index23],
+                                          source->h_f3_vsMult[index123],
+                                          h_F3_vsMult[index123], h_R3_vsMult[index123]);
+        if (ac.nuDynVsCent) calculateF3R3(source->h_f1_vsCent[i1],source->h_f1_vsCent[i2],source->h_f1_vsCent[i3],
+                                          source->h_f2_vsCent[index12],source->h_f2_vsCent[index13],source->h_f2_vsCent[index23],
+                                          source->h_f3_vsCent[index123],
+                                          h_F3_vsCent[index123], h_R3_vsCent[index123]);
+
+        for (int i4=i3; i4<nPart; i4++)
+          {
+          int index14 = index2(i1,i4);
+          int index24 = index2(i2,i4);
+          int index34 = index2(i3,i4);
+          int index124 = index3(i1,i2,i4);
+          int index134 = index3(i1,i3,i4);
+          int index234 = index3(i2,i3,i4);
+          int index1234 = index4(i1,i2,i3,i4);
+          calculateF4R4(source->h_f1[i1],source->h_f1[i2],source->h_f1[i3],source->h_f1[i4],
+                        source->h_f2[index12],source->h_f2[index13],source->h_f2[index14],source->h_f2[index23],source->h_f2[index24],source->h_f2[index34],
+                        source->h_f3[index123],source->h_f3[index124],source->h_f3[index134],source->h_f3[index234],
+                        source->h_f4[index1234],
+                        h_F4[index1234], h_R4[index1234]);
+          if (ac.nuDynVsMult) calculateF4R4(source->h_f1_vsMult[i1],source->h_f1_vsMult[i2],source->h_f1_vsMult[i3],source->h_f1_vsMult[i4],
+                                            source->h_f2_vsMult[index12],source->h_f2_vsMult[index13],source->h_f2_vsMult[index14],source->h_f2_vsMult[index23],source->h_f2_vsMult[index24],source->h_f2_vsMult[index34],
+                                            source->h_f3_vsMult[index123],source->h_f3_vsMult[index124],source->h_f3_vsMult[index134],source->h_f3_vsMult[index234],
+                                            source->h_f4_vsMult[index1234],
+                                            h_F4_vsMult[index1234], h_R4_vsMult[index1234]);
+          if (ac.nuDynVsCent) calculateF4R4(source->h_f1_vsCent[i1],source->h_f1_vsCent[i2],source->h_f1_vsCent[i3],source->h_f1_vsCent[i4],
+                                            source->h_f2_vsCent[index12],source->h_f2_vsCent[index13],source->h_f2_vsCent[index14],source->h_f2_vsCent[index23],source->h_f2_vsCent[index24],source->h_f2_vsCent[index34],
+                                            source->h_f3_vsCent[index123],source->h_f3_vsCent[index124],source->h_f3_vsCent[index134],source->h_f3_vsCent[index234],
+                                            source->h_f4_vsCent[index1234],
+                                            h_F4_vsCent[index1234], h_R4_vsCent[index1234]);
+          }
+        }
       }
     }
-
-  if (ac.nuDynVsCent)
-    {
-    int nBins = source->h_f1_1_vsCent->GetNbinsX();
-    for (int i=1; i<=nBins; i++)
-      {
-      f1_1   = source->h_f1_1_vsCent->GetBinContent(i);
-      ef1_1  = source->h_f1_1_vsCent->GetBinError(i);
-      f1_2   = source->h_f1_2_vsCent->GetBinContent(i);
-      ef1_2  = source->h_f1_2_vsCent->GetBinError(i);
-      f2_11  = source->h_f2_11_vsCent->GetBinContent(i);
-      ef2_11 = source->h_f2_11_vsCent->GetBinError(i);
-      f2_12  = source->h_f2_12_vsCent->GetBinContent(i);
-      ef2_12 = source->h_f2_12_vsCent->GetBinError(i);
-      f2_22  = source->h_f2_22_vsCent->GetBinContent(i);
-      ef2_22 = source->h_f2_22_vsCent->GetBinError(i);
-      calculateR2(f1_1,ef1_1,f2_11,ef2_11,r2_11,er2_11);
-      calculateR2(f1_1,ef1_1,f1_2,ef1_2,f2_12,ef2_12,r2_12,er2_12);
-      calculateR2(f1_2,ef1_2,f2_22,ef2_22,r2_22,er2_22);
-      calculateNudyn(r2_11,er2_11,r2_12,er2_12,r2_22,er2_22,nudyn,enudyn);
-      h_r2_11_vsCent->SetBinContent(i,r2_11);     h_r2_11_vsCent->SetBinError(i,er2_11);
-      h_r2_12_vsCent->SetBinContent(i,r2_12);     h_r2_11_vsCent->SetBinError(i,er2_11);
-      h_r2_22_vsCent->SetBinContent(i,r2_22);     h_r2_11_vsCent->SetBinError(i,er2_11);
-      h_nudyn_12_vsCent->SetBinContent(i,nudyn);  h_nudyn_12_vsCent->SetBinError(i,er2_11);
-      }
-    }
+  calculateNudyn(h_R2[index2(0,0)],h_R2[index2(0,1)],h_R2[index2(1,1)], h_nudyn[index2(0,1)]);
+  calculateNudyn(h_R2[index2(0,0)],h_R2[index2(0,2)],h_R2[index2(2,2)], h_nudyn[index2(0,2)]);
+  calculateNudyn(h_R2[index2(0,0)],h_R2[index2(0,3)],h_R2[index2(3,3)], h_nudyn[index2(0,3)]);
+  calculateNudyn(h_R2[index2(1,1)],h_R2[index2(1,2)],h_R2[index2(2,2)], h_nudyn[index2(1,2)]);
+  calculateNudyn(h_R2[index2(1,1)],h_R2[index2(1,3)],h_R2[index2(3,3)], h_nudyn[index2(1,3)]);
+  calculateNudyn(h_R2[index2(2,2)],h_R2[index2(2,3)],h_R2[index2(3,3)], h_nudyn[index2(2,3)]);
 }
-
-// calculation carried out assuming no correlation between the different factors...
-void NuDynDerivedHistos::calculateR2(double f1,double ef1,double f2,double ef2,double & r2,double & er2)
-{
-  // calculate ratio and error for r2 = f2/f1/f1
-  double ref1, ref2, rer2;
-  if (f1>0)
-    {
-    ref1 = ef1/f1;
-    ref2   = ef2/f2;
-    rer2   = 4*ref1*ref1 + ref2*ref2;
-    r2 = f2/(f1*f1) - 1.0;
-    er2 = r2*sqrt(rer2);
-    }
-  else
-    {
-    r2 = 0.0;
-    er2 = 0.0;
-    }
-}
-
- // calculation carried out assuming no correlation between the different factors...
- void NuDynDerivedHistos::calculateR2(double f1_1,double ef1_1,double f1_2,double ef1_2,double f2,double ef2,double & r2,double & er2)
- {
- // calculate ratio and error for r2 = f2/f1_1/f1_2
-
-   double ref1_1, ref1_2, ref2, rer2;
-   if (f1_1>0 & f1_2>0)
-     {
-     ref1_1 = ef1_1/f1_1;
-     ref1_2 = ef1_2/f1_2;
-     ref2   = ef2/f2;
-     rer2   = ref1_1*ref1_1 + ref1_2*ref1_2 + ref2*ref2;
-     r2 = f2/(f1_1*f1_2) - 1.0;
-     er2 = r2*sqrt(rer2);
-     }
-   else
-     {
-     r2 = 0.0;
-     er2 = 0.0;
-     }
- }
-
-void NuDynDerivedHistos::calculateNudyn(double r2_11,double er2_11,double r2_12,double er2_12,double r2_22,double er2_22,double & nudyn,double & enudyn)
-{
-  nudyn = r2_11 + r2_22 - 2.0*r2_12;
-  enudyn = sqrt(er2_11*er2_11 + er2_22*er2_22 + 4.0*er2_12*er2_12);
-}
-
