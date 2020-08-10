@@ -67,6 +67,18 @@ partName4("U")
     postTaskError();
     return;
     }
+  if (!particleFilter3)
+     {
+     if (reportError()) cout << "NuDynTask::CTOR(...) particleFilter3 is null pointer." << endl;
+     postTaskError();
+     return;
+     }
+  if (!particleFilter4)
+     {
+     if (reportError()) cout << "NuDynTask::CTOR(...) particleFilter4 is null pointer." << endl;
+     postTaskError();
+     return;
+     }
 
   TString newName = getName();
   newName += "_";
@@ -98,6 +110,8 @@ void NuDynTask::createHistograms()
   TString histoName;
   histoName = partName1;
   histoName += partName2;
+  histoName += partName3;
+  histoName += partName4;
   nuDynHistos = new NuDynHistos(histoName,ac,debugLevel);
   if (ac->calculateDerivedHistograms)
     {
@@ -121,6 +135,8 @@ void NuDynTask::loadHistograms(TFile * inputFile)
   TString histoName;
   histoName = partName1;
   histoName += partName2;
+  histoName += partName3;
+  histoName += partName4;
   nuDynHistos = new NuDynHistos(inputFile,histoName,ac,debugLevel);
   if (ac->calculateDerivedHistograms)
     {

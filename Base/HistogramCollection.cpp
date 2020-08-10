@@ -15,8 +15,8 @@ ClassImp(HistogramCollection);
 // CTOR1
 ////////////////////////////////////////////////////////////////////////////
 HistogramCollection::HistogramCollection(const TString & name,
-                                          int  histoCapacity,
-                                          LogLevel debugLevel)
+                                         int  histoCapacity,
+                                         LogLevel debugLevel)
 :
 MessageLogger(debugLevel),
 collectionName(name),
@@ -52,7 +52,7 @@ randomGenerator(new TRandom())
 ////////////////////////////////////////////////////////////////////////////
 HistogramCollection::~HistogramCollection()
 {
-   if (reportDebug()) cout << "~HistogramCollection() started" << endl;
+  if (reportDebug()) cout << "~HistogramCollection() started" << endl;
   if (bOwnTheHistograms) {
     /* the instance own its histograms so, they have to be deleted */
     for (int i = 0; i < nHistograms; i++) {
@@ -65,18 +65,18 @@ HistogramCollection::~HistogramCollection()
     delete [] isSaved;
     delete [] histograms;
   }
-    if (reportDebug()) cout << "~HistogramCollection() completed" << endl;
+  if (reportDebug()) cout << "~HistogramCollection() completed" << endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////
 // Add the given histogram to the list
 ////////////////////////////////////////////////////////////////////////////
 void HistogramCollection::addToList(TH1 * h,
-                                     bool doScale,
-                                     bool doSave,
-                                     bool doPlot,
-                                     bool doPrint,
-                                     bool doSumw2)
+                                    bool doScale,
+                                    bool doSave,
+                                    bool doPlot,
+                                    bool doPrint,
+                                    bool doSumw2)
 {
   if (reportInfo()) cout << "HistogramCollection::addToList(...) Adding histo " << h->GetName() << " w/ index:" << nHistograms << " max:" << nHistoCapacity << " w/ doSave: " << doSave << " doPlot:" << doPlot << " doPrint:" << doPrint << " doScale:" << doScale  << endl;
   //if (doSumw2)  h->Sumw2();
@@ -125,14 +125,14 @@ void HistogramCollection::setDefaultOptions(bool color)
 
 ////////////////////////////////////////////////////////////////////////
 TH1 * HistogramCollection::createHistogram(const TString &  name,
-                                            int n, double min_x, double max_x,
-                                            const TString &  title_x,
-                                            const TString &  title_y,
-                                            bool  scale,
-                                            bool  save,
-                                            bool  plot,
-                                            bool  print,
-                                            bool  sumw2 )
+                                           int n, double min_x, double max_x,
+                                           const TString &  title_x,
+                                           const TString &  title_y,
+                                           bool  scale,
+                                           bool  save,
+                                           bool  plot,
+                                           bool  print,
+                                           bool  sumw2 )
 {
   //createHistogram new 1D historgram
   if (reportDebug()) cout << "Creating  1D histo " << name << " nBins:" << n << " min_x:" << min_x << " max_x:" << max_x << endl;
@@ -147,14 +147,14 @@ TH1 * HistogramCollection::createHistogram(const TString &  name,
 
 ////////////////////////////////////////////////////////////////////////
 TH1 * HistogramCollection::createHistogram(const TString &  name,
-                                            int n, double * bins,
-                                            const TString &  title_x,
-                                            const TString &  title_y,
-                                            bool  scale,
-                                            bool  save,
-                                            bool  plot,
-                                            bool  print,
-                                            bool  sumw2 )
+                                           int n, double * bins,
+                                           const TString &  title_x,
+                                           const TString &  title_y,
+                                           bool  scale,
+                                           bool  save,
+                                           bool  plot,
+                                           bool  print,
+                                           bool  sumw2 )
 {
   //createHistogram new 1D historgram
   if (reportDebug()) cout << "Creating  1D histo " << name << " with " << n << " non uniform nBins:" << endl;
@@ -169,16 +169,16 @@ TH1 * HistogramCollection::createHistogram(const TString &  name,
 
 ////////////////////////////////////////////////////////////////////////
 TH2 * HistogramCollection::createHistogram(const TString &  name,
-                                            int n_x, double min_x, double max_x,
-                                            int n_y, double min_y, double max_y,
-                                            const TString &  title_x,
-                                            const TString &  title_y,
-                                            const TString &  title_z,
-                                            bool  scale,
-                                            bool  save,
-                                            bool  plot,
-                                            bool  print,
-                                            bool  sumw2 )
+                                           int n_x, double min_x, double max_x,
+                                           int n_y, double min_y, double max_y,
+                                           const TString &  title_x,
+                                           const TString &  title_y,
+                                           const TString &  title_z,
+                                           bool  scale,
+                                           bool  save,
+                                           bool  plot,
+                                           bool  print,
+                                           bool  sumw2 )
 {
   //createHistogram new 2D historgram
   if (reportDebug()) cout << "Creating  2D histo " << name << " n_x:" << n_x << " min_x:" << min_x << " max_x:" << max_x << " n_y:" << n_y << " min_y:" << min_y << " max_y:" << max_y<< endl;
@@ -193,15 +193,15 @@ TH2 * HistogramCollection::createHistogram(const TString &  name,
 
 ////////////////////////////////////////////////////////////////////////
 TH2 * HistogramCollection::createHistogram(const TString &  name,
-                                            int n_x, double* xbins, int n_y, double min_y, double max_y,
-                                            const TString &  title_x,
-                                            const TString &  title_y,
-                                            const TString &  title_z,
-                                            bool  scale,
-                                            bool  save,
-                                            bool  plot,
-                                            bool  print,
-                                            bool  sumw2 )
+                                           int n_x, double* xbins, int n_y, double min_y, double max_y,
+                                           const TString &  title_x,
+                                           const TString &  title_y,
+                                           const TString &  title_z,
+                                           bool  scale,
+                                           bool  save,
+                                           bool  plot,
+                                           bool  print,
+                                           bool  sumw2 )
 
 {
   if (reportDebug()) cout << "Creating  2D histo " << name << " with " << n_x << " vs " << n_y << " non uniform nBins:" << endl;
@@ -217,18 +217,18 @@ TH2 * HistogramCollection::createHistogram(const TString &  name,
 
 ////////////////////////////////////////////////////////////////////////
 TH3 * HistogramCollection::createHistogram(const TString &  name,
-                                            int n_x, double min_x, double max_x,
-                                            int n_y, double min_y, double max_y,
-                                            int n_z, double min_z, double max_z,
-                                            const TString &  title_x,
-                                            const TString &  title_y,
-                                            const TString &  title_z,
-                                            const TString &  title_w = "w",
-                                            bool  scale,
-                                            bool  save,
-                                            bool  plot,
-                                            bool  print,
-                                            bool  sumw2 )
+                                           int n_x, double min_x, double max_x,
+                                           int n_y, double min_y, double max_y,
+                                           int n_z, double min_z, double max_z,
+                                           const TString &  title_x,
+                                           const TString &  title_y,
+                                           const TString &  title_z,
+                                           const TString &  title_w = "w",
+                                           bool  scale,
+                                           bool  save,
+                                           bool  plot,
+                                           bool  print,
+                                           bool  sumw2 )
 
 {
   if (reportDebug()) cout
@@ -249,12 +249,12 @@ TH3 * HistogramCollection::createHistogram(const TString &  name,
 
 ////////////////////////////////////////////////////////////////////////
 TProfile * HistogramCollection::createProfile(const TString & name,
-                                               int n_x,double min_x,double max_x,
-                                               const TString &  title_x,
-                                               const TString &  title_y,
-                                               bool  save,
-                                               bool  plot,
-                                               bool  print )
+                                              int n_x,double min_x,double max_x,
+                                              const TString &  title_x,
+                                              const TString &  title_y,
+                                              bool  save,
+                                              bool  plot,
+                                              bool  print )
 
 {
   if (reportDebug()) cout << "Creating  1D profile " << name << " n_x:" << n_x << " min_x:" << min_x << " max_x:" << max_x << endl;
@@ -267,13 +267,13 @@ TProfile * HistogramCollection::createProfile(const TString & name,
 
 ////////////////////////////////////////////////////////////////////////
 TProfile * HistogramCollection::createProfile(const TString &  name,
-                                               int n_x,  double* bins,
-                                               const TString &  title_x,
-                                               const TString &  title_y,
-                                               bool  scale,
-                                               bool  save,
-                                               bool  plot,
-                                               bool  print )
+                                              int n_x,  double* bins,
+                                              const TString &  title_x,
+                                              const TString &  title_y,
+                                              bool  scale,
+                                              bool  save,
+                                              bool  plot,
+                                              bool  print )
 {
   if (reportDebug()) cout << "Creating  1D profile " << name << " n_x:" << n_x << " non-uniform bins" << endl;
   TProfile * h = new TProfile(name,name,n_x,bins);
@@ -288,16 +288,16 @@ TProfile * HistogramCollection::createProfile(const TString &  name,
 
 ////////////////////////////////////////////////////////////////////////
 TProfile2D * HistogramCollection::createProfile(const TString &  name,
-                                                 int n_x, double min_x, double max_x,
-                                                 int n_y, double min_y, double max_y,
-                                                 const TString &  title_x,
-                                                 const TString &  title_y,
-                                                 const TString &  title_z,
-                                                 bool  scale,
-                                                 bool  save,
-                                                 bool  plot,
-                                                 bool  print,
-                                                 bool  sumw2 )
+                                                int n_x, double min_x, double max_x,
+                                                int n_y, double min_y, double max_y,
+                                                const TString &  title_x,
+                                                const TString &  title_y,
+                                                const TString &  title_z,
+                                                bool  scale,
+                                                bool  save,
+                                                bool  plot,
+                                                bool  print,
+                                                bool  sumw2 )
 
 {
   if (reportDebug()) cout << "Creating  2D profile " << name
@@ -368,11 +368,11 @@ void HistogramCollection::scale(double factor, bool scaleAll)
 // Plot Selected Histograms
 ////////////////////////////////////////////////////////////////////////
 void HistogramCollection::plotHistograms(const TString             & outputPath,
-                                          CanvasCollection          & canvasCollection,
-                                          CanvasConfiguration & cc1d,
-                                          CanvasConfiguration & cc2d,
-                                          GraphConfiguration  & gc1D,
-                                          GraphConfiguration  & gc2D)
+                                         CanvasCollection          & canvasCollection,
+                                         CanvasConfiguration & cc1d,
+                                         CanvasConfiguration & cc2d,
+                                         GraphConfiguration  & gc1D,
+                                         GraphConfiguration  & gc2D)
 {
   if (reportDebug()) cout << "HistogramCollection::plotHistograms(...) collection: " << collectionName << " started  w/ nHistograms =" << nHistograms << endl;
 
@@ -586,7 +586,7 @@ void HistogramCollection::addHistos(HistogramCollection * c1, HistogramCollectio
 }
 
 void HistogramCollection::addHistos(HistogramCollection * c1, HistogramCollection * c2, HistogramCollection * c3, HistogramCollection * c4,
-                                     double a1, double a2, double a3, double a4)
+                                    double a1, double a2, double a3, double a4)
 {
   for (int i=0; i<nHistograms; ++i)
     {
@@ -1038,8 +1038,8 @@ bool HistogramCollection::sameDimensions3D(const TH3* h1, const TH3* h2)
 }
 
 void HistogramCollection::calculateDptDpt(const TH2 * spp, const TH2 * spn, const TH2 * snp, const TH2 * snn,
-                                           const TH2 * avgp1, const TH2 * avgp2,  TH2 * s2dptdpt,  TH2 * dptdpt,
-                                           bool ijNormalization, int nEta, int nPhi)
+                                          const TH2 * avgp1, const TH2 * avgp2,  TH2 * s2dptdpt,  TH2 * dptdpt,
+                                          bool ijNormalization, int nEta, int nPhi)
 {
   if (!sameDimensions2D(spp,spn)) return;
   if (!sameDimensions2D(spp,snp)) return;
@@ -1126,9 +1126,9 @@ void HistogramCollection::calculateDptDpt(const TH2 * spp, const TH2 * spn, cons
 
 // this shoudl work for eta vs eta.
 void HistogramCollection::calculateDptDpt(const TH2 * spp, const TH2 * spn, const TH2 * snp, const TH2 * snn,
-                                           const TH1 * avgp1, const TH1 * avgp2,
-                                           TH2 * dptdpt,
-                                           bool ijNormalization, int nBins)
+                                          const TH1 * avgp1, const TH1 * avgp2,
+                                          TH2 * dptdpt,
+                                          bool ijNormalization, int nBins)
 {
   if (!sameDimensions2D(spp,spn) || !sameDimensions2D(spp,snp) || !sameDimensions2D(spp,snn))
     {
@@ -1327,8 +1327,8 @@ void HistogramCollection::calculateSean_H1H2H2H2(const TH1 * spp, const TH2 * n1
 
 
 int  HistogramCollection::calculateQ3DwPtPhiEta(double pt1, double phi1, double eta1,
-                                                 double pt2, double phi2, double eta2,
-                                                 double & Qlong, double & Qout, double & Qside)
+                                                double pt2, double phi2, double eta2,
+                                                double & Qlong, double & Qout, double & Qside)
 {
 
   TLorentzVector p1;
@@ -1385,8 +1385,8 @@ int  HistogramCollection::calculateQ3DwPtPhiEta(double pt1, double phi1, double 
 }
 
 int  HistogramCollection::calculateQ3DwPtPhiY(double pt1, double phi1, double y1,
-                                               double pt2, double phi2, double y2,
-                                               double & Qlong, double & Qout, double & Qside)
+                                              double pt2, double phi2, double y2,
+                                              double & Qlong, double & Qout, double & Qside)
 {
 
   TLorentzVector p1;
@@ -1785,12 +1785,12 @@ void HistogramCollection::setHistogram(TH2 * h, double v, double ev)
 }
 
 TH1 * HistogramCollection::loadH1(TFile * inputFile,
-                                   const TString & histoName,
-                                   bool  scale,
-                                   bool  save,
-                                   bool  plot,
-                                   bool  print,
-                                   bool  sumw2)
+                                  const TString & histoName,
+                                  bool  scale,
+                                  bool  save,
+                                  bool  plot,
+                                  bool  print,
+                                  bool  sumw2)
 {
   TH1* h = (TH1*) inputFile->Get(histoName);
   if (!h)
@@ -1805,12 +1805,12 @@ TH1 * HistogramCollection::loadH1(TFile * inputFile,
 ///No test is //done to verify that the file is properly opened.
 
 TH2 * HistogramCollection::loadH2(TFile * inputFile,
-                                   const TString & histoName,
-                                   bool  scale,
-                                   bool  save,
-                                   bool  plot,
-                                   bool  print,
-                                   bool  sumw2)
+                                  const TString & histoName,
+                                  bool  scale,
+                                  bool  save,
+                                  bool  plot,
+                                  bool  print,
+                                  bool  sumw2)
 {
   TH2* h = (TH2*) inputFile->Get(histoName);
   if (!h)
@@ -1824,12 +1824,12 @@ TH2 * HistogramCollection::loadH2(TFile * inputFile,
 ///Load the given 3D histogram (name) from the given TFile
 ///No test is //done to verify that the file is properly opened.
 TH3 * HistogramCollection::loadH3(TFile * inputFile,
-                                   const TString & histoName,
-                                   bool  scale,
-                                   bool  save,
-                                   bool  plot,
-                                   bool  print,
-                                   bool  sumw2)
+                                  const TString & histoName,
+                                  bool  scale,
+                                  bool  save,
+                                  bool  plot,
+                                  bool  print,
+                                  bool  sumw2)
 {
   TH3* h = (TH3*) inputFile->Get(histoName);
   if (!h)
@@ -1843,12 +1843,12 @@ TH3 * HistogramCollection::loadH3(TFile * inputFile,
 ///Load the given 3D histogram (name) from the given TFile
 ///No test is //done to verify that the file is properly opened.
 TProfile * HistogramCollection::loadProfile(TFile * inputFile,
-                                             const TString & histoName,
-                                             bool  scale,
-                                             bool  save,
-                                             bool  plot,
-                                             bool  print,
-                                             bool  sumw2)
+                                            const TString & histoName,
+                                            bool  scale,
+                                            bool  save,
+                                            bool  plot,
+                                            bool  print,
+                                            bool  sumw2)
 {
   TProfile * h = (TProfile*) inputFile->Get(histoName);
   if (!h)
@@ -2152,7 +2152,7 @@ void HistogramCollection::correctMerging(TH1 * h, int nEta, int nPhi, bool rever
         {
         iPhiA = iPhi+iDphi;  if (iPhiA>=nPhi) iPhiA -= nPhi; // Dphi12 = iPhi-iPhiA < 0
         iPhiB = iPhi-iDphi;  if (iPhiB< 0) iPhiB += nPhi; // Dphi12 = iPhi-iPhiB > 0
-                                                             //Deta==0
+                                                          //Deta==0
         ij1 = nEtaPhi*(iEta*nPhi+iPhi) + iEta*nPhi+iPhiA;
         ij2 = nEtaPhi*(iEta*nPhi+iPhi) + iEta*nPhi+iPhiB;
         if (reverse)
@@ -3637,9 +3637,9 @@ void HistogramCollection::calculateNudyn(TH1* h_R2_11, TH1* h_R2_12, TH1* h_R2_2
 
 
 void HistogramCollection::calculateF3R3(TH1* h_f1_1, TH1* h_f1_2, TH1* h_f1_3,
-                                       TH1* h_f2_12, TH1* h_f2_13, TH1* h_f2_23,
-                                       TH1* h_f3_123,
-                                       TH1* h_F3_123, TH1* h_R3_123)
+                                        TH1* h_f2_12, TH1* h_f2_13, TH1* h_f2_23,
+                                        TH1* h_f3_123,
+                                        TH1* h_F3_123, TH1* h_R3_123)
 {
   double f1_1, ef1_1, f1_2, ef1_2, f1_3, ef1_3;
   double f2_12, ef2_12, f2_13, ef2_13, f2_23, ef2_23;
@@ -3667,10 +3667,10 @@ void HistogramCollection::calculateF3R3(TH1* h_f1_1, TH1* h_f1_2, TH1* h_f1_3,
 }
 
 void HistogramCollection::calculateF4R4(TH1* h_f1_1, TH1* h_f1_2, TH1* h_f1_3, TH1* h_f1_4,
-                                       TH1* h_f2_12, TH1* h_f2_13, TH1* h_f2_14, TH1* h_f2_23, TH1* h_f2_24, TH1* h_f2_34,
-                                       TH1* h_f3_123, TH1* h_f3_124, TH1* h_f3_134, TH1* h_f3_234,
-                                       TH1* h_f4_1234,
-                                       TH1* h_F4_1234, TH1* h_R4_1234)
+                                        TH1* h_f2_12, TH1* h_f2_13, TH1* h_f2_14, TH1* h_f2_23, TH1* h_f2_24, TH1* h_f2_34,
+                                        TH1* h_f3_123, TH1* h_f3_124, TH1* h_f3_134, TH1* h_f3_234,
+                                        TH1* h_f4_1234,
+                                        TH1* h_F4_1234, TH1* h_R4_1234)
 {
   double f1_1, ef1_1, f1_2, ef1_2, f1_3, ef1_3, f1_4, ef1_4;
   double f2_12, ef2_12, f2_13, ef2_13, f2_14, ef2_14, f2_23, ef2_23, f2_24, ef2_24, f2_34, ef2_34;
@@ -3709,52 +3709,67 @@ void HistogramCollection::calculateF4R4(TH1* h_f1_1, TH1* h_f1_2, TH1* h_f1_3, T
 
 
 void HistogramCollection::calculateF2R2(double f1_1,double ef1_1,double f1_2,double ef1_2, double f2_12,double ef2_12,
-                                       double & F2_12,double & eF2_12, double &  R2_12,double & eR2_12)
+                                        double & F2_12,double & eF2_12, double &  R2_12,double & eR2_12)
 {
   // calculate  F2_12 = f2_12 - f1_1*f1_2  and R2 = f2/f1_1/f1_2 - 1
   // errors are calculated assuming there are no correlations
 
   double ref1_1, ref1_2, ref2_12;
-  if (f1_1<1E-20) f1_1 = 1E-20;
-  if (f1_2<1E-20) f1_2 = 1E-20;
-  F2_12     = f2_12 - f1_1*f1_2;
-  ref1_1    = ef1_1/f1_1;
-  ref1_2    = ef1_2/f1_2;
-  ref2_12   = ef2_12/f2_12;
-  eF2_12    = sqrt(f1_1*f1_2*f1_1*f1_2*(ref1_1*ref1_1 + ref1_2*ref1_2) + eF2_12*eF2_12);
-  R2_12     = F2_12/(f1_1*f1_2);
-  eR2_12    = R2_12*sqrt(ref1_1*ref1_1 + ref1_2*ref1_2 + ref2_12*ref2_12);
+  if (f1_1<1E-20 || f1_2<1E-20)
+    {
+    F2_12  = 0.0;
+    eF2_12 = 0.0;
+    R2_12  = 0.0;
+    eR2_12 = 0.0;
+    }
+  else
+    {
+    F2_12     = f2_12 - f1_1*f1_2;
+    ref1_1    = ef1_1/f1_1;
+    ref1_2    = ef1_2/f1_2;
+    ref2_12   = ef2_12/f2_12;
+    eF2_12    = sqrt(f1_1*f1_2*f1_1*f1_2*(ref1_1*ref1_1 + ref1_2*ref1_2) + eF2_12*eF2_12);
+    R2_12     = F2_12/(f1_1*f1_2);
+    eR2_12    = R2_12*sqrt(ref1_1*ref1_1 + ref1_2*ref1_2 + ref2_12*ref2_12);
+    }
 }
 
 
 void HistogramCollection::calculateF3R3(double f1_1,double ef1_1,double f1_2,double ef1_2, double f1_3,double ef1_3,
-                                       double f2_12,double ef2_12,double f2_13,double ef2_13,double f2_23,double ef2_23,
-                                       double f3_123, double ef3_123,
-                                       double & F3_123,double & eF3_123, double &  R3_123,double & eR3_123)
+                                        double f2_12,double ef2_12,double f2_13,double ef2_13,double f2_23,double ef2_23,
+                                        double f3_123, double ef3_123,
+                                        double & F3_123,double & eF3_123, double &  R3_123,double & eR3_123)
 {
   // calculate  F2_12 = f2_12 - f1_1*f1_2  and R2 = f2/f1_1/f1_2 - 1
   // errors are calculated assuming there are no correlations
 
   double ref1_1, ref1_2, ref1_3, ref2_12, ref2_13, ref2_23, reF3_123;
-  if (f1_1<1E-20) f1_1 = 1E-20;
-  if (f1_2<1E-20) f1_2 = 1E-20;
-  if (f1_3<1E-20) f1_3 = 1E-20;
-  F3_123    = f3_123 - f2_12*f1_3 - f2_13*f1_2 - f2_23*f1_1 + 2.0*f1_1*f1_2*f1_3;
-  ref1_1    = ef1_1/f1_1;
-  ref1_2    = ef1_2/f1_2;
-  ref1_3    = ef1_3/f1_3;
-  ref2_12   = ef2_12/f2_12;
-  ref2_13   = ef2_13/f2_13;
-  ref2_23   = ef2_23/f2_23;
-  eF3_123   = ef3_123*ef3_123;
-  eF3_123   += f2_12*f2_12*f1_3*f1_3*(ref2_12*ref2_12 + ref1_3*ref1_3);
-  eF3_123   += f2_13*f2_13*f1_2*f1_2*(ref2_13*ref2_13 + ref1_2*ref1_2);
-  eF3_123   += f2_23*f2_23*f1_1*f1_1*(ref2_23*ref2_23 + ref1_1*ref1_1);
-  eF3_123   += 4.0*f1_1*f1_1*f1_2*f1_2*f1_3*f1_3*sqrt(ref1_1*ref1_1+ref1_2*ref1_2+ref1_3*ref1_3);
-  eF3_123   = sqrt(eF3_123);
-  reF3_123   = eF3_123/F3_123;
-  R3_123     = F3_123/(f1_1*f1_2*f1_3);
-  eR3_123    = R3_123*reF3_123;
+  if (f1_1<1E-20 || f1_2<1E-20 || f1_3<1E-20)
+    {
+    F3_123   = 0.0;
+    eF3_123  = 0.0;
+    R3_123   = 0.0;
+    eR3_123  = 0.0;
+    }
+  else
+    {
+    F3_123    = f3_123 - f2_12*f1_3 - f2_13*f1_2 - f2_23*f1_1 + 2.0*f1_1*f1_2*f1_3;
+    ref1_1    = ef1_1/f1_1;
+    ref1_2    = ef1_2/f1_2;
+    ref1_3    = ef1_3/f1_3;
+    ref2_12   = ef2_12/f2_12;
+    ref2_13   = ef2_13/f2_13;
+    ref2_23   = ef2_23/f2_23;
+    eF3_123   = ef3_123*ef3_123;
+    eF3_123   += f2_12*f2_12*f1_3*f1_3*(ref2_12*ref2_12 + ref1_3*ref1_3);
+    eF3_123   += f2_13*f2_13*f1_2*f1_2*(ref2_13*ref2_13 + ref1_2*ref1_2);
+    eF3_123   += f2_23*f2_23*f1_1*f1_1*(ref2_23*ref2_23 + ref1_1*ref1_1);
+    eF3_123   += 4.0*f1_1*f1_1*f1_2*f1_2*f1_3*f1_3*sqrt(ref1_1*ref1_1+ref1_2*ref1_2+ref1_3*ref1_3);
+    eF3_123   = sqrt(eF3_123);
+    reF3_123   = eF3_123/F3_123;
+    R3_123     = F3_123/(f1_1*f1_2*f1_3);
+    eR3_123    = R3_123*reF3_123;
+    }
 }
 
 void HistogramCollection::calculateF4R4(double f1_1,double ef1_1,double f1_2,double ef1_2, double f1_3,double ef1_3, double f1_4,double ef1_4,
@@ -3773,43 +3788,50 @@ void HistogramCollection::calculateF4R4(double f1_1,double ef1_1,double f1_2,dou
   double ref4_1234;
   double reF4_1234;
 
-  if (f1_1<1E-20) f1_1 = 1E-20;
-  if (f1_2<1E-20) f1_2 = 1E-20;
-  if (f1_3<1E-20) f1_3 = 1E-20;
-  if (f1_4<1E-20) f1_4 = 1E-20;
-  F4_1234   = f4_1234 - f3_123*f1_4 - f3_124*f1_3 - f3_134*f1_2 - f3_234*f1_1
-  - 2.0*f2_12*f2_34 - 2.0*f2_13*f2_24 - 2.0*f2_14*f2_23
-  + 4.0*f2_12*f1_3*f1_4 + 4.0*f2_13*f1_2*f1_4 + 4.0*f2_14*f1_2*f1_3
-  - 6.0*f1_1*f1_2*f1_3*f1_4;
-  ref1_1    = ef1_1/f1_1;
-  ref1_2    = ef1_2/f1_2;
-  ref1_3    = ef1_3/f1_3;
-  ref1_4    = ef1_3/f1_4;
-  ref2_12   = ef2_12/f2_12;
-  ref2_13   = ef2_13/f2_13;
-  ref2_14   = ef2_14/f2_14;
-  ref2_23   = ef2_23/f2_23;
-  ref2_24   = ef2_24/f2_24;
-  ref2_34   = ef2_34/f2_34;
-  ref3_123  = ef3_123/f3_123;
-  ref3_124  = ef3_124/f3_124;
-  ref3_134  = ef3_134/f3_134;
-  ref3_234  = ef3_234/f3_234;
-  ref4_1234 = ef4_1234/f4_1234;
+  if (f1_1<1E-20 || f1_2<1E-20 || f1_3<1E-20 || f1_4<1E-20)
+    {
+    F4_1234   = 0.0;
+    eF4_1234  = 0.0;
+    R4_1234   = 0.0;
+    eR4_1234  = 0.0;
+    }
+  else
+    {
 
-  eF4_1234   = ef4_1234*ef4_1234
-  + f3_123*f3_123*f1_4*f1_4*(ref3_123*ref3_123 + ef1_4*ef1_4)
-  + f3_124*f3_124*f1_3*f1_3*(ref3_124*ref3_124 + ref1_3*ref1_3)
-  + f3_134*f3_134*f1_2*f1_2*(ref3_134*ref3_134 + ref1_2*ref1_2)
-  + f3_234*f3_234*f1_1*f1_1*(ref3_234*ref3_234 + ref1_1*ref1_1)
-  + 16.0*f2_12*f2_12*f2_34*f2_34*(ref2_12*ref2_12 + ef2_34*ef2_34)
-  + 16.0*f2_13*f2_13*f2_24*f2_24*(ref2_13*ref2_13 + ef2_24*ef2_24)
-  + 16.0*f2_14*f2_14*f2_23*f2_23*(ref2_14*ref2_14 + ef2_23*ef2_23);
-  // neglect singles term for now...
-  eF4_1234   = sqrt(eF4_1234);
-  reF4_1234  = eF4_1234/F4_1234;
-  R4_1234    = F4_1234/(f1_1*f1_2*f1_3*f1_4);
-  eR4_1234   = R4_1234*reF4_1234;
+    F4_1234   = f4_1234 - f3_123*f1_4 - f3_124*f1_3 - f3_134*f1_2 - f3_234*f1_1
+    - 2.0*f2_12*f2_34 - 2.0*f2_13*f2_24 - 2.0*f2_14*f2_23
+    + 4.0*f2_12*f1_3*f1_4 + 4.0*f2_13*f1_2*f1_4 + 4.0*f2_14*f1_2*f1_3
+    - 6.0*f1_1*f1_2*f1_3*f1_4;
+    ref1_1    = ef1_1/f1_1;
+    ref1_2    = ef1_2/f1_2;
+    ref1_3    = ef1_3/f1_3;
+    ref1_4    = ef1_3/f1_4;
+    ref2_12   = ef2_12/f2_12;
+    ref2_13   = ef2_13/f2_13;
+    ref2_14   = ef2_14/f2_14;
+    ref2_23   = ef2_23/f2_23;
+    ref2_24   = ef2_24/f2_24;
+    ref2_34   = ef2_34/f2_34;
+    ref3_123  = ef3_123/f3_123;
+    ref3_124  = ef3_124/f3_124;
+    ref3_134  = ef3_134/f3_134;
+    ref3_234  = ef3_234/f3_234;
+    ref4_1234 = ef4_1234/f4_1234;
+
+    eF4_1234   = ef4_1234*ef4_1234
+    + f3_123*f3_123*f1_4*f1_4*(ref3_123*ref3_123 + ef1_4*ef1_4)
+    + f3_124*f3_124*f1_3*f1_3*(ref3_124*ref3_124 + ref1_3*ref1_3)
+    + f3_134*f3_134*f1_2*f1_2*(ref3_134*ref3_134 + ref1_2*ref1_2)
+    + f3_234*f3_234*f1_1*f1_1*(ref3_234*ref3_234 + ref1_1*ref1_1)
+    + 16.0*f2_12*f2_12*f2_34*f2_34*(ref2_12*ref2_12 + ef2_34*ef2_34)
+    + 16.0*f2_13*f2_13*f2_24*f2_24*(ref2_13*ref2_13 + ef2_24*ef2_24)
+    + 16.0*f2_14*f2_14*f2_23*f2_23*(ref2_14*ref2_14 + ef2_23*ef2_23);
+    // neglect singles term for now...
+    eF4_1234   = sqrt(eF4_1234);
+    reF4_1234  = eF4_1234/F4_1234;
+    R4_1234    = F4_1234/(f1_1*f1_2*f1_3*f1_4);
+    eR4_1234   = R4_1234*reF4_1234;
+    }
 }
 
 void HistogramCollection::calculateNudyn(double r2_11,double er2_11,double r2_12,double er2_12,double r2_22,double er2_22,double & nudyn,double & enudyn)

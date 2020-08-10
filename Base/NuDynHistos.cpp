@@ -12,7 +12,7 @@ NuDynHistos::NuDynHistos(const TString & name,
                          AnalysisConfiguration * configuration,
                          LogLevel  debugLevel)
 :
-Histograms(name,configuration,300,debugLevel)
+Histograms(name,configuration,400,debugLevel)
 {
   initialize();
 }
@@ -22,7 +22,7 @@ NuDynHistos::NuDynHistos(TFile * inputFile,
                          AnalysisConfiguration * configuration,
                          LogLevel  debugLevel)
 :
-Histograms(name,configuration,300,debugLevel)
+Histograms(name,configuration,400,debugLevel)
 {
   loadHistograms(inputFile);
 }
@@ -37,6 +37,16 @@ void NuDynHistos::createHistograms()
 {
   AnalysisConfiguration & ac = *getConfiguration();
   TString bn = getHistoBaseName();
+
+  // ================================================================================
+  // Naming convention
+  // ================================================================================
+  // fk_i     : factorial moments of order "k" for particle "i" (i.e., accepted by filter 1)
+  // Fk_i..j  : factorial cumulants of order "k" for particles "i, ..., j" (i.e., accepted by filter i..j)
+  // rk_i     : ratio of factorial moments of order "k" for particle "i" (i.e., accepted by filter 1)
+  //            to product of f1_i
+  // 
+
   // n1 number of particles satisfying filter 1
   // n2 number of particles satisfying filter 2
   // h_f1_1 = <n1>
@@ -48,6 +58,7 @@ void NuDynHistos::createHistograms()
   // h_r2_22 = <n2(n2-1)>/<n2><n2>
   // h_r2_12 = <n1(n2-1)>/<n1><n2>
   // h_nudyn_12 = h_r2_11 + h_r2_22 -2*h_r2_12
+  // etc
 
   int nPart =4;
   h_f1 = new TProfile * [4];

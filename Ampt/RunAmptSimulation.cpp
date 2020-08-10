@@ -107,10 +107,10 @@ int main()
   TwoPartCorrelationAnalyzer  * ana3 = new TwoPartCorrelationAnalyzer ("Ampt_TPCA_KK",   ac,  event, eventFilter,particleFilter5,particleFilter6);
   TwoPartCorrelationAnalyzer  * ana4 = new TwoPartCorrelationAnalyzer ("Ampt_TPCA_PP",   ac,  event, eventFilter,particleFilter7,particleFilter8);
 
-  NuDynTask * nudyn1 = new NuDynTask("Ampt_NuDyn_ALL",    ac,  event, eventFilter,particleFilter1,particleFilter2);
-  NuDynTask * nudyn2 = new NuDynTask("Ampt_NuDyn_PiPi",   ac,  event, eventFilter,particleFilter3,particleFilter4);
-  NuDynTask * nudyn3 = new NuDynTask("Ampt_NuDyn_KK",     ac,  event, eventFilter,particleFilter5,particleFilter6);
-  NuDynTask * nudyn4 = new NuDynTask("Ampt_NuDyn_PP",     ac,  event, eventFilter,particleFilter7,particleFilter8);
+//  NuDynTask * nudyn1 = new NuDynTask("Ampt_NuDyn_ALL",    ac,  event, eventFilter,particleFilter1,particleFilter2);
+//  NuDynTask * nudyn2 = new NuDynTask("Ampt_NuDyn_PiPi",   ac,  event, eventFilter,particleFilter3,particleFilter4);
+//  NuDynTask * nudyn3 = new NuDynTask("Ampt_NuDyn_KK",     ac,  event, eventFilter,particleFilter5,particleFilter6);
+//  NuDynTask * nudyn4 = new NuDynTask("Ampt_NuDyn_PP",     ac,  event, eventFilter,particleFilter7,particleFilter8);
 
   EventLoop * eventLoop = new EventLoop();
 
@@ -119,10 +119,10 @@ int main()
   ana2->setReportLevel(MessageLogger::Info);
   ana3->setReportLevel(MessageLogger::Info);
   ana4->setReportLevel(MessageLogger::Info);
-  nudyn1->setReportLevel(MessageLogger::Info);
-  nudyn2->setReportLevel(MessageLogger::Info);
-  nudyn3->setReportLevel(MessageLogger::Info);
-  nudyn4->setReportLevel(MessageLogger::Info);
+//  nudyn1->setReportLevel(MessageLogger::Info);
+//  nudyn2->setReportLevel(MessageLogger::Info);
+//  nudyn3->setReportLevel(MessageLogger::Info);
+//  nudyn4->setReportLevel(MessageLogger::Info);
   eventLoop->setReportLevel(MessageLogger::Info);
 
   eventLoop->addTask(gen);
@@ -130,10 +130,10 @@ int main()
   eventLoop->addTask(ana2);
   eventLoop->addTask(ana3);
   eventLoop->addTask(ana4);
-  eventLoop->addTask(nudyn1);
-  eventLoop->addTask(nudyn2);
-  eventLoop->addTask(nudyn3);
-  eventLoop->addTask(nudyn4);
+//  eventLoop->addTask(nudyn1);
+//  eventLoop->addTask(nudyn2);
+//  eventLoop->addTask(nudyn3);
+//  eventLoop->addTask(nudyn4);
   eventLoop->run(nEventsRequested,nEventsReport);
 
 

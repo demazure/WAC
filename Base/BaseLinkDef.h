@@ -12,6 +12,10 @@
 #pragma link C++ class GraphConfiguration+;
 #pragma link C++ class HistogramCollection+;
 #pragma link C++ class Histograms+;
+#pragma link C++ class Plotter+;
+#pragma link C++ class StatStudyHistograms+;
+#pragma link C++ class StatStudyPlotter+;
+#pragma link C++ class StatStudyModel+;
 //#pragma link C++ class IMPairHistos+;
 //#pragma link C++ class IMParticleHistos+;
 //#pragma link C++ class MasterAnalysis+;

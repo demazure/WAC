@@ -48,8 +48,8 @@ void PythiaEventGenerator::initialize()
 
   pythia8->ReadString("Init:showChangedSettings = on");      // list changed settings
   pythia8->ReadString("Init:showChangedParticleData = off"); // list changed particle data
-  pythia8->ReadString("Next:numberCount = 5000");            // print message every n events
-  pythia8->ReadString("Next:numberShowInfo = 2");            // print event information n times
+  pythia8->ReadString("Next:numberCount = 100000");            // print message every n events
+  pythia8->ReadString("Next:numberShowInfo = 1");            // print event information n times
   pythia8->ReadString("Next:numberShowProcess = 0");         // print process record n times
   pythia8->ReadString("Next:numberShowEvent = 0");
 

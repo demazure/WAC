@@ -36,7 +36,7 @@ xLabelOffset(0.01),
 xTitle("x"),
 nYDivisions(5),
 yTitleSize(0.05),
-yTitleOffset(1.6),
+yTitleOffset(1.4),
 yLabelSize(0.05),
 yLabelOffset(0.01),
 yTitle("y"),
@@ -142,18 +142,26 @@ plotOption("")
         markerColor = kBlack;
         markerStyle = 20;
         markerSize  = 1.5;
-
-        nXDivisions  = 4;
-        xTitleSize   = 0.07;
-        xTitleOffset = 0.7;
-        xLabelSize   = 0.07;
-        xLabelOffset = 0.02;
-        nYDivisions  = 4;
-        yTitleSize   = 0.07;
-        yTitleOffset = 0.8;
-        yLabelSize   = 0.07;
-        yLabelOffset = 0.02;
         break;
+        case  100:
+           lineColor = kBlack;
+           lineStyle = 1;
+           lineWidth = 4;
+           markerColor = kBlack;
+           markerStyle = 20;
+           markerSize  = 1.5;
+
+           nXDivisions  = 4;
+           xTitleSize   = 0.07;
+           xTitleOffset = 0.7;
+           xLabelSize   = 0.07;
+           xLabelOffset = 0.02;
+           nYDivisions  = 4;
+           yTitleSize   = 0.07;
+           yTitleOffset = 0.8;
+           yLabelSize   = 0.07;
+           yLabelOffset = 0.02;
+           break;
       }
     }
   else if (dim==2)

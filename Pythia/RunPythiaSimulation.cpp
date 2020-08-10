@@ -20,8 +20,8 @@ int main()
   cout << "<INFO> PYTHIA Model Analysis - Starting" << endl;
 
 //  long nEventsRequested = 100;
-  long nEventsRequested = 10000000;
-  int  nEventsReport    = 10000;
+  long nEventsRequested = 50000000;
+  int  nEventsReport    = 100000;
 
   AnalysisConfiguration * ac = new AnalysisConfiguration("PYTHIA","PYTHIA","1.0");
   ac->loadHistograms  = false;
@@ -70,9 +70,9 @@ int main()
 
   ac->nuDynVsMult     = true;
   ac->nuDynVsCent     = false;
-  ac->nBins_mult   = 400;
+  ac->nBins_mult   = 100;
   ac->min_mult     = 0.0;
-  ac->max_mult     = 100.0;
+  ac->max_mult     = 400.0;
   ac->nBins_cent   = 20;
   ac->min_cent     = 0.0;
   ac->max_cent     = 100.0;

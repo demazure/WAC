@@ -10,11 +10,14 @@
 
 #ifndef WAC_CanvasConfiguration
 #define WAC_CanvasConfiguration
-#include "TCanvas.h"
+
 class CanvasConfiguration
 {
 public:
-  
+
+  enum CanvasFormat   { PortraitTight, Portrait, PortraitWide, SquareTight, Square, SquareWide, LandscapeTight, Landscape, LandscapeWide };
+  enum CanvasAxes     { Linear, LogX, LogY, LogZ, LogXY, LogXZ, LogYZ, LogXYZ  };
+
   ////////////////////////////////////////////////////
   // Data Members
   ////////////////////////////////////////////////////
@@ -38,10 +41,16 @@ public:
   ////////////////////////////////////////////////////
   // Member functions
   ////////////////////////////////////////////////////
+  CanvasConfiguration(CanvasFormat format, CanvasAxes axes);
   CanvasConfiguration(bool log=0, int style=0, int dimension=1);
   CanvasConfiguration(const CanvasConfiguration & canvasConfig);
   CanvasConfiguration & operator=(const CanvasConfiguration & canvasConfig);
   virtual ~CanvasConfiguration();
+
+  void setFormat(CanvasFormat format=Square);
+  void setAxes(CanvasAxes format=Linear);
+  void setMargins(float leftMargin, float topMargin, float rightMargin, float bottomMargin);
+  void setSize(int width, int height);
 
   ClassDef(CanvasConfiguration,0)
 
