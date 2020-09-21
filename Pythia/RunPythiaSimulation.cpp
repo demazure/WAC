@@ -20,7 +20,7 @@ int main()
   cout << "<INFO> PYTHIA Model Analysis - Starting" << endl;
 
 //  long nEventsRequested = 100;
-  long nEventsRequested = 50000000;
+  long nEventsRequested = 10000000;
   int  nEventsReport    = 100000;
 
   AnalysisConfiguration * ac = new AnalysisConfiguration("PYTHIA","PYTHIA","1.0");
@@ -35,13 +35,13 @@ int main()
   ac->inputPath = "./";
   ac->configurationFileName = "configuration";
   ac->rootInputFileName = "";
-  ac->outputPath = "/Users/claudeapruneau/Documents/GitHub/run/nudyn/";
-  ac->rootOuputFileName =  "results";
+  ac->outputPath = "/Users/claudeapruneau/Documents/GitHub/run/NuDynStudies/";
+  ac->rootOuputFileName =  "softOff";
   ac->histoBaseName =  "pythia";
 
   ac->nBins_pt    = 40;
   ac->min_pt      = 0.2;
-  ac->max_pt      = 3.0;
+  ac->max_pt      = 2.0;
   ac->nBins_eta   = 20;
   ac->min_eta     = -2;
   ac->max_eta     = 2;

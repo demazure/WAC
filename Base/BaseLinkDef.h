@@ -68,11 +68,22 @@
 #pragma link C++ class NuDynTask+;
 #pragma link C++ class NuDynHistos+;
 #pragma link C++ class NuDynDerivedHistos+;
+#pragma link C++ class NuDynPlotter+;
 
 #pragma link C++ class TrackAndPairEffects+;
 #pragma link C++ class TrackAndPairConfiguration+;
 
 #pragma link C++ class GeneralizedGaussianProfile+;
 #pragma link C++ class GeneralizedGaussianConfiguration+;
+
+#pragma link C++ class  CollisionGeometry+;
+#pragma link C++ class  CollisionGeometryConfiguration+;
+#pragma link C++ class  CollisionGeometryAnalyzer+;
+#pragma link C++ class  CollisionGeometryGenerator+;
+#pragma link C++ class  CollisionGeometryHistograms+;
+#pragma link C++ class  Nucleon+;
+#pragma link C++ class  Nucleus+;
+#pragma link C++ class  NucleusGenerator+;
+
 
 #endif
