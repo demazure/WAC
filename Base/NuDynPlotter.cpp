@@ -1,9 +1,9 @@
 #include "NuDynPlotter.hpp"
 ClassImp(NuDynPlotter);
 
-NuDynPlotter::NuDynPlotter(bool showErrors)
+NuDynPlotter::NuDynPlotter()
 :
-Plotter(showErrors)
+Plotter()
 {  }
 
 NuDynPlotter::~NuDynPlotter()

@@ -18,11 +18,10 @@
 ClassImp(Plotter);
 
 
-Plotter::Plotter(bool showErrors)
+Plotter::Plotter()
 :
 CanvasCollection(),
-MessageLogger(),
-showErrorBars(showErrors)
+MessageLogger()
 {
   if (reportDebug()) cout << "Plotter::CTOR() No OPS." << endl;
 }
@@ -50,7 +49,7 @@ TCanvas *  Plotter::plot(TString  canvasName, CanvasConfiguration * cc, GraphCon
   h->SetMinimum(yMin);
   h->SetMaximum(yMax);
   h->GetXaxis()->SetRangeUser(xMin,xMax);
-  h->Draw();
+  h->Draw(plotOption);
   createLegend(h,legendText,xMinLeg, yMinLeg, xMaxLeg, yMaxLeg,0, legendSize);
   return canvas;
 }
@@ -129,17 +128,16 @@ TCanvas *  Plotter::plot(int nGraphs, TString  canvasName, CanvasConfiguration *
     h[0]->GetXaxis()->SetRangeUser(xMin,xMax);
     }
 
-  if (showErrorBars)
-      h[0]->Draw();
-    else
-      h[0]->Draw("HIST");
+  TString plotOption;
+
+  setProperties(h[0],*gc[0]);
+  plotOption = gc[0]->plotOption;
+  h[0]->Draw(plotOption);
   for (int iGraph=1; iGraph<nGraphs; iGraph++)
     {
     setProperties(h[iGraph],*gc[iGraph]);
-    if (showErrorBars)
-      h[iGraph]->Draw("SAME");
-    else
-      h[iGraph]->Draw("HIST SAME");
+    plotOption = gc[iGraph]->plotOption;
+    h[iGraph]->Draw(plotOption+" SAME");
     }
   createLegend(nGraphs,h,legendTexts,xMinLeg, yMinLeg, xMaxLeg, yMaxLeg,0, legendSize);
   return canvas;
@@ -232,6 +230,9 @@ void Plotter::setProperties(TH1 * h, const GraphConfiguration & graphConfigurati
   h->SetLineColor(graphConfiguration.lineColor);
   h->SetLineStyle(graphConfiguration.lineStyle);
   h->SetLineWidth(graphConfiguration.lineWidth);
+  h->SetMarkerColor(graphConfiguration.markerColor);
+  h->SetMarkerStyle(graphConfiguration.markerStyle);
+  h->SetMarkerSize (graphConfiguration.markerSize);
   TAxis * xAxis = (TAxis *) h->GetXaxis();
   xAxis->SetNdivisions(graphConfiguration.nXDivisions);
   xAxis->SetTitleSize(graphConfiguration.xTitleSize);

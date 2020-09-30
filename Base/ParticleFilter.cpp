@@ -99,6 +99,7 @@ TString ParticleFilter::getName()
   TString name;
   switch (pidRequested)
     {
+      default: name = "WakyWaky"; break;
       case AllSpecies: name = "All"; break;
       case Photon:     name = "Gam"; break;
       case Lepton:     name = "Lep"  ; break;
@@ -116,6 +117,7 @@ TString ParticleFilter::getName()
 
   switch (chargeRequested)
      {
+       default: name = "WakyWakyWakyWaky"; break;
        case AllCharges:   name += "All"; break; // all charges
        case Negative: name += "M"; break; // minus
        case Positive: name += "P"; break;
