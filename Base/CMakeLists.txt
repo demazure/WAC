@@ -24,5 +24,5 @@ target_link_libraries(RunCollisionGeometrySimulation Base  EGLib   ${ROOT_LIBRAR
 install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/libBase.rootmap" "${CMAKE_CURRENT_BINARY_DIR}/libBase_rdict.pcm" DESTINATION "$ENV{WAC_LIB}")
 install(TARGETS Base  LIBRARY DESTINATION "$ENV{WAC_LIB}")
 
-install(TARGETS RunCollisionGeometrySimulation DESTINATION /Users/claudeapruneau/opt/WAC/bin) 
+install(TARGETS RunCollisionGeometrySimulation DESTINATION "$ENV{WAC_BIN}") 
 
