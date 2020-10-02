@@ -62,6 +62,9 @@ int main()
   ac->nBins_nBinary = 400;
   ac->min_nBinary   = 0;
   ac->max_nBinary   = 2000;
+
+  ac->calculateDerivedHistograms = true;
+
   CollisionGeometry * collisionGeometry = new  CollisionGeometry(ac->nProtonsA,
                                                                  ac->nNeutronsA,
                                                                  ac->nProtonsB,

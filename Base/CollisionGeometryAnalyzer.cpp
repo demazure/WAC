@@ -73,3 +73,7 @@ void CollisionGeometryAnalyzer::saveHistograms(TFile * outputFile)
 }
 
 
+void CollisionGeometryAnalyzer::calculateDerivedHistograms()
+{
+  collisionGeometryHistograms->calculateDerivedHistograms();
+}

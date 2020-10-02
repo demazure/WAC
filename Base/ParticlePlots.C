@@ -73,12 +73,12 @@ int ParticlePlots()
   TString outputPath = "/Users/claudeapruneau/Documents/GitHub/run/PythiaStudies/";
 
 
-  int nFiles            = 3;
+  int nFiles            = 2;
   TString ** fileNames = new TString*[nFiles];
   TString fileName;
-  fileNames[0] = new TString("softOnHardOnPYTHIA_Singles_MB.root");
-  fileNames[1] = new TString("softOffPYTHIA_Singles_MB.root");
-  fileNames[2] = new TString("hardOffPYTHIA_Singles_MB.root");
+  fileNames[0] = new TString("PYTHIA_softOnHardOff_Singles_Narrow_MB.root");
+  fileNames[1] = new TString("PYTHIA_softOnHardOff_Singles_Wide_MB.root");
+  //fileNames[2] = new TString("hardOffPYTHIA_Singles_MB.root");
 
 //  fileNames[1] = new TString("softOffPYTHIA_Singles_MB.root");
 //  fileNames[2] = new TString("softOffPYTHIA_Singles_MB.root");
@@ -100,13 +100,11 @@ int ParticlePlots()
 
   int nModels = nFiles;
   TString ** modelNames = new TString*[nModels];
-  modelNames[0] = new TString("PYTHIA-SoftOnHardOn");
-  modelNames[1] = new TString("PYTHIA-SoftOff");
-  modelNames[2] = new TString("PYTHIA-HardOff");
+  modelNames[0] = new TString("PYTHIA-MinBiasEta1");
+  modelNames[1] = new TString("PYTHIA-MinBiasEta6");
   TString ** modelTitles = new TString*[nModels];
-  modelTitles[0] = new TString("PYTHIA(SoftOn,HardOn)");
-  modelTitles[1] = new TString("PYTHIA(SoftOff)");
-  modelTitles[2] = new TString("PYTHIA(HardOff)");
+  modelTitles[0] = new TString("PYTHIA MB |#eta|<1");
+  modelTitles[1] = new TString("PYTHIA MB |#eta|<6");
 
   int nParticleTypes = 12;
   TString ** particleNames = new TString*[nParticleTypes];
@@ -174,7 +172,6 @@ int ParticlePlots()
   canvasName = "ModelComp_HC_MultDist";
   histograms[0] = particleHistos[0]->h_n1; titles[0] = modelTitles[0];
   histograms[1] = particleHistos[nParticleTypes]->h_n1; titles[1] = modelTitles[1];
-  histograms[2] = particleHistos[2*nParticleTypes]->h_n1; titles[2] = modelTitles[2];
   compPlotters[0] = new Plotter();
   compPlotters[0]->plot(nModels, canvasName,canvasConfiguration,graphConfigurations,
        "N_{h^{#pm}}", 0.0, 200.0,
@@ -187,7 +184,6 @@ int ParticlePlots()
   canvasName = "ModelComp_HC_dndeta";
   histograms[0] = particleHistos[0]->h_n1_eta; titles[0] = modelTitles[0];
   histograms[1] = particleHistos[nParticleTypes]->h_n1_eta; titles[1] = modelTitles[1];
-  histograms[2] = particleHistos[2*nParticleTypes]->h_n1_eta; titles[2] = modelTitles[2];
   compPlotters[1] = new Plotter();
   compPlotters[1]->plot(nModels, canvasName,canvasConfiguration,graphConfigurations,
                     "#eta", 2.0, -2.0,
@@ -199,7 +195,6 @@ int ParticlePlots()
   canvasName = "ModelComp_HC_dnpTdpT";
   histograms[0] = particleHistos[0]->h_n1_ptXS; titles[0] = modelTitles[0];
   histograms[1] = particleHistos[nParticleTypes]->h_n1_ptXS; titles[1] = modelTitles[1];
-  histograms[2] = particleHistos[2*nParticleTypes]->h_n1_ptXS; titles[2] = modelTitles[2];
   compPlotters[2] = new Plotter();
   compPlotters[2]->plot(nModels, canvasName,canvasConfiguration,graphConfigurations,
                     "p_{T}", 0.0, 40.0,

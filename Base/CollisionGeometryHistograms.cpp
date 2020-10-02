@@ -67,13 +67,27 @@ void CollisionGeometryHistograms::createHistograms()
   CollisionGeometryConfiguration & ac = *configuration;
   TString bn = ac.histoBaseName; bn += "_";
 
-  h_b                = createHistogram(bn+TString("b"),       ac.nBins_b,       ac.min_b,       ac.max_b,       "b",        "Counts", 0, 1);
-  h_nPart            = createHistogram(bn+TString("nPart"),   ac.nBins_nPart,   ac.min_nPart,   ac.max_nPart,   "n_{Part}", "Counts", 0, 1);
-  h_nBinary          = createHistogram(bn+TString("nBinary"), ac.nBins_nBinary, ac.min_nBinary, ac.max_nBinary, "n_{Bin}",  "Counts", 0, 1);
-  h_nPartVsB_Prof    = createProfile(bn+TString("nPartVsB_Prof"),    ac.nBins_b,  ac.min_b,  ac.max_b,  "b",  "n_{Part}",1);
-  h_nBinaryVsB_Prof  = createProfile(bn+TString("nBinaryVsB_Prof"),  ac.nBins_b,  ac.min_b,  ac.max_b,  "b",  "n_{Bin}", 1);
-  h_nPartVsB         = createHistogram(bn+TString("nPartVsB"),       ac.nBins_b,  ac.min_b,  ac.max_b,  ac.nBins_nPart,   ac.min_nPart,   ac.max_nPart,   "b", "n_{Part}", "Counts",0,1);
-  h_nBinaryVsB       = createHistogram(bn+TString("nBinaryVsB"),     ac.nBins_b,  ac.min_b,  ac.max_b,  ac.nBins_nBinary, ac.min_nBinary, ac.max_nBinary, "b", "n_{Bin}",  "Counts",0,1);
+  h_b                  = createHistogram(bn+TString("b"),                     ac.nBins_b,      ac.min_b,       ac.max_b,       "b",        "Counts", 0, 1);
+  h_nPart              = createHistogram(bn+TString("nPart"),                 ac.nBins_nPart,  ac.min_nPart,   ac.max_nPart,   "n_{Part}", "Counts", 0, 1);
+  h_nBinary            = createHistogram(bn+TString("nBinary"),               ac.nBins_nBinary,ac.min_nBinary, ac.max_nBinary, "n_{Bin}",  "Counts", 0, 1);
+  h_nPartVsB_Prof      = createProfile(bn+TString("nPartVsB_Prof"),           ac.nBins_b,     ac.min_b,  ac.max_b,  "b",  "n_{Part}",1);
+  h_nBinaryVsB_Prof    = createProfile(bn+TString("nBinaryVsB_Prof"),         ac.nBins_b,     ac.min_b,  ac.max_b,  "b",  "n_{Bin}", 1);
+  h_nPartSqVsB_Prof    = createProfile(bn+TString("nPartSqVsB_Prof"),         ac.nBins_b,     ac.min_b,  ac.max_b,  "b",  "n_{Part}^{2}",1);
+  h_nBinarySqVsB_Prof  = createProfile(bn+TString("nBinarySqVsB_Prof"),       ac.nBins_b,     ac.min_b,  ac.max_b,  "b",  "n_{Bin}^{2}", 1);
+  h_nBinaryVsNPart_Prof   = createProfile(bn+TString("nBinaryVsNPart_Prof"),  ac.nBins_nPart, ac.min_nPart,   ac.max_nPart,  "n_{Part}", "n_{Bin}", 1);
+  h_nBinarySqVsNPart_Prof = createProfile(bn+TString("nBinarySqVsNPart_Prof"),ac.nBins_nPart, ac.min_nPart,   ac.max_nPart,"n_{Part}", "n_{Bin}^{2}", 1);
+  h_nPartVsB          = createHistogram(bn+TString("nPartVs"),                ac.nBins_b,     ac.min_b,  ac.max_b,  ac.nBins_nPart,   ac.min_nPart,   ac.max_nPart,   "b", "n_{Part}", "Counts",0,1);
+  h_nBinaryVsB        = createHistogram(bn+TString("nBinaryVsB"),             ac.nBins_b,     ac.min_b,  ac.max_b,  ac.nBins_nBinary, ac.min_nBinary, ac.max_nBinary, "b", "n_{Bin}",  "Counts",0,1);
+  h_nPartRmsVsB       = createHistogram(bn+TString("nPartRmsVsB"),            ac.nBins_b,     ac.min_b,  ac.max_b,  "b", "<n_{Part}^{2}>^{1/2}",0,1);
+  h_nBinaryRmsVsB     = createHistogram(bn+TString("nBinaryRmsVsB"),          ac.nBins_b,     ac.min_b,  ac.max_b,  "b", "<n_{Bin}^{2}>^{1/2}",0,1);
+  h_nBinaryRmsVsNPart = createHistogram(bn+TString("nBinaryRmsVsNPart"),      ac.nBins_nPart, ac.min_nPart,   ac.max_nPart, "n_{Part}", "<n_{Bin}^{2}>^{1/2}",0,1);
+
+  h_nPartOmegaVsB        = createHistogram(bn+TString("nPartOmegaVsB"),       ac.nBins_b,     ac.min_b,  ac.max_b,  "b",  "#omega_{N_{part}}");
+  h_nBinaryOmegaVsB      = createHistogram(bn+TString("nBinaryOmegaVsB"),     ac.nBins_b,     ac.min_b,  ac.max_b,  "b",  "#omega_{N_{Bin}}");
+  h_nBinaryOmegaVsNPart  = createHistogram(bn+TString("nBinaryOmegaVsNPart"), ac.nBins_nPart, ac.min_nPart,   ac.max_nPart, "n_{Part}",   "#omega_{N_{Bin}}");
+  h_nPartR2VsB           = createHistogram(bn+TString("nPartR2VsB"),          ac.nBins_b,     ac.min_b,  ac.max_b,  "b",  "R_{2}^{N_{part}}");
+  h_nBinaryR2VsB         = createHistogram(bn+TString("nBinaryR2VsB"),        ac.nBins_b,     ac.min_b,  ac.max_b,  "b",  "R_{2}^{N_{bin}}");
+  h_nBinaryR2VsNPart     = createHistogram(bn+TString("nBinaryR2VsNPart"),    ac.nBins_nPart, ac.min_nPart,   ac.max_nPart,"n_{Part}", "R_{2}^{N_{bin}}");
 
   h_xyNNIntVsB       = createHistogram(bn+TString("xyNNIntVsB"),     ac.nBins_b,  ac.min_b,  ac.max_b,  40, -10.0, 10.0, 40, -10.0, 10.0, "b", "x", "y", "Counts",0,1);
 
@@ -99,21 +113,36 @@ void CollisionGeometryHistograms::loadHistograms(TFile * inputFile)
     }
   CollisionGeometryConfiguration & ac = *configuration;
   TString bn = ac.histoBaseName; bn += "_";
-  h_b                = loadH1(inputFile,     bn+TString("b") );
-  h_nPart            = loadH1(inputFile,     bn+TString("nPart") );
-  h_nBinary          = loadH1(inputFile,     bn+TString("nBinary") );
-  h_nPartVsB_Prof    = loadProfile(inputFile,bn+TString("nPartVsB_Prof"));
-  h_nBinaryVsB_Prof  = loadProfile(inputFile,bn+TString("nBinaryVsB_Prof"));
-  h_nPartVsB         = loadH2(inputFile,     bn+TString("nPartVsB"));
-  h_nBinaryVsB       = loadH2(inputFile,     bn+TString("nBinaryVsB"));
+  h_b                 = loadH1(inputFile,      bn+TString("b") );
+  h_nPart             = loadH1(inputFile,      bn+TString("nPart") );
+  h_nBinary           = loadH1(inputFile,      bn+TString("nBinary") );
+  h_nPartVsB_Prof     = loadProfile(inputFile, bn+TString("nPartVsB_Prof"));
+  h_nPartSqVsB_Prof   = loadProfile(inputFile, bn+TString("nPartSqVsB_Prof"));
+  h_nBinaryVsB_Prof   = loadProfile(inputFile, bn+TString("nBinaryVsB_Prof"));
+  h_nBinarySqVsB_Prof = loadProfile(inputFile, bn+TString("nBinarySqVsB_Prof"));
+  h_nPartVsB          = loadH2(inputFile,      bn+TString("nPartVsB"));
+  h_nBinaryVsB        = loadH2(inputFile,      bn+TString("nBinaryVsB"));
 
-  h_xyNNIntVsB       = loadH3(inputFile,     bn+TString("xyNNIntVsB"));
+  h_nBinaryVsNPart_Prof   = loadProfile(inputFile, bn+TString("nBinaryVsNPart_Prof"));
+  h_nBinarySqVsNPart_Prof = loadProfile(inputFile, bn+TString("nBinarySqVsNPart_Prof"));
+  h_nPartRmsVsB           = loadH1(inputFile,      bn+TString("nPartRmsVsB"));
+  h_nBinaryRmsVsB         = loadH1(inputFile,      bn+TString("nBinaryRmsVsB"));
+  h_nBinaryRmsVsNPart     = loadH1(inputFile,      bn+TString("nBinaryRmsVsNPart"));
+
+  h_nPartOmegaVsB         = loadH1(inputFile,      bn+TString("nPartOmegaVsB"));
+  h_nBinaryOmegaVsB       = loadH1(inputFile,      bn+TString("nPartOmegaVsB"));
+  h_nBinaryOmegaVsNPart   = loadH1(inputFile,      bn+TString("nBinaryOmegaVsNPart"));
+  h_nPartR2VsB            = loadH1(inputFile,      bn+TString("nPartR2VsB"));
+  h_nBinaryR2VsB          = loadH1(inputFile,      bn+TString("nBinaryR2VsB"));
+  h_nBinaryR2VsNPart      = loadH1(inputFile,      bn+TString("nBinaryR2VsNPart"));
+
+  h_xyNNIntVsB         = loadH3(inputFile,     bn+TString("xyNNIntVsB"));
 
   h_varXVsB_Prof       = loadProfile(inputFile,bn+TString("varXVsB_Prof"));
   h_varYVsB_Prof       = loadProfile(inputFile,bn+TString("varYVsB_Prof"));
   h_covXYVsB_Prof      = loadProfile(inputFile,bn+TString("covXYVsB_Prof"));
   h_epsilonXVsB_Prof   = loadProfile(inputFile,bn+TString("epsilonXVsB_Prof"));
-  h_epsilonYVsB_Prof = loadProfile(inputFile,bn+TString("epsilonModVsB_Prof"));
+  h_epsilonYVsB_Prof   = loadProfile(inputFile,bn+TString("epsilonModVsB_Prof"));
   h_epsilonXYVsB_Prof  = loadProfile(inputFile,bn+TString("epsilonXYVsB_Prof"));
   h_epsilonXYVsB       = loadH3(inputFile,     bn+TString("epsilonXYVsB"));
   h_psi2VsB_Prof       = loadProfile(inputFile,bn+TString("psi2VsB_Prof"));
@@ -132,10 +161,14 @@ void CollisionGeometryHistograms::fill(CollisionGeometry * collisionGeometry, do
   h_nPart    ->Fill(nPart,       weight);
   h_nBinary  ->Fill(nBinary,     weight);
 
-  h_nPartVsB_Prof   ->Fill(impactPar, nPart,   weight);
-  h_nBinaryVsB_Prof ->Fill(impactPar, nBinary, weight);
+  h_nPartVsB_Prof    ->Fill(impactPar, nPart,   weight);
+  h_nPartSqVsB_Prof  ->Fill(impactPar, nPart*nPart,   weight);
+  h_nBinaryVsB_Prof  ->Fill(impactPar, nBinary, weight);
+  h_nBinarySqVsB_Prof->Fill(impactPar, nBinary*nBinary, weight);
   h_nPartVsB        ->Fill(impactPar, nPart,   weight);
   h_nBinaryVsB      ->Fill(impactPar, nBinary, weight);
+  h_nBinaryVsNPart_Prof   ->Fill(nPart, nBinary,   weight);
+  h_nBinarySqVsNPart_Prof ->Fill(nPart, nBinary*nBinary,   weight);
 
   double x,x2; //x3,x4,x6,x8;
   double y,y2; //y3,y4,y6,y8;
@@ -185,3 +218,52 @@ void CollisionGeometryHistograms::fill(CollisionGeometry * collisionGeometry, do
 
 }
 
+void CollisionGeometryHistograms::calculateDerivedHistograms()
+{
+  calculateRms(h_nPartVsB_Prof,       h_nPartSqVsB_Prof,       h_nPartRmsVsB,       h_nPartOmegaVsB,       h_nPartR2VsB);
+  calculateRms(h_nBinaryVsB_Prof,     h_nBinarySqVsB_Prof,     h_nBinaryRmsVsB,     h_nBinaryOmegaVsB,     h_nBinaryR2VsB);
+  calculateRms(h_nBinaryVsNPart_Prof, h_nBinarySqVsNPart_Prof, h_nBinaryRmsVsNPart, h_nBinaryOmegaVsNPart, h_nBinaryR2VsNPart);
+}
+
+void CollisionGeometryHistograms::calculateRms(TProfile * h1, TProfile * h1Sq,   TH1* h1Rms, TH1* h1Omega, TH1* h1R2)
+{
+  double v, ev, v2, ev2, rms, erms, omega, eomega, R2, eR2;
+  int nBins = h1->GetNbinsX();
+  for (int iBin=1; iBin<nBins; iBin++)
+  {
+  v = h1->GetBinContent(iBin);
+  ev = 0.0;
+  v2 = h1Sq->GetBinContent(iBin);
+  ev2 = 0.0;
+  rms = v2 - v*v;
+  if (rms>0) rms = sqrt(rms);
+  erms = 0.0;
+
+
+  if (v>0)
+    {
+    omega  = rms*rms/v;
+    eomega = 0.0;
+    R2 = (v2-v)/v/v - 1.0;
+    eR2 = 0;
+    }
+  else
+    {
+    omega  = 0.0;
+    eomega = 0.0;
+    R2     = 0.0;
+    eR2    = 0;
+    }
+
+  cout << " iBin: " << iBin << " v:" << v << " v2:" << v2 << " rms:" << rms << " omega:" << omega << " R2:" << R2 << endl;
+
+  h1Rms->SetBinContent(iBin, rms);
+  h1Rms->SetBinError  (iBin, erms);
+
+  h1Omega->SetBinContent(iBin, omega);
+  h1Omega->SetBinError(iBin, eomega);
+
+  h1R2->SetBinContent(iBin, R2);
+  h1R2->SetBinError(iBin, eR2);
+  }
+}

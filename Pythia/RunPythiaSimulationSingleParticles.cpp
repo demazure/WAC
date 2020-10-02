@@ -90,6 +90,15 @@ int main()
   ac->min_phi     = 0.0;
   ac->max_phi     = 2.0*3.1415927;
 
+  AnalysisConfiguration * acWide = new AnalysisConfiguration(*ac);
+  acWide->nBins_eta   = 120;
+  acWide->min_eta     = -8;
+  acWide->max_eta     =  8;
+  acWide->nBins_y     = 120;
+  acWide->min_y       = -8;
+  acWide->max_y       =  8;
+
+
   TString taskName;
   int nAnalysisTasks    = 2;
   Task ** analysisTasks = new Task*[nAnalysisTasks];
@@ -111,26 +120,21 @@ int main()
   particleFilters[11]  = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative, ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y);
   analysisTasks[0]     = new ParticleAnalyzer("Narrow", ac, event, eventFilter, nParticleFilters, particleFilters);
 
-  ac->nBins_eta   = 120;
-  ac->min_eta     = -6;
-  ac->max_eta     =  6;
-  ac->nBins_y     = 120;
-  ac->min_y       = -6;
-  ac->max_y       =  6;
+
   ParticleFilter  ** particleFiltersWide = new ParticleFilter*[nParticleFilters];
-  particleFiltersWide[0]   = new ParticleFilter(ParticleFilter::Hadron, ParticleFilter::Charged,  ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y);
-  particleFiltersWide[1]   = new ParticleFilter(ParticleFilter::Hadron, ParticleFilter::Positive, ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y);
-  particleFiltersWide[2]   = new ParticleFilter(ParticleFilter::Hadron, ParticleFilter::Negative, ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y);
-  particleFiltersWide[3]   = new ParticleFilter(ParticleFilter::Pion,   ParticleFilter::Charged,  ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y);
-  particleFiltersWide[4]   = new ParticleFilter(ParticleFilter::Pion,   ParticleFilter::Positive, ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y);
-  particleFiltersWide[5]   = new ParticleFilter(ParticleFilter::Pion,   ParticleFilter::Negative, ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y);
-  particleFiltersWide[6]   = new ParticleFilter(ParticleFilter::Kaon,   ParticleFilter::Charged,  ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y);
-  particleFiltersWide[7]   = new ParticleFilter(ParticleFilter::Kaon,   ParticleFilter::Positive, ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y);
-  particleFiltersWide[8]   = new ParticleFilter(ParticleFilter::Kaon,   ParticleFilter::Negative, ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y);
-  particleFiltersWide[9]   = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Charged,  ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y);
-  particleFiltersWide[10]  = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Positive, ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y);
-  particleFiltersWide[11]  = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative, ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y);
-  analysisTasks[1]         = new ParticleAnalyzer("Wide",   ac, event, eventFilter, nParticleFilters, particleFiltersWide);
+  particleFiltersWide[0]   = new ParticleFilter(ParticleFilter::Hadron, ParticleFilter::Charged,  acWide->min_pt+0.001,acWide->max_pt,acWide->min_eta,acWide->max_eta, acWide->min_y,acWide->max_y);
+  particleFiltersWide[1]   = new ParticleFilter(ParticleFilter::Hadron, ParticleFilter::Positive, acWide->min_pt+0.001,acWide->max_pt,acWide->min_eta,acWide->max_eta, acWide->min_y,acWide->max_y);
+  particleFiltersWide[2]   = new ParticleFilter(ParticleFilter::Hadron, ParticleFilter::Negative, acWide->min_pt+0.001,acWide->max_pt,acWide->min_eta,acWide->max_eta, acWide->min_y,acWide->max_y);
+  particleFiltersWide[3]   = new ParticleFilter(ParticleFilter::Pion,   ParticleFilter::Charged,  acWide->min_pt+0.001,acWide->max_pt,acWide->min_eta,acWide->max_eta, acWide->min_y,acWide->max_y);
+  particleFiltersWide[4]   = new ParticleFilter(ParticleFilter::Pion,   ParticleFilter::Positive, acWide->min_pt+0.001,acWide->max_pt,acWide->min_eta,acWide->max_eta, acWide->min_y,acWide->max_y);
+  particleFiltersWide[5]   = new ParticleFilter(ParticleFilter::Pion,   ParticleFilter::Negative, acWide->min_pt+0.001,acWide->max_pt,acWide->min_eta,acWide->max_eta, acWide->min_y,acWide->max_y);
+  particleFiltersWide[6]   = new ParticleFilter(ParticleFilter::Kaon,   ParticleFilter::Charged,  acWide->min_pt+0.001,acWide->max_pt,acWide->min_eta,acWide->max_eta, acWide->min_y,acWide->max_y);
+  particleFiltersWide[7]   = new ParticleFilter(ParticleFilter::Kaon,   ParticleFilter::Positive, acWide->min_pt+0.001,acWide->max_pt,acWide->min_eta,acWide->max_eta, acWide->min_y,acWide->max_y);
+  particleFiltersWide[8]   = new ParticleFilter(ParticleFilter::Kaon,   ParticleFilter::Negative, acWide->min_pt+0.001,acWide->max_pt,acWide->min_eta,acWide->max_eta, acWide->min_y,acWide->max_y);
+  particleFiltersWide[9]   = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Charged,  acWide->min_pt+0.001,acWide->max_pt,acWide->min_eta,acWide->max_eta, acWide->min_y,acWide->max_y);
+  particleFiltersWide[10]  = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Positive, acWide->min_pt+0.001,acWide->max_pt,acWide->min_eta,acWide->max_eta, acWide->min_y,acWide->max_y);
+  particleFiltersWide[11]  = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative, acWide->min_pt+0.001,acWide->max_pt,acWide->min_eta,acWide->max_eta, acWide->min_y,acWide->max_y);
+  analysisTasks[1]         = new ParticleAnalyzer("Wide",   acWide, event, eventFilter, nParticleFilters, particleFiltersWide);
 
   // ==========================
   // Event Loop
