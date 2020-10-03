@@ -360,10 +360,15 @@ void TwoPartCorrelationAnalyzer::calculateDerivedHistograms()
 {
   if (reportDebug()) cout << "TwoPartCorrelationAnalyzer::calculateDerivedHistograms() Starting" << endl;
   AnalysisConfiguration * analysisConfiguration = (AnalysisConfiguration *) getTaskConfiguration();
+  particle1_Histos->completeFill();
+  particle2_Histos->completeFill();
   if (analysisConfiguration->fillPairs)
     {
     particle1_Histos->calculateAverages();
     particle2_Histos->calculateAverages();
+    pair11_Histos->completeFill();
+    pair22_Histos->completeFill();
+    pair12_Histos->completeFill();
     pair11_DerivedHistos->calculateDerivedHistograms(particle1_Histos,particle1_Histos,pair11_Histos,analysisConfiguration->binCorrPP);
     pair22_DerivedHistos->calculateDerivedHistograms(particle2_Histos,particle2_Histos,pair22_Histos,analysisConfiguration->binCorrMM);
     pair12_DerivedHistos->calculateDerivedHistograms(particle1_Histos,particle2_Histos,pair12_Histos,analysisConfiguration->binCorrPM);

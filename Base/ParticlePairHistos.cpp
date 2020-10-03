@@ -116,15 +116,16 @@ void ParticlePairHistos::fill(Particle & particle1, Particle & particle2, double
 
   AnalysisConfiguration & ac = * (AnalysisConfiguration*) getConfiguration();
   h_n2_ptPt    ->Fill(pt1,  pt2,  weight);
-  h_n2_etaEta  ->Fill(eta1, eta2, weight);
-  h_n2_phiPhi  ->Fill(phi1, phi2, weight);
+  // delayed fill h_n2_etaEta  ->Fill(eta1, eta2, weight);
+  // delayed fill h_n2_phiPhi  ->Fill(phi1, phi2, weight);
 
-  h_ptn_etaEta ->Fill(eta1, eta2, weight*pt1);
-  h_npt_etaEta ->Fill(eta1, eta2, weight*pt2);
-  h_ptpt_etaEta->Fill(eta1, eta2, weight*pt1*pt2);
-  h_ptn_phiPhi ->Fill(phi1, phi2, weight*pt1);
-  h_npt_phiPhi ->Fill(phi1, phi2, weight*pt2);
-  h_ptpt_phiPhi->Fill(phi1, phi2, weight*pt1*pt2);
+
+  // delayed fill h_ptn_etaEta ->Fill(eta1, eta2, weight*pt1);
+  // delayed fill h_npt_etaEta ->Fill(eta1, eta2, weight*pt2);
+  // delayed fill h_ptpt_etaEta->Fill(eta1, eta2, weight*pt1*pt2);
+  // delayed fill h_ptn_phiPhi ->Fill(phi1, phi2, weight*pt1);
+  // delayed fill h_npt_phiPhi ->Fill(phi1, phi2, weight*pt2);
+  // delayed fill h_ptpt_phiPhi->Fill(phi1, phi2, weight*pt1*pt2);
 
   int iPhiEta1 = particle1.ixEtaPhi;
   int iPhiEta2 = particle2.ixEtaPhi;
@@ -152,10 +153,10 @@ void ParticlePairHistos::fill(Particle & particle1, Particle & particle2, double
     double y1    = particle1.y;
     double y2    = particle2.y;
 
-    h_n2_yY  ->Fill(y1, y2, weight);
-    h_ptn_yY ->Fill(y1, y2, weight*pt1);
-    h_npt_yY ->Fill(y1, y2, weight*pt2);
-    h_ptpt_yY->Fill(y1, y2, weight*pt1*pt2);
+    // delayed fill h_n2_yY  ->Fill(y1, y2, weight);
+    // delayed fill h_ptn_yY ->Fill(y1, y2, weight*pt1);
+    // delayed fill h_npt_yY ->Fill(y1, y2, weight*pt2);
+    // delayed fill h_ptpt_yY->Fill(y1, y2, weight*pt1*pt2);
 
 
     int iPhiY1 = particle1.ixYPhi;
@@ -232,7 +233,36 @@ void ParticlePairHistos::fill(Particle & particle1, Particle & particle2, double
 
 }
 
+// complete filling the addicional histograms by projecting the 
+// higher dimensional ones
+void ParticlePairHistos::completeFill()
+{
+  AnalysisConfiguration & ac = * (AnalysisConfiguration*) getConfiguration();
 
+  int nbinseta = h_n2_etaEta->GetNbinsX();
+  int nbinsphi = h_n2_phiPhi->GetNbinsX();
+
+  project_n2XYXY_n2XX(h_n2_phiEtaPhiEta,h_n2_etaEta,nbinseta,nbinsphi);
+  project_n2XYXY_n2YY(h_n2_phiEtaPhiEta,h_n2_phiPhi,nbinseta,nbinsphi);
+
+  project_n2XYXY_n2XX(h_ptn_phiEtaPhiEta,h_ptn_etaEta,nbinseta,nbinsphi);
+  project_n2XYXY_n2XX(h_npt_phiEtaPhiEta,h_npt_etaEta,nbinseta,nbinsphi);
+  project_n2XYXY_n2XX(h_ptpt_phiEtaPhiEta,h_ptpt_etaEta,nbinseta,nbinsphi);
+
+  project_n2XYXY_n2YY(h_ptn_phiEtaPhiEta,h_ptn_phiPhi,nbinseta,nbinsphi);
+  project_n2XYXY_n2YY(h_npt_phiEtaPhiEta,h_npt_phiPhi,nbinseta,nbinsphi);
+  project_n2XYXY_n2YY(h_ptpt_phiEtaPhiEta,h_ptpt_phiPhi,nbinseta,nbinsphi);
+
+  if (ac.fillY)
+    {
+      int nbinsy = h_n2_yY->GetNbinsX();
+
+      project_n2XYXY_n2XX(h_n2_phiYPhiY,h_n2_yY,nbinsy,nbinsphi);
+      project_n2XYXY_n2XX(h_ptn_phiYPhiY,h_ptn_yY,nbinsy,nbinsphi);
+      project_n2XYXY_n2XX(h_npt_phiYPhiY,h_npt_yY,nbinsy,nbinsphi);
+      project_n2XYXY_n2XX(h_ptpt_phiYPhiY,h_ptpt_yY,nbinsy,nbinsphi);
+    }
+}
 
 //  void fill(TLorentzVector & p1, TLorentzVector & p2, double weight)
 //  {

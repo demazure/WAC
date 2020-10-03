@@ -169,20 +169,20 @@ void ParticleHistos::fill(TLorentzVector & p, double weight)
   AnalysisConfiguration & ac = *getConfiguration();
   h_n1_pt      ->Fill(pt, weight);
   h_n1_ptXS    ->Fill(pt, weight/pt);
-  h_n1_eta     ->Fill(eta, weight);
-  h_n1_phi     ->Fill(phi, weight);
+  // delayed fill h_n1_eta     ->Fill(eta, weight);
+  // delayed fill h_n1_phi     ->Fill(phi, weight);
   h_n1_ptEta   ->Fill(eta, pt,  weight);
   h_n1_phiEta  ->Fill(eta, phi, weight);
-  h_spt_phi    ->Fill(phi, pt*weight);
-  h_spt_eta    ->Fill(eta, pt*weight);
+  // delayed fill h_spt_phi    ->Fill(phi, pt*weight);
+  // delayed fill h_spt_eta    ->Fill(eta, pt*weight);
   h_spt_phiEta ->Fill(eta, phi, pt*weight);
 
   if (ac.fillY)
     {
-    h_n1_y      ->Fill(y, weight);
+    // delayed fill h_n1_y      ->Fill(y, weight);
     h_n1_ptY    ->Fill(y, pt,  weight);
     h_n1_phiY   ->Fill(y, phi, weight);
-    h_spt_y     ->Fill(y, pt*weight);
+    // delayed fill h_spt_y     ->Fill(y, pt*weight);
     h_spt_phiY  ->Fill(y, phi, pt*weight);
     }
 
@@ -193,6 +193,43 @@ void ParticleHistos::fill(TLorentzVector & p, double weight)
 void ParticleHistos::fillMultiplicity(double nAccepted, double weight)
 {
   h_n1->Fill(nAccepted, weight);
+}
+
+// complete filling the addicional histograms by projecting the
+// higher dimensional ones
+void ParticleHistos::completeFill()
+{
+  AnalysisConfiguration & ac = *getConfiguration();
+
+  TH1* h_eta = h_n1_phiEta->ProjectionX();
+  h_n1_eta->Reset();
+  h_n1_eta->Add(h_eta);
+  TH1* h_phi = h_n1_phiEta->ProjectionY();
+  h_n1_phi->Reset();
+  h_n1_phi->Add(h_phi);
+  TH1 *h_pteta = h_spt_phiEta->ProjectionX();
+  h_spt_eta->Reset();
+  h_spt_eta->Add(h_pteta);
+  TH1 *h_ptphi = h_spt_phiEta->ProjectionY();
+  h_spt_phi->Reset();
+  h_spt_phi->Add(h_ptphi);
+  delete h_ptphi;
+  delete h_pteta;
+  delete h_phi;
+  delete h_eta;
+
+  if (ac.fillY)
+    {
+    TH1 * h_y = h_n1_phiY->ProjectionX();
+    h_n1_y->Reset();
+    h_n1_y->Add(h_y);
+    TH1 * h_pty = h_spt_phiY->ProjectionX();
+    h_spt_y->Reset();
+    h_spt_y->Add(h_pty);
+    delete h_y;
+    delete h_pty;
+    }
+
 }
 
 

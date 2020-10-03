@@ -29,6 +29,7 @@ public:
   void loadHistograms(TFile * inputFile);
   void fill(Particle & particle, double weight);
   void fill(TLorentzVector & p, double weight);
+  void completeFill();
   void fillMultiplicity(double nAccepted, double weight);
   void calculateAverages();
 

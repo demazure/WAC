@@ -255,6 +255,8 @@ public:
   void symmetrizeXX(TH2 * h, bool ijNormalization);
   void reduce_n2xEtaPhi_n2DetaDphi(const TH2 * source, TH2 * target,int nEtaBins,int nPhiBins);
   void reduce_n2xEtaPhi_n2EtaEta(const TH1 * source, TH2 * target,int nEtaBins,int nPhiBins);
+  void project_n2XYXY_n2XX(const TH2 * source, TH2 * target,int nXBins,int nYBins);
+  void project_n2XYXY_n2YY(const TH2 * source, TH2 * target,int nXBins,int nYBins);
   TH2* symmetrize(TH2* h);
   void shiftY(const TH2 & source, TH2 & target, int nbins);
   float * getFloatArray(int size, float v);
