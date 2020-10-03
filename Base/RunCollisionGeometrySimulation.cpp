@@ -51,14 +51,16 @@ int main()
   ac->histoBaseName =  "geom";
   ac->minB = 0.0;
   ac->maxB = 18.0;
-  ac->nnCrossSection = 4.5;  // in fm^2
+  //ac->nnCrossSection = 4.5;  // in fm^2 -- nominal value
+  //ac->nnCrossSection = 4.2;  // in fm^2 -- Config B
+  ac->nnCrossSection = 4.8;  // in fm^2 -- Config C
 
   ac->nBins_b = 100;
   ac->min_b   = 0.0;
   ac->max_b   = 18.0;
-  ac->nBins_nPart = 450;
+  ac->nBins_nPart = 60;
   ac->min_nPart   = 0;
-  ac->max_nPart   = 450;
+  ac->max_nPart   = 240;
   ac->nBins_nBinary = 400;
   ac->min_nBinary   = 0;
   ac->max_nBinary   = 2000;
