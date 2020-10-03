@@ -39,29 +39,29 @@ void ParticleHistos::createHistograms()
 {
   AnalysisConfiguration & ac = *getConfiguration();
   TString bn = getHistoBaseName();
-  h_n1         = createHistogram(bn+TString("n1"),             1000,  0.0,  1000.0,  "n_1","N", scaled, saved, plotted, notPrinted);
-  h_n1_pt      = createHistogram(bn+TString("n1_pt"),          ac.nBins_pt,  ac.min_pt,  ac.max_pt,  "p_{T}","N", scaled, saved, plotted, notPrinted);
-  h_n1_ptXS    = createHistogram(bn+TString("n1_ptXS"),        ac.nBins_pt,  ac.min_pt,  ac.max_pt,  "p_{T}","1/p_{T} dN/p_{T}", scaled, saved, plotted, notPrinted);
-  h_n1_eta     = createHistogram(bn+TString("n1_eta"),         ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta","N", scaled, saved, plotted, notPrinted);
-  h_n1_phi     = createHistogram(bn+TString("n1_phi"),         ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi","N", scaled, saved, plotted, notPrinted);
-  h_n1_ptEta   = createHistogram(bn+TString("n1_ptEta"),       ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_pt, ac.min_pt, ac.max_pt,"#eta","p_{T}","N", scaled, saved, plotted, notPrinted);
-  h_n1_phiEta  = createHistogram(bn+TString("n1_phiEta"),      ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_phi, ac.min_phi, ac.max_phi,"#eta","#varphi","N", scaled, saved, plotted, notPrinted);
-  h_spt_phi    = createHistogram(bn+TString("sumpt1_phi"),    ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi","#sum p_{T}", scaled, saved, plotted, notPrinted);
-  h_spt_eta    = createHistogram(bn+TString("sumpt1_eta"),    ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta", "#sum p_{T}", scaled, saved, plotted, notPrinted);
-  h_spt_phiEta = createHistogram(bn+TString("sumpt1_phiEta"), ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_phi, ac.min_phi, ac.max_phi,"#eta","#varphi","#sum p_{T}", scaled, saved, notPlotted, notPrinted);
-  h_pt_phi     = createHistogram(bn+TString("pt1_phi"),       ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi","#LTp_{T}#GT", notScaled, saved, plotted, notPrinted);
-  h_pt_eta     = createHistogram(bn+TString("pt1_eta"),       ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta", "#LTp_{T}#GT", notScaled, saved, plotted, notPrinted);
-  h_pt_phiEta  = createHistogram(bn+TString("pt1_phiEta"),    ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_phi, ac.min_phi, ac.max_phi,"#eta","#varphi","#LTp_{T}#GT", notScaled, saved, notPlotted, notPrinted);
+  h_n1         = createHistogram(bn+TString("n1"),            1000,  0.0,  1000.0,  "n_1","N", true,true,true,false);
+  h_n1_pt      = createHistogram(bn+TString("n1_pt"),         ac.nBins_pt,  ac.min_pt,  ac.max_pt,  "p_{T}","N", true,true,true,false);
+  h_n1_ptXS    = createHistogram(bn+TString("n1_ptXS"),       ac.nBins_pt,  ac.min_pt,  ac.max_pt,  "p_{T}","1/p_{T} dN/p_{T}", true,true,true,false);
+  h_n1_eta     = createHistogram(bn+TString("n1_eta"),        ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta","N", true,true,true,false);
+  h_n1_phi     = createHistogram(bn+TString("n1_phi"),        ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi","N", true,true,true,false);
+  h_n1_ptEta   = createHistogram(bn+TString("n1_ptEta"),      ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_pt, ac.min_pt, ac.max_pt,"#eta","p_{T}","N", true,true,true,false);
+  h_n1_phiEta  = createHistogram(bn+TString("n1_phiEta"),     ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_phi, ac.min_phi, ac.max_phi,"#eta","#varphi","N", true,true,true,false);
+  h_spt_phi    = createHistogram(bn+TString("sumpt1_phi"),    ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi","#sum p_{T}", true,true,true,false);
+  h_spt_eta    = createHistogram(bn+TString("sumpt1_eta"),    ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta", "#sum p_{T}", true,true,true,false);
+  h_spt_phiEta = createHistogram(bn+TString("sumpt1_phiEta"), ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_phi, ac.min_phi, ac.max_phi,"#eta","#varphi","#sum p_{T}", true,true,false,false);
+  h_pt_phi     = createHistogram(bn+TString("pt1_phi"),       ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi","#LTp_{T}#GT", false,true,false,false);
+  h_pt_eta     = createHistogram(bn+TString("pt1_eta"),       ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta", "#LTp_{T}#GT", false,true,false,false);
+  h_pt_phiEta  = createHistogram(bn+TString("pt1_phiEta"),    ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_phi, ac.min_phi, ac.max_phi,"#eta","#varphi","#LTp_{T}#GT", false,true,false,false);
 
   if (ac.fillY)
     {
-    h_n1_y     = createHistogram(bn+TString("n1_y"),         ac.nBins_y, ac.min_y, ac.max_y, "y","N", scaled, saved, plotted, notPrinted);
-    h_n1_ptY   = createHistogram(bn+TString("n1_ptY"),       ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_pt, ac.min_pt, ac.max_pt,"#eta","p_{T}","N", scaled, saved, notPlotted, notPrinted);
-    h_n1_phiY  = createHistogram(bn+TString("n1_phiY"),      ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_phi, ac.min_phi, ac.max_phi,"y","#varphi","N", scaled, saved, notPlotted, notPrinted);
-    h_spt_y    = createHistogram(bn+TString("sumpt1_y"),    ac.nBins_y, ac.min_y, ac.max_y, "y", "#sum p_{T}", scaled, saved, notPlotted, notPrinted);
-    h_spt_phiY = createHistogram(bn+TString("sumpt1_phiY"), ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_phi, ac.min_phi, ac.max_phi,"y","#varphi","#sum p_{T}", scaled, saved, notPlotted, notPrinted);
-    h_pt_y     = createHistogram(bn+TString("pt1_y"),       ac.nBins_y, ac.min_y, ac.max_y, "y", "#LTp_{T}#GT", notScaled, saved, notPlotted, notPrinted);
-    h_pt_phiY  = createHistogram(bn+TString("pt1_phiY"),    ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_phi, ac.min_phi, ac.max_phi,"y","#varphi","#LTp_{T}#GT", notScaled, saved, notPlotted, notPrinted);
+    h_n1_y     = createHistogram(bn+TString("n1_y"),        ac.nBins_y, ac.min_y, ac.max_y, "y","N", true,true,true,false);
+    h_n1_ptY   = createHistogram(bn+TString("n1_ptY"),      ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_pt, ac.min_pt, ac.max_pt,"#eta","p_{T}","N", true,true,false,false);
+    h_n1_phiY  = createHistogram(bn+TString("n1_phiY"),     ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_phi, ac.min_phi, ac.max_phi,"y","#varphi","N", true,true,false,false);
+    h_spt_y    = createHistogram(bn+TString("sumpt1_y"),    ac.nBins_y, ac.min_y, ac.max_y, "y", "#sum p_{T}", true,true,false,false);
+    h_spt_phiY = createHistogram(bn+TString("sumpt1_phiY"), ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_phi, ac.min_phi, ac.max_phi,"y","#varphi","#sum p_{T}", true,true,false,false);
+    h_pt_y     = createHistogram(bn+TString("pt1_y"),       ac.nBins_y, ac.min_y, ac.max_y, "y", "#LTp_{T}#GT", false,true,false,false);
+    h_pt_phiY  = createHistogram(bn+TString("pt1_phiY"),    ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_phi, ac.min_phi, ac.max_phi,"y","#varphi","#LTp_{T}#GT", false,true,false,false);
     }
 
   if (ac.fill3D)
@@ -70,14 +70,14 @@ void ParticleHistos::createHistograms()
                                     ac.nBins_eta, ac.min_eta, ac.max_eta,
                                     ac.nBins_phi, ac.min_phi, ac.max_phi,
                                     ac.nBins_pt, ac.min_pt, ac.max_pt,
-                                    "#eta","#varphi","p_{T}","N", scaled, saved, notPlotted, notPrinted);
+                                    "#eta","#varphi","p_{T}","N", true,true,false,false);
     if (ac.fillY)
       {
       h_n1_ptPhiY = createHistogram(bn+TString("n1_ptPhiY"),
                                     100, ac.min_y, ac.max_y,
                                     100, ac.min_phi, ac.max_phi,
                                     100, ac.min_pt,  ac.max_pt,
-                                    "y","#varphi","p_{T}","N", scaled, saved, notPlotted, notPrinted);
+                                    "y","#varphi","p_{T}","N", true,true,false,false);
       }
     }
 
@@ -94,36 +94,36 @@ void ParticleHistos::loadHistograms(TFile * inputFile)
     }
   AnalysisConfiguration & ac = *getConfiguration();
   TString bn = getHistoBaseName();
-  h_n1         = loadH1(inputFile,bn+TString("n1")       ,true);
-  h_n1_pt      = loadH1(inputFile,bn+TString("n1_pt")    ,true);
-  h_n1_ptXS    = loadH1(inputFile,bn+TString("n1_ptXS")  ,true);
-  h_n1_eta     = loadH1(inputFile,bn+TString("n1_eta")   ,true);
-  h_n1_phi     = loadH1(inputFile,bn+TString("n1_phi")   ,true);
-  h_n1_ptEta   = loadH2(inputFile,bn+TString("n1_ptEta") ,true);
-  h_n1_phiEta  = loadH2(inputFile,bn+TString("n1_phiEta"),true);
-  h_spt_phiEta = loadH2(inputFile,bn+TString("sumpt1_phiEta"),true);
-  h_spt_phi    = loadH1(inputFile,bn+TString("sumpt1_phi")   ,true);
-  h_spt_eta    = loadH1(inputFile,bn+TString("sumpt1_eta")  ,true);
-  h_pt_phiEta  = loadH2(inputFile,bn+TString("pt1_phiEta"),false,true);
-  h_pt_phi     = loadH1(inputFile,bn+TString("pt1_phi")   ,false,true);
-  h_pt_eta     = loadH1(inputFile,bn+TString("pt1_eta")  ,false,true);
+  h_n1         = loadH1(inputFile,bn+TString("n1"));
+  h_n1_pt      = loadH1(inputFile,bn+TString("n1_pt"));
+  h_n1_ptXS    = loadH1(inputFile,bn+TString("n1_ptXS"));
+  h_n1_eta     = loadH1(inputFile,bn+TString("n1_eta"));
+  h_n1_phi     = loadH1(inputFile,bn+TString("n1_phi"));
+  h_n1_ptEta   = loadH2(inputFile,bn+TString("n1_ptEta"));
+  h_n1_phiEta  = loadH2(inputFile,bn+TString("n1_phiEta"));
+  h_spt_phiEta = loadH2(inputFile,bn+TString("sumpt1_phiEta"));
+  h_spt_phi    = loadH1(inputFile,bn+TString("sumpt1_phi"));
+  h_spt_eta    = loadH1(inputFile,bn+TString("sumpt1_eta"));
+  h_pt_phiEta  = loadH2(inputFile,bn+TString("pt1_phiEta"));
+  h_pt_phi     = loadH1(inputFile,bn+TString("pt1_phi"));
+  h_pt_eta     = loadH1(inputFile,bn+TString("pt1_eta"));
   if (ac.fill3D)
     {
-    h_n1_ptPhiEta = loadH3(inputFile,bn+TString("n1_ptPhiEta"),true);
+    h_n1_ptPhiEta = loadH3(inputFile,bn+TString("n1_ptPhiEta"));
     }
   if (ac.fillY)
     {
-    h_n1_y    = loadH1(inputFile,bn+TString("n1_Y"),true);
-    h_n1_ptY  = loadH2(inputFile,bn+TString("n1_ptY"),true);
-    h_n1_phiY = loadH2(inputFile,bn+TString("n1_phiY"),true);
-    h_spt_phiY = loadH2(inputFile,bn+TString("sumpt1_phiY"),true);
-    h_spt_y    = loadH1(inputFile,bn+TString("sumpt1_y"),true);
-    h_pt_phiY = loadH2(inputFile,bn+TString("pt1_phiY"),false,true);
-    h_pt_y    = loadH1(inputFile,bn+TString("pt1_y"),false,true);
+    h_n1_y     = loadH1(inputFile,bn+TString("n1_Y"));
+    h_n1_ptY   = loadH2(inputFile,bn+TString("n1_ptY"));
+    h_n1_phiY  = loadH2(inputFile,bn+TString("n1_phiY"));
+    h_spt_phiY = loadH2(inputFile,bn+TString("sumpt1_phiY"));
+    h_spt_y    = loadH1(inputFile,bn+TString("sumpt1_y"));
+    h_pt_phiY  = loadH2(inputFile,bn+TString("pt1_phiY"));
+    h_pt_y     = loadH1(inputFile,bn+TString("pt1_y"));
     }
   if (ac.fill3D && ac.fillY)
     {
-    h_n1_ptPhiY = loadH3(inputFile,bn+TString("n1_ptPhiY"),true);
+    h_n1_ptPhiY = loadH3(inputFile,bn+TString("n1_ptPhiY"));
     }
   return;
 }

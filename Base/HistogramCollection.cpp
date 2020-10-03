@@ -15,36 +15,33 @@ ClassImp(HistogramCollection);
 // CTOR1
 ////////////////////////////////////////////////////////////////////////////
 HistogramCollection::HistogramCollection(const TString & name,
-                                         int  histoCapacity,
+                                         int  initialCapacity,
                                          LogLevel debugLevel)
 :
+Collection<TH1>(initialCapacity),
 MessageLogger(debugLevel),
 collectionName(name),
-nHistoCapacity(histoCapacity),
-nHistograms   (0),
-histograms    (0),
-isSaved       (0),
-isPlotted     (0),
-isPrinted     (0),
-isScaled      (0),
-bOwnTheHistograms(true),
-scaled    (1),
-saved     (1),
-plotted   (1),
-printed   (1),
-notScaled (0),
-notSaved  (0),
-notPlotted (0),
-notPrinted (0),
-randomGenerator(new TRandom())
+options(0),
+randomGenerator(new TRandom()),
+bOwnTheHistograms(true)
 {
-  if (reportDebug()) cout << "HistogramCollection() started" << endl;
-  histograms   = new TH1*[nHistoCapacity];
-  isSaved      = new bool[nHistoCapacity];
-  isPlotted    = new bool[nHistoCapacity];
-  isPrinted    = new bool[nHistoCapacity];
-  isScaled     = new bool[nHistoCapacity];
-  if (reportDebug()) cout << "HistogramCollection() completed" << endl;
+  options = new int[initialCapacity];
+}
+
+HistogramCollection::HistogramCollection(const HistogramCollection & source)
+:
+Collection<TH1>(source),
+MessageLogger(source),
+collectionName(source.collectionName),
+options(0),
+randomGenerator(new TRandom()),
+bOwnTheHistograms(true)
+{
+  options = new int[getCollectionCapacity()];
+  for (int k=0; k<getCollectionSize(); k++)
+  {
+  options[k] = source.options[k];
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -52,47 +49,42 @@ randomGenerator(new TRandom())
 ////////////////////////////////////////////////////////////////////////////
 HistogramCollection::~HistogramCollection()
 {
-  if (reportDebug()) cout << "~HistogramCollection() started" << endl;
-  if (bOwnTheHistograms) {
-    /* the instance own its histograms so, they have to be deleted */
-    for (int i = 0; i < nHistograms; i++) {
-      delete histograms[i];
-    }
-    delete randomGenerator;
-    delete [] isScaled;
-    delete [] isPrinted;
-    delete [] isPlotted;
-    delete [] isSaved;
-    delete [] histograms;
-  }
-  if (reportDebug()) cout << "~HistogramCollection() completed" << endl;
+//  if (bOwnTheHistograms) {
+//    /* the instance own its histograms so, they have to be deleted */
+//    for (int i = 0; i < getNHistograms(); i++) {
+//      delete histograms[i];
+//    }
+    delete [] options;
 }
+
+HistogramCollection & HistogramCollection::operator=(const HistogramCollection & source)
+{
+  Collection<TH1>::operator=(source);
+  int n = getCollectionSize();
+  options = new int[n];
+  for (int k=0; k<getCollectionSize(); k++)
+  {
+  options[k] = source.options[k];
+  }
+  return *this;
+}
+
+
+
 
 ////////////////////////////////////////////////////////////////////////////
 // Add the given histogram to the list
 ////////////////////////////////////////////////////////////////////////////
-void HistogramCollection::addToList(TH1 * h,
-                                    bool doScale,
-                                    bool doSave,
-                                    bool doPlot,
-                                    bool doPrint,
-                                    bool doSumw2)
+void HistogramCollection::add(TH1 * h,
+                              bool doScale,
+                              bool doSave,
+                              bool doPlot,
+                              bool doPrint)
 {
-  if (reportInfo()) cout << "HistogramCollection::addToList(...) Adding histo " << h->GetName() << " w/ index:" << nHistograms << " max:" << nHistoCapacity << " w/ doSave: " << doSave << " doPlot:" << doPlot << " doPrint:" << doPrint << " doScale:" << doScale  << endl;
-  //if (doSumw2)  h->Sumw2();
-  histograms  [nHistograms] = h;
-  isSaved     [nHistograms] = doSave;
-  isPlotted   [nHistograms] = doPlot;
-  isPrinted   [nHistograms] = doPrint;
-  isScaled    [nHistograms] = doScale;
-  nHistograms++;
+  if (reportInfo()) cout << "HistogramCollection::add(...) Adding histo " << h->GetName() << endl;
+  Collection<TH1>::add(h);
+  options[getCollectionSize()-1] = computeOptions(doScale,doSave,doPlot,doPrint);
 }
-
-TH1 * HistogramCollection::getHisto(int i)
-{
-  return histograms[i];
-}
-
 
 ////////////////////////////////////////////////////
 // Set Default Style for Plots
@@ -111,19 +103,7 @@ void HistogramCollection::setDefaultOptions(bool color)
 
 }
 
-/*
- void deleteHistograms();
- TH1 * getHisto(int i);
- int  openHistogramFile(const TString & fileName, const TString & openFileOption);
- void saveHistogramFile();
- void closeHistogramFile();
- */
 
-////////////////////////////////////////////////////////////////////////
-// Histogram Creation
-////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////
 TH1 * HistogramCollection::createHistogram(const TString &  name,
                                            int n, double min_x, double max_x,
                                            const TString &  title_x,
@@ -131,8 +111,7 @@ TH1 * HistogramCollection::createHistogram(const TString &  name,
                                            bool  scale,
                                            bool  save,
                                            bool  plot,
-                                           bool  print,
-                                           bool  sumw2 )
+                                           bool  print)
 {
   //createHistogram new 1D historgram
   if (reportDebug()) cout << "Creating  1D histo " << name << " nBins:" << n << " min_x:" << min_x << " max_x:" << max_x << endl;
@@ -140,7 +119,7 @@ TH1 * HistogramCollection::createHistogram(const TString &  name,
   h = new TH1F(name,name,n,min_x,max_x);
   h->GetXaxis()->SetTitle(title_x);
   h->GetYaxis()->SetTitle(title_y);
-  addToList(h,scale,save,plot,print,sumw2);
+  add(h,scale,save,plot,print);
   return h;
 }
 
@@ -153,8 +132,7 @@ TH1 * HistogramCollection::createHistogram(const TString &  name,
                                            bool  scale,
                                            bool  save,
                                            bool  plot,
-                                           bool  print,
-                                           bool  sumw2 )
+                                           bool  print)
 {
   //createHistogram new 1D historgram
   if (reportDebug()) cout << "Creating  1D histo " << name << " with " << n << " non uniform nBins:" << endl;
@@ -162,7 +140,7 @@ TH1 * HistogramCollection::createHistogram(const TString &  name,
   h = new TH1F(name,name,n,bins);
   h->GetXaxis()->SetTitle(title_x);
   h->GetYaxis()->SetTitle(title_y);
-  addToList(h,scale,save,plot,print,sumw2);
+  add(h,scale,save,plot,print);
   return h;
 }
 
@@ -177,8 +155,7 @@ TH2 * HistogramCollection::createHistogram(const TString &  name,
                                            bool  scale,
                                            bool  save,
                                            bool  plot,
-                                           bool  print,
-                                           bool  sumw2 )
+                                           bool  print)
 {
   //createHistogram new 2D historgram
   if (reportDebug()) cout << "Creating  2D histo " << name << " n_x:" << n_x << " min_x:" << min_x << " max_x:" << max_x << " n_y:" << n_y << " min_y:" << min_y << " max_y:" << max_y<< endl;
@@ -187,7 +164,7 @@ TH2 * HistogramCollection::createHistogram(const TString &  name,
   h->GetXaxis()->SetTitle(title_x);
   h->GetYaxis()->SetTitle(title_y);
   h->GetZaxis()->SetTitle(title_z);
-  addToList(h,scale,save,plot,print,sumw2);
+  add(h,scale,save,plot,print);
   return h;
 }
 
@@ -200,8 +177,7 @@ TH2 * HistogramCollection::createHistogram(const TString &  name,
                                            bool  scale,
                                            bool  save,
                                            bool  plot,
-                                           bool  print,
-                                           bool  sumw2 )
+                                           bool  print)
 
 {
   if (reportDebug()) cout << "Creating  2D histo " << name << " with " << n_x << " vs " << n_y << " non uniform nBins:" << endl;
@@ -210,7 +186,7 @@ TH2 * HistogramCollection::createHistogram(const TString &  name,
   h->GetXaxis()->SetTitle(title_x);
   h->GetYaxis()->SetTitle(title_y);
   h->GetZaxis()->SetTitle(title_z);
-  addToList(h,scale,save,plot,print,sumw2);
+  add(h,scale,save,plot,print);
   return h;
 }
 
@@ -227,8 +203,7 @@ TH3 * HistogramCollection::createHistogram(const TString &  name,
                                            bool  scale,
                                            bool  save,
                                            bool  plot,
-                                           bool  print,
-                                           bool  sumw2 )
+                                           bool  print)
 
 {
   if (reportDebug()) cout
@@ -242,7 +217,7 @@ TH3 * HistogramCollection::createHistogram(const TString &  name,
   h->GetXaxis()->SetTitle(title_x);
   h->GetYaxis()->SetTitle(title_y);
   h->GetZaxis()->SetTitle(title_z);
-  addToList(h,scale,save,plot,print,sumw2);
+  add(h,scale,save,plot,print);
   return h;
 }
 
@@ -254,14 +229,14 @@ TProfile * HistogramCollection::createProfile(const TString & name,
                                               const TString &  title_y,
                                               bool  save,
                                               bool  plot,
-                                              bool  print )
+                                              bool  print)
 
 {
   if (reportDebug()) cout << "Creating  1D profile " << name << " n_x:" << n_x << " min_x:" << min_x << " max_x:" << max_x << endl;
   TProfile * h = new TProfile(name,name,n_x,min_x,max_x);
   h->GetXaxis()->SetTitle(title_x);
   h->GetYaxis()->SetTitle(title_y);
-  addToList(h,false,save,plot,print,false);
+  add(h,false,save,plot,print);
   return h;
 }
 
@@ -270,16 +245,15 @@ TProfile * HistogramCollection::createProfile(const TString &  name,
                                               int n_x,  double* bins,
                                               const TString &  title_x,
                                               const TString &  title_y,
-                                              bool  scale,
                                               bool  save,
                                               bool  plot,
-                                              bool  print )
+                                              bool  print)
 {
   if (reportDebug()) cout << "Creating  1D profile " << name << " n_x:" << n_x << " non-uniform bins" << endl;
   TProfile * h = new TProfile(name,name,n_x,bins);
   h->GetXaxis()->SetTitle(title_x);
   h->GetYaxis()->SetTitle(title_y);
-  addToList(h,false,save,plot,print,false);
+  add(h,false,save,plot,print);
   return h;
 }
 
@@ -293,11 +267,9 @@ TProfile2D * HistogramCollection::createProfile(const TString &  name,
                                                 const TString &  title_x,
                                                 const TString &  title_y,
                                                 const TString &  title_z,
-                                                bool  scale,
                                                 bool  save,
                                                 bool  plot,
-                                                bool  print,
-                                                bool  sumw2 )
+                                                bool  print)
 
 {
   if (reportDebug()) cout << "Creating  2D profile " << name
@@ -308,7 +280,7 @@ TProfile2D * HistogramCollection::createProfile(const TString &  name,
   h->GetXaxis()->SetTitle(title_x);
   h->GetYaxis()->SetTitle(title_y);
   h->GetZaxis()->SetTitle(title_z);
-  addToList(h,false,save,plot,print,false);
+  add(h,false,save,plot,print);
   return h;
 }
 
@@ -319,9 +291,9 @@ void HistogramCollection::addHistogramsToExtList(TList *list, bool all)
 {
   if (reportDebug()) cout << "HistogramCollection::addHistogramsToExtList(TList *list) started."  << endl;
 
-  for (int k=0; k<nHistograms; k++)
+  for (int k=0; k<getNHistograms(); k++)
     {
-    if (isSaved[k] || all) list->Add(histograms[k]);
+    if (isSaved(options[k]) || all) list->Add(getObjectAt(k));
     }
   /* the instance stops the histograms ownership */
   bOwnTheHistograms = false;
@@ -336,9 +308,9 @@ void HistogramCollection::saveHistograms(TFile * outputFile, bool saveAll)
 {
   if (reportDebug()) cout << "HistogramCollection::saveHistograms(TFile * outputFile) started."  << endl;
   outputFile->cd();
-  for (int k=0; k<nHistograms; k++)
+  for (int k=0; k<getNHistograms(); k++)
     {
-    if (isSaved[k] || saveAll) histograms[k]->Write();
+    if (isSaved(options[k]) || saveAll) getObjectAt(k)->Write();
     }
   if (reportDebug()) cout << "HistogramCollection::saveHistograms(TFile * outputFile) completed."  << endl;
 }
@@ -351,14 +323,14 @@ void HistogramCollection::saveHistograms(TFile * outputFile, bool saveAll)
 void HistogramCollection::scale(double factor, bool scaleAll)
 {
   if (reportDebug()) cout << "HistogramCollection::scale(double factor) started."  << endl;
-  for (int k=0; k<nHistograms; k++)
+  for (int k=0; k<getNHistograms(); k++)
     {
-    if (isScaled[k] || scaleAll)
+    if (isScaled(options[k]) || scaleAll)
       {
       if (false)
-        scaleByBinWidth(histograms[k], factor);
+        scaleByBinWidth(getObjectAt(k), factor);
       else
-        histograms[k]->Scale(factor);
+        getObjectAt(k)->Scale(factor);
       }
     }
   if (reportDebug()) cout << "HistogramCollection::scale(double factor) completed." << endl;
@@ -374,16 +346,16 @@ void HistogramCollection::plotHistograms(const TString             & outputPath,
                                          GraphConfiguration  & gc1D,
                                          GraphConfiguration  & gc2D)
 {
-  if (reportDebug()) cout << "HistogramCollection::plotHistograms(...) collection: " << collectionName << " started  w/ nHistograms =" << nHistograms << endl;
+  if (reportDebug()) cout << "HistogramCollection::plotHistograms(...) collection: " << collectionName << " started  w/ getNHistograms() =" << getNHistograms() << endl;
 
   canvasCollection.createDirectory(outputPath);
   TString   canvasName;
   TCanvas * canvas = 0;
-  for (int iHisto=0; iHisto<nHistograms; iHisto++)
+  for (int iHisto=0; iHisto<getNHistograms(); iHisto++)
     {
-    TH1* h = histograms[iHisto];
+    TH1* h = getObjectAt(iHisto);
     canvasName = h->GetName();
-    if (isPlotted[iHisto])
+    if (isPlotted(options[iHisto]))
       {
       if (h->IsA() == TH1::Class()  ||
           h->IsA() == TH1F::Class() ||
@@ -421,9 +393,8 @@ void HistogramCollection::plotHistograms(const TString             & outputPath,
         if (reportDebug()) cout << "-INFO- plotHistograms(...) Skipping histo #" << iHisto << " of unfamiliar type named " << h->GetTitle() << endl;
         }
 
-      if (isPrinted[iHisto] )
+      if (isPrinted(options[iHisto]) )
         canvasCollection.printCanvas(canvas, outputPath, 0, 1, 0, 0);
-
       }
     else
       {
@@ -438,7 +409,7 @@ void HistogramCollection::plotHistograms(const TString             & outputPath,
 ////////////////////////////////////////////////////////////////////////
 void HistogramCollection::setHistoProperties(TH1 * h, const GraphConfiguration & graphConfiguration)
 {
-  if (reportDebug()) cout << "Setting properties of histo: " << h->GetTitle() << endl;
+  if (reportDebug()) cout << "Setting options of histo: " << h->GetTitle() << endl;
   h->SetLineColor(graphConfiguration.lineColor);
   h->SetLineStyle(graphConfiguration.lineStyle);
   h->SetLineWidth(graphConfiguration.lineWidth);
@@ -458,7 +429,7 @@ void HistogramCollection::setHistoProperties(TH1 * h, const GraphConfiguration &
   //yAxis->SetTitle(graphConfiguration.yTitle);
   if (h->IsA() == TH2::Class()  || h->IsA() == TH2F::Class() || h->IsA() == TH2F::Class() )
     {
-    if (reportDebug()) cout << "Setting properties as 2D histo: " << h->GetTitle() << endl;
+    if (reportDebug()) cout << "Setting options as 2D histo: " << h->GetTitle() << endl;
     TAxis * zAxis = (TAxis *) h->GetZaxis();
     zAxis->SetNdivisions(graphConfiguration.nZDivisions);
     zAxis->SetTitleSize(graphConfiguration.zTitleSize);
@@ -471,7 +442,7 @@ void HistogramCollection::setHistoProperties(TH1 * h, const GraphConfiguration &
 void HistogramCollection::setHistoProperties(TH2 * h, const GraphConfiguration & graphConfiguration)
 {
   if (reportDebug()) cout << "----------------------------------------------------" << endl;
-  if (reportDebug()) cout << "Setting properties of 2D histo: " << h->GetTitle() << endl;
+  if (reportDebug()) cout << "Setting options of 2D histo: " << h->GetTitle() << endl;
   h->SetLineColor(graphConfiguration.lineColor);
   h->SetLineStyle(graphConfiguration.lineStyle);
   h->SetLineWidth(graphConfiguration.lineWidth);
@@ -501,7 +472,7 @@ void HistogramCollection::setHistoProperties(TH2 * h, const GraphConfiguration &
 
 void HistogramCollection::setHistoProperties(TH1 * h, const GraphConfiguration & graphConfiguration, const TString & xTitle, const TString & yTitle)
 {
-  if (reportDebug()) cout << "Setting properties of histo: " << h->GetTitle() << endl;
+  if (reportDebug()) cout << "Setting options of histo: " << h->GetTitle() << endl;
   h->SetLineColor(graphConfiguration.lineColor);
   h->SetLineStyle(graphConfiguration.lineStyle);
   h->SetLineWidth(graphConfiguration.lineWidth);
@@ -523,7 +494,7 @@ void HistogramCollection::setHistoProperties(TH1 * h, const GraphConfiguration &
 
 void HistogramCollection::setHistoProperties(TH2 * h, const GraphConfiguration & graphConfiguration, const TString & xTitle, const TString & yTitle, const TString & zTitle)
 {
-  if (reportDebug()) cout << "Setting properties of histo: " << h->GetTitle() << endl;
+  if (reportDebug()) cout << "Setting options of histo: " << h->GetTitle() << endl;
   TAxis * xAxis = (TAxis *) h->GetXaxis();
   xAxis->SetNdivisions(graphConfiguration.nXDivisions);
   xAxis->SetTitleSize(graphConfiguration.xTitleSize);
@@ -553,7 +524,7 @@ void HistogramCollection::setHistoProperties(TH2 * h, const GraphConfiguration &
 
 void HistogramCollection::addHistos(HistogramCollection * c1, double a1)
 {
-  for (int i=0; i<nHistograms; ++i)
+  for (int i=0; i<getNHistograms(); ++i)
     {
     TH1 * h1 = getHisto(i);
     TH1 * h2 = c1->getHisto(i);
@@ -563,7 +534,7 @@ void HistogramCollection::addHistos(HistogramCollection * c1, double a1)
 
 void HistogramCollection::addHistos(HistogramCollection * c1, HistogramCollection * c2, double a1, double a2)
 {
-  for (int i=0; i<nHistograms; ++i)
+  for (int i=0; i<getNHistograms(); ++i)
     {
     TH1 * h  = getHisto(i);
     TH1 * h1 = c1->getHisto(i);
@@ -574,7 +545,7 @@ void HistogramCollection::addHistos(HistogramCollection * c1, HistogramCollectio
 
 void HistogramCollection::addHistos(HistogramCollection * c1, HistogramCollection * c2, HistogramCollection * c3, double a1, double a2, double a3)
 {
-  for (int i=0; i<nHistograms; ++i)
+  for (int i=0; i<getNHistograms(); ++i)
     {
     TH1 * h  = getHisto(i);
     TH1 * h1 = c1->getHisto(i);
@@ -588,7 +559,7 @@ void HistogramCollection::addHistos(HistogramCollection * c1, HistogramCollectio
 void HistogramCollection::addHistos(HistogramCollection * c1, HistogramCollection * c2, HistogramCollection * c3, HistogramCollection * c4,
                                     double a1, double a2, double a3, double a4)
 {
-  for (int i=0; i<nHistograms; ++i)
+  for (int i=0; i<getNHistograms(); ++i)
     {
     TH1 * h  = getHisto(i);
     TH1 * h1 = c1->getHisto(i);
@@ -1048,7 +1019,7 @@ void HistogramCollection::calculateDptDpt(const TH2 * spp, const TH2 * spn, cons
   //int ny = spp->GetNbinsY();
 
   double v1,ev1,v2,ev2,v3,ev3,v4,ev4,v5,ev5,v6,ev6,p1,p2;
-  int k, k1, k2;
+  int k1, k2;
   int nEtaPhi = nEta*nPhi;
 
   double sumPt1 = 0;
@@ -1106,6 +1077,8 @@ void HistogramCollection::calculateDptDpt(const TH2 * spp, const TH2 * spn, cons
             {
             v5 = v6 = ev5 = ev6 = 0;
             }
+          if (s2dptdpt)
+            ;
           //s2dptdpt->SetBinContent(k,v5); s2dptdpt->SetBinError(k,ev5);
           //dptdpt->SetBinContent(k,  v6); dptdpt->SetBinError(k,  ev6);
           //s2dptdpt->SetBinContent(k1, k2, v5); s2dptdpt->SetBinError(k1, k2, ev5);
@@ -1350,8 +1323,8 @@ int  HistogramCollection::calculateQ3DwPtPhiEta(double pt1, double phi1, double 
 
   double pt,s,Mlong,roots;
   double ptot[4],q[4];
-  const int g[4]={1,-1,-1,-1};
-  int alpha;
+  //const int g[4]={1,-1,-1,-1};
+  //int alpha;
   s=0.0;
   ptot[0] = e1  + e2;
   ptot[1] = px1 + px2;
@@ -1415,8 +1388,8 @@ int  HistogramCollection::calculateQ3DwPtPhiY(double pt1, double phi1, double y1
 
   double pt,s,Mlong,roots;
   double ptot[4],q[4];
-  const int g[4]={1,-1,-1,-1};
-  int alpha;
+  //const int g[4]={1,-1,-1,-1};
+  //int alpha;
   s=0.0;
   ptot[0] = e1  + e2;
   ptot[1] = px1 + px2;
@@ -1453,6 +1426,8 @@ int  HistogramCollection::calculateQ3DwPtPhiY(double pt1, double phi1, double y1
 // Calculate n1n1 Q3D based on h2(y,pt) x h2(y,pt)
 void HistogramCollection::calculateN1N1H2H2_Q3D_MCY(TH2 * n1_1, TH2 * n1_2, TH3 * n1n1_Q3D, double a1, double a2)
 {
+  a1 = 0;
+  a2 = 0; // stop warnings for now
   if (!sameDimensions2D(n1_1,n1_2))
     {
     cout << "-ERROR- HistogramCollection::calculateN1N1_Q3D() abort calculation.";
@@ -1463,7 +1438,7 @@ void HistogramCollection::calculateN1N1H2H2_Q3D_MCY(TH2 * n1_1, TH2 * n1_2, TH3 
   double pt2, phi2, y2;
   int nIter = 100000000;
 
-  double ss = 2.0/double(n1n1_Q3D->GetNbinsX());
+  //double ss = 2.0/double(n1n1_Q3D->GetNbinsX());
   double avgN1 = n1_1->Integral();
   double avgN2 = n1_2->Integral();
 
@@ -1490,6 +1465,8 @@ void HistogramCollection::calculateN1N1H2H2_Q3D_MCY(TH2 * n1_1, TH2 * n1_2, TH3 
 // Calculate n1n1 Q3D based on h2(eta,pt) x h2(eta,pt)
 void HistogramCollection::calculateN1N1H2H2_Q3D_MCEta(TH2 * n1_1, TH2 * n1_2, TH3 * n1n1_Q3D, double a1, double a2)
 {
+  a1 = 0;
+  a2 = 0; // stop warnings for now
   if (!sameDimensions2D(n1_1,n1_1))
     {
     cout << "-ERROR- HistogramCollection::calculateN1N1_Q3D() abort calculation.";
@@ -1533,11 +1510,9 @@ void HistogramCollection::calculateN1N1H2H2_Q3D(const TH2 * n1_1, const TH2 * n1
     }
   int nx = n1_1->GetNbinsX();
   int ny = n1_1->GetNbinsY();
-  int nz = n1_1->GetNbinsX();
-
-  double v1,ev1,er1;
-  double v2,ev2,er2;
-  double v3,ev3;
+  double v1;
+  double v2;
+  double v3;
   double Qlong, Qout, Qside;
   double pt1, phi1, eta1;
   double pt2, phi2, eta2;
@@ -1590,9 +1565,9 @@ void HistogramCollection::calculateN1N1H3H3_Q3D(const TH3 * n1_1, const TH3 * n1
   int ny = n1_1->GetNbinsY();
   int nz = n1_1->GetNbinsX();
 
-  double v1,ev1,er1;
-  double v2,ev2,er2;
-  double v3,ev3;
+  double v1;
+  double v2;
+  double v3;
   double Qlong, Qout, Qside;
   double pt1, phi1, eta1;
   double pt2, phi2, eta2;
@@ -1743,61 +1718,53 @@ double HistogramCollection::avgValue(TH1 * h)
 ////////////////////////////////////////////////////////////////////////
 void HistogramCollection::setHistogram(TH1 * h, double v, double ev)
 {
-  if (h)
+  if (!h)
     {
-    //set all bins of the given histogram h to contain the same given
-    // value (v) and error (ev).
-    int n = h->GetNbinsX();
-    for (int i1=1;i1<=n;++i1)
-      {
-      h->SetBinContent(i1,v);
-      h->SetBinError(i1,ev);
-      }
+    if (reportError()) cout << "-E- setHistogram(TH1 * h, ...) histogram does not exist." << endl;
+    return;
     }
-  else
-    {
-    if (reportDebug()) cout << "-E- setHistogram(TH1 * h, ...) histogram does not exist." << endl;
-    }
+  //set all bins of the given histogram h to contain the same given
+  // value (v) and error (ev).
+  int n = h->GetNbinsX();
+  for (int i1=1;i1<=n;++i1)
+  {
+  h->SetBinContent(i1,v);
+  h->SetBinError(i1,ev);
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////
 void HistogramCollection::setHistogram(TH2 * h, double v, double ev)
 {
-  if (h)
+  if (!h)
     {
-    //set all bins of the given histogram h to contain the same given
-    // value (v) and error (ev).
-    int n_x = h->GetNbinsX();
-    int n_y = h->GetNbinsY();
-    for (int i1=1;i1<=n_x;++i1)
-      {
-      for (int i2=1;i2<=n_y;++i2)
-        {
-        h->SetBinContent(i1,i2,v);
-        h->SetBinError(i1,i2,ev);
-        }
-      }
+    if (reportError()) cout << "-E- setHistogram(TH1 * h, ...) histogram does not exist." << endl;
+    return;
     }
-  else
+
+  //set all bins of the given histogram h to contain the same given
+  // value (v) and error (ev).
+  int n_x = h->GetNbinsX();
+  int n_y = h->GetNbinsY();
+  for (int i1=1;i1<=n_x;++i1)
+  {
+  for (int i2=1;i2<=n_y;++i2)
     {
-    if (reportDebug()) cout << "-E- setHistogram(TH1 * h, ...) histogram does not exist." << endl;
+    h->SetBinContent(i1,i2,v);
+    h->SetBinError(i1,i2,ev);
     }
+  }
 }
 
 TH1 * HistogramCollection::loadH1(TFile * inputFile,
-                                  const TString & histoName,
-                                  bool  scale,
-                                  bool  save,
-                                  bool  plot,
-                                  bool  print,
-                                  bool  sumw2)
+                                  const TString & histoName)
 {
   TH1* h = (TH1*) inputFile->Get(histoName);
   if (!h)
     {
     if (reportDebug()) cout << "Could not load histogram "<< histoName << endl;
     }
-  addToList(h,scale,save,plot,print,sumw2);
+  add(h,0,1,1,1);
   return h;
 }
 
@@ -1805,57 +1772,42 @@ TH1 * HistogramCollection::loadH1(TFile * inputFile,
 ///No test is //done to verify that the file is properly opened.
 
 TH2 * HistogramCollection::loadH2(TFile * inputFile,
-                                  const TString & histoName,
-                                  bool  scale,
-                                  bool  save,
-                                  bool  plot,
-                                  bool  print,
-                                  bool  sumw2)
+                                  const TString & histoName)
 {
   TH2* h = (TH2*) inputFile->Get(histoName);
   if (!h)
     {
     if (reportDebug()) cout << "Could not load histogram "<< histoName << endl;
     }
-  addToList(h,scale,save,plot,print,sumw2);
+  add(h,0,1,1,1);
   return h;
 }
 
 ///Load the given 3D histogram (name) from the given TFile
 ///No test is //done to verify that the file is properly opened.
 TH3 * HistogramCollection::loadH3(TFile * inputFile,
-                                  const TString & histoName,
-                                  bool  scale,
-                                  bool  save,
-                                  bool  plot,
-                                  bool  print,
-                                  bool  sumw2)
+                                  const TString & histoName)
 {
   TH3* h = (TH3*) inputFile->Get(histoName);
   if (!h)
     {
     if (reportDebug()) cout << "Could not load histogram "<< histoName << endl;
     }
-  addToList(h,scale,save,plot,print,sumw2);
+  add(h,0,1,1,1);
   return h;
 }
 
 ///Load the given 3D histogram (name) from the given TFile
 ///No test is //done to verify that the file is properly opened.
 TProfile * HistogramCollection::loadProfile(TFile * inputFile,
-                                            const TString & histoName,
-                                            bool  scale,
-                                            bool  save,
-                                            bool  plot,
-                                            bool  print,
-                                            bool  sumw2)
+                                            const TString & histoName)
 {
   TProfile * h = (TProfile*) inputFile->Get(histoName);
   if (!h)
     {
     if (reportDebug()) cout << "Could not load histogram "<< histoName << endl;
     }
-  addToList(h,scale,save,plot,print,sumw2);
+  add(h,0,1,1,1);
   return h;
 }
 
@@ -2056,9 +2008,9 @@ void HistogramCollection::scaleByBinWidth(TH1 * h, double scale)
 void HistogramCollection::scaleAllHistoByBinWidth(double scale)
 {
   TH1 * h;
-  for (int i=0; i<nHistograms; ++i)
+  for (int i=0; i<getNHistograms(); ++i)
     {
-    h = histograms[i];
+    h = getObjectAt(i);
     TClass * c = h->IsA();
 
 
@@ -2089,9 +2041,9 @@ void HistogramCollection::scaleAllHistoByBinWidth(double scale)
 void HistogramCollection::sumw2All()
 {
   TH1 * h;
-  for (int i=0; i<nHistograms; ++i)
+  for (int i=0; i<getNHistograms(); ++i)
     {
-    h = histograms[i];
+    h = getObjectAt(i);;
     TClass * c = h->IsA();
     if (c==TProfile::Class() )
       {
@@ -2961,7 +2913,7 @@ void HistogramCollection::reduce_n2xEtaPhi_n2DetaDphi(const TH2 * source, TH2 * 
   //if (reportDebug()) cout << "reduce_n2xEtaPhi_n2DetaDphi() ==============  New Version From TH2" << endl;
   double v1,v2,ev1;
   int dPhi,dEta, iPhi,iEta,jPhi,jEta, i, j;
-  int nBins = nEtaBins*nPhiBins;
+  //int nBins = nEtaBins*nPhiBins;
   int nWrk  = nPhiBins*(2*nEtaBins-1);
   int index;
   double * numerator    = new double[nWrk];

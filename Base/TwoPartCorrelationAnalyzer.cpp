@@ -32,7 +32,9 @@ TwoPartCorrelationAnalyzer::TwoPartCorrelationAnalyzer(const TString &  name,
                                                        ParticleFilter * pf2)
 :
 Task(name,configuration,event),
-event_Histos(NULL),
+eventFilter(ef),
+particleFilter1(pf1),
+particleFilter2(pf2),
 particle1_Histos(NULL),
 particle2_Histos(NULL),
 pair11_Histos(NULL),
@@ -43,9 +45,6 @@ pair22_DerivedHistos(NULL),
 pair12_DerivedHistos(NULL),
 pair12_CIHistos(NULL),
 pair12_CDHistos(NULL),
-eventFilter(ef),
-particleFilter1(pf1),
-particleFilter2(pf2),
 partName1("U"),
 partName2("U")
 {
@@ -86,7 +85,6 @@ if (!eventFilter)
 TwoPartCorrelationAnalyzer::~TwoPartCorrelationAnalyzer()
 {
   if (reportDebug())  cout << "TwoPartCorrelationAnalyzer::DTOR(...) Started" << endl;
-  if (event_Histos != NULL) delete event_Histos;
   if (particle1_Histos != NULL) delete particle1_Histos;
   if (particle2_Histos != NULL) delete particle2_Histos;
   if (pair11_Histos != NULL) delete pair11_Histos;
@@ -106,9 +104,6 @@ void TwoPartCorrelationAnalyzer::createHistograms()
   if (reportDebug())  cout << "TwoPartCorrelationAnalyzer::initialize(...) started"<< endl;
   AnalysisConfiguration * ac = (AnalysisConfiguration *) getTaskConfiguration();
   LogLevel debugLevel = getReportLevel();
-  //event_Histos  = new EventHistos("Event Histos",analysisConfiguration,debugLevel);
-
-
 
   particle1_Histos  = new ParticleHistos(partName1,ac,debugLevel);
   particle2_Histos  = new ParticleHistos(partName2,ac,debugLevel);
@@ -221,7 +216,6 @@ void TwoPartCorrelationAnalyzer::saveHistograms(TFile * outputFile)
 
   if (reportDebug()) cout << "TwoPartCorrelationAnalyzer::saveHistograms(...) saving singles." << endl;
 
-  //event_Histos  ->saveHistograms(outputFile);
   particle1_Histos  ->saveHistograms(outputFile);
   particle2_Histos  ->saveHistograms(outputFile);
 
@@ -258,7 +252,6 @@ void TwoPartCorrelationAnalyzer::addHistogramsToExtList(TList *list, bool all)
   list->Add(new TParameter<Long64_t>("NoOfEvents",eventsProcessed,'+'));
   AnalysisConfiguration * analysisConfiguration = (AnalysisConfiguration *) getTaskConfiguration();
 
-  //event_Histos  ->saveHistograms(outputFile);
   particle1_Histos  ->addHistogramsToExtList(list, all);
   particle2_Histos  ->addHistogramsToExtList(list, all);
   if (analysisConfiguration->fillPairs)
@@ -376,61 +369,7 @@ void TwoPartCorrelationAnalyzer::calculateDerivedHistograms()
   if (reportDebug())  cout << "TwoPartCorrelationAnalyzer::calculateDerivedHistograms() Completed" << endl;
 }
 
-//////////////////////////////////////////////////////////////
-// plot histograms on screeen
-//////////////////////////////////////////////////////////////
-//  void plotHistograms(const TString & outputPath,
-//                              CanvasCollection & canvasCollection)
-//  {
-//    if (reportDebug())  cout << "TwoPartCorrelationAnalyzer::plotDerived() Starting" << endl;
-//    canvasCollection.createDirectory(outputPath);
-//
-//    if (analysisConfiguration->plotEventHistos)
-//    {
-//      //event_Histos ->plotHistograms(outputPath, canvasCollection);
-//    }
-//    if (analysisConfiguration->plotSingles)
-//    {
-//      particle1_Histos ->plotHistograms(outputPath, canvasCollection);
-//      particle2_Histos ->plotHistograms(outputPath, canvasCollection);
-//    }
-//
-//    if (analysisConfiguration->fillPairs)
-//    {
-//      if (analysisConfiguration->plotPairs)
-//      {
-//        pair11_Histos->plotHistograms(outputPath, canvasCollection);
-//        pair22_Histos->plotHistograms(outputPath, canvasCollection);
-//        pair12_Histos->plotHistograms(outputPath, canvasCollection);
-//      }
-//
-//      if (analysisConfiguration->calculateDerivedHistograms)
-//      {
-//        if (analysisConfiguration->plotDerivedPairs)
-//        {
-//          pair11_DerivedHistos ->plotHistograms(outputPath, canvasCollection);
-//          pair22_DerivedHistos ->plotHistograms(outputPath, canvasCollection);
-//          pair12_DerivedHistos ->plotHistograms(outputPath, canvasCollection);
-//        }
-//        if (analysisConfiguration->plotCombined)
-//        {
-//          pair12_CIHistos      ->plotHistograms(outputPath, canvasCollection);
-//          pair12_CDHistos      ->plotHistograms(outputPath, canvasCollection);
-//        }
-//      }
-//    }
-//
-//
-//
-//    //  // pt spectrum comparison with ALICE data
-//    //TH1 * ptparticle1 = particle1_Histos->h_n1_pt;
-//    //TString name = "BF_n_pt_P_vsAlice";
-//    //TCanvas * c = canvasCollection->createCanvas(name, *cc1D, 30);
-//    //hc->setHistoProperties(ptparticle1, *gc1D);
-//    //ptparticle1->Draw("P.E");
-//
-//    if (reportDebug())  cout << "TwoPartCorrelationAnalyzer::plotDerived() Completed" << endl;
-//  }
+
 
 //////////////////////////////////////////////////////////////
 // Scale all filled histograms by the given factor
@@ -450,3 +389,6 @@ void TwoPartCorrelationAnalyzer::scaleHistograms(double factor)
     }
   if (reportDebug())  cout << "TwoPartCorrelationAnalyzer::scale(..) Completed"  << endl;
 }
+
+
+
