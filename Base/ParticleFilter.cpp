@@ -82,7 +82,7 @@ bool ParticleFilter::accept(Particle & particle)
   if (!accepting) return false;
 
   double pt  = particle.pt;
-  double y   = particle.y;
+  //double y   = particle.y;
   double eta = particle.eta;
   if (pt  >  min_pt &&
       pt  <= max_pt &&
