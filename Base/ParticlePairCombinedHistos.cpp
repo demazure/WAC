@@ -6,7 +6,7 @@
 //  Copyright © 2016 Claude Pruneau. All rights reserved.
 //
 #include "ParticlePairCombinedHistos.hpp"
-ClassImp(ParticlePairCombinedHistos);
+ClassImp(ParticlePairCombinedHistos)
 
 
 ParticlePairCombinedHistos::ParticlePairCombinedHistos(const TString & name,
@@ -125,6 +125,9 @@ ParticlePairCombinedHistos::~ParticlePairCombinedHistos()
     h_G2_phiPhi            = createHistogram(bn+TString("G2_phiPhi"),            ac.nBins_phi,   ac.min_phi,   ac.max_phi,   ac.nBins_phi,   ac.min_phi,       ac.max_phi,       "#varphi_{1}", "#varphi_{2}",   "G_{2}", scaled, saved, plotted, printed);
     h_G2_DetaDphi_shft     = createHistogram(bn+TString("G2_DetaDphi_shft"),     ac.nBins_Deta,  ac.min_Deta,  ac.max_Deta,  ac.nBins_Dphi,  ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta",  "#Delta#varphi", "G_{2}", scaled, saved, plotted, printed);
 
+    h_BF_etaEta            = createHistogram(bn+TString("BF_etaEta"),            ac.nBins_eta,   ac.min_eta,   ac.max_eta,   ac.nBins_eta,   ac.min_eta,       ac.max_eta,       "#eta_{1}",    "#eta_{2}",      "BF_{2}", scaled, saved, plotted, printed);
+    h_BF_phiPhi            = createHistogram(bn+TString("BF_phiPhi"),            ac.nBins_phi,   ac.min_phi,   ac.max_phi,   ac.nBins_phi,   ac.min_phi,       ac.max_phi,       "#varphi_{1}", "#varphi_{2}",   "BF_{2}", scaled, saved, plotted, printed);
+    h_BF_DetaDphi_shft     = createHistogram(bn+TString("BF_DetaDphi_shft"),     ac.nBins_Deta,  ac.min_Deta,  ac.max_Deta,  ac.nBins_Dphi,  ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta",  "#Delta#varphi", "BF_{2}", scaled, saved, plotted, printed);
 
 
     if (ac.fillY)
@@ -140,6 +143,9 @@ ParticlePairCombinedHistos::~ParticlePairCombinedHistos()
 
       h_G2_yY              = createHistogram(bn+TString("G2_yY"),                ac.nBins_y,   ac.min_y,   ac.max_y,   ac.nBins_y,     ac.min_y,         ac.max_y,         "y_{1}",      "y_{2}",         "G_{2}", scaled, saved, plotted, printed);
       h_G2_DyDphi_shft     = createHistogram(bn+TString("G2_DyDphi_shft"),       ac.nBins_Dy,  ac.min_Dy,  ac.max_Dy,  ac.nBins_Dphi,  ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta y",   "#Delta#varphi", "G_{2}", scaled, saved, plotted, printed);
+
+      h_BF_yY              = createHistogram(bn+TString("BF_yY"),                ac.nBins_y,   ac.min_y,   ac.max_y,   ac.nBins_y,     ac.min_y,         ac.max_y,         "y_{1}",      "y_{2}",         "BF_{2}", scaled, saved, plotted, printed);
+      h_BF_DyDphi_shft     = createHistogram(bn+TString("BF_DyDphi_shft"),       ac.nBins_Dy,  ac.min_Dy,  ac.max_Dy,  ac.nBins_Dphi,  ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta y",   "#Delta#varphi", "BF_{2}", scaled, saved, plotted, printed);
     }
 
   if (ac.fillQ3D)
@@ -203,6 +209,18 @@ ParticlePairCombinedHistos::~ParticlePairCombinedHistos()
     h_G2_DetaDphi_shft->Add(pp->h_G2_DetaDphi_shft, mm->h_G2_DetaDphi_shft, app, amm);
     h_G2_DetaDphi_shft->Add(pm->h_G2_DetaDphi_shft, apm);
 
+    h_BF_DetaDphi_shft->Add(pp->h_bf12_DetaDphi_shft, mm->h_bf12_DetaDphi_shft, app, amm);
+    h_BF_DetaDphi_shft->Add(pm->h_bf12_DetaDphi_shft, apm/2.0);
+    h_BF_DetaDphi_shft->Add(pm->h_bf21_DetaDphi_shft, apm/2.0);
+
+    h_BF_etaEta->Add(pp->h_bf12_etaEta, mm->h_bf12_etaEta, app, amm);
+    h_BF_etaEta->Add(pm->h_bf12_etaEta, apm/2.0);
+    h_BF_etaEta->Add(pm->h_bf21_etaEta, apm/2.0);
+
+    h_BF_phiPhi->Add(pp->h_bf12_phiPhi, mm->h_bf12_phiPhi, app, amm);
+    h_BF_phiPhi->Add(pm->h_bf12_phiPhi, apm/2.0);
+    h_BF_phiPhi->Add(pm->h_bf21_phiPhi, apm/2.0);
+
     if (ac.fillY)
     {
       h_R2_yY->Add(pp->h_R2_yY, mm->h_R2_yY, app, amm);
@@ -225,6 +243,14 @@ ParticlePairCombinedHistos::~ParticlePairCombinedHistos()
 
       h_G2_DyDphi_shft->Add(pp->h_G2_DyDphi_shft, mm->h_G2_DyDphi_shft, app, amm);
       h_G2_DyDphi_shft->Add(pm->h_G2_DyDphi_shft, apm);
+
+      h_BF_yY->Add(pp->h_bf12_yY, mm->h_bf12_yY, app, amm);
+      h_BF_yY->Add(pm->h_bf12_yY, apm/2.0);
+      h_BF_yY->Add(pm->h_bf21_yY, apm/2.0);
+
+      h_BF_DyDphi_shft->Add(pp->h_bf12_DyDphi_shft, mm->h_bf12_DyDphi_shft, app, amm);
+      h_BF_DyDphi_shft->Add(pm->h_bf12_DyDphi_shft, apm/2.0);
+      h_BF_DyDphi_shft->Add(pm->h_bf21_DyDphi_shft, apm/2.0);
     }
 
     if (ac.fillQ3D)

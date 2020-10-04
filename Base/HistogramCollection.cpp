@@ -1266,6 +1266,45 @@ void HistogramCollection::calculateG2_H2H2H2H2(const TH2 * spp, const TH2 * n1n1
 
 }
 
+/* calculate the balance functions components associated to the current pair */
+/* independent of R2, two components are alway computed, for LS they will match but don't for US */
+void HistogramCollection::calculateBf(const TH2 *n2, const TH2 *n1_1, const TH2 *n1_2, TH2 *bf_12, TH2 *bf_21)
+{
+  int nbinsx = n2->GetNbinsX();
+  int nbinsy = n2->GetNbinsY();
+
+  bf_12->Reset();
+  bf_21->Reset();
+  double n11_inte = 0.0;
+  double n11_int = n1_1->IntegralAndError(1,n1_1->GetNbinsX(),1,n1_1->GetNbinsY(),n11_inte);
+  double n11_inter = n11_inte/n11_int;
+
+  double n12_inte = 0.0;
+  double n12_int = n1_2->IntegralAndError(1,n1_2->GetNbinsX(),1,n1_2->GetNbinsY(),n12_inte);
+  double n12_inter = n12_inte/n12_int;
+
+  for (int ix = 0; ix < nbinsx; ++ix)
+  {
+    for (int iy = 0; iy < nbinsy; ++iy)
+    {
+      double v = n2->GetBinContent(ix+1,iy+1);
+      double ve = n2->GetBinError(ix+1,iy+1);
+
+      double v12 = v/n12_int;
+      double v12e = v12*TMath::Sqrt(ve/v*ve/v+n12_inter*n12_inter);
+      double v21 = v/n11_int;
+      double v21e = v21*TMath::Sqrt(ve/v*ve/v+n11_inter*n11_inter);
+
+      bf_12->SetBinContent(ix+1,iy+1,v12);
+      bf_12->SetBinError(ix+1,iy+1,v12e);
+      bf_21->SetBinContent(iy+1,ix+1,v21);
+      bf_21->SetBinError(iy+1,ix+1,v21e);
+    }
+  }
+  bf_12->SetEntries(n2->GetEntries());
+  bf_21->SetEntries(n2->GetEntries());
+}
+
 void HistogramCollection::calculateSean_H1H2H2H2(const TH1 * spp, const TH2 * n1n1, const TH2 * pt1pt1, TH2 * sean, bool ijNormalization, double a1, double a2)
 {
 
