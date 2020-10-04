@@ -14,13 +14,13 @@ ClassImp(HistogramCollection);
 ////////////////////////////////////////////////////////////////////////////
 // CTOR1
 ////////////////////////////////////////////////////////////////////////////
-HistogramCollection::HistogramCollection(const TString & name,
+HistogramCollection::HistogramCollection(const TString & _collectionName,
                                          int  initialCapacity,
                                          LogLevel debugLevel)
 :
 Collection<TH1>(initialCapacity),
 MessageLogger(debugLevel),
-collectionName(name),
+collectionName(_collectionName),
 options(0),
 randomGenerator(new TRandom()),
 bOwnTheHistograms(true)

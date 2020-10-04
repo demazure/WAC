@@ -89,22 +89,27 @@ rootOuputFileName( source.rootOuputFileName )
 
 TaskConfiguration & TaskConfiguration::operator=(const TaskConfiguration & source)
 {
-  name = source.name;
-  type = source.type;
-  version = source.version;
-  loadHistograms = source.loadHistograms;
-  createHistograms = source.createHistograms;
-  scaleHistograms = source.scaleHistograms;
-  calculateDerivedHistograms = source.calculateDerivedHistograms;
-  saveHistograms = source.saveHistograms;
-  resetHistograms = source.resetHistograms;
-  clearHistograms = source.clearHistograms;
-  forceHistogramsRewrite = source.forceHistogramsRewrite;
-  inputPath = source.inputPath;
-  configurationFileName = source.configurationFileName;
-  rootInputFileName = source.rootInputFileName;
-  outputPath = source.outputPath;
-  rootOuputFileName = source.rootOuputFileName;
+  // avoid copying onto itself...
+  if (this!=&source)
+    {
+    name = source.name;
+    type = source.type;
+    version = source.version;
+    loadHistograms = source.loadHistograms;
+    createHistograms = source.createHistograms;
+    scaleHistograms = source.scaleHistograms;
+    calculateDerivedHistograms = source.calculateDerivedHistograms;
+    saveHistograms = source.saveHistograms;
+    resetHistograms = source.resetHistograms;
+    clearHistograms = source.clearHistograms;
+    forceHistogramsRewrite = source.forceHistogramsRewrite;
+    inputPath = source.inputPath;
+    configurationFileName = source.configurationFileName;
+    rootInputFileName = source.rootInputFileName;
+    outputPath = source.outputPath;
+    rootOuputFileName = source.rootOuputFileName;
+    }
+  return *this;
 }
 
 

@@ -103,10 +103,10 @@ void ParticlePairHistos::initialize()
     bool defsumw2 = TH1::GetDefaultSumw2();
     TH1::SetDefaultSumw2(false);
 #endif // OPTIMIZEADDBINCONTENT
-    h_n2_phiYPhiY   = createHistogram(bn+TString("n2_phiYPhiY"),  ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}","y_{2}x#varphi_{2}", "N_{2}", scaled, saved, notPlotted, notPrinted,false);
-    h_npt_phiYPhiY  = createHistogram(bn+TString("npt_phiYPhiY"), ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}","y_{2}x#varphi_{2}", "Nxp_{T}", scaled, saved, notPlotted, notPrinted,false);
-    h_ptn_phiYPhiY  = createHistogram(bn+TString("ptn_phiYPhiY"), ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}","y_{2}x#varphi_{2}", "p_{T}xN", scaled, saved, notPlotted, notPrinted,false);
-    h_ptpt_phiYPhiY = createHistogram(bn+TString("ptpt_phiYPhiY"),ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}","y_{2}x#varphi_{2}", "p_{T}xp_{T}", scaled, saved, notPlotted, notPrinted,false);
+    h_n2_phiYPhiY   = createHistogram(bn+TString("n2_phiYPhiY"),  ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}","y_{2}x#varphi_{2}", "N_{2}", 1,1,0,0);
+    h_npt_phiYPhiY  = createHistogram(bn+TString("npt_phiYPhiY"), ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}","y_{2}x#varphi_{2}", "Nxp_{T}", 1,1,0,0);
+    h_ptn_phiYPhiY  = createHistogram(bn+TString("ptn_phiYPhiY"), ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}","y_{2}x#varphi_{2}", "p_{T}xN", 1,1,0,0);
+    h_ptpt_phiYPhiY = createHistogram(bn+TString("ptpt_phiYPhiY"),ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}","y_{2}x#varphi_{2}", "p_{T}xp_{T}", 1,1,0,0);
 #ifdef OPTIMIZEADDBINCONTENT
     /* big histograms are forced to be created without sumw2 structure for it will not be used */
     h_n2_phiYPhiY->SetBit(TH1::kIsNotW);
@@ -119,9 +119,9 @@ void ParticlePairHistos::initialize()
     h_ptpt_phiYPhiY->Sumw2(false);
     TH1::SetDefaultSumw2(defsumw2);
 #endif // OPTIMIZEADDBINCONTENT
-    h_npt_yY        = createHistogram(bn+TString("npt_yY"),       ac.nBins_y,    ac.min_y, ac.max_y, ac.nBins_y, ac.min_y, ac.max_y, "y_{1}","y_{2}", "n x p_{T}",   scaled, saved, notPlotted, notPrinted);
-    h_ptn_yY        = createHistogram(bn+TString("ptn_yY"),       ac.nBins_y,    ac.min_y, ac.max_y, ac.nBins_y, ac.min_y, ac.max_y, "y_{1}","y_{2}", "p_{T} x n",   scaled, saved, notPlotted, notPrinted);
-    h_ptpt_yY       = createHistogram(bn+TString("ptpt_yY"),      ac.nBins_y,    ac.min_y, ac.max_y, ac.nBins_y, ac.min_y, ac.max_y, "y_{1}","y_{2}", "p_{T}xp_{T}", scaled, saved, plotted, notPrinted);
+    h_npt_yY        = createHistogram(bn+TString("npt_yY"),       ac.nBins_y,    ac.min_y, ac.max_y, ac.nBins_y, ac.min_y, ac.max_y, "y_{1}","y_{2}", "n x p_{T}",   1,1,0,0);
+    h_ptn_yY        = createHistogram(bn+TString("ptn_yY"),       ac.nBins_y,    ac.min_y, ac.max_y, ac.nBins_y, ac.min_y, ac.max_y, "y_{1}","y_{2}", "p_{T} x n",   1,1,0,0);
+    h_ptpt_yY       = createHistogram(bn+TString("ptpt_yY"),      ac.nBins_y,    ac.min_y, ac.max_y, ac.nBins_y, ac.min_y, ac.max_y, "y_{1}","y_{2}", "p_{T}xp_{T}", 1,1,0,0);
     }
   if (reportDebug()) cout << "ParticlePairHistos::initialize() Completed." << endl;
 }

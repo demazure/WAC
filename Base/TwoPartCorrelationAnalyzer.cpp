@@ -73,6 +73,7 @@ if (!eventFilter)
   TString newName = getName();
   newName += "_";
   newName += eventFilter->getName();
+  newName += "_";
   setName(newName);
   partName1 = particleFilter1->getName();
   partName2 = particleFilter2->getName();
@@ -105,20 +106,21 @@ void TwoPartCorrelationAnalyzer::createHistograms()
   AnalysisConfiguration * ac = (AnalysisConfiguration *) getTaskConfiguration();
   LogLevel debugLevel = getReportLevel();
 
-  particle1_Histos  = new ParticleHistos(partName1,ac,debugLevel);
-  particle2_Histos  = new ParticleHistos(partName2,ac,debugLevel);
+  TString prefixName = getName();
+  particle1_Histos  = new ParticleHistos(prefixName+partName1,ac,debugLevel);
+  particle2_Histos  = new ParticleHistos(prefixName+partName2,ac,debugLevel);
   if (ac->fillPairs)
     {
-    pair11_Histos = new ParticlePairHistos(partName1+partName1,ac,debugLevel);
-    pair22_Histos = new ParticlePairHistos(partName2+partName2,ac,debugLevel);
-    pair12_Histos = new ParticlePairHistos(partName1+partName2,ac,debugLevel);
+    pair11_Histos = new ParticlePairHistos(prefixName+partName1+partName1,ac,debugLevel);
+    pair22_Histos = new ParticlePairHistos(prefixName+partName2+partName2,ac,debugLevel);
+    pair12_Histos = new ParticlePairHistos(prefixName+partName1+partName2,ac,debugLevel);
     if (ac->calculateDerivedHistograms)
       {
-      pair11_DerivedHistos = new ParticlePairDerivedHistos(  partName1+partName1,ac,debugLevel);
-      pair22_DerivedHistos = new ParticlePairDerivedHistos(  partName2+partName2,ac,debugLevel);
-      pair12_DerivedHistos = new ParticlePairDerivedHistos(  partName1+partName2,ac,debugLevel);
-      pair12_CIHistos      = new ParticlePairCombinedHistos( partName1+partName2+"CI",ac,debugLevel);
-      pair12_CDHistos      = new ParticlePairCombinedHistos( partName1+partName2+"CD",ac,debugLevel);
+      pair11_DerivedHistos = new ParticlePairDerivedHistos(  prefixName+partName1+partName1,ac,debugLevel);
+      pair22_DerivedHistos = new ParticlePairDerivedHistos(  prefixName+partName2+partName2,ac,debugLevel);
+      pair12_DerivedHistos = new ParticlePairDerivedHistos(  prefixName+partName1+partName2,ac,debugLevel);
+      pair12_CIHistos      = new ParticlePairCombinedHistos( prefixName+partName1+partName2+"CI",ac,debugLevel);
+      pair12_CDHistos      = new ParticlePairCombinedHistos( prefixName+partName1+partName2+"CD",ac,debugLevel);
       }
     }
   if (reportDebug())  cout << "TwoPartCorrelationAnalyzer::createHistograms(...) completed"<< endl;
