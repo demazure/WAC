@@ -3036,7 +3036,89 @@ void HistogramCollection::reduce_n2xEtaPhi_n2EtaEta(const TH1 * source, TH2 * ta
   delete [] work;
 }
 
+void HistogramCollection::project_n2XYXY_n2XX(const TH2 * source, TH2 * target,int nXBins,int nYBins)
+{
+  double v1,v2,ev1,ev2,v,ev;
 
+  /* sanity checks */
+  if ((source->GetNbinsX() != nXBins*nYBins)
+      or (source->GetNbinsY() != nXBins*nYBins)
+      or (target->GetNbinsX() != nXBins)
+      or (target->GetNbinsY() != nXBins)) {
+        cout << "-Fatal- HistogramCollection::project_n2XYXY_n2XX: " << "Inconsistent indexes for histogram " << source->GetName() << endl;
+        return;
+      }
+
+  target->Reset();
+
+  int i=0;
+  for (int iX=0;iX<nXBins; ++iX)
+  {
+    for (int iY=0;iY<nYBins; ++iY)
+    {
+      int j=0;
+      for (int jX=0;jX<nXBins; ++jX)
+      {
+        for (int jY=0;jY<nYBins; ++jY)
+        {
+          v1   = source->GetBinContent(i+1,j+1);
+          ev1  = source->GetBinError(i+1,j+1);
+          v2   = target->GetBinContent(iX+1,jX+1);
+          ev2  = target->GetBinError(iX+1,jX+1);
+          v = v1+v2;
+          ev = sqrt(ev1*ev1+ev2*ev2);
+          target->SetBinContent(iX+1,jX+1,v);
+          target->SetBinError(iX+1,jX+1,ev);
+          ++j;
+        }
+      }
+      ++i;
+    }
+  }
+  target->SetEntries(source->GetEntries());
+}
+
+void HistogramCollection::project_n2XYXY_n2YY(const TH2 * source, TH2 * target,int nXBins,int nYBins)
+{
+  double v1,v2,ev1,ev2,v,ev;
+
+  /* sanity checks */
+  if ((source->GetNbinsX() != nXBins*nYBins)
+      or (source->GetNbinsY() != nXBins*nYBins)
+      or (target->GetNbinsX() != nYBins)
+      or (target->GetNbinsY() != nYBins)) {
+        cout << "-Fatal- HistogramCollection::project_n2XYXY_n2YY: " << "Inconsistent indexes for histogram " << source->GetName() << endl;
+        return;
+      }
+
+  target->Reset();
+
+  int i=0;
+  for (int iX=0;iX<nXBins; ++iX)
+  {
+    for (int iY=0;iY<nYBins; ++iY)
+    {
+      int j=0;
+      for (int jX=0;jX<nXBins; ++jX)
+      {
+        for (int jY=0;jY<nYBins; ++jY)
+        {
+          v1   = source->GetBinContent(i+1,j+1);
+          ev1  = source->GetBinError(i+1,j+1);
+          v2   = target->GetBinContent(iY+1,jY+1);
+          ev2  = target->GetBinError(iY+1,jY+1);
+          v = v1+v2;
+          ev = sqrt(ev1*ev1+ev2*ev2);
+          target->SetBinContent(iY+1,jY+1,v);
+          target->SetBinError(iY+1,jY+1,ev);
+          ++j;
+        }
+      }
+      ++i;
+    }
+  }
+  target->SetEntries(source->GetEntries());
+}
 
 
 TH2* HistogramCollection::symmetrize(TH2* h)

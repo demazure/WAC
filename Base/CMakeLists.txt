@@ -16,6 +16,10 @@ add_library(Base SHARED CanvasCollection.cpp CanvasConfiguration.cpp TaskConfigu
 target_link_libraries(Base ${ROOT_LIBRARIES} ${EXTRA_LIBS} )
 target_include_directories(Base  PUBLIC Base ${EXTRA_INCLUDES} ) 
 
+# optimization for big histogram access within the pair inner loop
+# WARNING: the sumw2 structure is not used -> estimate uncertainties using sub-samples
+add_definitions(-DOPTIMIZEADDBINCONTENT)
+
 add_executable(RunCollisionGeometrySimulation RunCollisionGeometrySimulation.cpp)
 target_include_directories(RunCollisionGeometrySimulation PUBLIC Base ${EXTRA_INCLUDES})
 target_link_libraries(RunCollisionGeometrySimulation Base  EGLib   ${ROOT_LIBRARIES} ${EXTRA_LIBS} ${CMAKE_DL_LIBS})
