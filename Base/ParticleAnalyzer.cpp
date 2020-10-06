@@ -96,11 +96,12 @@ void ParticleAnalyzer::createHistograms()
   if (reportDebug())  cout << "ParticleAnalyzer::createHistograms(...) started"<< endl;
   AnalysisConfiguration * ac = (AnalysisConfiguration *) getTaskConfiguration();
   LogLevel debugLevel = getReportLevel();
+  TString prefixName = getName(); prefixName += "_";
   TString histoName;
   if (reportInfo())  cout << "ParticleAnalyzer::createHistograms(...) Creating histograms for nParticleFilters:" << nParticleFilters <<  endl;
   for (int iFilter=0; iFilter<nParticleFilters; iFilter++ )
   {
-  histoName = *partNames[iFilter];
+  histoName = prefixName + *partNames[iFilter];
   particleHistos[iFilter] = new ParticleHistos(histoName,ac,debugLevel);
   }
   if (reportDebug())  cout << "ParticleAnalyzer::createHistograms(...) completed"<< endl;
@@ -118,10 +119,11 @@ void ParticleAnalyzer::loadHistograms(TFile * inputFile)
   delete par;
   AnalysisConfiguration * ac = (AnalysisConfiguration *) getTaskConfiguration();
   LogLevel debugLevel = getReportLevel();
+  TString prefixName = getName(); prefixName += "_";
   TString histoName;
   for (int iFilter=0; iFilter<nParticleFilters; iFilter++ )
   {
-  histoName = *partNames[iFilter];
+  histoName = prefixName + *partNames[iFilter];
   particleHistos[iFilter] = new ParticleHistos(inputFile,histoName,ac,debugLevel);
   }
   if (reportDebug())  cout << "ParticleAnalyzer::loadHistograms(...) Completed." << endl;

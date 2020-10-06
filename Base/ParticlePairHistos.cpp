@@ -129,12 +129,12 @@ void ParticlePairHistos::initialize()
 void ParticlePairHistos::fill(Particle & particle1, Particle & particle2, double weight)
 {
   double pt1   = particle1.pt;
-  double eta1  = particle1.eta;
-  double phi1  = particle1.phi; if (phi1<0) phi1 += TMath::TwoPi();
+//  double eta1  = particle1.eta;
+//  double phi1  = particle1.phi; if (phi1<0) phi1 += TMath::TwoPi();
 
   double pt2   = particle2.pt;
-  double eta2  = particle2.eta;
-  double phi2  = particle2.phi; if (phi2<0) phi2 += TMath::TwoPi();
+//  double eta2  = particle2.eta;
+//  double phi2  = particle2.phi; if (phi2<0) phi2 += TMath::TwoPi();
 
   AnalysisConfiguration & ac = * (AnalysisConfiguration*) getConfiguration();
   h_n2_ptPt    ->Fill(pt1,  pt2,  weight);
@@ -185,8 +185,8 @@ void ParticlePairHistos::fill(Particle & particle1, Particle & particle2, double
 
   if (ac.fillY)
     {
-    double y1    = particle1.y;
-    double y2    = particle2.y;
+//    double y1    = particle1.y;
+//    double y2    = particle2.y;
 
     // delayed fill h_n2_yY  ->Fill(y1, y2, weight);
     // delayed fill h_ptn_yY ->Fill(y1, y2, weight*pt1);

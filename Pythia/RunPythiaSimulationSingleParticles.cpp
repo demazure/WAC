@@ -24,7 +24,7 @@ int main()
   cout << "<INFO> PYTHIA Model Analysis - Single Particle Histograms" << endl;
 
   //  long nEventsRequested = 100;
-  long nEventsRequested = 1000000;
+  long nEventsRequested = 101;
   int  nEventsReport    = 10000;
 
   // ==========================

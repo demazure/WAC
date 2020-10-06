@@ -71,13 +71,13 @@ int ParticlePlots()
 
   TString inputPath  = "/Users/claudeapruneau/Documents/GitHub/run/PythiaStudies/";
   TString outputPath = "/Users/claudeapruneau/Documents/GitHub/run/PythiaStudies/";
-
+   ///  /Users/claudeapruneau/Documents/GitHub/run/PythiaStudies/PYTHIA_softOnHardOff_Singles_Wide_MB.root
 
   int nFiles            = 2;
   TString ** fileNames = new TString*[nFiles];
   TString fileName;
-  fileNames[0] = new TString("PYTHIA_softOnHardOff_Singles_Narrow_MB.root");
-  fileNames[1] = new TString("PYTHIA_softOnHardOff_Singles_Wide_MB.root");
+  fileNames[1] = new TString("PYTHIA_softOnHardOff_Singles_Narrow_MB.root");
+  fileNames[0] = new TString("PYTHIA_softOnHardOff_Singles_Wide_MB.root");
   //fileNames[2] = new TString("hardOffPYTHIA_Singles_MB.root");
 
 //  fileNames[1] = new TString("softOffPYTHIA_Singles_MB.root");
@@ -100,11 +100,14 @@ int ParticlePlots()
 
   int nModels = nFiles;
   TString ** modelNames = new TString*[nModels];
-  modelNames[0] = new TString("PYTHIA-MinBiasEta1");
-  modelNames[1] = new TString("PYTHIA-MinBiasEta6");
+  modelNames[1] = new TString("PYTHIA-MinBiasEta1");
+  modelNames[0] = new TString("PYTHIA-MinBiasEta6");
   TString ** modelTitles = new TString*[nModels];
-  modelTitles[0] = new TString("PYTHIA MB |#eta|<1");
-  modelTitles[1] = new TString("PYTHIA MB |#eta|<6");
+  modelTitles[1] = new TString("PYTHIA MB |#eta|<1");
+  modelTitles[0] = new TString("PYTHIA MB |#eta|<6");
+  TString ** modelPrefixNames = new TString*[nModels];
+  modelPrefixNames[1] = new TString("Narrow_MB_");
+  modelPrefixNames[0] = new TString("Wide_MB_");
 
   int nParticleTypes = 12;
   TString ** particleNames = new TString*[nParticleTypes];
@@ -144,14 +147,18 @@ int ParticlePlots()
   ParticleHistos  ** particleHistos = new ParticleHistos *[nSets];
   int iSet = 0;
   cout << "<I> ParticlePlots()  Loading histograms" << endl;
+  TString prefixName;
+
   for (int iModel=0;iModel<nModels;iModel++)
     {
     cout << "iModel:" << iModel << " Name:" <<  *modelTitles[iModel]  << endl;
     for (int iParticleType=0;iParticleType<nParticleTypes;iParticleType++)
       {
       cout << "iParticleType:" << iParticleType << " Name:" <<  *particleTitles[iParticleType]  << endl;
-      particleHistos[iSet] = new ParticleHistos(inputFiles[iModel],*particleNames[iParticleType],ac,MessageLogger::Debug);
 
+      prefixName = *modelPrefixNames[iModel];
+      prefixName += *particleNames[iParticleType];
+      particleHistos[iSet] = new ParticleHistos(inputFiles[iModel],prefixName,ac,MessageLogger::Debug);
       plotters[iModel] = new ParticlePlotter();
 
       iSet++;
@@ -186,7 +193,7 @@ int ParticlePlots()
   histograms[1] = particleHistos[nParticleTypes]->h_n1_eta; titles[1] = modelTitles[1];
   compPlotters[1] = new Plotter();
   compPlotters[1]->plot(nModels, canvasName,canvasConfiguration,graphConfigurations,
-                    "#eta", 2.0, -2.0,
+                    "#eta", -6.0, 6.0,
                     "dN/d#eta", 0.0, 2.0,
                     histograms,titles,0.55, 0.17, 0.85, 0.35, 0.04);
   compPlotters[1]->printAllCanvas(outputPath);

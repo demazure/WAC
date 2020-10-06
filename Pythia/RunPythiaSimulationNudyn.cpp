@@ -23,7 +23,7 @@ int main()
   cout << "<INFO> PYTHIA Model Analysis - Starting" << endl;
 
 //  long nEventsRequested = 100;
-  long nEventsRequested = 1000;
+  long nEventsRequested = 1000000;
   int  nEventsReport    = 100000;
 
   // ==========================
@@ -70,9 +70,24 @@ int main()
   ac->clearHistograms        = false;
   ac->forceHistogramsRewrite = true;
   ac->inputPath              = "/Users/claudeapruneau/Documents/GitHub/run/PythiaStudies/";
-  ac->rootInputFileName      = "";
   ac->outputPath             = "/Users/claudeapruneau/Documents/GitHub/run/PythiaStudies/";
-  ac->rootOuputFileName      =  "PYTHIA_softOnHardOff_NuDyn_";
+
+  ac->dataSourceName          = "PYTHIA8.0";
+  ac->collisionSystemName     = "pp";
+  ac->collisionEnergyName     = "14TeV";
+  ac->triggerName             = "MB";
+  ac->taskTypeName            = "NuDyn";
+  ac->eventFilterName         = "MB";
+  ac->particleFilterName      = "Varia";
+  ac->otherName               = "";
+  ac->dataSourceTitle         = "PYTHIA 8.0";
+  ac->collisionSystemTitle    = "p-p";
+  ac->collisionEnergyTitle    = "14 TeV";
+  ac->triggerTitle            = "Min-Bias";
+  ac->taskTypeTitle           = "NuDyn";
+  ac->eventFilterTitle        = "Min-Bias";
+  ac->particleFilterTitle     = "Varia";
+  ac->setRootOutputFileName(2);
 
   ac->nBins_pt    = 40;
   ac->min_pt      = 0.2;
@@ -106,13 +121,20 @@ int main()
   ParticleFilter  * particleFilter_PP  = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Positive,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y);
   ParticleFilter  * particleFilter_PM  = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative,ac->min_pt+0.001,ac->max_pt,ac->min_eta,ac->max_eta, ac->min_y,ac->max_y);
 
-  int nAnalysisTasks = 4;
+  int nAnalysisTasks = 25;
+  int iTask = 0;
   Task ** analysisTasks = new Task*[nAnalysisTasks];
-
-  analysisTasks[0] = new NuDynTask(ac->rootOuputFileName+"HPHPHPHP", ac, event, eventFilter,particleFilter_HP,particleFilter_HP,particleFilter_HP,particleFilter_HP);
-  analysisTasks[1] = new NuDynTask(ac->rootOuputFileName+"HPHPHPHM", ac, event, eventFilter,particleFilter_HP,particleFilter_HP,particleFilter_HP,particleFilter_HM);
-  analysisTasks[2] = new NuDynTask(ac->rootOuputFileName+"HPHPHMHM", ac, event, eventFilter,particleFilter_HP,particleFilter_HP,particleFilter_HM,particleFilter_HM);
-  analysisTasks[3] = new NuDynTask(ac->rootOuputFileName+"HPHMHMHM", ac, event, eventFilter,particleFilter_HP,particleFilter_HM,particleFilter_HM,particleFilter_HM);
+  analysisTasks[iTask++] = new NuDynTask("_HPHPHPHP", ac, event, eventFilter,particleFilter_HP,particleFilter_HP,particleFilter_HP,particleFilter_HP);
+  analysisTasks[iTask++] = new NuDynTask("_HPHPHPHM", ac, event, eventFilter,particleFilter_HP,particleFilter_HP,particleFilter_HP,particleFilter_HM);
+  analysisTasks[iTask++] = new NuDynTask("_HPHPHMHM", ac, event, eventFilter,particleFilter_HP,particleFilter_HP,particleFilter_HM,particleFilter_HM);
+  analysisTasks[iTask++] = new NuDynTask("_HPHMHMHM", ac, event, eventFilter,particleFilter_HP,particleFilter_HM,particleFilter_HM,particleFilter_HM);
+  analysisTasks[iTask++] = new NuDynTask("_HMHMHMHM", ac, event, eventFilter,particleFilter_HM,particleFilter_HM,particleFilter_HM,particleFilter_HM);
+  analysisTasks[iTask++] = new NuDynTask("_KPKPKPKP", ac, event, eventFilter,particleFilter_KP,particleFilter_KP,particleFilter_KP,particleFilter_KP);
+  analysisTasks[iTask++] = new NuDynTask("_KPKPKPKM", ac, event, eventFilter,particleFilter_KP,particleFilter_KP,particleFilter_KP,particleFilter_KM);
+  analysisTasks[iTask++] = new NuDynTask("_KPKPKMKM", ac, event, eventFilter,particleFilter_KP,particleFilter_KP,particleFilter_KM,particleFilter_KM);
+  analysisTasks[iTask++] = new NuDynTask("_KPKMKMKM", ac, event, eventFilter,particleFilter_KP,particleFilter_KM,particleFilter_KM,particleFilter_KM);
+  analysisTasks[iTask++] = new NuDynTask("_KMKMKMKM", ac, event, eventFilter,particleFilter_KM,particleFilter_KM,particleFilter_KM,particleFilter_KM);
+  nAnalysisTasks = iTask;
 
   // ==========================
   // Event Loop
@@ -130,10 +152,3 @@ int main()
   double difference = difftime (end,begin);
   cout << "<INFO> in " <<  difference << " seconds";
 }
-
-//  TwoPartCorrelationAnalyzer  * ana1 = new TwoPartCorrelationAnalyzer ("PYTHIA_TPCA_ALL",  ac,  event, eventFilter,particleFilter_HP,particleFilter_HM);
-//  TwoPartCorrelationAnalyzer  * ana2 = new TwoPartCorrelationAnalyzer ("PYTHIA_TPCA_PiPi", ac,  event, eventFilter,particleFilter_PiP,particleFilter_PiM);
-//  TwoPartCorrelationAnalyzer  * ana3 = new TwoPartCorrelationAnalyzer ("PYTHIA_TPCA_KK",   ac,  event, eventFilter,particleFilter_KP,particleFilter_KM);
-//  TwoPartCorrelationAnalyzer  * ana4 = new TwoPartCorrelationAnalyzer ("PYTHIA_TPCA_PP",   ac,  event, eventFilter,particleFilter_PP,particleFilter_PM);
-
-
