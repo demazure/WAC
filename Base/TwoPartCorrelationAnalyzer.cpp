@@ -173,20 +173,21 @@ void TwoPartCorrelationAnalyzer::loadBaseHistograms(TFile * inputFile)
   AnalysisConfiguration * analysisConfiguration = (AnalysisConfiguration *) getTaskConfiguration();
   LogLevel debugLevel = getReportLevel();
   
-  particle1_Histos         = new ParticleHistos(inputFile,partName1, analysisConfiguration,debugLevel);
-  particle2_Histos         = new ParticleHistos(inputFile,partName2,analysisConfiguration,debugLevel);
+  TString prefixName = getName();
+  particle1_Histos         = new ParticleHistos(inputFile,prefixName+partName1, analysisConfiguration,debugLevel);
+  particle2_Histos         = new ParticleHistos(inputFile,prefixName+partName2,analysisConfiguration,debugLevel);
   if (analysisConfiguration->fillPairs)
     {
-    pair11_Histos        = new ParticlePairHistos(inputFile,partName1+partName1,analysisConfiguration,debugLevel);
-    pair22_Histos        = new ParticlePairHistos(inputFile,partName2+partName2,analysisConfiguration,debugLevel);
-    pair12_Histos        = new ParticlePairHistos(inputFile,partName1+partName2,analysisConfiguration,debugLevel);
+    pair11_Histos        = new ParticlePairHistos(inputFile,prefixName+partName1+partName1,analysisConfiguration,debugLevel);
+    pair22_Histos        = new ParticlePairHistos(inputFile,prefixName+partName2+partName2,analysisConfiguration,debugLevel);
+    pair12_Histos        = new ParticlePairHistos(inputFile,prefixName+partName1+partName2,analysisConfiguration,debugLevel);
     if (analysisConfiguration->calculateDerivedHistograms)
       {
-      pair11_DerivedHistos = new ParticlePairDerivedHistos(  partName1+partName1,analysisConfiguration,debugLevel);
-      pair22_DerivedHistos = new ParticlePairDerivedHistos(  partName2+partName2,analysisConfiguration,debugLevel);
-      pair12_DerivedHistos = new ParticlePairDerivedHistos(  partName1+partName2,analysisConfiguration,debugLevel);
-      pair12_CIHistos      = new ParticlePairCombinedHistos( partName1+partName2+"CI",analysisConfiguration,debugLevel);
-      pair12_CDHistos      = new ParticlePairCombinedHistos( partName1+partName2+"CD",analysisConfiguration,debugLevel);
+      pair11_DerivedHistos = new ParticlePairDerivedHistos(  prefixName+partName1+partName1,analysisConfiguration,debugLevel);
+      pair22_DerivedHistos = new ParticlePairDerivedHistos(  prefixName+partName2+partName2,analysisConfiguration,debugLevel);
+      pair12_DerivedHistos = new ParticlePairDerivedHistos(  prefixName+partName1+partName2,analysisConfiguration,debugLevel);
+      pair12_CIHistos      = new ParticlePairCombinedHistos( prefixName+partName1+partName2+"CI",analysisConfiguration,debugLevel);
+      pair12_CDHistos      = new ParticlePairCombinedHistos( prefixName+partName1+partName2+"CD",analysisConfiguration,debugLevel);
       }
     }
 

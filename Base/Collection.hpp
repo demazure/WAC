@@ -33,6 +33,9 @@ protected:
   /////////////////////////////////////////////////////////////
   long nObjectCapacity;
   long nObject;
+  bool bOwnObjects; // if the instance owns its own objects
+                    // use to be the case unless the objects are incorporated to an external list
+                    // when true at instance destruction time the objects are deleted
   T ** objects;
 
   public:
@@ -44,6 +47,7 @@ protected:
   TObject(),
   nObjectCapacity(0),
   nObject(0),
+  bOwnObjects(true),
   objects(0)
   {
   initialize(initialCapacity);
@@ -57,19 +61,31 @@ protected:
   objects(0)
   {
   initialize(source.nObjectCapacity);
-  copy(source.nObject,source.objects);
+  bOwnObjects = true;
+  deepcopy(source.nObject,source.objects);
   }
 
 
   virtual ~Collection()
   {
-  delete[] objects;
+    if (bOwnObjects) {
+      deleteObjects();
+    }
+    delete[] objects;
+  }
+
+  void SetOwn(bool ownobjects = true) {
+    bOwnObjects = ownobjects;
   }
 
   Collection & operator=(const Collection source)
   {
   if (this==&source) return *this;
+  if (bOwnObjects) {
+    deleteObjects();
+  }
   delete[] objects;
+  bOwnObjects = source.bOwnObjects;
   initialize(source.nObjectCapacity);
   copy(source.nObject,source.objects);
   return *this;
@@ -124,18 +140,33 @@ protected:
     objects = new T*[nObjectCapacity];
   }
 
+  void deleteObjects() {
+    for(int i = 0; i < nObject; ++i) {
+      delete objects[i];
+    }
+  }
+
 
 void copy(long n, T ** source)
   {
   for (int iObject=0; iObject<n; iObject++)
     {
     //objects[iObject] = new T(*source[iObject]);
+    objects[iObject] = source[iObject];
+    }
+  nObject = n;
+  }
+
+void deepcopy(long n, T ** source)
+  {
+  for (int iObject=0; iObject<n; iObject++)
+    {
     objects[iObject] = (T*) source[iObject]->Clone();
     }
   nObject = n;
   }
 
-  ClassDef(Collection,0)
+  ClassDef(Collection,1)
 };
 
 #endif /* WAC_Collection */
