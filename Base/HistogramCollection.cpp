@@ -22,8 +22,7 @@ Collection<TH1>(initialCapacity),
 MessageLogger(debugLevel),
 collectionName(_collectionName),
 options(0),
-randomGenerator(new TRandom()),
-bOwnTheHistograms(true)
+randomGenerator(new TRandom())
 {
   options = new int[initialCapacity];
 }
@@ -34,8 +33,7 @@ Collection<TH1>(source),
 MessageLogger(source),
 collectionName(source.collectionName),
 options(0),
-randomGenerator(new TRandom()),
-bOwnTheHistograms(true)
+randomGenerator(new TRandom())
 {
   options = new int[getCollectionCapacity()];
   for (int k=0; k<getCollectionSize(); k++)
@@ -49,11 +47,6 @@ bOwnTheHistograms(true)
 ////////////////////////////////////////////////////////////////////////////
 HistogramCollection::~HistogramCollection()
 {
-//  if (bOwnTheHistograms) {
-//    /* the instance own its histograms so, they have to be deleted */
-//    for (int i = 0; i < getNHistograms(); i++) {
-//      delete histograms[i];
-//    }
     delete [] options;
 }
 
@@ -296,7 +289,7 @@ void HistogramCollection::addHistogramsToExtList(TList *list, bool all)
     if (isSaved(options[k]) || all) list->Add(getObjectAt(k));
     }
   /* the instance stops the histograms ownership */
-  bOwnTheHistograms = false;
+  SetOwn(false);
 
   if (reportDebug()) cout << "HistogramCollection::addHistogramsToExtList(TList *list) completed."  << endl;
 }

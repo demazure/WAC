@@ -318,11 +318,8 @@ public:
   TString    collectionName;
   int      * options;
   TRandom  * randomGenerator;
-  bool       bOwnTheHistograms;  // if the instance owns its own histograms
-                                 // use to be the case unless the histograms are incorporated to an external list
-                                 // when true at instance destruction time the histograms are deleted
 
-  ClassDef(HistogramCollection,0);
+  ClassDef(HistogramCollection,1);
 
 }; // HistogramCollection
 
