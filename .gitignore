@@ -1,6 +1,9 @@
 # hidden directories
 .DS_Store
 .vscode
+.cproject
+.project
+.settings
 
 # install directories
 bin
