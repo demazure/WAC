@@ -580,7 +580,7 @@ ParticlePairDerivedHistos::ParticlePairDerivedHistos(const TString & name,
    calculateG2_H2H2H2H2( pairHistos->h_ptpt_etaEta, h_n1n1_etaEta,  h_pt1pt1_etaEta, h_G2_etaEta, ijNormalization, bincorrection, 1.0);
    calculateG2_H2H2H2H2( pairHistos->h_ptpt_phiPhi, h_n1n1_phiPhi,  h_pt1pt1_phiPhi, h_G2_phiPhi, ijNormalization, bincorrection, 1.0);
    reduce_n2xEtaPhi_n2DetaDphi( h_G2_phiEtaPhiEta,                 h_G2_DetaDphi,     ac.nBins_eta, ac.nBins_phi);
-   symmetrizeDeltaEtaDeltaPhi(h_G2_DetaDphi,ijNormalization);
+   // symmetrizeDeltaEtaDeltaPhi(h_G2_DetaDphi,ijNormalization);
    shiftY(*h_G2_DetaDphi,      *h_G2_DetaDphi_shft,      ac.nBins_Dphi_shft);
 
    /*

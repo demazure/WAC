@@ -259,6 +259,7 @@ public:
   void project_n2XYXY_n2XX(const TH2 * source, TH2 * target,int nXBins,int nYBins);
   void project_n2XYXY_n2YY(const TH2 * source, TH2 * target,int nXBins,int nYBins);
   TH2* symmetrize(TH2* h);
+  TH2* transpose(const TH2* h);
   void shiftY(const TH2 & source, TH2 & target, int nbins);
   float * getFloatArray(int size, float v);
   double * getDoubleArray(int size, double v);

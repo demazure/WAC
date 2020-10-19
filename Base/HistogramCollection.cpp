@@ -1233,6 +1233,14 @@ void HistogramCollection::calculateG2_H2H2H2H2(const TH2 * spp, const TH2 * n1n1
     return;
     }
 
+  /* we prepare the transposed sean histo for properly handling the unlike tracks pair */
+  TH2* sean_D = new TH2F(TString::Format("%s_T",sean->GetName()),sean->GetTitle(),
+                                     sean->GetNbinsX(),sean->GetXaxis()->GetBinLowEdge(1),sean->GetXaxis()->GetBinUpEdge(sean->GetNbinsX()),
+                                     sean->GetNbinsY(),sean->GetYaxis()->GetBinLowEdge(1),sean->GetYaxis()->GetBinUpEdge(sean->GetNbinsY()));
+  TH2* sean_T = new TH2F(TString::Format("%s_T",sean->GetName()),sean->GetTitle(),
+                                     sean->GetNbinsY(),sean->GetYaxis()->GetBinLowEdge(1),sean->GetYaxis()->GetBinUpEdge(sean->GetNbinsY()),
+                                     sean->GetNbinsX(),sean->GetXaxis()->GetBinLowEdge(1),sean->GetXaxis()->GetBinUpEdge(sean->GetNbinsX()));
+
   double v1,ev1,v2,ev2,v3,ev3,v4,ev4;
   for (int i1=1;i1<=n2x;++i1)
     {
@@ -1259,12 +1267,75 @@ void HistogramCollection::calculateG2_H2H2H2H2(const TH2 * spp, const TH2 * n1n1
         {
         v4 = ev4 = 0;
         }
-      sean->SetBinContent(i1,i2,v4); sean->SetBinError(i1,i2,ev4);
+      sean_D->SetBinContent(i1,i2,v4); sean_D->SetBinError(i1,i2,ev4);
+      sean_T->SetBinContent(i2,i1,v4); sean_T->SetBinError(i2,i1,ev4);
       }
     }
+  sean->Reset();
+  sean->Add(sean_D,sean_T,0.5,0.5);
+  delete sean_T;
+  delete sean_D;
   if (reportDebug()) cout << "calculateSean_H1H2H2H2(  ) Done" << endl;
 
 }
+
+void checkSymmetry(const TH2 *h1, const TH2 *h2) {
+  Warning("HistogramCollection::checkSymmetry","Checking symmetry");
+  int nbinsdiff = 0;
+  for (int ix = 0; ix < h1->GetNbinsX(); ++ix) {
+    for (int iy = 0; iy < h1->GetNbinsY(); ++iy) {
+      float diff = h1->GetBinContent(ix+1,iy+1) - h2->GetBinContent(iy+1,ix+1);
+      if (diff > 1e-4)
+        nbinsdiff++;
+    }
+  }
+  if (nbinsdiff > 0) {
+    Warning("HistogramCollection::checkSymmetry","Histograms differ in %d bins",nbinsdiff);
+  }
+}
+
+void calculateG2_H2H2H2H2H2H2(const TH2 *, const TH2 *, const TH2 *, const TH2 *, const TH2 *, TH2 *, bool, double, double)
+{
+  Fatal("HistogramCollection::calculateG2_H2H2H2H2H2H2", "This routine should not be used");
+  /* Calculate G2 considering 12 vs 21 track combinations */
+  /* for same tracks this is not relevant and could be    */
+  /* skipped but for unlike tracks, it definitelly is     */
+
+  /* this was the check done 
+  TH2 *spp_21 = transpose(spp_12);
+
+  TH2 *h_g2_12 = (TH2*) sean->Clone(TString::Format("%s_12",sean->GetName()));
+  TH2 *h_g2_21 = (TH2*) sean->Clone(TString::Format("%s_21",sean->GetName()));
+
+  TH2 *h_n11n12 = (TH2*) spp_12->Clone("n11n12_forG2");
+  TH2 *h_n12n11 = (TH2*) spp_12->Clone("n12n11_forG2");
+  TH2 *h_pT1pT2 = (TH2*) spp_12->Clone("pT1pT2_forG2");
+  TH2 *h_pT2pT1 = (TH2*) spp_12->Clone("pT2pT1_forG2");
+
+  calculateN1N1_H2H2H2( n1_1, n1_2, h_n11n12, 1.0, 1.0);
+  calculateN1N1_H2H2H2( n1_2, n1_1, h_n12n11, 1.0, 1.0);
+  calculateN1N1_H2H2H2( pt_1, pt_2, h_pT1pT2, 1.0, 1.0);
+  calculateN1N1_H2H2H2( pt_2, pt_1, h_pT2pT1, 1.0, 1.0);
+
+  calculateG2_H2H2H2H2(spp_12,h_n11n12,h_pT1pT2,h_g2_12,ijNormalization,a1,a2);
+  calculateG2_H2H2H2H2(spp_21,h_n12n11,h_pT2pT1,h_g2_21,ijNormalization,a1,a2);
+
+  checkSymmetry(h_g2_12, h_g2_21);
+
+  sean->Reset();
+  sean->Add(h_g2_12,h_g2_21,0.5,0.5);
+  delete h_pT2pT1;
+  delete h_pT1pT2;
+  delete h_n12n11;
+  delete h_n11n12;
+  delete h_g2_21;
+  delete h_g2_12;
+  delete spp_21;
+
+  RESULT: the symmetry check revealed that the results g2_12 and g2_21 are symmetric
+  so whe use this fact to improve performance directly in the original G2 routine*/
+}
+
 
 /* calculate the balance functions components associated to the current pair */
 /* independent of R2, two components are alway computed, for LS they will match but don't for US */
@@ -3249,6 +3320,23 @@ TH2* HistogramCollection::symmetrize(TH2* h)
     }
   return c;
 
+}
+
+TH2* HistogramCollection::transpose(const TH2* h)
+{
+  TH2* ht = new TH2F(TString::Format("%s_T",h->GetName()),h->GetTitle(),
+                                     h->GetNbinsY(),h->GetYaxis()->GetBinLowEdge(1),h->GetYaxis()->GetBinUpEdge(h->GetNbinsY()),
+                                     h->GetNbinsX(),h->GetXaxis()->GetBinLowEdge(1),h->GetXaxis()->GetBinUpEdge(h->GetNbinsX()));
+
+  for (int ix = 0; ix < h->GetNbinsX(); ++ix) {
+    for (int iy = 0; iy < h->GetNbinsY(); ++iy) {
+      ht->SetBinContent(iy+1,ix+1,h->GetBinContent(ix+1,iy+1));
+      ht->SetBinError(iy+1,ix+1,h->GetBinError(ix+1,iy+1));
+    }
+  }
+  ht->SetEntries(h->GetEntries());
+
+  return ht;
 }
 
 ///shift the given source to the target vertically by nbins
