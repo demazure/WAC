@@ -1234,10 +1234,10 @@ void HistogramCollection::calculateG2_H2H2H2H2(const TH2 * spp, const TH2 * n1n1
     }
 
   /* we prepare the transposed sean histo for properly handling the unlike tracks pair */
-  TH2* sean_D = new TH2F(TString::Format("%s_T",sean->GetName()),sean->GetTitle(),
+  TH2* sean_D = new TH2F(TString::Format("%s_Direct",sean->GetName()),sean->GetTitle(),
                                      sean->GetNbinsX(),sean->GetXaxis()->GetBinLowEdge(1),sean->GetXaxis()->GetBinUpEdge(sean->GetNbinsX()),
                                      sean->GetNbinsY(),sean->GetYaxis()->GetBinLowEdge(1),sean->GetYaxis()->GetBinUpEdge(sean->GetNbinsY()));
-  TH2* sean_T = new TH2F(TString::Format("%s_T",sean->GetName()),sean->GetTitle(),
+  TH2* sean_T = new TH2F(TString::Format("%s_Transposed",sean->GetName()),sean->GetTitle(),
                                      sean->GetNbinsY(),sean->GetYaxis()->GetBinLowEdge(1),sean->GetYaxis()->GetBinUpEdge(sean->GetNbinsY()),
                                      sean->GetNbinsX(),sean->GetXaxis()->GetBinLowEdge(1),sean->GetXaxis()->GetBinUpEdge(sean->GetNbinsX()));
 
