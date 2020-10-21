@@ -580,7 +580,7 @@ ParticlePairDerivedHistos::ParticlePairDerivedHistos(const TString & name,
    calculateG2_H2H2H2H2( pairHistos->h_ptpt_etaEta, h_n1n1_etaEta,  h_pt1pt1_etaEta, h_G2_etaEta, ijNormalization, bincorrection, 1.0);
    calculateG2_H2H2H2H2( pairHistos->h_ptpt_phiPhi, h_n1n1_phiPhi,  h_pt1pt1_phiPhi, h_G2_phiPhi, ijNormalization, bincorrection, 1.0);
    reduce_n2xEtaPhi_n2DetaDphi( h_G2_phiEtaPhiEta,                 h_G2_DetaDphi,     ac.nBins_eta, ac.nBins_phi);
-   // symmetrizeDeltaEtaDeltaPhi(h_G2_DetaDphi,ijNormalization);
+   symmetrizeDeltaEtaDeltaPhi(h_G2_DetaDphi,ijNormalization);
    shiftY(*h_G2_DetaDphi,      *h_G2_DetaDphi_shft,      ac.nBins_Dphi_shft);
 
    /*
@@ -604,6 +604,8 @@ ParticlePairDerivedHistos::ParticlePairDerivedHistos(const TString & name,
    calculateBf( pairHistos->h_n2_phiPhi,part1Histos->h_n1_phiEta,part2Histos->h_n1_phiEta,h_bf12_phiPhi,h_bf21_phiPhi );
    reduce_n2xEtaPhi_n2DetaDphi( h_bf12_phiEtaPhiEta, h_bf12_DetaDphi, ac.nBins_eta, ac.nBins_phi);
    reduce_n2xEtaPhi_n2DetaDphi( h_bf21_phiEtaPhiEta, h_bf21_DetaDphi, ac.nBins_eta, ac.nBins_phi);
+   symmetrizeDeltaEtaDeltaPhi(h_bf12_DetaDphi,ijNormalization);
+   symmetrizeDeltaEtaDeltaPhi(h_bf21_DetaDphi,ijNormalization);
    shiftY(*h_bf12_DetaDphi, *h_bf12_DetaDphi_shft, ac.nBins_Dphi_shft);
    shiftY(*h_bf21_DetaDphi, *h_bf21_DetaDphi_shft, ac.nBins_Dphi_shft);
 
@@ -665,6 +667,8 @@ ParticlePairDerivedHistos::ParticlePairDerivedHistos(const TString & name,
     calculateBf( pairHistos->h_n2_yY,part1Histos->h_n1_phiY,part2Histos->h_n1_phiY,h_bf12_yY,h_bf21_yY );
     reduce_n2xEtaPhi_n2DetaDphi( h_bf12_phiYPhiY, h_bf12_DyDphi, ac.nBins_y, ac.nBins_phi);
     reduce_n2xEtaPhi_n2DetaDphi( h_bf21_phiYPhiY, h_bf21_DyDphi, ac.nBins_y, ac.nBins_phi);
+    symmetrizeDeltaEtaDeltaPhi(h_bf12_DyDphi,ijNormalization);
+    symmetrizeDeltaEtaDeltaPhi(h_bf21_DyDphi,ijNormalization);
     shiftY(*h_bf12_DyDphi, *h_bf12_DyDphi_shft, ac.nBins_Dphi_shft);
     shiftY(*h_bf21_DyDphi, *h_bf21_DyDphi_shft, ac.nBins_Dphi_shft);
    }
