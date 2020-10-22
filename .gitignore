@@ -9,3 +9,8 @@
 bin
 lib
 build
+
+# intermediate or binary results
+*.d
+*.so
+*.pcm

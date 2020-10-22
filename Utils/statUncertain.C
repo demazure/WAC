@@ -298,7 +298,7 @@ TList *extractSampleResults(AnalysisConfiguration *ac, int icent,int isample) {
       default:
         Fatal("extractSampleResults","Wrong pair combination index");
       }
-      plist->Add(h2->Clone(TString::Format("%s_Sub%02d",h2->GetName(),isample)));
+      plist->Add(h2->Clone(TString::Format("%s%s_Sub%02d",h2->GetName(),centfname[icent].c_str(),isample)));
     }
     list->Add(plist);
   }
@@ -386,6 +386,13 @@ void statUncertain(Option_t *opt)
 
       for (Int_t ipair = 0; ipair < npairs; ipair++) {
         pairslists[ipair][isamp] = list->At(ipair);
+      }
+      /* we write the individual results if required */
+      if (TString(opt).Contains("savesub")) {
+        outputfile->cd();
+        for (Int_t ixh = 0; ixh < list->GetEntries(); ixh++) {
+          list->At(ixh)->Write();
+        }
       }
       delete list;
     }
