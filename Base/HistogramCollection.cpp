@@ -1219,19 +1219,20 @@ void HistogramCollection::calculateG2_H2H2H2H2(const TH2 * spp, const TH2 * n1n1
   int n3y = pt1pt1->GetNbinsY();
   int n4x = sean->GetNbinsX();
   int n4y = sean->GetNbinsY();
-  if (n1x!=n2x || n2x!=n3x || n2x!=n4x)
-    {
-    if (reportDebug()) cout << "-E- calculateSean(...) Arguments have different sizes." << endl;
-    cout << n1x  << endl;
-    cout << n1y  << endl;
-    cout << n2x << endl;
-    cout << n2y << endl;
-    cout << n3x << endl;
-    cout << n3y << endl;
-    cout << n4x << endl;
-    cout << n4y << endl;
-    return;
+  if (n1x!=n2x || n2x!=n3x || n2x!=n4x){
+    if (reportError()) {
+      cout << "-E- calculateSean(...) Arguments have different sizes." << endl;
+      cout << n1x  << endl;
+      cout << n1y  << endl;
+      cout << n2x << endl;
+      cout << n2y << endl;
+      cout << n3x << endl;
+      cout << n3y << endl;
+      cout << n4x << endl;
+      cout << n4y << endl;
+      return;
     }
+  }
 
   /* we prepare the transposed sean histo for properly handling the unlike tracks pair */
   TH2* sean_D = new TH2F(TString::Format("%s_Direct",sean->GetName()),sean->GetTitle(),
