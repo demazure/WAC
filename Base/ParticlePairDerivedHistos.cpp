@@ -576,9 +576,9 @@ ParticlePairDerivedHistos::ParticlePairDerivedHistos(const TString & name,
  /////////////////////////////////////////////////////////////////////////////////////////////////////////
  // will go here...
 
-   calculateG2_H2H2H2H2( pairHistos->h_ptpt_phiEtaPhiEta, h_n1n1_phiEtaPhiEta,  h_pt1pt1_phiEtaPhiEta, h_G2_phiEtaPhiEta, ijNormalization, bincorrection, 1.0);
-   calculateG2_H2H2H2H2( pairHistos->h_ptpt_etaEta, h_n1n1_etaEta,  h_pt1pt1_etaEta, h_G2_etaEta, ijNormalization, bincorrection, 1.0);
-   calculateG2_H2H2H2H2( pairHistos->h_ptpt_phiPhi, h_n1n1_phiPhi,  h_pt1pt1_phiPhi, h_G2_phiPhi, ijNormalization, bincorrection, 1.0);
+   calculateG2_H2H2H2H2( pairHistos->h_ptpt_phiEtaPhiEta, h_n1n1_phiEtaPhiEta,  h_pt1pt1_phiEtaPhiEta,h_G2_phiEtaPhiEta, avgPt1Eta,avgPt2Eta, ijNormalization, bincorrection, 1.0);
+   calculateG2_H2H2H2H2( pairHistos->h_ptpt_etaEta, h_n1n1_etaEta,  h_pt1pt1_etaEta, h_G2_etaEta,  avgPt1Eta,avgPt2Eta,ijNormalization, bincorrection, 1.0);
+   calculateG2_H2H2H2H2( pairHistos->h_ptpt_phiPhi, h_n1n1_phiPhi,  h_pt1pt1_phiPhi, h_G2_phiPhi,  avgPt1Eta,avgPt2Eta,ijNormalization, bincorrection, 1.0);
    reduce_n2xEtaPhi_n2DetaDphi( h_G2_phiEtaPhiEta,                 h_G2_DetaDphi,     ac.nBins_eta, ac.nBins_phi);
    symmetrizeDeltaEtaDeltaPhi(h_G2_DetaDphi,ijNormalization);
    shiftY(*h_G2_DetaDphi,      *h_G2_DetaDphi_shft,      ac.nBins_Dphi_shft);
@@ -628,9 +628,6 @@ ParticlePairDerivedHistos::ParticlePairDerivedHistos(const TString & name,
                      part2Histos->h_pt_y,
                      h_DptDpt_yY,
                      ijNormalization, ac.nBins_y);
-     calculateG2_H2H2H2H2( pairHistos->h_ptpt_phiYPhiY, h_n1n1_phiYPhiY,  h_pt1pt1_phiYPhiY, h_G2_phiYPhiY, ijNormalization, bincorrection, 1.0);
-     calculateG2_H2H2H2H2( pairHistos->h_ptpt_yY, h_n1n1_yY,  h_pt1pt1_yY, h_G2_yY, ijNormalization, bincorrection, 1.0);
-     calculateG2_H2H2H2H2( pairHistos->h_ptpt_phiPhi, h_n1n1_phiPhi,  h_pt1pt1_phiPhi, h_G2_phiPhi, ijNormalization, bincorrection, 1.0);
 
      reduce_n2xEtaPhi_n2DetaDphi( pairHistos->h_n2_phiYPhiY,   h_n2_DyDphi,     ac.nBins_y, ac.nBins_phi);
      reduce_n2xEtaPhi_n2DetaDphi( pairHistos->h_ptpt_phiYPhiY, h_ptpt_DyDphi,   ac.nBins_y, ac.nBins_phi);
@@ -642,13 +639,17 @@ ParticlePairDerivedHistos::ParticlePairDerivedHistos(const TString & name,
      reduce_n2xEtaPhi_n2DetaDphi( h_DptDpt_phiYPhiY,           h_DptDpt_DyDphi, ac.nBins_y, ac.nBins_phi);
      reduce_n2xEtaPhi_n2DetaDphi( h_G2_phiYPhiY,               h_G2_DyDphi,     ac.nBins_y, ac.nBins_phi);
 
-     /// calculate average pt base on h_pt_eta histograms
+     /// calculate average pt base on h_pt_y histograms
      double avgPt1Y = avgValue(part1Histos->h_pt_y);
      double avgPt2Y = avgValue(part2Histos->h_pt_y);
      if (reportInfo()) cout << "calculateDerivedHistograms(...) avgPt1Y = " << avgPt1Y << endl;
      if (reportInfo()) cout << "calculateDerivedHistograms(...) avgPt2Y = " << avgPt2Y << endl;
      h_P2_DyDphi->Add(h_DptDpt_DyDphi,h_DptDpt_DyDphi,1.0,0.0);
      h_P2_DyDphi->Scale(1.0/avgPt1Y/avgPt2Y);
+
+     calculateG2_H2H2H2H2( pairHistos->h_ptpt_phiYPhiY, h_n1n1_phiYPhiY,  h_pt1pt1_phiYPhiY, h_G2_phiYPhiY, avgPt1Y, avgPt2Y, ijNormalization, bincorrection, 1.0);
+     calculateG2_H2H2H2H2( pairHistos->h_ptpt_yY, h_n1n1_yY,  h_pt1pt1_yY, h_G2_yY, avgPt1Y, avgPt2Y, ijNormalization, bincorrection, 1.0);
+     calculateG2_H2H2H2H2( pairHistos->h_ptpt_phiPhi, h_n1n1_phiPhi,  h_pt1pt1_phiPhi, h_G2_phiPhi, avgPt1Y, avgPt2Y, ijNormalization, bincorrection, 1.0);
 
      symmetrizeDeltaEtaDeltaPhi(h_n2_DyDphi,ijNormalization);
      symmetrizeDeltaEtaDeltaPhi(h_R2_DyDphi,ijNormalization);

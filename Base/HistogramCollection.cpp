@@ -1208,7 +1208,7 @@ void HistogramCollection::calculateSc(const TH1 * spp, const TH1 * n1n1, const T
     }
 }
 
-void HistogramCollection::calculateG2_H2H2H2H2(const TH2 * spp, const TH2 * n1n1, const TH2 * pt1pt1, TH2 * sean, bool ijNormalization, double a1, double a2)
+void HistogramCollection::calculateG2_H2H2H2H2(const TH2 * spp, const TH2 * n1n1, const TH2 * pt1pt1, TH2 * sean, double pt1avg, double pt2avg, bool ijNormalization, double a1, double a2)
 {
   if (reportDebug()) cout << "calculateSean_H1H2H2H2(  ) Started" << endl;
   int n1x  = spp->GetNbinsX();
@@ -1268,8 +1268,8 @@ void HistogramCollection::calculateG2_H2H2H2H2(const TH2 * spp, const TH2 * n1n1
         {
         v4 = ev4 = 0;
         }
-      sean_D->SetBinContent(i1,i2,v4); sean_D->SetBinError(i1,i2,ev4);
-      sean_T->SetBinContent(i2,i1,v4); sean_T->SetBinError(i2,i1,ev4);
+      sean_D->SetBinContent(i1,i2,v4/pt1avg/pt2avg); sean_D->SetBinError(i1,i2,ev4/pt1avg/pt2avg);
+      sean_T->SetBinContent(i2,i1,v4/pt1avg/pt2avg); sean_T->SetBinError(i2,i1,ev4/pt1avg/pt2avg);
       }
     }
   sean->Reset();
