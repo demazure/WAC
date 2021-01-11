@@ -3067,7 +3067,7 @@ void HistogramCollection::symmetrizeXX(TH2 * h, bool ijNormalization)
 //  delete [] denominator;
 //  }
 
-void HistogramCollection::reduce_n2xEtaPhi_n2DetaDphi(const TH2 * source, TH2 * target,int nEtaBins,int nPhiBins)
+void HistogramCollection::reduce_n2xEtaPhi_n2DetaDphi(const TH2 * source, TH2 * target,int nEtaBins,int nPhiBins,Option_t *opt)
 {
   //if (reportDebug()) cout << "reduce_n2xEtaPhi_n2DetaDphi() ==============  New Version From TH2" << endl;
   double v1,v2,ev1;
@@ -3112,6 +3112,7 @@ void HistogramCollection::reduce_n2xEtaPhi_n2DetaDphi(const TH2 * source, TH2 * 
       ++i;
       }
     }
+
   for (dEta=0;dEta<2*nEtaBins-1;++dEta)
     {
     for (dPhi=0;dPhi<nPhiBins;++dPhi)
@@ -3127,6 +3128,14 @@ void HistogramCollection::reduce_n2xEtaPhi_n2DetaDphi(const TH2 * source, TH2 * 
       target->SetBinError(  dEta+1,dPhi+1,sqrt(ev1)/v2);
       }
     }
+
+  /* let's prepare the scale in case the integral needs to be preserved */
+  if (TString(opt).Contains("int")) {
+    double factor = source->Integral() / target->Integral();
+    target->Scale(factor);
+  }
+
+
 
   // double a1m = target->GetBinContent(nEtaBins-1,1);
   // double a1  = target->GetBinContent(nEtaBins,1);

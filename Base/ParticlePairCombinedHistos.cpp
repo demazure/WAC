@@ -212,14 +212,20 @@ ParticlePairCombinedHistos::~ParticlePairCombinedHistos()
     h_BF_DetaDphi_shft->Add(pp->h_bf12_DetaDphi_shft, mm->h_bf12_DetaDphi_shft, app, amm);
     h_BF_DetaDphi_shft->Add(pm->h_bf12_DetaDphi_shft, apm/2.0);
     h_BF_DetaDphi_shft->Add(pm->h_bf21_DetaDphi_shft, apm/2.0);
+    /* with the usual normalization the BF gets downscaled by a factor 2 so let's recover it */
+    h_BF_DetaDphi_shft->Scale(2.0);
 
     h_BF_etaEta->Add(pp->h_bf12_etaEta, mm->h_bf12_etaEta, app, amm);
     h_BF_etaEta->Add(pm->h_bf12_etaEta, apm/2.0);
     h_BF_etaEta->Add(pm->h_bf21_etaEta, apm/2.0);
+    /* with the usual normalization the BF gets downscaled by a factor 2 so let's recover it */
+    h_BF_etaEta->Scale(2.0);
 
     h_BF_phiPhi->Add(pp->h_bf12_phiPhi, mm->h_bf12_phiPhi, app, amm);
     h_BF_phiPhi->Add(pm->h_bf12_phiPhi, apm/2.0);
     h_BF_phiPhi->Add(pm->h_bf21_phiPhi, apm/2.0);
+    /* with the usual normalization the BF gets downscaled by a factor 2 so let's recover it */
+    h_BF_phiPhi->Scale(2.0);
 
     if (ac.fillY)
     {
@@ -247,10 +253,14 @@ ParticlePairCombinedHistos::~ParticlePairCombinedHistos()
       h_BF_yY->Add(pp->h_bf12_yY, mm->h_bf12_yY, app, amm);
       h_BF_yY->Add(pm->h_bf12_yY, apm/2.0);
       h_BF_yY->Add(pm->h_bf21_yY, apm/2.0);
+      /* with the usual normalization the BF gets downscaled by a factor 2 so let's recover it */
+      h_BF_yY->Scale(2.0);
 
       h_BF_DyDphi_shft->Add(pp->h_bf12_DyDphi_shft, mm->h_bf12_DyDphi_shft, app, amm);
       h_BF_DyDphi_shft->Add(pm->h_bf12_DyDphi_shft, apm/2.0);
       h_BF_DyDphi_shft->Add(pm->h_bf21_DyDphi_shft, apm/2.0);
+      /* with the usual normalization the BF gets downscaled by a factor 2 so let's recover it */
+      h_BF_DyDphi_shft->Scale(2.0);
     }
 
     if (ac.fillQ3D)
