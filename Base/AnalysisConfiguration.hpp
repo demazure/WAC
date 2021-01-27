@@ -34,6 +34,7 @@ public:
   void printConfiguration(ostream & os);
   int getIxEtaPhi(double eta, double phi);
   int getIxYPhi(double y, double phi);
+  double getDphiShifted(double dphi);
 
   ////////////////////////////////////////////////////
   // Data Members
@@ -82,5 +83,45 @@ public:
 
 ClassDef(AnalysisConfiguration,0)
 };
+
+inline int AnalysisConfiguration::getIxEtaPhi(double eta, double phi) {
+
+  if(!(eta<min_eta || eta>max_eta)) {
+    int iEta = int( double(nBins_eta)*(eta-min_eta)/range_eta );
+    int iPhi = int( double(nBins_phi)*(phi-min_phi)/range_phi );
+
+    if (iEta>=0 && iPhi>=0 && iEta<nBins_eta && iPhi<nBins_phi)
+      {
+      return nBins_phi*iEta + iPhi;
+      }
+    return -1;
+  }
+  return -1;
+}
+
+inline int AnalysisConfiguration::getIxYPhi(double y, double phi) {
+
+  if(!(y<min_y || y>max_y))
+    {
+    int iY = int( double(nBins_y)*(y-min_y)/range_y );
+    int iPhi = int( double(nBins_phi)*(phi-min_phi)/range_phi );
+
+    if (iY>=0 && iPhi>=0 && iY<nBins_y && iPhi<nBins_phi)
+      {
+      return nBins_phi*iY + iPhi;
+      }
+    return -1;
+    }
+  return -1;
+}
+
+double const  kPI        = TMath::Pi();
+double const  kTWOPI     = 2.*kPI;
+
+inline double AnalysisConfiguration::getDphiShifted(double dphi) {
+    while (dphi >= max_Dphi_shft) dphi -= kTWOPI;
+    while (dphi <  min_Dphi_shft) dphi += kTWOPI;
+    return dphi;
+}
 
 #endif /* WAC_AnalysisConfiguration */

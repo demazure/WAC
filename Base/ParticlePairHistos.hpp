@@ -47,6 +47,13 @@ public:
   TH2 * h_ptpt_phiEtaPhiEta;
   TH2 * h_n2_ptPhiEtaPtPhiEta;
 
+  TH2 * h_n2_detaDphi_o;
+  TH2 * h_npt_detaDphi_o;
+  TH2 * h_ptn_detaDphi_o;
+  TH2 * h_ptpt_detaDphi_o;
+  TH2 * h_n1n1_detaDphi_o;
+  TH2 * h_pt1pt1_detaDphi_o;
+
   TH2 * h_n2_etaEta;
   TH2 * h_npt_etaEta;
   TH2 * h_ptn_etaEta;
@@ -73,7 +80,7 @@ public:
   TH1 * h_mInv_PF;  // pair frame
   TH1 * h_beta;
 
-     ClassDef(ParticlePairHistos,0)
+     ClassDef(ParticlePairHistos,1)
 };
 
 

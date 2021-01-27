@@ -72,6 +72,23 @@ void ParticlePairHistos::initialize()
   h_npt_phiEtaPhiEta  = createHistogram(bn+TString("npt_phiEtaPhiEta"), ac.nBins_phiEta, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiEta), ac.nBins_phiEta, 0.0, static_cast<double>(ac.nBins_phiEta), "#eta_{1}x#varphi_{1}","#eta_{2}x#varphi_{2}", "Nxp_{T}", scaled, saved, notPlotted, notPrinted,false);
   h_ptn_phiEtaPhiEta  = createHistogram(bn+TString("ptn_phiEtaPhiEta"), ac.nBins_phiEta, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiEta), ac.nBins_phiEta, 0.0, static_cast<double>(ac.nBins_phiEta), "#eta_{1}x#varphi_{1}","#eta_{2}x#varphi_{2}", "p_{T}xN", scaled, saved, notPlotted, notPrinted,false);
   h_ptpt_phiEtaPhiEta = createHistogram(bn+TString("ptpt_phiEtaPhiEta"),ac.nBins_phiEta, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiEta), ac.nBins_phiEta, 0.0, static_cast<double>(ac.nBins_phiEta), "#eta_{1}x#varphi_{1}","#eta_{2}x#varphi_{2}", "p_{T}xp_{T}", scaled, saved, notPlotted, notPrinted,false);
+
+  ac.nBins_Deta = ac.nBins_eta*2-1;
+  ac.min_Deta = ac.min_eta-ac.max_eta;
+  ac.max_Deta = ac.max_eta-ac.min_eta;
+  ac.nBins_Dphi      = ac.nBins_phi;
+  ac.nBins_Dphi_shft = ac.nBins_phi/4;
+  ac.width_Dphi    = TMath::TwoPi()/ac.nBins_Dphi;
+  ac.min_Dphi      = -ac.width_Dphi/2.;
+  ac.max_Dphi      = TMath::TwoPi() - ac.width_Dphi/2.;
+  ac.min_Dphi_shft   = ac.min_Dphi - ac.width_Dphi*double(ac.nBins_Dphi/4);
+  ac.max_Dphi_shft   = ac.max_Dphi - ac.width_Dphi*double(ac.nBins_Dphi/4);
+  h_n2_detaDphi_o       = createHistogram(bn+TString("n2_detaDphi_o"),     ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta","#Delta#varphi", "N_{2}", scaled, saved, notPlotted, notPrinted,false);
+  h_npt_detaDphi_o      = createHistogram(bn+TString("npt_detaDphi_o"),    ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta","#Delta#varphi", "Nxp_{T}", scaled, saved, notPlotted, notPrinted,false);
+  h_ptn_detaDphi_o      = createHistogram(bn+TString("ptn_detaDphi_o"),    ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta","#Delta#varphi", "p_{T}xN", scaled, saved, notPlotted, notPrinted,false);
+  h_ptpt_detaDphi_o     = createHistogram(bn+TString("ptpt_detaDphi_o"),   ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta","#Delta#varphi", "p_{T}xp_{T}", scaled, saved, notPlotted, notPrinted,false);
+  h_n1n1_detaDphi_o     = createHistogram(bn+TString("n1n1_detaDphi_o"),   ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta","#Delta#varphi", "n_{1}*n_{1}", scaled, saved, notPlotted, notPrinted,false);
+  h_pt1pt1_detaDphi_o   = createHistogram(bn+TString("pt1pt1_detaDphi_o"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta","#Delta#varphi", "p_{T}*p_{T}", scaled, saved, notPlotted, notPrinted,false);
 #ifdef OPTIMIZEADDBINCONTENT
   /* big histograms are forced to be created without sumw2 structure for it will not be used */
   h_n2_phiEtaPhiEta->SetBit(TH1::kIsNotW);
@@ -82,6 +99,18 @@ void ParticlePairHistos::initialize()
   h_ptn_phiEtaPhiEta->Sumw2(false);
   h_ptpt_phiEtaPhiEta->SetBit(TH1::kIsNotW);
   h_ptpt_phiEtaPhiEta->Sumw2(false);
+  h_n2_detaDphi_o->SetBit(TH1::kIsNotW);
+  h_n2_detaDphi_o->Sumw2(false);
+  h_npt_detaDphi_o->SetBit(TH1::kIsNotW);
+  h_npt_detaDphi_o->Sumw2(false);
+  h_ptn_detaDphi_o->SetBit(TH1::kIsNotW);
+  h_ptn_detaDphi_o->Sumw2(false);
+  h_ptpt_detaDphi_o->SetBit(TH1::kIsNotW);
+  h_ptpt_detaDphi_o->Sumw2(false);
+  h_n1n1_detaDphi_o->SetBit(TH1::kIsNotW);
+  h_n1n1_detaDphi_o->Sumw2(false);
+  h_pt1pt1_detaDphi_o->SetBit(TH1::kIsNotW);
+  h_pt1pt1_detaDphi_o->Sumw2(false);
   TH1::SetDefaultSumw2(defsumw2);
 #endif // OPTIMIZEADDBINCONTENT
   h_npt_etaEta        = createHistogram(bn+TString("npt_etaEta"),       ac.nBins_eta,    ac.min_eta, ac.max_eta, ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta_{1}",    "#eta_{2}", "n x p_{T}", scaled, saved, notPlotted, notPrinted);
@@ -163,6 +192,8 @@ void ParticlePairHistos::fill(Particle & particle1, Particle & particle2, double
 
   int iPhiEta1 = particle1.ixEtaPhi;
   int iPhiEta2 = particle2.ixEtaPhi;
+  double deta = eta1-eta2;
+  double dphi = ac.getDphiShifted(phi1-phi2);
 
   bool wrongix = iPhiEta1 < 0 || iPhiEta2 < 0;
 
@@ -178,11 +209,31 @@ void ParticlePairHistos::fill(Particle & particle1, Particle & particle2, double
     h_ptn_phiEtaPhiEta->SetEntries(nentries);
     h_npt_phiEtaPhiEta->SetEntries(nentries);
     h_ptpt_phiEtaPhiEta->SetEntries(nentries);
+
+    binno = h_n2_detaDphi_o->Fill(deta,dphi,weight);
+    nentries = h_n2_detaDphi_o->GetEntries();
+    h_ptn_detaDphi_o ->AddBinContent(binno, weight*pt1);
+    h_npt_detaDphi_o ->AddBinContent(binno, weight*pt2);
+    h_ptpt_detaDphi_o->AddBinContent(binno, weight*pt1*pt2);
+    h_n1n1_detaDphi_o->AddBinContent(binno, weight);
+    h_pt1pt1_detaDphi_o->AddBinContent(binno, weight*pt1*pt2);
+    h_ptn_detaDphi_o ->SetEntries(nentries);
+    h_npt_detaDphi_o ->SetEntries(nentries);
+    h_ptpt_detaDphi_o->SetEntries(nentries);
+    h_n1n1_detaDphi_o->SetEntries(nentries);
+    h_pt1pt1_detaDphi_o->SetEntries(nentries);
 #else
     h_n2_phiEtaPhiEta  ->Fill(iPhiEta1+0.5, iPhiEta2+0.5, weight);
     h_ptn_phiEtaPhiEta ->Fill(iPhiEta1+0.5, iPhiEta2+0.5, weight*pt1);
     h_npt_phiEtaPhiEta ->Fill(iPhiEta1+0.5, iPhiEta2+0.5, weight*pt2);
     h_ptpt_phiEtaPhiEta->Fill(iPhiEta1+0.5, iPhiEta2+0.5, weight*pt1*pt2);
+
+    h_n2_detaDphi_o->Fill(deta,dphi,weight);
+    h_ptn_detaDphi_o ->Fill(deta,dphi,weight*pt1);
+    h_npt_detaDphi_o ->Fill(deta,dphi,weight*pt2);
+    h_ptpt_detaDphi_o->Fill(deta,dphi,weight*pt1*pt2);
+    h_n1n1_detaDphi_o->Fill(deta,dphi,weight);
+    h_pt1pt1_detaDphi_o->Fill(deta,dphi,weight*pt1*pt2);
 #endif // OPTIMIZEADDBINCONTENT
   }
 
@@ -479,6 +530,12 @@ void ParticlePairHistos::loadHistograms(TFile * inputFile)
   h_npt_phiPhi        = loadH2(inputFile, bn+TString("npt_phiPhi"),true);
   h_ptn_phiPhi        = loadH2(inputFile, bn+TString("ptn_phiPhi"),true);
   h_ptpt_phiPhi       = loadH2(inputFile, bn+TString("ptpt_phiPhi"),true);
+  h_n2_detaDphi_o       = loadH2(inputFile, bn+TString("n2_detaDphi_o"),true);
+  h_npt_detaDphi_o      = loadH2(inputFile, bn+TString("npt_detaDphi_o"),true);
+  h_ptn_detaDphi_o      = loadH2(inputFile, bn+TString("ptn_detaDphi_o"),true);
+  h_ptpt_detaDphi_o     = loadH2(inputFile, bn+TString("ptpt_detaDphi_o"),true);
+  h_n1n1_detaDphi_o     = loadH2(inputFile, bn+TString("n1n1_detaDphi_o"),true);
+  h_pt1pt1_detaDphi_o   = loadH2(inputFile, bn+TString("pt1pt1_detaDphi_o"),true);
 
   if (ac.fillY)
     {

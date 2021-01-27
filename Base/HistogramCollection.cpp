@@ -3107,6 +3107,36 @@ void HistogramCollection::symmetrizeXX(TH2 * h, bool ijNormalization)
 //  delete [] denominator;
 //  }
 
+void HistogramCollection::convolve_n2xEtaPhi_n2DetaDphi(const TH2 * source, TH2 * target,int nEtaBins,int nPhiBins,Option_t *opt)
+{
+  target->Reset();
+  int i=1;
+  for (int iEta=0;iEta<nEtaBins; ++iEta)
+    {
+    for (int iPhi=0;iPhi<nPhiBins; ++iPhi)
+      {
+      int j=1;
+      for (int jEta=0;jEta<nEtaBins; ++jEta)
+        {
+        for (int jPhi=0;jPhi<nPhiBins; ++jPhi)
+          {
+          int dPhi = iPhi-jPhi; if (dPhi<0) dPhi += nPhiBins; dPhi+=1;
+          int dEta = iEta-jEta + nEtaBins;
+          double v1   = source->GetBinContent(i, j);
+          double ev1  = source->GetBinError(  i, j);
+          double cv1  = target->GetBinContent(dEta,dPhi);
+          double cev1  = target->GetBinError(dEta,dPhi);
+          target->SetBinContent(dEta,dPhi,cv1+v1);
+          target->SetBinError(dEta,dPhi,sqrt(cev1*cev1+ev1*ev1));
+          ++j;
+          }
+        }
+      ++i;
+      }
+    }
+}
+
+
 void HistogramCollection::reduce_n2xEtaPhi_n2DetaDphi(const TH2 * source, TH2 * target,int nEtaBins,int nPhiBins,Option_t *opt)
 {
   //if (reportDebug()) cout << "reduce_n2xEtaPhi_n2DetaDphi() ==============  New Version From TH2" << endl;

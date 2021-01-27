@@ -212,33 +212,3 @@ void AnalysisConfiguration::printConfiguration(ostream & os)
   << "        -- bin correction: " << binCorrMM        << endl;
 }
 
-int AnalysisConfiguration::getIxEtaPhi(double eta, double phi) {
-
-  if(!(eta<min_eta || eta>max_eta)) {
-    int iEta = int( double(nBins_eta)*(eta-min_eta)/range_eta );
-    int iPhi = int( double(nBins_phi)*(phi-min_phi)/range_phi );
-
-    if (iEta>=0 && iPhi>=0 && iEta<nBins_eta && iPhi<nBins_phi)
-      {
-      return nBins_phi*iEta + iPhi;
-      }
-    return -1;
-  }
-  return -1;
-}
-
-int AnalysisConfiguration::getIxYPhi(double y, double phi) {
-
-  if(!(y<min_y || y>max_y))
-    {
-    int iY = int( double(nBins_y)*(y-min_y)/range_y );
-    int iPhi = int( double(nBins_phi)*(phi-min_phi)/range_phi );
-
-    if (iY>=0 && iPhi>=0 && iY<nBins_y && iPhi<nBins_phi)
-      {
-      return nBins_phi*iY + iPhi;
-      }
-    return -1;
-    }
-  return -1;
-}
