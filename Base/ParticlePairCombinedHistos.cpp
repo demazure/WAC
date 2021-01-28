@@ -128,6 +128,7 @@ ParticlePairCombinedHistos::~ParticlePairCombinedHistos()
     h_BF_etaEta            = createHistogram(bn+TString("BF_etaEta"),            ac.nBins_eta,   ac.min_eta,   ac.max_eta,   ac.nBins_eta,   ac.min_eta,       ac.max_eta,       "#eta_{1}",    "#eta_{2}",      "BF_{2}", scaled, saved, plotted, printed);
     h_BF_phiPhi            = createHistogram(bn+TString("BF_phiPhi"),            ac.nBins_phi,   ac.min_phi,   ac.max_phi,   ac.nBins_phi,   ac.min_phi,       ac.max_phi,       "#varphi_{1}", "#varphi_{2}",   "BF_{2}", scaled, saved, plotted, printed);
     h_BF_DetaDphi_shft     = createHistogram(bn+TString("BF_DetaDphi_shft"),     ac.nBins_Deta,  ac.min_Deta,  ac.max_Deta,  ac.nBins_Dphi,  ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta",  "#Delta#varphi", "BF_{2}", scaled, saved, plotted, printed);
+    h_R2BF_DetaDphi_shft   = createHistogram(bn+TString("R2BF_DetaDphi_shft"),   ac.nBins_Deta,  ac.min_Deta,  ac.max_Deta,  ac.nBins_Dphi,  ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta",  "#Delta#varphi", "BF_{2}", scaled, saved, plotted, printed);
 
 
     if (ac.fillY)
@@ -146,6 +147,7 @@ ParticlePairCombinedHistos::~ParticlePairCombinedHistos()
 
       h_BF_yY              = createHistogram(bn+TString("BF_yY"),                ac.nBins_y,   ac.min_y,   ac.max_y,   ac.nBins_y,     ac.min_y,         ac.max_y,         "y_{1}",      "y_{2}",         "BF_{2}", scaled, saved, plotted, printed);
       h_BF_DyDphi_shft     = createHistogram(bn+TString("BF_DyDphi_shft"),       ac.nBins_Dy,  ac.min_Dy,  ac.max_Dy,  ac.nBins_Dphi,  ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta y",   "#Delta#varphi", "BF_{2}", scaled, saved, plotted, printed);
+      h_R2BF_DyDphi_shft   = createHistogram(bn+TString("R2BF_DyDphi_shft"),     ac.nBins_Dy,  ac.min_Dy,  ac.max_Dy,  ac.nBins_Dphi,  ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta y",   "#Delta#varphi", "BF_{2}", scaled, saved, plotted, printed);
     }
 
   if (ac.fillQ3D)
@@ -215,6 +217,12 @@ ParticlePairCombinedHistos::~ParticlePairCombinedHistos()
     /* with the usual normalization the BF gets downscaled by a factor 2 so let's recover it */
     h_BF_DetaDphi_shft->Scale(2.0);
 
+    h_R2BF_DetaDphi_shft->Add(pp->h_R2bf12_DetaDphi_shft, mm->h_R2bf12_DetaDphi_shft, app, amm);
+    h_R2BF_DetaDphi_shft->Add(pm->h_R2bf12_DetaDphi_shft, apm/2.0);
+    h_R2BF_DetaDphi_shft->Add(pm->h_R2bf21_DetaDphi_shft, apm/2.0);
+    /* with the usual normalization the BF gets downscaled by a factor 2 so let's recover it */
+    h_R2BF_DetaDphi_shft->Scale(2.0);
+
     h_BF_etaEta->Add(pp->h_bf12_etaEta, mm->h_bf12_etaEta, app, amm);
     h_BF_etaEta->Add(pm->h_bf12_etaEta, apm/2.0);
     h_BF_etaEta->Add(pm->h_bf21_etaEta, apm/2.0);
@@ -261,6 +269,12 @@ ParticlePairCombinedHistos::~ParticlePairCombinedHistos()
       h_BF_DyDphi_shft->Add(pm->h_bf21_DyDphi_shft, apm/2.0);
       /* with the usual normalization the BF gets downscaled by a factor 2 so let's recover it */
       h_BF_DyDphi_shft->Scale(2.0);
+
+      h_R2BF_DyDphi_shft->Add(pp->h_R2bf12_DyDphi_shft, mm->h_R2bf12_DyDphi_shft, app, amm);
+      h_R2BF_DyDphi_shft->Add(pm->h_R2bf12_DyDphi_shft, apm/2.0);
+      h_R2BF_DyDphi_shft->Add(pm->h_R2bf21_DyDphi_shft, apm/2.0);
+      /* with the usual normalization the BF gets downscaled by a factor 2 so let's recover it */
+      h_R2BF_DyDphi_shft->Scale(2.0);
     }
 
     if (ac.fillQ3D)

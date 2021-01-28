@@ -35,8 +35,8 @@
 
 const Int_t npairs = 5;
 const char *pname[npairs] = {"CD","CI","MM","PM","PP"};
-const Int_t ncorrf = 4;
-const char *cfname[ncorrf] = {"P2","R2","G2","BF"};
+const Int_t ncorrf = 5;
+const char *cfname[ncorrf] = {"P2","R2","G2","BF","R2BF"};
 const Int_t naux = 10;
 const char *auxname[naux] = {
     "h2_n1_P",
@@ -219,6 +219,9 @@ TList *extractSampleResults(AnalysisConfiguration *ac, int icent,int isample) {
         case 3: /* BF */
           h2 = eventanalyzer->pair12_CDHistos->h_BF_DetaDphi_shft;
           break;
+        case 4: /* R2BF */
+          h2 = eventanalyzer->pair12_CDHistos->h_R2BF_DetaDphi_shft;
+          break;
         default:
           Fatal("extractSampleResults","Wrong correlator index");
         }
@@ -236,6 +239,9 @@ TList *extractSampleResults(AnalysisConfiguration *ac, int icent,int isample) {
           break;
         case 3: /* BF */
           h2 = eventanalyzer->pair12_CIHistos->h_BF_DetaDphi_shft;
+          break;
+        case 4: /* R2BF */
+          h2 = eventanalyzer->pair12_CIHistos->h_R2BF_DetaDphi_shft;
           break;
         default:
           Fatal("extractSampleResults","Wrong correlator index");
@@ -255,6 +261,9 @@ TList *extractSampleResults(AnalysisConfiguration *ac, int icent,int isample) {
         case 3: /* BF */
           h2 = eventanalyzer->pair22_DerivedHistos->h_bf12_DetaDphi_shft;
           break;
+        case 4: /* R2BF */
+          h2 = eventanalyzer->pair22_DerivedHistos->h_R2bf12_DetaDphi_shft;
+          break;
         default:
           Fatal("extractSampleResults","Wrong correlator index");
         }
@@ -273,6 +282,9 @@ TList *extractSampleResults(AnalysisConfiguration *ac, int icent,int isample) {
         case 3: /* BF */
           h2 = eventanalyzer->pair12_DerivedHistos->h_bf12_DetaDphi_shft;
           break;
+        case 4: /* R2BF */
+          h2 = eventanalyzer->pair12_DerivedHistos->h_R2bf12_DetaDphi_shft;
+          break;
         default:
           Fatal("extractSampleResults","Wrong correlator index");
         }
@@ -290,6 +302,9 @@ TList *extractSampleResults(AnalysisConfiguration *ac, int icent,int isample) {
           break;
         case 3: /* BF */
           h2 = eventanalyzer->pair11_DerivedHistos->h_bf12_DetaDphi_shft;
+          break;
+        case 4: /* R2BF */
+          h2 = eventanalyzer->pair11_DerivedHistos->h_R2bf12_DetaDphi_shft;
           break;
         default:
           Fatal("extractSampleResults","Wrong correlator index");

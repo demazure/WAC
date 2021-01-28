@@ -72,6 +72,8 @@ public:
   TH2* h_bf12_DyDphi;
   TH2* h_bf12_DetaDphi_shft;
   TH2* h_bf12_DyDphi_shft;
+  TH2* h_R2bf12_DetaDphi_shft;
+  TH2* h_R2bf12_DyDphi_shft;
   TH2* h_bf21_phiEtaPhiEta;
   TH2* h_bf21_etaEta;
   TH2* h_bf21_phiPhi;
@@ -81,6 +83,8 @@ public:
   TH2* h_bf21_DyDphi;
   TH2* h_bf21_DetaDphi_shft;
   TH2* h_bf21_DyDphi_shft;
+  TH2* h_R2bf21_DetaDphi_shft;
+  TH2* h_R2bf21_DyDphi_shft;
 
   TH2* h_n1n1_DetaDphi;
   TH2* h_pt1pt1_DetaDphi;
@@ -160,7 +164,7 @@ public:
   
   bool ijNormalization;
 
-    ClassDef(ParticlePairDerivedHistos,1)
+    ClassDef(ParticlePairDerivedHistos,2)
 
 };
 
