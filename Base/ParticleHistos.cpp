@@ -46,6 +46,7 @@ void ParticleHistos::createHistograms()
   h_n1_phi     = createHistogram(bn+TString("n1_phi"),         ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi","N", scaled, saved, plotted, notPrinted);
   h_n1_ptEta   = createHistogram(bn+TString("n1_ptEta"),       ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_pt, ac.min_pt, ac.max_pt,"#eta","p_{T}","N", scaled, saved, plotted, notPrinted);
   h_n1_phiEta  = createHistogram(bn+TString("n1_phiEta"),      ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_phi, ac.min_phi, ac.max_phi,"#eta","#varphi","N", scaled, saved, plotted, notPrinted);
+  h_n1_phiEta_c  = createHistogram(bn+TString("n1_phiEta_c"),      2*ac.nBins_eta-1, ac.min_eta, ac.max_eta, ac.nBins_phi, ac.min_phi, ac.max_phi,"#eta","#varphi","N", scaled, saved, plotted, notPrinted);
   h_spt_phi    = createHistogram(bn+TString("sumpt1_phi"),    ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi","#sum p_{T}", scaled, saved, plotted, notPrinted);
   h_spt_eta    = createHistogram(bn+TString("sumpt1_eta"),    ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta", "#sum p_{T}", scaled, saved, plotted, notPrinted);
   h_spt_phiEta = createHistogram(bn+TString("sumpt1_phiEta"), ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_phi, ac.min_phi, ac.max_phi,"#eta","#varphi","#sum p_{T}", scaled, saved, notPlotted, notPrinted);
@@ -101,6 +102,7 @@ void ParticleHistos::loadHistograms(TFile * inputFile)
   h_n1_phi     = loadH1(inputFile,bn+TString("n1_phi")   ,true);
   h_n1_ptEta   = loadH2(inputFile,bn+TString("n1_ptEta") ,true);
   h_n1_phiEta  = loadH2(inputFile,bn+TString("n1_phiEta"),true);
+  h_n1_phiEta_c  = loadH2(inputFile,bn+TString("n1_phiEta_c"),true);
   h_spt_phiEta = loadH2(inputFile,bn+TString("sumpt1_phiEta"),true);
   h_spt_phi    = loadH1(inputFile,bn+TString("sumpt1_phi")   ,true);
   h_spt_eta    = loadH1(inputFile,bn+TString("sumpt1_eta")  ,true);
@@ -125,6 +127,8 @@ void ParticleHistos::loadHistograms(TFile * inputFile)
     {
     h_n1_ptPhiY = loadH3(inputFile,bn+TString("n1_ptPhiY"),true);
     }
+  /* the histograms are not owned */
+  bOwnTheHistograms = false;
   return;
 }
 
@@ -137,12 +141,13 @@ void ParticleHistos::fill(Particle & particle, double weight)
   AnalysisConfiguration & ac = *getConfiguration();
   h_n1_pt     ->Fill(pt, weight);
   h_n1_ptXS   ->Fill(pt, weight/pt);
-  h_n1_eta    ->Fill(eta, weight);
-  h_n1_phi    ->Fill(phi, weight);
+  // delayed fill h_n1_eta    ->Fill(eta, weight);
+  // delayed fill h_n1_phi    ->Fill(phi, weight);
   h_n1_ptEta  ->Fill(eta, pt,  weight);
   h_n1_phiEta ->Fill(eta, phi, weight);
-  h_spt_phi    ->Fill(phi, pt*weight);
-  h_spt_eta    ->Fill(eta, pt*weight);
+  h_n1_phiEta_c ->Fill(eta, phi, weight);
+  // delayed fill h_spt_phi    ->Fill(phi, pt*weight);
+  // delayed fill h_spt_eta    ->Fill(eta, pt*weight);
   h_spt_phiEta ->Fill(eta, phi, pt*weight);
 
   if (ac.fillY)
@@ -173,6 +178,7 @@ void ParticleHistos::fill(TLorentzVector & p, double weight)
   // delayed fill h_n1_phi     ->Fill(phi, weight);
   h_n1_ptEta   ->Fill(eta, pt,  weight);
   h_n1_phiEta  ->Fill(eta, phi, weight);
+  h_n1_phiEta_c  ->Fill(eta, phi, weight);
   // delayed fill h_spt_phi    ->Fill(phi, pt*weight);
   // delayed fill h_spt_eta    ->Fill(eta, pt*weight);
   h_spt_phiEta ->Fill(eta, phi, pt*weight);

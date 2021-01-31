@@ -556,5 +556,7 @@ void ParticlePairHistos::loadHistograms(TFile * inputFile)
       h_n2_ptPhiYPtPhiY = loadH2(inputFile, bn+TString("n2_ptPhiYPtPhiY"),true);
       }
     }
+  /* the histograms are not owned */
+  bOwnTheHistograms = false;
   return;
 }

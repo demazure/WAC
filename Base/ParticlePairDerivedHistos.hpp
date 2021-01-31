@@ -34,6 +34,7 @@ public:
                                   ParticleHistos * part2Histos,
                                   ParticlePairHistos * pairHistos,
                                   double bincorrection);
+  void reduce(const TH2 * source, TH2 * target,int nEtaBins,int nPhiBins);
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   // Data Members - Computed

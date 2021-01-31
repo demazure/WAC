@@ -142,6 +142,8 @@ ParticlePairDerivedHistos::ParticlePairDerivedHistos(const TString & name,
      h_bf21_DyDphi_shft   = loadH2(inputFile, bn+TString("bf21_DyDphi_shft"));
    }
    if (reportDebug()) cout << "ParticlePairDerivedHistos::loadHistograms() Completed." << endl;
+   /* the histograms are not owned */
+   bOwnTheHistograms = false;
  }
 
  //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -459,6 +461,64 @@ ParticlePairDerivedHistos::ParticlePairDerivedHistos(const TString & name,
 
  }
 
+void ParticlePairDerivedHistos::reduce(const TH2 * source, TH2 * target,int nEtaBins,int nPhiBins)
+{
+  double v1,v2,ev1;
+  int dPhi,dEta, iPhi,iEta,jPhi,jEta, i, j;
+  int nBins = nEtaBins*nPhiBins;
+  int nWrk  = nPhiBins*(2*nEtaBins-1);
+  int index;
+  double * numerator    = new double[nWrk];
+  double * numeratorErr = new double[nWrk];
+  for (int k=0;k<nWrk;++k)
+    {
+    numerator[k]    = 0;
+    numeratorErr[k] = 0;
+    }
+
+  TString name = target->GetName();
+
+  i=1;
+  for (iEta=0;iEta<nEtaBins; ++iEta)
+    {
+    for (iPhi=0;iPhi<nPhiBins; ++iPhi)
+      {
+      j=1;
+      for (jEta=0;jEta<nEtaBins; ++jEta)
+        {
+        for (jPhi=0;jPhi<nPhiBins; ++jPhi)
+          {
+          dPhi = iPhi-jPhi; if (dPhi<0) dPhi += nPhiBins; dPhi+=1;
+          dEta = iEta-jEta + nEtaBins;
+          v1   = source->GetBinContent(i, j);
+          ev1  = source->GetBinError(  i, j);
+          index = (dEta-1)*nPhiBins + dPhi-1;
+          numerator[index]    += v1;
+          numeratorErr[index] += ev1*ev1;
+          //cout << " " << name << "  iEta:" << iEta << " iPhi:" << iPhi << " jEta:" << jEta << " jPhi:" << jPhi << " v1:" << v1 << " ev1:" << ev1 << endl;
+          ++j;
+          }
+        }
+      ++i;
+      }
+    }
+
+  for (dEta=0;dEta<2*nEtaBins-1;++dEta)
+    {
+    for (dPhi=0;dPhi<nPhiBins;++dPhi)
+      {
+      //v1   = target->GetBinContent(dEta+1,dPhi+1);
+      //ev1  = target->GetBinError(dEta+1,dPhi+1);
+      index = dEta*nPhiBins + dPhi;
+      v1    = numerator[index];
+      ev1   = numeratorErr[index];
+      target->SetBinContent(dEta+1,dPhi+1,v1);
+      target->SetBinError(  dEta+1,dPhi+1,sqrt(ev1));
+      }
+    }
+  delete [] numerator;
+  delete [] numeratorErr;
+}
 
 
  // Histograms from ParticlePairDerivedHistos must be normalized "per event" before calling this function
@@ -613,6 +673,10 @@ ParticlePairDerivedHistos::ParticlePairDerivedHistos(const TString & name,
    shiftY(*h_bf12_DetaDphi, *h_bf12_DetaDphi_shft, ac.nBins_Dphi_shft);
    shiftY(*h_bf21_DetaDphi, *h_bf21_DetaDphi_shft, ac.nBins_Dphi_shft);
 
+   /* scale BF to a density */
+   h_bf12_DetaDphi_shft->Scale(1.0/h_bf12_DetaDphi_shft->GetXaxis()->GetBinWidth(1)/h_bf12_DetaDphi_shft->GetYaxis()->GetBinWidth(1));
+   h_bf21_DetaDphi_shft->Scale(1.0/h_bf21_DetaDphi_shft->GetXaxis()->GetBinWidth(1)/h_bf21_DetaDphi_shft->GetYaxis()->GetBinWidth(1));
+
    /* balance functions components R2 based */
    calculateBfR2( h_R2_DetaDphi_shft,part1Histos->h_n1_phiEta,part2Histos->h_n1_phiEta,h_R2bf12_DetaDphi_shft,h_R2bf21_DetaDphi_shft );
    
@@ -680,8 +744,12 @@ ParticlePairDerivedHistos::ParticlePairDerivedHistos(const TString & name,
     shiftY(*h_bf12_DyDphi, *h_bf12_DyDphi_shft, ac.nBins_Dphi_shft);
     shiftY(*h_bf21_DyDphi, *h_bf21_DyDphi_shft, ac.nBins_Dphi_shft);
 
+    /* scale BF to a density */
+    h_bf12_DyDphi_shft->Scale(1.0/h_bf12_DyDphi_shft->GetXaxis()->GetBinWidth(1)/h_bf12_DyDphi_shft->GetYaxis()->GetBinWidth(1));
+    h_bf21_DyDphi_shft->Scale(1.0/h_bf21_DyDphi_shft->GetXaxis()->GetBinWidth(1)/h_bf21_DyDphi_shft->GetYaxis()->GetBinWidth(1));
+
     /* balance functions components R2 based */
-    calculateBfR2( h_R2_DyDphi_shft,part1Histos->h_n1_phiEta,part2Histos->h_n1_phiEta,h_R2bf12_DyDphi_shft,h_R2bf21_DyDphi_shft );
+    calculateBfR2( h_R2_DyDphi_shft,part1Histos->h_n1_phiY,part2Histos->h_n1_phiY,h_R2bf12_DyDphi_shft,h_R2bf21_DyDphi_shft );
    }
 
    if (reportDebug()) cout << "ParticlePairDerivedHistos::calculateDerivedHistograms() completed."<< endl;

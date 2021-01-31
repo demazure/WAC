@@ -11,6 +11,9 @@
 
 ClassImp(HistogramCollection);
 
+double const  kPI        = TMath::Pi();
+double const  kTWOPI     = 2.*kPI;
+
 ////////////////////////////////////////////////////////////////////////////
 // CTOR1
 ////////////////////////////////////////////////////////////////////////////
@@ -1390,10 +1393,14 @@ void HistogramCollection::calculateBfR2(const TH2 *r2, const TH2 *n1_1, const TH
   double n11_inte = 0.0;
   double n11_int = n1_1->IntegralAndError(1,n1_1->GetNbinsX(),1,n1_1->GetNbinsY(),n11_inte);
   double n11_inter = n11_inte/n11_int;
+  /* we need to convert it to a density */
+  n11_int /= kTWOPI*(n1_1->GetXaxis()->GetBinUpEdge(n1_1->GetNbinsX())-n1_1->GetXaxis()->GetBinLowEdge(1));
 
   double n12_inte = 0.0;
   double n12_int = n1_2->IntegralAndError(1,n1_2->GetNbinsX(),1,n1_2->GetNbinsY(),n12_inte);
   double n12_inter = n12_inte/n12_int;
+  /* we need to convert it to a density */
+  n12_int /= kTWOPI*(n1_2->GetXaxis()->GetBinUpEdge(n1_2->GetNbinsX())-n1_2->GetXaxis()->GetBinLowEdge(1));
 
   for (int ix = 0; ix < nbinsx; ++ix)
   {
@@ -3107,31 +3114,46 @@ void HistogramCollection::symmetrizeXX(TH2 * h, bool ijNormalization)
 //  delete [] denominator;
 //  }
 
-void HistogramCollection::convolve_n2xEtaPhi_n2DetaDphi(const TH2 * source, TH2 * target,int nEtaBins,int nPhiBins,Option_t *opt)
+
+void HistogramCollection::convolve_n2xEtaPhi_n2DetaDphi(const TH2 * source1, const TH2 * source2, TH2 * target, double a1, double a2)
 {
+  /* few sanity checks */
+  int nEtaBins = source1->GetNbinsX();
+  int nPhiBins = source1->GetNbinsY();
+  
+  if ((source2->GetNbinsX() != nEtaBins) or (source2->GetNbinsY() != nPhiBins) or (target->GetNbinsY() != nPhiBins)) {
+    ::Error("HistogramCollection::convolve_n2xEtaPhi_n2DetaDphi","Inconsitent dimensions");
+    return;
+  }
   target->Reset();
-  int i=1;
-  for (int iEta=0;iEta<nEtaBins; ++iEta)
+  float etahalfwidth = source1->GetXaxis()->GetBinWidth(1)/2.0;
+  for (int iEta=0;iEta<source1->GetNbinsX(); ++iEta)
     {
-    for (int iPhi=0;iPhi<nPhiBins; ++iPhi)
+    double x1 = source1->GetXaxis()->GetBinCenter(iEta+1);
+    for (int iPhi=0;iPhi<source1->GetNbinsY(); ++iPhi)
       {
-      int j=1;
-      for (int jEta=0;jEta<nEtaBins; ++jEta)
+      double y1 = source1->GetYaxis()->GetBinCenter(iPhi+1);
+      for (int jEta=0;jEta<source2->GetNbinsX(); ++jEta)
         {
-        for (int jPhi=0;jPhi<nPhiBins; ++jPhi)
+        double x2 = source2->GetXaxis()->GetBinCenter(jEta+1);
+        for (int jPhi=0;jPhi<source2->GetNbinsY(); ++jPhi)
           {
-          int dPhi = iPhi-jPhi; if (dPhi<0) dPhi += nPhiBins; dPhi+=1;
-          int dEta = iEta-jEta + nEtaBins;
-          double v1   = source->GetBinContent(i, j);
-          double ev1  = source->GetBinError(  i, j);
-          double cv1  = target->GetBinContent(dEta,dPhi);
-          double cev1  = target->GetBinError(dEta,dPhi);
-          target->SetBinContent(dEta,dPhi,cv1+v1);
-          target->SetBinError(dEta,dPhi,sqrt(cev1*cev1+ev1*ev1));
-          ++j;
+            double y2 = source2->GetYaxis()->GetBinCenter(jPhi+1);
+
+            double v1   = source1->GetBinContent(iEta+1,iPhi+1)*a1;
+            double v2   = source2->GetBinContent(jEta+1,jPhi+1)*a2;
+
+            double dx;
+            if(gRandom->Gaus() > 0) dx = x1 - x2 + (etahalfwidth);
+            else                    dx = x1 - x2 - (etahalfwidth);
+            double dy = y1 - y2;
+
+            while (dy >= kTWOPI) dy -= kTWOPI;
+            while (dy < 0) dy += kTWOPI;
+
+            target->Fill(dx,dy,v1*v2);
           }
         }
-      ++i;
       }
     }
 }

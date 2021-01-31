@@ -77,6 +77,8 @@ ParticlePairCombinedHistos::~ParticlePairCombinedHistos()
       h_G2_DyDphi_shft     = loadH2(inputFile,bn+TString("G2_DyDphi_shft"));
     }
     if (reportDebug()) cout << "ParticlePairCombinedHistos::loadHistograms(...) completed" << endl;
+    /* the histograms are not owned */
+    bOwnTheHistograms = false;
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////
