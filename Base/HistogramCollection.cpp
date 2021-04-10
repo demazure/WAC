@@ -11,6 +11,9 @@
 
 ClassImp(HistogramCollection);
 
+double const  kPI        = TMath::Pi();
+double const  kTWOPI     = TMath::TwoPi();
+
 ////////////////////////////////////////////////////////////////////////////
 // CTOR1
 ////////////////////////////////////////////////////////////////////////////
@@ -1340,37 +1343,53 @@ void calculateG2_H2H2H2H2H2H2(const TH2 *, const TH2 *, const TH2 *, const TH2 *
 
 /* calculate the balance functions components associated to the current pair */
 /* independent of R2, two components are alway computed, for LS they will match but don't for US */
+/* now we correctly use the proper convolution n1_1*1 or 1*n1_2 which should give the same results as for R2 */
+/* if when with R2 it is used in the same way  */
 void HistogramCollection::calculateBf(const TH2 *n2, const TH2 *n1_1, const TH2 *n1_2, TH2 *bf_12, TH2 *bf_21)
 {
   int nbinsx = n2->GetNbinsX();
+  int nbinsx1 = n1_1->GetNbinsX();
+  int nbinsx2 = n1_2->GetNbinsX();
   int nbinsy = n2->GetNbinsY();
+  int nbinsy1 = n1_1->GetNbinsY();
+  int nbinsy2 = n1_2->GetNbinsY();
+
+  if ((nbinsx != nbinsx1*nbinsy1) or (nbinsy != nbinsx2*nbinsy2)) {
+    ::Fatal("HistogramCollection::calculateBf","Incompatible dimensions");
+  }
 
   bf_12->Reset();
   bf_21->Reset();
-  double n11_inte = 0.0;
-  double n11_int = n1_1->IntegralAndError(1,n1_1->GetNbinsX(),1,n1_1->GetNbinsY(),n11_inte);
-  double n11_inter = n11_inte/n11_int;
 
-  double n12_inte = 0.0;
-  double n12_int = n1_2->IntegralAndError(1,n1_2->GetNbinsX(),1,n1_2->GetNbinsY(),n12_inte);
-  double n12_inter = n12_inte/n12_int;
-
-  for (int ix = 0; ix < nbinsx; ++ix)
+  for (int ix1 = 0; ix1 < nbinsx1; ++ix1)
   {
-    for (int iy = 0; iy < nbinsy; ++iy)
+    for (int iy1 = 0; iy1 < nbinsy1; ++iy1)
     {
-      double v = n2->GetBinContent(ix+1,iy+1);
-      double ve = n2->GetBinError(ix+1,iy+1);
+      int ix = ix1*nbinsy1+iy1;
+      double n1_1v = n1_1->GetBinContent(ix1+1,iy1+1);
+      double n1_1er = n1_1->GetBinError(ix1+1,iy1+1)/n1_1v;
+      for (int ix2 = 0; ix2 < nbinsx2; ++ix2)
+      {
+        for (int iy2 = 0; iy2 < nbinsy2; ++iy2)
+        {
+          int iy = ix2*nbinsy2+iy2;
+          double n1_2v = n1_2->GetBinContent(ix2+1,iy2+1);
+          double n1_2er = n1_2->GetBinError(ix2+1,iy2+1)/n1_2v;
 
-      double v12 = v/n11_int;
-      double v12e = v12*TMath::Sqrt(ve/v*ve/v+n11_inter*n11_inter);
-      double v21 = v/n12_int;
-      double v21e = v21*TMath::Sqrt(ve/v*ve/v+n12_inter*n12_inter);
+          double v = n2->GetBinContent(ix+1,iy+1);
+          double ve = n2->GetBinError(ix+1,iy+1);
 
-      bf_12->SetBinContent(ix+1,iy+1,v12);
-      bf_12->SetBinError(ix+1,iy+1,v12e);
-      bf_21->SetBinContent(iy+1,ix+1,v21);
-      bf_21->SetBinError(iy+1,ix+1,v21e);
+          double v12 = v/n1_1v;
+          double v12e = v12*TMath::Sqrt(ve/v*ve/v+n1_1er*n1_1er);
+          double v21 = v/n1_2v;
+          double v21e = v21*TMath::Sqrt(ve/v*ve/v+n1_2er*n1_2er);
+
+          bf_12->SetBinContent(ix+1,iy+1,v12);
+          bf_12->SetBinError(ix+1,iy+1,v12e);
+          bf_21->SetBinContent(iy+1,ix+1,v21);
+          bf_21->SetBinError(iy+1,ix+1,v21e);
+        }
+      }
     }
   }
   bf_12->SetEntries(n2->GetEntries());
@@ -1390,10 +1409,14 @@ void HistogramCollection::calculateBfR2(const TH2 *r2, const TH2 *n1_1, const TH
   double n11_inte = 0.0;
   double n11_int = n1_1->IntegralAndError(1,n1_1->GetNbinsX(),1,n1_1->GetNbinsY(),n11_inte);
   double n11_inter = n11_inte/n11_int;
+  /* we need to convert it to a density */
+  n11_int /= kTWOPI*(n1_1->GetXaxis()->GetBinUpEdge(n1_1->GetNbinsX())-n1_1->GetXaxis()->GetBinLowEdge(1));
 
   double n12_inte = 0.0;
   double n12_int = n1_2->IntegralAndError(1,n1_2->GetNbinsX(),1,n1_2->GetNbinsY(),n12_inte);
   double n12_inter = n12_inte/n12_int;
+  /* we need to convert it to a density */
+  n12_int /= kTWOPI*(n1_2->GetXaxis()->GetBinUpEdge(n1_2->GetNbinsX())-n1_2->GetXaxis()->GetBinLowEdge(1));
 
   for (int ix = 0; ix < nbinsx; ++ix)
   {
@@ -3173,6 +3196,7 @@ void HistogramCollection::reduce_n2xEtaPhi_n2DetaDphi(const TH2 * source, TH2 * 
   if (TString(opt).Contains("int")) {
     double factor = source->Integral() / target->Integral();
     target->Scale(factor);
+    ::Error("HistogramCollection::reduce_n2xEtaPhi_n2DetaDphi","Down scaling histogram %s by a factor %f", target->GetName(), factor);
   }
 
 
@@ -3190,6 +3214,65 @@ void HistogramCollection::reduce_n2xEtaPhi_n2DetaDphi(const TH2 * source, TH2 * 
   delete [] numeratorErr;
   delete [] denominator;
 }
+
+/* Projects the source in eta1,phi1,eta2,phi2 into the target in deta,dphi without any averaging */
+void HistogramCollection::projectEtaPhiEtaPhiToDetaDphi(const TH2 * source, TH2 * target,int nEtaBins,int nPhiBins)
+{
+  double v1,v2,ev1;
+  int dPhi,dEta, iPhi,iEta,jPhi,jEta, i, j;
+  int nBins = nEtaBins*nPhiBins;
+  int nWrk  = nPhiBins*(2*nEtaBins-1);
+  int index;
+  double * numerator    = new double[nWrk];
+  double * numeratorErr = new double[nWrk];
+  for (int k=0;k<nWrk;++k)
+    {
+    numerator[k]    = 0;
+    numeratorErr[k] = 0;
+    }
+
+  TString name = target->GetName();
+
+  i=1;
+  for (iEta=0;iEta<nEtaBins; ++iEta)
+    {
+    for (iPhi=0;iPhi<nPhiBins; ++iPhi)
+      {
+      j=1;
+      for (jEta=0;jEta<nEtaBins; ++jEta)
+        {
+        for (jPhi=0;jPhi<nPhiBins; ++jPhi)
+          {
+          dPhi = iPhi-jPhi; if (dPhi<0) dPhi += nPhiBins; dPhi+=1;
+          dEta = iEta-jEta + nEtaBins;
+          v1   = source->GetBinContent(i, j);
+          ev1  = source->GetBinError(  i, j);
+          index = (dEta-1)*nPhiBins + dPhi-1;
+          numerator[index]    += v1;
+          numeratorErr[index] += ev1*ev1;
+          ++j;
+          }
+        }
+      ++i;
+      }
+    }
+
+  for (dEta=0;dEta<2*nEtaBins-1;++dEta)
+    {
+    for (dPhi=0;dPhi<nPhiBins;++dPhi)
+      {
+      index = dEta*nPhiBins + dPhi;
+      v1    = numerator[index];
+      ev1   = numeratorErr[index];
+      target->SetBinContent(dEta+1,dPhi+1,v1);
+      target->SetBinError(  dEta+1,dPhi+1,sqrt(ev1));
+      }
+    }
+  target->SetEntries(source->GetEntries());
+  delete [] numerator;
+  delete [] numeratorErr;
+}
+ 
 
 
 void HistogramCollection::reduce_n2xEtaPhi_n2EtaEta(const TH1 * source, TH2 * target,int nEtaBins,int nPhiBins)

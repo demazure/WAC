@@ -604,10 +604,8 @@ ParticlePairDerivedHistos::ParticlePairDerivedHistos(const TString & name,
 
    /* balance functions components not R2 based */
    calculateBf( pairHistos->h_n2_phiEtaPhiEta,part1Histos->h_n1_phiEta,part2Histos->h_n1_phiEta,h_bf12_phiEtaPhiEta,h_bf21_phiEtaPhiEta );
-   calculateBf( pairHistos->h_n2_etaEta,part1Histos->h_n1_phiEta,part2Histos->h_n1_phiEta,h_bf12_etaEta,h_bf21_etaEta );
-   calculateBf( pairHistos->h_n2_phiPhi,part1Histos->h_n1_phiEta,part2Histos->h_n1_phiEta,h_bf12_phiPhi,h_bf21_phiPhi );
-   reduce_n2xEtaPhi_n2DetaDphi( h_bf12_phiEtaPhiEta, h_bf12_DetaDphi, ac.nBins_eta, ac.nBins_phi,"int");
-   reduce_n2xEtaPhi_n2DetaDphi( h_bf21_phiEtaPhiEta, h_bf21_DetaDphi, ac.nBins_eta, ac.nBins_phi,"int");
+   reduce_n2xEtaPhi_n2DetaDphi( h_bf12_phiEtaPhiEta, h_bf12_DetaDphi, ac.nBins_eta, ac.nBins_phi);
+   reduce_n2xEtaPhi_n2DetaDphi( h_bf21_phiEtaPhiEta, h_bf21_DetaDphi, ac.nBins_eta, ac.nBins_phi);
    symmetrizeDeltaEtaDeltaPhi(h_bf12_DetaDphi,ijNormalization);
    symmetrizeDeltaEtaDeltaPhi(h_bf21_DetaDphi,ijNormalization);
    shiftY(*h_bf12_DetaDphi, *h_bf12_DetaDphi_shft, ac.nBins_Dphi_shft);
@@ -672,16 +670,15 @@ ParticlePairDerivedHistos::ParticlePairDerivedHistos(const TString & name,
 
     /* balance functions components not R2 based */
     calculateBf( pairHistos->h_n2_phiYPhiY,part1Histos->h_n1_phiY,part2Histos->h_n1_phiY,h_bf12_phiYPhiY,h_bf21_phiYPhiY );
-    calculateBf( pairHistos->h_n2_yY,part1Histos->h_n1_phiY,part2Histos->h_n1_phiY,h_bf12_yY,h_bf21_yY );
-    reduce_n2xEtaPhi_n2DetaDphi( h_bf12_phiYPhiY, h_bf12_DyDphi, ac.nBins_y, ac.nBins_phi,"int");
-    reduce_n2xEtaPhi_n2DetaDphi( h_bf21_phiYPhiY, h_bf21_DyDphi, ac.nBins_y, ac.nBins_phi,"int");
+    reduce_n2xEtaPhi_n2DetaDphi( h_bf12_phiYPhiY, h_bf12_DyDphi, ac.nBins_y, ac.nBins_phi);
+    reduce_n2xEtaPhi_n2DetaDphi( h_bf21_phiYPhiY, h_bf21_DyDphi, ac.nBins_y, ac.nBins_phi);
     symmetrizeDeltaEtaDeltaPhi(h_bf12_DyDphi,ijNormalization);
     symmetrizeDeltaEtaDeltaPhi(h_bf21_DyDphi,ijNormalization);
     shiftY(*h_bf12_DyDphi, *h_bf12_DyDphi_shft, ac.nBins_Dphi_shft);
     shiftY(*h_bf21_DyDphi, *h_bf21_DyDphi_shft, ac.nBins_Dphi_shft);
 
     /* balance functions components R2 based */
-    calculateBfR2( h_R2_DyDphi_shft,part1Histos->h_n1_phiEta,part2Histos->h_n1_phiEta,h_R2bf12_DyDphi_shft,h_R2bf21_DyDphi_shft );
+    calculateBfR2( h_R2_DyDphi_shft,part1Histos->h_n1_phiY,part2Histos->h_n1_phiY,h_R2bf12_DyDphi_shft,h_R2bf21_DyDphi_shft );
    }
 
    if (reportDebug()) cout << "ParticlePairDerivedHistos::calculateDerivedHistograms() completed."<< endl;

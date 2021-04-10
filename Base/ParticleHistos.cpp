@@ -137,12 +137,12 @@ void ParticleHistos::fill(Particle & particle, double weight)
   AnalysisConfiguration & ac = *getConfiguration();
   h_n1_pt     ->Fill(pt, weight);
   h_n1_ptXS   ->Fill(pt, weight/pt);
-  h_n1_eta    ->Fill(eta, weight);
-  h_n1_phi    ->Fill(phi, weight);
+  // delayed fill h_n1_eta    ->Fill(eta, weight);
+  // delayed fill h_n1_phi    ->Fill(phi, weight);
   h_n1_ptEta  ->Fill(eta, pt,  weight);
   h_n1_phiEta ->Fill(eta, phi, weight);
-  h_spt_phi    ->Fill(phi, pt*weight);
-  h_spt_eta    ->Fill(eta, pt*weight);
+  // delayed fill h_spt_phi    ->Fill(phi, pt*weight);
+  // delayed fill h_spt_eta    ->Fill(eta, pt*weight);
   h_spt_phiEta ->Fill(eta, phi, pt*weight);
 
   if (ac.fillY)
