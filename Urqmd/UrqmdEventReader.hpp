@@ -14,12 +14,12 @@
 #include "TChain.h"
 #include "UrQMDEvent.hpp"
 #include "GeneratorConfiguration.hpp"
-#include "EventGenerator.hpp"
+#include "Task.hpp"
 
 using std::cout;
 using std::endl;
 
-class UrqmdEventReader : public EventGenerator
+class UrqmdEventReader : public Task
 {
 public:
 

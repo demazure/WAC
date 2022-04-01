@@ -31,7 +31,7 @@ find_library(EGPYTHIA8 EGPythia8)
 
 #---Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
 include(${ROOT_USE_FILE})
-include_directories(${CMAKE_SOURCE_DIR} ${ROOT_INCLUDE_DIRS} "Base" "Cluster" "CollisionGeometry" "Ampt" "Epos" "Pythia" "Eccentricity" "Blastwave" 
+include_directories(${CMAKE_SOURCE_DIR} ${ROOT_INCLUDE_DIRS} "Base" "Cluster" "CollisionGeometry" "Ampt" "Epos" "Pythia" "Eccentricity" "Blastwave" "Urqmd" 
 "/Users/claudeapruneau/Documents/MyProjects/AnalysisCode/buildRoot6.18.04/include" 
 "/Users/claudeapruneau/Documents/MyProjects/AnalysisCode/Pythia/pythia8243/include" 
 "/Users/claudeapruneau/Documents/MyProjects/AnalysisCode/Pythia/pythia8243/include/Pythia8")
@@ -58,6 +58,6 @@ add_subdirectory(Ampt)
 #add_subdirectory(Epos)
 #add_subdirectory(LambdaAnalysis)
 #add_subdirectory(Music)
-#add_subdirectory(Urqmd)
+add_subdirectory(Urqmd)
 #add_subdirectory(Plots)
 
