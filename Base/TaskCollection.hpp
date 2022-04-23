@@ -25,39 +25,34 @@ using namespace std;
 
 class TaskCollection : public Task
 {
-public:
-
-
+ public:
   ////////////////////////////////////////////
   // Member functions
   ////////////////////////////////////////////
 
-  TaskCollection(const TString & name,
-                 TaskConfiguration * configuration,
-                 int             nTasksMax = 100);
+  TaskCollection(const TString& name,
+                 TaskConfiguration* configuration,
+                 int nTasksMax = 100);
   virtual ~TaskCollection();
   virtual void initialize();
   virtual void execute();
   virtual void finalize();
   virtual void reset();
   virtual void clear();
-  virtual void printConfiguration(ostream & output);
+  virtual void printConfiguration(ostream& output);
 
-  void addTask(Task * task);
-
+  void addTask(Task* task);
 
   ////////////////////////////////////////////
   // Member Data
   ////////////////////////////////////////////
 
-protected:
+ protected:
+  int nTasksMax;
+  int nTasks;
+  Task** tasks;
 
-  int     nTasksMax;
-  int     nTasks;
-  Task ** tasks;
-
-  ClassDef(TaskCollection,0)
+  ClassDef(TaskCollection, 0)
 };
-
 
 #endif /* TaskCollection_hpp */

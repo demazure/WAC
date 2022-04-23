@@ -30,53 +30,52 @@
 ////////////////////////////////////////////////////
 class EnhancedGraph : public TH1D
 {
-public:
+ public:
   ////////////////////////////////////////////////////
   // Data Members
   ////////////////////////////////////////////////////
-  TGraph * g;
-  TGraph * gP;
-  TGraph * gM;
-  TGraph * gSys;
+  TGraph* g;
+  TGraph* gP;
+  TGraph* gM;
+  TGraph* gSys;
 
   int nPoints;
-  double * xPtr;
-  double * exPtr;
-  double * yPtr;
-  double * eyPtr;
-  double * ySysMPtr;
-  double * ySysPPtr;
-  double * yM;
-  double * yP;
+  double* xPtr;
+  double* exPtr;
+  double* yPtr;
+  double* eyPtr;
+  double* ySysMPtr;
+  double* ySysPPtr;
+  double* yM;
+  double* yP;
   double sysAbsolute;
-  int    option;
-  
+  int option;
+
   bool isVisible;
   ////////////////////////////////////////////////////
   // Member functions
   ////////////////////////////////////////////////////
-  EnhancedGraph(const TString & graphName,
-                const TString & xTitle,
-                const TString & yTitle,
+  EnhancedGraph(const TString& graphName,
+                const TString& xTitle,
+                const TString& yTitle,
                 double minX, double maxX,
                 double minY, double maxY,
-                int n, double * x, double *y, double *ex, double *ey, int opt=0);
-  EnhancedGraph(const TString & graphName,
-                const TString & xTitle,
-                const TString & yTitle,
+                int n, double* x, double* y, double* ex, double* ey, int opt = 0);
+  EnhancedGraph(const TString& graphName,
+                const TString& xTitle,
+                const TString& yTitle,
                 double minX, double maxX,
                 double minY, double maxY,
-                int n, double * x, double *y, double *ex, double *ey,
-                double * yM, double * yP,
-                int opt=0,
-                bool absolute=true);
+                int n, double* x, double* y, double* ex, double* ey,
+                double* yM, double* yP,
+                int opt = 0,
+                bool absolute = true);
   void draw(bool same);
   void setMinMax(double minY, double maxY);
-  void setProperties(const GraphConfiguration & graphConfig);
-  void printToFile(ostream & output);
+  void setProperties(const GraphConfiguration& graphConfig);
+  void printToFile(ostream& output);
 
-  ClassDef(EnhancedGraph,0)
-  
+  ClassDef(EnhancedGraph, 0)
 };
 
 #endif /* EnhancedGraph_hpp */

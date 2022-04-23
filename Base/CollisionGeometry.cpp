@@ -18,37 +18,26 @@
 
 using namespace std;
 
-ClassImp(CollisionGeometry);
+ClassImp(CollisionGeometry)
 
-CollisionGeometry::CollisionGeometry(int nProtonsA, int nNeutronsA, int nProtonsB, int nNeutronsB)
-:
-nucleusA(nullptr),
-nucleusB(nullptr),
-nBinaryMax(0),
-nucleonsA(0),
-nucleonsB(0),
-b(0),
-x(0),
-y(0),
-z(0),
-t(0),
-nBinary(0),
-nParticipant(0)
+  CollisionGeometry::CollisionGeometry(int nProtonsA, int nNeutronsA,
+                                       int nProtonsB, int nNeutronsB)
+  : nucleusA(nullptr), nucleusB(nullptr), nBinaryMax(0), nucleonsA(0), nucleonsB(0), b(0), x(0), y(0), z(0), t(0), nBinary(0), nParticipant(0)
 {
-  nucleusA = new Nucleus(nProtonsA,nNeutronsA);
-  nucleusB = new Nucleus(nProtonsB,nNeutronsB);
+  nucleusA = new Nucleus(nProtonsA, nNeutronsA);
+  nucleusB = new Nucleus(nProtonsB, nNeutronsB);
   initialize();
 }
 
 void CollisionGeometry::initialize()
 {
   nBinaryMax = nucleusA->nNucleons * nucleusB->nNucleons;
-  if (nBinaryMax<100)
+  if (nBinaryMax < 100)
     nBinaryMax = 100;
-  else if (nBinaryMax>40000)
+  else if (nBinaryMax > 40000)
     nBinaryMax = 40000;
-  nucleonsA = new Nucleon * [nBinaryMax];
-  nucleonsB = new Nucleon * [nBinaryMax];
+  nucleonsA = new Nucleon*[nBinaryMax];
+  nucleonsB = new Nucleon*[nBinaryMax];
   x = new double[nBinaryMax];
   y = new double[nBinaryMax];
   z = new double[nBinaryMax];
@@ -62,26 +51,25 @@ void CollisionGeometry::reset()
   nucleusB->reset();
 
   // this loop not necessary because nBinary is set to zero...
-//  for (int iNN=0; iNN<nBinary; iNN++)
-//    {
-//    nucleonsA[nBinary] = nullptr;
-//    nucleonsB[nBinary] = nullptr;
-//    x[nBinary] = 0;
-//    y[nBinary] = 0;
-//    z[nBinary] = 0;
-//    t[nBinary] = 0;
-//    }
+  //  for (int iNN=0; iNN<nBinary; iNN++)
+  //    {
+  //    nucleonsA[nBinary] = nullptr;
+  //    nucleonsB[nBinary] = nullptr;
+  //    x[nBinary] = 0;
+  //    y[nBinary] = 0;
+  //    z[nBinary] = 0;
+  //    t[nBinary] = 0;
+  //    }
   nBinary = 0;
   nParticipant = 0;
 }
 
-void CollisionGeometry::addNNCollision(Nucleon* nucleonA,Nucleon* nucleonB, double xAvg, double yAvg, double zAvg, double tAvg)
+void CollisionGeometry::addNNCollision(Nucleon* nucleonA, Nucleon* nucleonB, double xAvg, double yAvg, double zAvg, double tAvg)
 {
-  if (nBinary>=nBinaryMax)
-    {
+  if (nBinary >= nBinaryMax) {
     cout << "<E> CollisionGeometry::addNNCollision(...) Container size exceeded." << endl;
     return;
-    }
+  }
   nucleonsA[nBinary] = nucleonA;
   nucleonsB[nBinary] = nucleonB;
   x[nBinary] = xAvg;
@@ -91,18 +79,17 @@ void CollisionGeometry::addNNCollision(Nucleon* nucleonA,Nucleon* nucleonB, doub
   nBinary++;
 }
 
-
 void CollisionGeometry::countParticipants()
 {
   nParticipant = nucleusA->countWounded() + nucleusB->countWounded();
 }
 
-Nucleus * CollisionGeometry::getNucleusA()
+Nucleus* CollisionGeometry::getNucleusA()
 {
   return nucleusA;
 }
 
-Nucleus * CollisionGeometry::getNucleusB()
+Nucleus* CollisionGeometry::getNucleusB()
 {
   return nucleusB;
 }

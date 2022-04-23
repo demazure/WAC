@@ -5,7 +5,7 @@
 #pragma link off all functions;
 #pragma link C++ nestedclasses;
 
-#pragma link C++ class UrQMDParticle+;
-#pragma link C++ class UrQMDEvent+;
+#pragma link C++ class UrQMDParticle + ;
+#pragma link C++ class UrQMDEvent + ;
 
 #endif

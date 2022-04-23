@@ -26,37 +26,40 @@
 // x,y,z         : cartesian coordinates relative to its container (collision)
 // radius        : nominal radius of the NucleusGenerator used for generation purposes
 // ***************************************************************************
-class NucleusGenerator  : public  TObject
+class NucleusGenerator : public TObject
 {
-public:
-
-  enum GeneratorType   { Uniform, WoodsSaxon, Exponential, Gaussian, DoubleGaussian };
+ public:
+  enum GeneratorType { Uniform,
+                       WoodsSaxon,
+                       Exponential,
+                       Gaussian,
+                       DoubleGaussian };
 
   GeneratorType generatorType;
   TString generatorName;
 
-  int    nR;
+  int nR;
   double minR, maxR;
   double parA;
   double parB;
   double parC;
-  TH1 * rDensity;
-  TH1 * rProfile;
-  TH1 * rProfileGen;
+  TH1* rDensity;
+  TH1* rProfile;
+  TH1* rProfileGen;
 
-  NucleusGenerator(const TString & _generatorName,
+  NucleusGenerator(const TString& _generatorName,
                    GeneratorType _generatorType, double _parA, double _parB, double _parC,
                    int _nR, double _minR, double _maxR);
   virtual ~NucleusGenerator()
-  {     }
-  
+  {
+  }
+
   virtual void initialize();
-  virtual void generate(Nucleus * nucleus);
-  virtual void generate(double & r, double & cosTheta, double & phi);
+  virtual void generate(Nucleus* nucleus);
+  virtual void generate(double& r, double& cosTheta, double& phi);
   virtual void saveHistorgrams();
 
-  ClassDef(NucleusGenerator,0)
-  
+  ClassDef(NucleusGenerator, 0)
 };
 
 #endif /* NucleusGenerator_hpp */

@@ -14,119 +14,96 @@
 
 #include "MessageLogger.hpp"
 
-ClassImp(MessageLogger);
+ClassImp(MessageLogger)
 
-
-bool MessageLogger::reportDebug(TString className, TString fctName, TString taskName, ostream & output)
+  bool MessageLogger::reportDebug(TString className, TString fctName,
+                                  TString taskName, ostream& output)
 {
- if (reportLevel<=Debug)
-   {
-   output << " <DEBUG> " << className << "(" << taskName << ")::" << fctName << "  ";
-   return true;
-   }
- else
-   return false;
+  if (reportLevel <= Debug) {
+    output << " <DEBUG> " << className << "(" << taskName << ")::" << fctName
+           << "  ";
+    return true;
+  } else
+    return false;
 }
 
-bool MessageLogger::reportInfo(TString  className, TString  fctName, TString  taskName, ostream & output)
+bool MessageLogger::reportInfo(TString className, TString fctName, TString taskName, ostream& output)
 {
- if (reportLevel<=Info)
-   {
-   output << " <INFO> " << className << "(" << taskName << ")::" << fctName << "  ";
-   return true;
-   }
- else
-   return false;
+  if (reportLevel <= Info) {
+    output << " <INFO> " << className << "(" << taskName << ")::" << fctName << "  ";
+    return true;
+  } else
+    return false;
 }
 
-
-bool MessageLogger::reportWarning(TString  className, TString  fctName, TString  taskName, ostream & output)
+bool MessageLogger::reportWarning(TString className, TString fctName, TString taskName, ostream& output)
 {
- if (reportLevel<=Warning)
-   {
-   output << " <WARNING> " << className << "(" << taskName << ")::" << fctName << "  ";
-   return true;
-   }
- else
-   return false;
+  if (reportLevel <= Warning) {
+    output << " <WARNING> " << className << "(" << taskName << ")::" << fctName << "  ";
+    return true;
+  } else
+    return false;
 }
 
-
-bool MessageLogger::reportError(TString  className, TString  fctName, TString  taskName, ostream & output)
+bool MessageLogger::reportError(TString className, TString fctName, TString taskName, ostream& output)
 {
- if (reportLevel<=Error)
-   {
-   output << " <ERROR> " << className << "(" << taskName << ")::" << fctName << "  ";
-   return true;
-   }
- else
-   return false;
+  if (reportLevel <= Error) {
+    output << " <ERROR> " << className << "(" << taskName << ")::" << fctName << "  ";
+    return true;
+  } else
+    return false;
 }
 
-bool MessageLogger::reportFatal(TString  className, TString  fctName, TString  taskName, ostream & output)
+bool MessageLogger::reportFatal(TString className, TString fctName, TString taskName, ostream& output)
 {
- if (reportLevel<=Fatal)
-   {
-   output << " <FATAL> " << className << "(" << taskName << ")::" << fctName << "  ";
-   return true;
-   }
- else
-   return false;
+  if (reportLevel <= Fatal) {
+    output << " <FATAL> " << className << "(" << taskName << ")::" << fctName << "  ";
+    return true;
+  } else
+    return false;
 }
 
-
-
-bool MessageLogger::reportDebug(ostream & output)
+bool MessageLogger::reportDebug(ostream& output)
 {
-  if (reportLevel<=Debug)
-    {
+  if (reportLevel <= Debug) {
     output << " <DEBUG> ";
     return true;
-    }
-  else
+  } else
     return false;
 }
 
-bool MessageLogger::reportInfo(ostream & output)
+bool MessageLogger::reportInfo(ostream& output)
 {
-  if (reportLevel<=Info)
-    {
+  if (reportLevel <= Info) {
     output << " <INFO> ";
     return true;
-    }
-  else
+  } else
     return false;
 }
 
-bool MessageLogger::reportWarning(ostream & output)
+bool MessageLogger::reportWarning(ostream& output)
 {
-  if (reportLevel<=Warning)
-    {
+  if (reportLevel <= Warning) {
     output << " <WARNING> ";
     return true;
-    }
-  else
+  } else
     return false;
 }
 
-bool MessageLogger::reportError(ostream & output)
+bool MessageLogger::reportError(ostream& output)
 {
-  if (reportLevel<=Error)
-    {
+  if (reportLevel <= Error) {
     output << " <ERROR> ";
     return true;
-    }
-  else
+  } else
     return false;
 }
 
-bool MessageLogger::reportFatal(ostream & output)
+bool MessageLogger::reportFatal(ostream& output)
 {
-  if (reportLevel<=Fatal)
-    {
+  if (reportLevel <= Fatal) {
     output << " <FATAL> ";
     return true;
-    }
-  else
+  } else
     return false;
 }

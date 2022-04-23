@@ -5,7 +5,7 @@
  * All rights reserved.
  * Based on the ROOT package and environment
  *
- * For the licensing terms see LICENSE.  
+ * For the licensing terms see LICENSE.
  **********************************************************************/
 #ifndef WAC_CollisionGeometry
 #define WAC_CollisionGeometry
@@ -23,20 +23,19 @@
 //                 redundant but memory is cheap
 // radius        : radius of the CollisionGeometry used in collisions
 // ***************************************************************************
-class CollisionGeometry : public TObject 
+class CollisionGeometry : public TObject
 {
-public:
-
-  Nucleus * nucleusA;
-  Nucleus * nucleusB;
+ public:
+  Nucleus* nucleusA;
+  Nucleus* nucleusB;
   int nBinaryMax;
-  Nucleon ** nucleonsA;
-  Nucleon ** nucleonsB;
+  Nucleon** nucleonsA;
+  Nucleon** nucleonsB;
   double b;
-  double * x;
-  double * y;
-  double * z;
-  double * t;
+  double* x;
+  double* y;
+  double* z;
+  double* t;
   int nBinary;
   int nParticipant;
 
@@ -44,22 +43,21 @@ public:
 
   virtual ~CollisionGeometry()
   {
-  // no ops.
+    // no ops.
   }
 
   virtual void initialize();
   virtual void reset();
 
-  Nucleus * getNucleusA();
-  Nucleus * getNucleusB();
+  Nucleus* getNucleusA();
+  Nucleus* getNucleusB();
 
-  virtual void addNNCollision(Nucleon* nucleonA,Nucleon* nucleonB, double xAvg, double yAvg, double zAvg, double tAvg);
+  virtual void addNNCollision(Nucleon* nucleonA, Nucleon* nucleonB, double xAvg, double yAvg, double zAvg, double tAvg);
   virtual void countParticipants();
 
-  static CollisionGeometry * getCollisionGeometry();
+  static CollisionGeometry* getCollisionGeometry();
 
-  ClassDef(CollisionGeometry,0)
-  
+  ClassDef(CollisionGeometry, 0)
 };
 
 #endif /* CollisionGeometry_hpp */

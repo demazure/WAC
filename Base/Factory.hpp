@@ -24,50 +24,49 @@
 
 using namespace std;
 
-template < class T >
+template <class T>
 class Factory : public TObject
 {
-protected:
+ protected:
   /////////////////////////////////////////////////////////////
   // Data Members
   /////////////////////////////////////////////////////////////
   long capacity;
   long index;
-  T ** objects;
+  T** objects;
 
-  public:
+ public:
   /////////////////////////////////////////////////////////////
   // Member functions
   /////////////////////////////////////////////////////////////
   Factory()
-  :
-  TObject(),
-  capacity(0),
-  index(0),
-  objects(0)
+    : TObject(),
+      capacity(0),
+      index(0),
+      objects(0)
   {
-   // no ops
+    // no ops
   }
-  
+
   virtual ~Factory()
   {
-  delete[] objects;
+    delete[] objects;
   }
 
   void initialize(int initialCapacity)
   {
-  if (objects) delete[] objects;
+    if (objects)
+      delete[] objects;
     capacity = initialCapacity;
     objects = new T*[capacity];
-    for (int k=0; k<capacity; k++)
-      {
+    for (int k = 0; k < capacity; k++) {
       objects[k] = new T();
-      }
+    }
   }
 
   void reset()
   {
-  index = 0;
+    index = 0;
   }
 
   // Returns the capacity of this store/factory
@@ -85,38 +84,32 @@ protected:
 
   long getLastIndex() const
   {
-  return index-1;
+    return index - 1;
   }
 
-  T * getNextObject()
+  T* getNextObject()
   {
-  if (index<capacity)
-    {
-//    cout << " Factory index=" << index << endl;
+    if (index < capacity) {
+      //    cout << " Factory index=" << index << endl;
 
-    return objects[index++];
-    }
-  else
-    {
-    cout << "<FATAL> Factory::getObject() Object stored is exhausted for capacity: " << capacity << endl;
-    return 0;
+      return objects[index++];
+    } else {
+      cout << "<FATAL> Factory::getObject() Object stored is exhausted for capacity: " << capacity << endl;
+      return 0;
     }
   }
 
-  T * getObjectAt(long index)
+  T* getObjectAt(long index)
   {
-  if (index>=0 && index<capacity)
-     {
-     return objects[index];
-     }
-   else
-     {
-     cout << "<FATAL> Factory::getObjectAt() Object stored is exceeded" << endl;
-     return 0;
-     }
+    if (index >= 0 && index < capacity) {
+      return objects[index];
+    } else {
+      cout << "<FATAL> Factory::getObjectAt() Object stored is exceeded" << endl;
+      return 0;
+    }
   }
 
-  ClassDef(Factory,0)
+  ClassDef(Factory, 0)
 };
 
 #endif /* Factory_hpp */

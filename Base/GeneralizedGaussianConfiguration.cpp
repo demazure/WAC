@@ -16,40 +16,38 @@
 
 #include "GeneralizedGaussianConfiguration.hpp"
 
-ClassImp(GeneralizedGaussianConfiguration);
+ClassImp(GeneralizedGaussianConfiguration)
 
-GeneralizedGaussianConfiguration::GeneralizedGaussianConfiguration(const TString & name,
-                                                                   const TString &  version)
-:
- TaskConfiguration(name,"GeneralizedGaussianConfiguration", version),
- amplitude(0.0),
- gammaeta(0.0),
- gammaphi(0.0),
- omegaeta(0.0),
- omegaphi(0.0)
+  GeneralizedGaussianConfiguration::GeneralizedGaussianConfiguration(
+    const TString& name, const TString& version)
+  : TaskConfiguration(name, "GeneralizedGaussianConfiguration", version),
+    amplitude(0.0),
+    gammaeta(0.0),
+    gammaphi(0.0),
+    omegaeta(0.0),
+    omegaphi(0.0)
 {
-
 }
 
 GeneralizedGaussianConfiguration::~GeneralizedGaussianConfiguration()
 {
 }
 
-void GeneralizedGaussianConfiguration::printConfiguration(ostream & os)
+void GeneralizedGaussianConfiguration::printConfiguration(ostream& os)
 {
 
   os
-  << " ------------------------------------------------------------------------------------------" << endl
-  << " ------------------------------------------------------------------------------------------" << endl
-  << "                                 name: " << getName()    << endl
-  << "                              version: " << getVersion() << endl
-  << "                            amplitude: " << amplitude     << endl
-  << "                      gamma delta eta: " << gammaeta      << endl
-  << "                      gamma delta phi: " << gammaphi      << endl
-  << "                      omega delta eta: " << omegaeta      << endl
-  << "                      omega delta phi: " << omegaphi      << endl
-  << " ------------------------------------------------------------------------------------------" << endl
-  << "                      DELTA ETA WIDTH: " << TMath::Sqrt(omegaeta*omegaeta*TMath::Gamma(3./gammaeta)/TMath::Gamma(1./gammaeta)) << endl
-  << "                      DELTA PHI WIDTH: " << TMath::Sqrt(omegaphi*omegaphi*TMath::Gamma(3./gammaphi)/TMath::Gamma(1./gammaphi)) << endl
-  << " ------------------------------------------------------------------------------------------" << endl;
+    << " ------------------------------------------------------------------------------------------" << endl
+    << " ------------------------------------------------------------------------------------------" << endl
+    << "                                 name: " << getName() << endl
+    << "                              version: " << getVersion() << endl
+    << "                            amplitude: " << amplitude << endl
+    << "                      gamma delta eta: " << gammaeta << endl
+    << "                      gamma delta phi: " << gammaphi << endl
+    << "                      omega delta eta: " << omegaeta << endl
+    << "                      omega delta phi: " << omegaphi << endl
+    << " ------------------------------------------------------------------------------------------" << endl
+    << "                      DELTA ETA WIDTH: " << TMath::Sqrt(omegaeta * omegaeta * TMath::Gamma(3. / gammaeta) / TMath::Gamma(1. / gammaeta)) << endl
+    << "                      DELTA PHI WIDTH: " << TMath::Sqrt(omegaphi * omegaphi * TMath::Gamma(3. / gammaphi) / TMath::Gamma(1. / gammaphi)) << endl
+    << " ------------------------------------------------------------------------------------------" << endl;
 }

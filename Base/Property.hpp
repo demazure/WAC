@@ -22,59 +22,60 @@
 #include <ostream>
 #include "TString.h"
 
-//using namespace std;
-//using std::ostream;
-//using std::endl;
+// using namespace std;
+// using std::ostream;
+// using std::endl;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Propeterty
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Property
 {
-protected:
-  union Data
-  {
-  int     propertyValueInt;
-  float   propertyValueFloat;
-  TString *propertyValueString;
-  bool    propertyValueBool;
+ protected:
+  union Data {
+    int propertyValueInt;
+    float propertyValueFloat;
+    TString* propertyValueString;
+    bool propertyValueBool;
   };
 
-  enum Type
-  {
-  INT, FLOAT, STRING, BOOL, EMPTY
+  enum Type {
+    INT,
+    FLOAT,
+    STRING,
+    BOOL,
+    EMPTY
   };
 
   Data value;
   Type type;
   TString name;
 
-  public:
-
+ public:
   Property();
-  Property(const TString & name, int     value);
-  Property(const TString & name, float   value);
-  Property(const TString & name, TString * value);
-  Property(const TString & name, bool    value);
+  Property(const TString& name, int value);
+  Property(const TString& name, float value);
+  Property(const TString& name, TString* value);
+  Property(const TString& name, bool value);
   virtual ~Property();
 
-  void set(int     value);
-  void set(float   value);
-  void set(TString * value);
-  void set(bool    value);
+  void set(int value);
+  void set(float value);
+  void set(TString* value);
+  void set(bool value);
 
   void setName(const TString& name);
   TString getName() const;
-  bool isNamed(const TString & name) const;
+  bool isNamed(const TString& name) const;
 
-  int     getValueInt();
-  float   getValueFloat();
+  int getValueInt();
+  float getValueFloat();
   TString getValueString();
-  bool    getValueBool();
+  bool getValueBool();
 
-  void print(std::ostream & os);
+  void print(std::ostream& os);
 
-  //ClassDef(Property,0)
+  // ClassDef(Property,0)
 };
 
 #endif /* WAC_Property */

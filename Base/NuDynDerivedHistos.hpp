@@ -12,22 +12,20 @@
 #include "Histograms.hpp"
 #include "NuDynHistos.hpp"
 
-
 class NuDynDerivedHistos : public Histograms
 {
-public:
-
-  NuDynDerivedHistos(const TString & collectionName,
-                      AnalysisConfiguration * analysisConfiguration,
-                      LogLevel  debugLevel);
-  NuDynDerivedHistos(TFile * inputFile,
-                      const TString & collectionName,
-                      AnalysisConfiguration * analysisConfiguration,
-                      LogLevel  debugLevel);
+ public:
+  NuDynDerivedHistos(const TString& collectionName,
+                     AnalysisConfiguration* analysisConfiguration,
+                     LogLevel debugLevel);
+  NuDynDerivedHistos(TFile* inputFile,
+                     const TString& collectionName,
+                     AnalysisConfiguration* analysisConfiguration,
+                     LogLevel debugLevel);
   virtual ~NuDynDerivedHistos();
   void createHistograms();
-  void loadHistograms(TFile * inputFile);
-  void calculateDerivedHistograms(NuDynHistos * source);
+  void loadHistograms(TFile* inputFile);
+  void calculateDerivedHistograms(NuDynHistos* source);
 
   ////////////////////////////////////////////////////////////////////////////
   // Data Members - Histograms
@@ -37,36 +35,33 @@ public:
   // h_Fj  = cumulants of order "j"
   // h_Rj  = normalized cumulants of order "j"
 
-  TH1 ** h_F2;
-  TH1 ** h_F3;
-  TH1 ** h_F4;
-  TH1 ** h_R2;
-  TH1 ** h_R3;
-  TH1 ** h_R4;
-  TH1 ** h_nudyn;
+  TH1** h_F2;
+  TH1** h_F3;
+  TH1** h_F4;
+  TH1** h_R2;
+  TH1** h_R3;
+  TH1** h_R4;
+  TH1** h_nudyn;
 
   // vs Mult
-  TH1 ** h_F2_vsMult;
-  TH1 ** h_F3_vsMult;
-  TH1 ** h_F4_vsMult;
-  TH1 ** h_R2_vsMult;
-  TH1 ** h_R3_vsMult;
-  TH1 ** h_R4_vsMult;
-  TH1 ** h_nudyn_vsMult;
+  TH1** h_F2_vsMult;
+  TH1** h_F3_vsMult;
+  TH1** h_F4_vsMult;
+  TH1** h_R2_vsMult;
+  TH1** h_R3_vsMult;
+  TH1** h_R4_vsMult;
+  TH1** h_nudyn_vsMult;
 
   // vs Cent
-  TH1 ** h_F2_vsCent;
-  TH1 ** h_F3_vsCent;
-  TH1 ** h_F4_vsCent;
-  TH1 ** h_R2_vsCent;
-  TH1 ** h_R3_vsCent;
-  TH1 ** h_R4_vsCent;
-  TH1 ** h_nudyn_vsCent;
+  TH1** h_F2_vsCent;
+  TH1** h_F3_vsCent;
+  TH1** h_F4_vsCent;
+  TH1** h_R2_vsCent;
+  TH1** h_R3_vsCent;
+  TH1** h_R4_vsCent;
+  TH1** h_nudyn_vsCent;
 
-  ClassDef(NuDynDerivedHistos,0)
+  ClassDef(NuDynDerivedHistos, 0)
 };
 
 #endif /* WAC_NuDynDerivedHistos  */
-
-
-

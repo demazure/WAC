@@ -21,32 +21,30 @@
 
 class ParticleAnalyzer : public Task
 {
-public:
+ public:
+  // ParticleAnalyzer();
 
-  //ParticleAnalyzer();
-
-  ParticleAnalyzer(const TString &  name,
-                   TaskConfiguration * configuration,
-                   Event * event,
-                   EventFilter * eventFilter,
+  ParticleAnalyzer(const TString& name,
+                   TaskConfiguration* configuration,
+                   Event* event,
+                   EventFilter* eventFilter,
                    int nParticleFilters,
-                   ParticleFilter ** particleFilters);
+                   ParticleFilter** particleFilters);
   virtual ~ParticleAnalyzer();
   virtual void execute();
   virtual void createHistograms();
-  virtual void loadHistograms(TFile * inputFile);
-  virtual void saveHistograms(TFile * outputFile);
+  virtual void loadHistograms(TFile* inputFile);
+  virtual void saveHistograms(TFile* outputFile);
   virtual void scaleHistograms(double factor);
 
   int nParticleFilters;
-  EventFilter     *  eventFilter;
-  ParticleFilter  ** particleFilters;
-  ParticleHistos  ** particleHistos;
-  TString         ** partNames;
-  double          *  nAccepted;
+  EventFilter* eventFilter;
+  ParticleFilter** particleFilters;
+  ParticleHistos** particleHistos;
+  TString** partNames;
+  double* nAccepted;
 
-  ClassDef(ParticleAnalyzer,0)
+  ClassDef(ParticleAnalyzer, 0)
 };
-
 
 #endif /* WAC_ParticleAnalyzer */

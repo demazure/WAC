@@ -15,26 +15,25 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Two-Particle Correlation Functions
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-class ParticlePairDerivedHistos : public  Histograms
+class ParticlePairDerivedHistos : public Histograms
 {
-public:
-
-  ParticlePairDerivedHistos(const TString & name,
-                            AnalysisConfiguration * configuration,
-                            LogLevel  debugLevel);
-  ParticlePairDerivedHistos(TFile * inputFile,
-                            const TString & name,
-                            AnalysisConfiguration * configuration,
-                            LogLevel  debugLevel);
+ public:
+  ParticlePairDerivedHistos(const TString& name,
+                            AnalysisConfiguration* configuration,
+                            LogLevel debugLevel);
+  ParticlePairDerivedHistos(TFile* inputFile,
+                            const TString& name,
+                            AnalysisConfiguration* configuration,
+                            LogLevel debugLevel);
   virtual ~ParticlePairDerivedHistos();
-  void loadHistograms(TFile * inputFile);
+  void loadHistograms(TFile* inputFile);
   void createHistograms();
-  double calculateWeightCorrection(TFile * fRaw, TFile * fCal);
-  void calculateDerivedHistograms(ParticleHistos * part1Histos,
-                                  ParticleHistos * part2Histos,
-                                  ParticlePairHistos * pairHistos,
+  double calculateWeightCorrection(TFile* fRaw, TFile* fCal);
+  void calculateDerivedHistograms(ParticleHistos* part1Histos,
+                                  ParticleHistos* part2Histos,
+                                  ParticlePairHistos* pairHistos,
                                   double bincorrection);
-  void reduce(const TH2 * source, TH2 * target,int nEtaBins,int nPhiBins);
+  void reduce(const TH2* source, TH2* target, int nEtaBins, int nPhiBins);
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   // Data Members - Computed
@@ -48,11 +47,10 @@ public:
   TH2* h_pt1pt1_etaEta;
   TH2* h_pt1pt1_phiPhi;
 
-
   TH2* h_R2_phiEtaPhiEta;
   TH2* h_R2_etaEta;
   TH2* h_R2_phiPhi;
-    TH2* h_P2_phiPhi;
+  TH2* h_P2_phiPhi;
   TH2* h_R2_ptPt;
 
   TH2* h_DptDpt_phiEtaPhiEta;
@@ -142,13 +140,12 @@ public:
   TH2* h_P2_DyDphi_shft;
   TH2* h_G2_DyDphi_shft;
 
-
-  TH2 * h_n2_Q3D_xy;
-  TH2 * h_n2_Q3D_xz;
-  TH2 * h_n2_Q3D_yz;
-  TH1 * h_n2_Q3D_x;
-  TH1 * h_n2_Q3D_y;
-  TH1 * h_n2_Q3D_z;
+  TH2* h_n2_Q3D_xy;
+  TH2* h_n2_Q3D_xz;
+  TH2* h_n2_Q3D_yz;
+  TH1* h_n2_Q3D_x;
+  TH1* h_n2_Q3D_y;
+  TH1* h_n2_Q3D_z;
 
   TH3* h_n1n1_Q3D;
   TH2* h_n1n1_Q3D_xy;
@@ -159,19 +156,16 @@ public:
   TH2* h_R2_Q3D_xy;
   TH2* h_R2_Q3D_xz;
   TH2* h_R2_Q3D_yz;
-  TH1 * h_R2_Q3D_x;
-  TH1 * h_R2_Q3D_y;
-  TH1 * h_R2_Q3D_z;
-  
+  TH1* h_R2_Q3D_x;
+  TH1* h_R2_Q3D_y;
+  TH1* h_R2_Q3D_z;
+
   bool ijNormalization;
 
-    ClassDef(ParticlePairDerivedHistos,2)
-
+  ClassDef(ParticlePairDerivedHistos, 2)
 };
 
 #endif /* WAC_ParticlePairDerivedHistos */
-
-
 
 /*
  double v1, v2, binCorrection;
@@ -228,7 +222,7 @@ public:
  }
  }
  }
- 
+
  double vv0, vv1;
  for (int iDeta=15;iDeta<=25;iDeta++)
  {

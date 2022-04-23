@@ -15,28 +15,26 @@
 
 class CollisionGeometryGenerator : public Task
 {
-public:
-
-  CollisionGeometryGenerator(const TString & name,
-                             CollisionGeometryConfiguration * configuration,
-                             CollisionGeometry * collisionGeometry,
-                             NucleusGenerator * nucleusGeneratorA,
-                             NucleusGenerator * nucleusGeneratorB);
+ public:
+  CollisionGeometryGenerator(const TString& name,
+                             CollisionGeometryConfiguration* configuration,
+                             CollisionGeometry* collisionGeometry,
+                             NucleusGenerator* nucleusGeneratorA,
+                             NucleusGenerator* nucleusGeneratorB);
   virtual ~CollisionGeometryGenerator() {}
   virtual void reset();
   virtual void execute();
 
-  CollisionGeometry * collisionGeometry;
-  NucleusGenerator * nucleusGeneratorA;
-  NucleusGenerator * nucleusGeneratorB;
+  CollisionGeometry* collisionGeometry;
+  NucleusGenerator* nucleusGeneratorA;
+  NucleusGenerator* nucleusGeneratorB;
 
-protected:
-
+ protected:
   double minB, minBSq, maxB, maxBSq;
   double nnCrossSection;
   double maxNNDistanceSq;
 
-  ClassDef(CollisionGeometryGenerator,0)
+  ClassDef(CollisionGeometryGenerator, 0)
 };
 
 #endif /* WAC_CollisionGeometryGenerator */

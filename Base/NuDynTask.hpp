@@ -21,25 +21,24 @@
 
 class NuDynTask : public Task
 {
-public:
-
+ public:
   //////////////////////////////////////////////////////////////
   // CTOR
   //////////////////////////////////////////////////////////////
-  NuDynTask(const TString &  name,
-            TaskConfiguration * configuration,
-            Event * event,
-            EventFilter * eventFilter,
-            ParticleFilter * particleFilter1,
-            ParticleFilter * particleFilter2,
-            ParticleFilter * particleFilter3,
-            ParticleFilter * particleFilter4);
+  NuDynTask(const TString& name,
+            TaskConfiguration* configuration,
+            Event* event,
+            EventFilter* eventFilter,
+            ParticleFilter* particleFilter1,
+            ParticleFilter* particleFilter2,
+            ParticleFilter* particleFilter3,
+            ParticleFilter* particleFilter4);
   virtual ~NuDynTask();
   virtual void execute();
   virtual void createHistograms();
-  virtual void loadHistograms(TFile * inputFile);
-  //virtual void loadBaseHistograms(TFile * inputFile);
-  virtual void saveHistograms(TFile * outputFile);
+  virtual void loadHistograms(TFile* inputFile);
+  // virtual void loadBaseHistograms(TFile * inputFile);
+  virtual void saveHistograms(TFile* outputFile);
   //  virtual void addHistogramsToExtList(TList *list, bool all=false);
   virtual void scaleHistograms(double factor);
   virtual void calculateDerivedHistograms();
@@ -49,13 +48,13 @@ public:
   //////////////////////////////////////////////////////////////
   // Data Members
   //////////////////////////////////////////////////////////////
-  NuDynHistos * nuDynHistos;
-  NuDynDerivedHistos * nuDynDerivedHistos;
-  EventFilter     * eventFilter;
-  ParticleFilter  * particleFilter1;
-  ParticleFilter  * particleFilter2;
-  ParticleFilter  * particleFilter3;
-  ParticleFilter  * particleFilter4;
+  NuDynHistos* nuDynHistos;
+  NuDynDerivedHistos* nuDynDerivedHistos;
+  EventFilter* eventFilter;
+  ParticleFilter* particleFilter1;
+  ParticleFilter* particleFilter2;
+  ParticleFilter* particleFilter3;
+  ParticleFilter* particleFilter4;
   TString partName1;
   TString partName2;
   TString partName3;
@@ -63,8 +62,7 @@ public:
 
   int identical[16];
 
-  ClassDef(NuDynTask,0)
+  ClassDef(NuDynTask, 0)
 };
-
 
 #endif /* WAC_NuDynTask */

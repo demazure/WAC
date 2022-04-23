@@ -14,13 +14,12 @@
 
 class EventLoop : public TaskCollection
 {
-public:
-  
+ public:
   EventLoop();
   virtual ~EventLoop();
-  virtual void run(long nEvents=10, int nReport=10);
+  virtual void run(long nEvents = 10, int nReport = 10);
 
-  ClassDef(EventLoop,0)
+  ClassDef(EventLoop, 0)
 };
 
 #endif /* WAC_EventLoop */

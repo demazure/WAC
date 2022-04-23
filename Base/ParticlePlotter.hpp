@@ -5,19 +5,18 @@
 
 class ParticlePlotter : public Plotter
 {
-public:
-  
+ public:
   ParticlePlotter();
   virtual ~ParticlePlotter();
-  void makePlots(const TString & canvasNameBase,
+  void makePlots(const TString& canvasNameBase,
                  int nSets,
-                 ParticleHistos ** particleHistos,
-                 TString ** particleNames,
-                 TString ** particleTitles,
-                 CanvasConfiguration * canvasConfiguration,
-                 GraphConfiguration  ** graphConfigurations);
+                 ParticleHistos** particleHistos,
+                 TString** particleNames,
+                 TString** particleTitles,
+                 CanvasConfiguration* canvasConfiguration,
+                 GraphConfiguration** graphConfigurations);
 
-  ClassDef(ParticlePlotter,0)
+  ClassDef(ParticlePlotter, 0)
 };
 
 #endif /* WAC_ParticlePlotter */

@@ -34,31 +34,27 @@ using namespace std;
 
 class RapidityGenerator
 {
-public:
-  
-  int     option;
-  int     pairMode;
-  double  maxRapidity;
-  double  scale;
-  double  minimumSeparation;
-  double  store[100];
-  int     nStored;
-  double  pairRapidity;
-  double  saveRapidity;
-  int     rank;
-  TRandom * r;
-  
-  
-  RapidityGenerator(int opt, int pair, double max, double s=10.0, double minSep=0.1);
+ public:
+  int option;
+  int pairMode;
+  double maxRapidity;
+  double scale;
+  double minimumSeparation;
+  double store[100];
+  int nStored;
+  double pairRapidity;
+  double saveRapidity;
+  int rank;
+  TRandom* r;
+
+  RapidityGenerator(int opt, int pair, double max, double s = 10.0, double minSep = 0.1);
 
   virtual ~RapidityGenerator() {}
 
   void reset();
   double generate();
 
-  ClassDef(RapidityGenerator,0)
-
+  ClassDef(RapidityGenerator, 0)
 };
-
 
 #endif /* RapidityGenerator_h */

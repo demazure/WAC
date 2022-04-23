@@ -11,29 +11,27 @@
 
 // Emulate a generalized gaussian shape on the pair correlation
 
-using std::ostream;
 using std::endl;
+using std::ostream;
 
 class GeneralizedGaussianConfiguration : public TaskConfiguration
 {
-public:
-
- GeneralizedGaussianConfiguration(const TString & name,
-                                  const TString & version);
+ public:
+  GeneralizedGaussianConfiguration(const TString& name,
+                                   const TString& version);
   virtual ~GeneralizedGaussianConfiguration();
-  virtual void printConfiguration(ostream & os);
+  virtual void printConfiguration(ostream& os);
 
   // ////////////////////////////////////////////
   //  Data Members
   // ////////////////////////////////////////////
-  double      amplitude;
-  double      gammaeta;
-  double      gammaphi;
-  double      omegaeta;
-  double      omegaphi;
+  double amplitude;
+  double gammaeta;
+  double gammaphi;
+  double omegaeta;
+  double omegaphi;
 
-   ClassDef(GeneralizedGaussianConfiguration,0)
+  ClassDef(GeneralizedGaussianConfiguration, 0)
 };
-
 
 #endif /* WAC_GeneralizedGaussianConfiguration */

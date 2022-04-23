@@ -13,22 +13,20 @@
 #include "Factory.hpp"
 using namespace std;
 
-
 /////////////////////////////////////
 // Class Particle
 /////////////////////////////////////
 class Particle
 {
-public:
-  
+ public:
   Particle();
   ~Particle();
   Particle(const Particle& other);
-  Particle & operator=(const Particle & other);
-  void printProperties(ostream & output);
+  Particle& operator=(const Particle& other);
+  void printProperties(ostream& output);
   void setPxPyPzE(double p_x, double p_y, double p_z, double p_e);
   void setPidPxPyPzE(long pid, long charge, double p_x, double p_y, double p_z, double p_e);
-  void setPidPtPhiYEta(long _id,long _ch,double _pT,double _phi,double _y,double _eta);
+  void setPidPtPhiYEta(long _id, long _ch, double _pT, double _phi, double _y, double _eta);
 
   void boost(double ax, double ay, double az);
   void boostRapidity(double boost);
@@ -42,9 +40,8 @@ public:
   int ixEtaPhi, ixYPhi;
 
   static int factorySize;
-  static Factory<Particle> * factory;
-  static Factory<Particle> * getFactory();
+  static Factory<Particle>* factory;
+  static Factory<Particle>* getFactory();
 };
-
 
 #endif /* WAC_Particle */

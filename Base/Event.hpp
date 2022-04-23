@@ -14,41 +14,35 @@
 
 class Event
 {
-protected:
-
+ protected:
   Event();
-  static Event * event;
+  static Event* event;
 
-  public:
-
+ public:
   virtual ~Event();
   virtual void clear();
   virtual void reset();
-  virtual void printProperties(ostream & output);
+  virtual void printProperties(ostream& output);
 
-  Particle * getParticleAt(int index);
+  Particle* getParticleAt(int index);
 
   //////////////////////////////////////////////////////////////////////////////
   // Data Members
   //////////////////////////////////////////////////////////////////////////////
-  long   index;
-  int    eventNumber;
-  int    nProjectile;
-  int    nTarget;
-  int    nParticleTotal;
-  int    nParticles; // number of particles to analyze
+  long index;
+  int eventNumber;
+  int nProjectile;
+  int nTarget;
+  int nParticleTotal;
+  int nParticles; // number of particles to analyze
   double centrality;
   double multiplicity;
   double impactParameter;
   double other;
 
-  static Event * getEvent();
+  static Event* getEvent();
 
-  ClassDef(Event,0)
-
+  ClassDef(Event, 0)
 };
-
-
-
 
 #endif /* Event_hpp */

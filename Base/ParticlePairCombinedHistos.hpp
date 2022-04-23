@@ -16,23 +16,22 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 class ParticlePairCombinedHistos : public Histograms
 {
-public:
-
+ public:
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   // CTOR
   //////////////////////////////////////////////////////////////////////////////////////////////////////
-  ParticlePairCombinedHistos(const TString & name,
-                             AnalysisConfiguration * configuration,
-                             LogLevel  debugLevel);
-  ParticlePairCombinedHistos(TFile * inputFile,
-                             const TString & name,
-                             AnalysisConfiguration * configuration,
-                             LogLevel  debugLevel);
+  ParticlePairCombinedHistos(const TString& name,
+                             AnalysisConfiguration* configuration,
+                             LogLevel debugLevel);
+  ParticlePairCombinedHistos(TFile* inputFile,
+                             const TString& name,
+                             AnalysisConfiguration* configuration,
+                             LogLevel debugLevel);
   virtual ~ParticlePairCombinedHistos();
-  void loadHistograms(TFile * inputFile);
+  void loadHistograms(TFile* inputFile);
   void createHistograms();
-  void calculate(ParticlePairDerivedHistos * pp, ParticlePairDerivedHistos * mm, ParticlePairDerivedHistos * pm, double app, double amm, double apm);
-  //void calculateRR_Q3D(ClusterHistos * ch);
+  void calculate(ParticlePairDerivedHistos* pp, ParticlePairDerivedHistos* mm, ParticlePairDerivedHistos* pm, double app, double amm, double apm);
+  // void calculateRR_Q3D(ClusterHistos * ch);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Data Members - Computed
@@ -75,21 +74,19 @@ public:
   TH2* h_R2_Q3D_xy;
   TH2* h_R2_Q3D_xz;
   TH2* h_R2_Q3D_yz;
-  TH1 * h_R2_Q3D_x;
-  TH1 * h_R2_Q3D_y;
-  TH1 * h_R2_Q3D_z;
-  
+  TH1* h_R2_Q3D_x;
+  TH1* h_R2_Q3D_y;
+  TH1* h_R2_Q3D_z;
+
   TH3* h_RR2_Q3D;
   TH2* h_RR2_Q3D_xy;
   TH2* h_RR2_Q3D_xz;
   TH2* h_RR2_Q3D_yz;
-  TH1 * h_RR2_Q3D_x;
-  TH1 * h_RR2_Q3D_y;
-  TH1 * h_RR2_Q3D_z;
-  
-    ClassDef(ParticlePairCombinedHistos,1)
+  TH1* h_RR2_Q3D_x;
+  TH1* h_RR2_Q3D_y;
+  TH1* h_RR2_Q3D_z;
+
+  ClassDef(ParticlePairCombinedHistos, 1)
 };
-
-
 
 #endif /* WAC_ParticlePairCombinedHistos */

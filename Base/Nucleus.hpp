@@ -5,7 +5,7 @@
  * All rights reserved.
  * Based on the ROOT package and environment
  *
- * For the licensing terms see LICENSE.  
+ * For the licensing terms see LICENSE.
  **********************************************************************/
 #ifndef WAC_Nucleus
 #define WAC_Nucleus
@@ -22,38 +22,32 @@
 // x,y,z         : cartesian coordinates relative to its container (collision)
 // radius        : nominal radius of the nucleus used for generation purposes
 // ***************************************************************************
-class Nucleus  : public  TObject 
+class Nucleus : public TObject
 {
-public:
-
+ public:
   int nProtons;
   int nNeutrons;
   int nNucleons;
 
-protected:
+ protected:
+  Nucleon** nucleons;
 
-  Nucleon ** nucleons;
-
-  public:
-
-
+ public:
   Nucleus(int nProtons, int nNeutrons);
   Nucleus();
-  virtual  ~Nucleus()
+  virtual ~Nucleus()
   {
-  // no ops.
+    // no ops.
   }
 
   virtual void initialize();
-  virtual Nucleon * getNucleon(int index);
+  virtual Nucleon* getNucleon(int index);
   virtual void reset();
-  virtual int  countWounded();
+  virtual int countWounded();
 
-  //void setPosition(double _x, double _y, double _z);
+  // void setPosition(double _x, double _y, double _z);
 
-
-  ClassDef(Nucleus,0)
-  
+  ClassDef(Nucleus, 0)
 };
 
 #endif /* Nucleus_hpp */

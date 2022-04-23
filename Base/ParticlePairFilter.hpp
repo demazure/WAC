@@ -23,19 +23,18 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 class ParticlePairFilter
 {
-public:
-  
+ public:
   //////////////////////////////////////////////////////////////////////////////////////////
   // CTOR
   //////////////////////////////////////////////////////////////////////////////////////////
   ParticlePairFilter(double minDpt,
-                double maxDpt,
-                double minDphi,
-                double maxDphi,
-                double minDeta,
+                     double maxDpt,
+                     double minDphi,
+                     double maxDphi,
+                     double minDeta,
                      double maxDeta);
   virtual ~ParticlePairFilter();
-  bool accept(Particle & particle1, Particle &  particle2);
+  bool accept(Particle& particle1, Particle& particle2);
 
   //////////////////////////////////////////////////////////////////////////////////////////
   // Data Members
@@ -47,7 +46,7 @@ public:
   double min_deta;
   double max_deta;
 
-   ClassDef(ParticlePairFilter,0)
+  ClassDef(ParticlePairFilter, 0)
 };
 
 #endif /* WAC_ParticlePairFilter */

@@ -12,30 +12,28 @@
 #define WAC_TaskConfiguration
 #include <ostream>
 #include "TString.h"
-using std::ostream;
 using std::endl;
+using std::ostream;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TaskConfiguration of a given object or task
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 class TaskConfiguration
 {
-public:
-
+ public:
   TaskConfiguration();
-  TaskConfiguration(const TString & theName, const TString & theType, const TString & theVersion);
-  TaskConfiguration(const TaskConfiguration & source);
+  TaskConfiguration(const TString& theName, const TString& theType, const TString& theVersion);
+  TaskConfiguration(const TaskConfiguration& source);
   virtual ~TaskConfiguration();
-  TaskConfiguration & operator=(const TaskConfiguration & source);
+  TaskConfiguration& operator=(const TaskConfiguration& source);
 
   TString getName() const;
   TString getType() const;
   TString getVersion() const;
-  virtual void printTaskConfiguration(ostream & os);
+  virtual void printTaskConfiguration(ostream& os);
 
   TString getInputRootFileName();
   TString getOutputRootFileName();
-
 
   ////////////////////////////////////////////////////
   // Data members

@@ -20,21 +20,20 @@
 
 class GeneralizedGaussianProfile : public Task
 {
-public:
-  
-  GeneralizedGaussianProfile(const TString   name,
-                             TaskConfiguration * configuration,
-                             Event * event);
+ public:
+  GeneralizedGaussianProfile(const TString name,
+                             TaskConfiguration* configuration,
+                             Event* event);
   virtual ~GeneralizedGaussianProfile();
   virtual void initialize();
   virtual void execute();
-  
+
   /////////////////////////////////////////////////////////////////////////////////////////////
   // Data Members - Inputs
   /////////////////////////////////////////////////////////////////////////////////////////////
-  TF2 *profile;
+  TF2* profile;
 
-    ClassDef(GeneralizedGaussianProfile,0)
+  ClassDef(GeneralizedGaussianProfile, 0)
 };
 
 #endif /* WAC_GeneralizedGaussianProfile */

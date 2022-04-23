@@ -14,39 +14,37 @@
 
 class Histograms : public HistogramCollection
 {
-public:
-  
-  
+ public:
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   // CTOR
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  Histograms(const TString & name,
-             AnalysisConfiguration * configuration,
+  Histograms(const TString& name,
+             AnalysisConfiguration* configuration,
              int nHistogramsMax,
-             LogLevel  debugLevel);
-  Histograms(TFile * inputFile,
-             const TString & name,
-             AnalysisConfiguration * configuration,
+             LogLevel debugLevel);
+  Histograms(TFile* inputFile,
+             const TString& name,
+             AnalysisConfiguration* configuration,
              int nHistogramsMax,
-             LogLevel  debugLevel);
+             LogLevel debugLevel);
   ~Histograms();
   virtual void initialize();
   virtual void finalize();
   virtual void reset();
   virtual void clear();
   virtual void createHistograms();
-  virtual void loadHistograms(TFile * inputFile);
+  virtual void loadHistograms(TFile* inputFile);
 
-  AnalysisConfiguration * getConfiguration() const;
-  void setConfiguration(AnalysisConfiguration * config);
+  AnalysisConfiguration* getConfiguration() const;
+  void setConfiguration(AnalysisConfiguration* config);
 
   virtual TString getHistoBaseName() const;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Data Members
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  AnalysisConfiguration * configuration;
+  AnalysisConfiguration* configuration;
 
-    ClassDef(Histograms,0)
+  ClassDef(Histograms, 0)
 };
 
 #endif /* WAC_Histograms */

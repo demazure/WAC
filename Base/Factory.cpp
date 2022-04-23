@@ -16,5 +16,4 @@
 #include "Factory.hpp"
 #include "Particle.hpp"
 
-ClassImp(Factory<Particle>);
-
+ClassImp(Factory<Particle>)

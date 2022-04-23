@@ -5,7 +5,7 @@
  * All rights reserved.
  * Based on the ROOT package and environment
  *
- * For the licensing terms see LICENSE.  
+ * For the licensing terms see LICENSE.
  *************************************************************************/
 /**
  \class TaskCollection
@@ -16,23 +16,22 @@
 
 #include "TaskCollection.hpp"
 
-ClassImp(TaskCollection);
+ClassImp(TaskCollection)
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CTOR
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-TaskCollection::TaskCollection(const TString     & name,
-                               TaskConfiguration * configuration,
-                               int                 nTasksMaxSelected)
-:
-Task( name, configuration, nullptr),
-nTasksMax(nTasksMaxSelected>1?nTasksMaxSelected:1),
-nTasks(0),
-tasks(0)
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // CTOR
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  TaskCollection::TaskCollection(const TString& name,
+                                 TaskConfiguration* configuration,
+                                 int nTasksMaxSelected)
+  : Task(name, configuration, nullptr),
+    nTasksMax(nTasksMaxSelected > 1 ? nTasksMaxSelected : 1),
+    nTasks(0),
+    tasks(0)
 {
-  if (reportDebug()) cout << "TaskCollection::TaskCollection() No ops." << endl;
-  tasks = new Task* [nTasksMax];
+  if (reportDebug())
+    cout << "TaskCollection::TaskCollection() No ops." << endl;
+  tasks = new Task*[nTasksMax];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,9 +39,11 @@ tasks(0)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TaskCollection::~TaskCollection()
 {
-  if (reportDebug()) cout << "TaskCollection::~TaskCollection() Started." << endl;
+  if (reportDebug())
+    cout << "TaskCollection::~TaskCollection() Started." << endl;
   delete[] tasks;
-  if (reportDebug()) cout << "TaskCollection::~TaskCollection() Completed." << endl;
+  if (reportDebug())
+    cout << "TaskCollection::~TaskCollection() Completed." << endl;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,23 +51,23 @@ TaskCollection::~TaskCollection()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TaskCollection::initialize()
 {
-  if (reportDebug()) cout << "TaskCollection::initialize() Started" << endl;
+  if (reportDebug())
+    cout << "TaskCollection::initialize() Started" << endl;
   cout << "TaskCollection::initialize() Initializing " << nTasks << " tasks" << endl;
-  for (int iTask=0; iTask<nTasks; iTask++)
-    {
-      if (isTaskOk())
-        {
-        if (!tasks[iTask])
-          {
-          if (reportFatal()) cout << "TaskCollection::initialize() Null pointer for iTask=" << iTask << endl;
+  for (int iTask = 0; iTask < nTasks; iTask++) {
+    if (isTaskOk()) {
+      if (!tasks[iTask]) {
+        if (reportFatal())
           cout << "TaskCollection::initialize() Null pointer for iTask=" << iTask << endl;
-          postTaskFatal();
-          return;
-          }
-        }
-    tasks[iTask] ->initialize();
+        cout << "TaskCollection::initialize() Null pointer for iTask=" << iTask << endl;
+        postTaskFatal();
+        return;
+      }
     }
-  if (reportDebug()) cout << "TaskCollection::initialize() Completed" << endl;
+    tasks[iTask]->initialize();
+  }
+  if (reportDebug())
+    cout << "TaskCollection::initialize() Completed" << endl;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,9 +75,13 @@ void TaskCollection::initialize()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TaskCollection::execute()
 {
-  if (reportDebug()) cout << "TaskCollection::execute() Started" << endl;
-  for (int iTask=0; iTask<nTasks; iTask++) if (isTaskOk()) tasks[iTask]->execute();
-  if (reportDebug()) cout << "TaskCollection::execute() Completed" << endl;
+  if (reportDebug())
+    cout << "TaskCollection::execute() Started" << endl;
+  for (int iTask = 0; iTask < nTasks; iTask++)
+    if (isTaskOk())
+      tasks[iTask]->execute();
+  if (reportDebug())
+    cout << "TaskCollection::execute() Completed" << endl;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,9 +89,13 @@ void TaskCollection::execute()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void TaskCollection::finalize()
 {
-  if (reportDebug()) cout << "TaskCollection::finalize() Started" << endl;
-   for (int iTask=0; iTask<nTasks; iTask++) if (isTaskOk()) tasks[iTask]->finalize();
-   if (reportDebug()) cout << "TaskCollection::finalize() Completed" << endl;
+  if (reportDebug())
+    cout << "TaskCollection::finalize() Started" << endl;
+  for (int iTask = 0; iTask < nTasks; iTask++)
+    if (isTaskOk())
+      tasks[iTask]->finalize();
+  if (reportDebug())
+    cout << "TaskCollection::finalize() Completed" << endl;
 }
 
 ////////////////////////////////////////////
@@ -94,47 +103,55 @@ void TaskCollection::finalize()
 ////////////////////////////////////////////
 void TaskCollection::reset()
 {
-  if (reportDebug()) cout << "TaskCollection::reset() Started" << endl;
-   for (int iTask=0; iTask<nTasks; iTask++) if (isTaskOk()) tasks[iTask]->reset();
-   if (reportDebug()) cout << "TaskCollection::reset() Completed" << endl;
+  if (reportDebug())
+    cout << "TaskCollection::reset() Started" << endl;
+  for (int iTask = 0; iTask < nTasks; iTask++)
+    if (isTaskOk())
+      tasks[iTask]->reset();
+  if (reportDebug())
+    cout << "TaskCollection::reset() Completed" << endl;
 }
 
 void TaskCollection::clear()
 {
-  if (reportDebug()) cout << "TaskCollection::clear() Started" << endl;
-   for (int iTask=0; iTask<nTasks; iTask++) if (isTaskOk()) tasks[iTask]->clear();
-   if (reportDebug()) cout << "TaskCollection::clear() Completed" << endl;
+  if (reportDebug())
+    cout << "TaskCollection::clear() Started" << endl;
+  for (int iTask = 0; iTask < nTasks; iTask++)
+    if (isTaskOk())
+      tasks[iTask]->clear();
+  if (reportDebug())
+    cout << "TaskCollection::clear() Completed" << endl;
 }
-
 
 ////////////////////////////////////////////
 // Print task configuration
 ////////////////////////////////////////////
-void TaskCollection::printConfiguration(ostream & output)
+void TaskCollection::printConfiguration(ostream& output)
 {
-  if (reportInfo())
-    {
-    output << "Task Name : " << getName() <<  endl;
-    for (int iTask=0; iTask<nTasks; iTask++) if (isTaskOk()) tasks[iTask]->printConfiguration(output);
-    }
+  if (reportInfo()) {
+    output << "Task Name : " << getName() << endl;
+    for (int iTask = 0; iTask < nTasks; iTask++)
+      if (isTaskOk())
+        tasks[iTask]->printConfiguration(output);
+  }
 }
 
-
-void TaskCollection::addTask(Task * task)
+void TaskCollection::addTask(Task* task)
 {
-  if (!task)
-    {
-    if (reportFatal()) cout << "TaskCollection::addTask(Task *)  Given task pointer is null. Abort." << endl;
+  if (!task) {
+    if (reportFatal())
+      cout << "TaskCollection::addTask(Task *)  Given task pointer is null. Abort." << endl;
     postTaskFatal();
     return;
-    }
+  }
 
-  if (nTasks>=nTasksMax)
-    {
-    if (reportFatal()) cout << "TaskCollection::addTask(Task *) Cannot add subtask " << task->getName() << " to task " << getName()
-      << ". Maximum of " << nTasksMax << " tasks exceeded" << endl;
+  if (nTasks >= nTasksMax) {
+    if (reportFatal())
+      cout << "TaskCollection::addTask(Task *) Cannot add subtask " << task->getName() << " to task " << getName()
+           << ". Maximum of " << nTasksMax << " tasks exceeded" << endl;
     postTaskFatal();
-    }
-    tasks[nTasks++] = task;
-    if (reportInfo()) cout << "TaskCollection::addTask(Task *)  Added task " << task->getName() << " to task " << getName() << endl;
+  }
+  tasks[nTasks++] = task;
+  if (reportInfo())
+    cout << "TaskCollection::addTask(Task *)  Added task " << task->getName() << " to task " << getName() << endl;
 }

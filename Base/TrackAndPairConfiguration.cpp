@@ -16,24 +16,25 @@
 
 #include "TrackAndPairConfiguration.hpp"
 
-ClassImp(TrackAndPairConfiguration);
+ClassImp(TrackAndPairConfiguration)
 
-TrackAndPairConfiguration::TrackAndPairConfiguration(const TString & name, int version)
-: TaskConfiguration(name,"TrackAndPairConfiguration",version)
-{ }
-
-TrackAndPairConfiguration::~TrackAndPairConfiguration()
-{ }
-
-void TrackAndPairConfiguration::printConfiguration(ostream & os)
+  TrackAndPairConfiguration::TrackAndPairConfiguration(const TString& name,
+                                                       int version)
+  : TaskConfiguration(name, "TrackAndPairConfiguration", version)
 {
-  os
-  << " ------------------------------------------------------------------------------------------" << endl
-  << " ------------------------------------------------------------------------------------------" << endl
-  << "                             Name: " << getName() << endl
-  << "                          Version: " << getVersion() << endl
-  << " ------------------------------------------------------------------------------------------" << endl
-  << " ------------------------------------------------------------------------------------------" << endl;
 }
 
+TrackAndPairConfiguration::~TrackAndPairConfiguration()
+{
+}
 
+void TrackAndPairConfiguration::printConfiguration(ostream& os)
+{
+  os
+    << " ------------------------------------------------------------------------------------------" << endl
+    << " ------------------------------------------------------------------------------------------" << endl
+    << "                             Name: " << getName() << endl
+    << "                          Version: " << getVersion() << endl
+    << " ------------------------------------------------------------------------------------------" << endl
+    << " ------------------------------------------------------------------------------------------" << endl;
+}

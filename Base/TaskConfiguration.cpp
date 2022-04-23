@@ -17,77 +17,74 @@
 #include "TaskConfiguration.hpp"
 
 TaskConfiguration::TaskConfiguration()
-:
-name("TaskConfiguration"),
-type("Generic"),
-version("1.0"),
-loadHistograms(false),
-createHistograms(true),
-scaleHistograms(false),
-calculateDerivedHistograms(false),
-saveHistograms(true),
-resetHistograms(false),
-clearHistograms(false),
-forceHistogramsRewrite(true),
-inputPath("./"),
-configurationFileName("configuration.txt"),
-rootInputFileName(""),
-outputPath("./"),
-rootOuputFileName("output.root"),
-dataInputPath(""),
-dataInputFileName(""),
-dataInputTreeName("tree"),
-dataInputFileMinIndex(0),
-dataInputFileMaxIndex(1)
+  : name("TaskConfiguration"),
+    type("Generic"),
+    version("1.0"),
+    loadHistograms(false),
+    createHistograms(true),
+    scaleHistograms(false),
+    calculateDerivedHistograms(false),
+    saveHistograms(true),
+    resetHistograms(false),
+    clearHistograms(false),
+    forceHistogramsRewrite(true),
+    inputPath("./"),
+    configurationFileName("configuration.txt"),
+    rootInputFileName(""),
+    outputPath("./"),
+    rootOuputFileName("output.root"),
+    dataInputPath(""),
+    dataInputFileName(""),
+    dataInputTreeName("tree"),
+    dataInputFileMinIndex(0),
+    dataInputFileMaxIndex(1)
 {
   /* no ops */
 }
 
-TaskConfiguration::TaskConfiguration(const TString & theName, const TString & theType, const TString & theVersion)
-:
-name(theName),
-type(theType),
-version(theVersion),
-loadHistograms(false),
-createHistograms(true),
-scaleHistograms(false),
-calculateDerivedHistograms(false),
-saveHistograms(true),
-resetHistograms(false),
-clearHistograms(false),
-forceHistogramsRewrite(true),
-inputPath("./"),
-configurationFileName("configuration.txt"),
-rootInputFileName(""),
-outputPath("./"),
-rootOuputFileName("output.root")
+TaskConfiguration::TaskConfiguration(const TString& theName, const TString& theType, const TString& theVersion)
+  : name(theName),
+    type(theType),
+    version(theVersion),
+    loadHistograms(false),
+    createHistograms(true),
+    scaleHistograms(false),
+    calculateDerivedHistograms(false),
+    saveHistograms(true),
+    resetHistograms(false),
+    clearHistograms(false),
+    forceHistogramsRewrite(true),
+    inputPath("./"),
+    configurationFileName("configuration.txt"),
+    rootInputFileName(""),
+    outputPath("./"),
+    rootOuputFileName("output.root")
 {
   /* no ops */
 }
 
-TaskConfiguration::TaskConfiguration(const TaskConfiguration & source)
-:
-name( source.name),
-type( source.type ),
-version( source.version ),
-loadHistograms( source.loadHistograms ),
-createHistograms( source.createHistograms ),
-scaleHistograms( source.scaleHistograms ),
-calculateDerivedHistograms( source.calculateDerivedHistograms ),
-saveHistograms( source.saveHistograms ),
-resetHistograms( source.resetHistograms ),
-clearHistograms( source.clearHistograms ),
-forceHistogramsRewrite( source.forceHistogramsRewrite ),
-inputPath( source.inputPath ),
-configurationFileName( source.configurationFileName ),
-rootInputFileName( source.rootInputFileName ),
-outputPath( source.outputPath ),
-rootOuputFileName( source.rootOuputFileName )
+TaskConfiguration::TaskConfiguration(const TaskConfiguration& source)
+  : name(source.name),
+    type(source.type),
+    version(source.version),
+    loadHistograms(source.loadHistograms),
+    createHistograms(source.createHistograms),
+    scaleHistograms(source.scaleHistograms),
+    calculateDerivedHistograms(source.calculateDerivedHistograms),
+    saveHistograms(source.saveHistograms),
+    resetHistograms(source.resetHistograms),
+    clearHistograms(source.clearHistograms),
+    forceHistogramsRewrite(source.forceHistogramsRewrite),
+    inputPath(source.inputPath),
+    configurationFileName(source.configurationFileName),
+    rootInputFileName(source.rootInputFileName),
+    outputPath(source.outputPath),
+    rootOuputFileName(source.rootOuputFileName)
 {
   /* no ops */
 }
 
-TaskConfiguration & TaskConfiguration::operator=(const TaskConfiguration & source)
+TaskConfiguration& TaskConfiguration::operator=(const TaskConfiguration& source)
 {
   name = source.name;
   type = source.type;
@@ -105,8 +102,9 @@ TaskConfiguration & TaskConfiguration::operator=(const TaskConfiguration & sourc
   rootInputFileName = source.rootInputFileName;
   outputPath = source.outputPath;
   rootOuputFileName = source.rootOuputFileName;
-}
 
+  return *this;
+}
 
 TaskConfiguration::~TaskConfiguration()
 {
@@ -126,27 +124,27 @@ TString TaskConfiguration::getVersion() const
   return version;
 }
 
-void TaskConfiguration::printTaskConfiguration(ostream & os)
+void TaskConfiguration::printTaskConfiguration(ostream& os)
 {
   os
-  << " ------------------------------------------------------------" << endl
-  << "                   outputPath: " << name << endl
-  << "    TaskConfigurationFileName: " << type << endl
-  << "           rootOutputFileName: " << version << endl
-  << "               loadHistograms: " << loadHistograms << endl
-  << "             createHistograms: " << createHistograms << endl
-  << "              scaleHistograms: " << scaleHistograms << endl
-  << "   calculateDerivedHistograms: " << calculateDerivedHistograms << endl
-  << "               saveHistograms: " << saveHistograms << endl
-  << "              resetHistograms: " << resetHistograms << endl
-  << "              clearHistograms: " << clearHistograms << endl
-  << "       forceHistogramsRewrite: " << forceHistogramsRewrite << endl
-  << "                    inputPath: " << inputPath << endl
-  << "        configurationFileName: " << configurationFileName << endl
-  << "            rootInputFileName: " << rootInputFileName << endl
-  << "                   outputPath: " << outputPath << endl
-  << "            rootOuputFileName: " << rootOuputFileName << endl
-  << " ------------------------------------------------------------" << endl;
+    << " ------------------------------------------------------------" << endl
+    << "                   outputPath: " << name << endl
+    << "    TaskConfigurationFileName: " << type << endl
+    << "           rootOutputFileName: " << version << endl
+    << "               loadHistograms: " << loadHistograms << endl
+    << "             createHistograms: " << createHistograms << endl
+    << "              scaleHistograms: " << scaleHistograms << endl
+    << "   calculateDerivedHistograms: " << calculateDerivedHistograms << endl
+    << "               saveHistograms: " << saveHistograms << endl
+    << "              resetHistograms: " << resetHistograms << endl
+    << "              clearHistograms: " << clearHistograms << endl
+    << "       forceHistogramsRewrite: " << forceHistogramsRewrite << endl
+    << "                    inputPath: " << inputPath << endl
+    << "        configurationFileName: " << configurationFileName << endl
+    << "            rootInputFileName: " << rootInputFileName << endl
+    << "                   outputPath: " << outputPath << endl
+    << "            rootOuputFileName: " << rootOuputFileName << endl
+    << " ------------------------------------------------------------" << endl;
 }
 
 TString TaskConfiguration::getInputRootFileName()
@@ -162,4 +160,3 @@ TString TaskConfiguration::getOutputRootFileName()
   outputName += rootOuputFileName;
   return outputName;
 }
-

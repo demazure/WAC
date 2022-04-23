@@ -45,17 +45,14 @@ using namespace std;
 
 class Task : public MessageLogger
 {
-public:
-
-
-
+ public:
   ////////////////////////////////////////////
   // Data members
   ////////////////////////////////////////////
-  TString             taskName;
-  TaskConfiguration * taskConfiguration;
-  TRandom           * taskRandomGenerator;
-  Event             * event;
+  TString taskName;
+  TaskConfiguration* taskConfiguration;
+  TRandom* taskRandomGenerator;
+  Event* event;
 
   long eventsProcessed;
 
@@ -63,9 +60,9 @@ public:
   // Member functions
   ////////////////////////////////////////////
 
-  Task(const TString & name,
-       TaskConfiguration * configuration,
-       Event * event);
+  Task(const TString& name,
+       TaskConfiguration* configuration,
+       Event* event);
   virtual ~Task();
   virtual void initialize();
   virtual void execute();
@@ -75,7 +72,7 @@ public:
 
   virtual void createHistograms();
   virtual void loadHistograms();
-  virtual void loadHistograms(TFile * inputFile);
+  virtual void loadHistograms(TFile* inputFile);
   virtual void resetHistograms();
   virtual void clearHistograms();
   virtual void calculateDerivedHistograms();
@@ -83,32 +80,35 @@ public:
   virtual void scaleHistograms(double factor);
   virtual void saveHistogramsAsText();
   virtual void saveHistograms();
-  virtual void saveHistograms(TFile * outputFile);
-  virtual void addHistogramsToExtList(TList *list, bool all=false);
-  Event * getEvent();
+  virtual void saveHistograms(TFile* outputFile);
+  virtual void addHistogramsToExtList(TList* list, bool all = false);
+  Event* getEvent();
 
-  TaskConfiguration * getTaskConfiguration();
-  void setTaskConfiguration(TaskConfiguration * config);
-  virtual void printConfiguration(ostream & output);
+  TaskConfiguration* getTaskConfiguration();
+  void setTaskConfiguration(TaskConfiguration* config);
+  virtual void printConfiguration(ostream& output);
   TString getName() const;
-  void setName(const TString & name);
+  void setName(const TString& name);
 
-  TRandom * getRandomGenerator()
+  TRandom* getRandomGenerator()
   {
-  return taskRandomGenerator;
+    return taskRandomGenerator;
   }
 
-  void setRandomGenerator(TRandom * randomGenerator);
+  void setRandomGenerator(TRandom* randomGenerator);
 
+  enum TaskStatus { Unknown,
+                    TaskOk,
+                    TaskEof,
+                    TaskEod,
+                    TaskWarning,
+                    TaskError,
+                    TaskFatal };
 
-  enum TaskStatus   { Unknown, TaskOk, TaskEof, TaskEod, TaskWarning, TaskError, TaskFatal};
-
-private:
-
+ private:
   static TaskStatus taskStatus;
 
-public:
-  
+ public:
   static TaskStatus getTaskStatus();
   static void setTaskStatus(TaskStatus taskStatus);
   static void postTaskOk();
@@ -120,7 +120,7 @@ public:
   static bool isTaskOk();
   static TString getTaskStatusName();
 
-  ClassDef(Task,0)
+  ClassDef(Task, 0)
 };
 
 #endif /* WAC_Task */

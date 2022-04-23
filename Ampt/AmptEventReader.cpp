@@ -16,22 +16,23 @@
 #include "AmptEventReader.hpp"
 ClassImp(AmptEventReader);
 
-AmptEventReader::AmptEventReader(const TString & name,
-                                 TaskConfiguration * configuration,
-                                 Event * event,
-                                 EventFilter * ef,
-                                 ParticleFilter * pf)
-:
-Task(name, configuration, event),
-eventFilter(ef),
-particleFilter(pf)
+AmptEventReader::AmptEventReader(const TString& name,
+                                 TaskConfiguration* configuration,
+                                 Event* event,
+                                 EventFilter* ef,
+                                 ParticleFilter* pf)
+  : Task(name, configuration, event),
+    eventFilter(ef),
+    particleFilter(pf)
 {
-  if (reportDebug()) cout << "AmptEventReader::AmptEventReader(...) No ops" << endl;
+  if (reportDebug())
+    cout << "AmptEventReader::AmptEventReader(...) No ops" << endl;
 }
 
 AmptEventReader::~AmptEventReader()
 {
-if (reportDebug()) cout << "AmptEventReader::~AmptEventReader(...) No ops" << endl;
+  if (reportDebug())
+    cout << "AmptEventReader::~AmptEventReader(...) No ops" << endl;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,62 +40,64 @@ if (reportDebug()) cout << "AmptEventReader::~AmptEventReader(...) No ops" << en
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void AmptEventReader::initialize()
 {
-  if (reportDebug()) cout << "AmptEventReader::initialize() Started" << endl;
+  if (reportDebug())
+    cout << "AmptEventReader::initialize() Started" << endl;
 
-  TaskConfiguration * genConfig = getTaskConfiguration();
-  if (!genConfig)
-    {
-    if (reportFatal()) cout << "AmptEventReader::initialize() genConfig is a null pointer" << endl;
+  TaskConfiguration* genConfig = getTaskConfiguration();
+  if (!genConfig) {
+    if (reportFatal())
+      cout << "AmptEventReader::initialize() genConfig is a null pointer" << endl;
     postTaskFatal();
     return;
-    }
-  TChain *chain = new TChain(genConfig->dataInputTreeName," ");
-  if (!chain)
-     {
-     if (reportFatal()) cout << "AmptEventReader::initialize() chain is a null pointer" << endl;
-     postTaskFatal();
-     return;
-     }
+  }
+  TChain* chain = new TChain(genConfig->dataInputTreeName, " ");
+  if (!chain) {
+    if (reportFatal())
+      cout << "AmptEventReader::initialize() chain is a null pointer" << endl;
+    postTaskFatal();
+    return;
+  }
 
   TString dataInputFileName = genConfig->dataInputPath;
   dataInputFileName += "/";
   dataInputFileName += genConfig->dataInputFileName;
 
-  for(int ifl=genConfig->dataInputFileMinIndex; ifl<genConfig->dataInputFileMaxIndex; ifl++)
-    {
-    //chain->Add(Form("/local/victor/PROJECTS/EPOSWSU/DATA/epos_pbpb_urqmd_on_%i.root",ifl+1));
-    //chain->Add(Form("/Users/sumit/Desktop/macros_epos/root_maker/epos_pbpb_urqmd_on_%i.root",ifl+1));
-    cout << "AmptEventReader::initialize() Form:" << Form(dataInputFileName,ifl) << endl;
-    chain->Add(Form(dataInputFileName,ifl));
-    }
+  for (int ifl = genConfig->dataInputFileMinIndex; ifl < genConfig->dataInputFileMaxIndex; ifl++) {
+    // chain->Add(Form("/local/victor/PROJECTS/EPOSWSU/DATA/epos_pbpb_urqmd_on_%i.root",ifl+1));
+    // chain->Add(Form("/Users/sumit/Desktop/macros_epos/root_maker/epos_pbpb_urqmd_on_%i.root",ifl+1));
+    cout << "AmptEventReader::initialize() Form:" << Form(dataInputFileName, ifl) << endl;
+    chain->Add(Form(dataInputFileName, ifl));
+  }
   Init(chain);
   jentry = 0;
 
   nentries = fChain->GetEntries();
-  if (reportInfo()) cout << "AmptEventReader::initialize() nEntries: " << nentries << endl;
-  if (nentries < 1)
-    {
-    if (reportError()) cout << "AmptEventReader::initialize() no data found. Abort." << endl;
+  if (reportInfo())
+    cout << "AmptEventReader::initialize() nEntries: " << nentries << endl;
+  if (nentries < 1) {
+    if (reportError())
+      cout << "AmptEventReader::initialize() no data found. Abort." << endl;
     postTaskFatal();
     return;
-    }
+  }
   nbytes = 0;
   nb = 0;
-  if (reportDebug()) cout << "AmptEventReader::initialize() Completed" << endl;
+  if (reportDebug())
+    cout << "AmptEventReader::initialize() Completed" << endl;
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Reset and Initialize the generator
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void AmptEventReader::reset()
 {
-  if (reportDebug()) cout << "AmptEventReader::reset() Started" << endl;
+  if (reportDebug())
+    cout << "AmptEventReader::reset() Started" << endl;
   event->reset();
   Particle::getFactory()->reset();
-  if (reportDebug()) cout << "AmptEventReader::reset() Completed" << endl;
+  if (reportDebug())
+    cout << "AmptEventReader::reset() Completed" << endl;
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Read an ampt event from file
@@ -102,99 +105,100 @@ void AmptEventReader::reset()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void AmptEventReader::execute()
 {
-  if (reportDebug()) cout << "AmptEventReader::execute() Started" << endl;
-  if (!fChain)
-    {
-    if (reportFatal()) cout << " AmptEventReader::execute() no TChain available" << endl;
+  if (reportDebug())
+    cout << "AmptEventReader::execute() Started" << endl;
+  if (!fChain) {
+    if (reportFatal())
+      cout << " AmptEventReader::execute() no TChain available" << endl;
     postTaskFatal();
     return;
-    }
+  }
 
-  Factory<Particle> * particleFactory = Particle::getFactory();
+  Factory<Particle>* particleFactory = Particle::getFactory();
 
   bool seekingEvent = true;
-  while (seekingEvent)
-    {
+  while (seekingEvent) {
     // load another event from the root file/TTree
     Long64_t ientry = LoadTree(jentry++);
 
     // returning a null point is an indication that
     // there are no more events in the file or stack of files.
-    if (ientry < 0)
-      {
+    if (ientry < 0) {
       postTaskEod(); // end of data
       return;
-      }
-    nb = fChain->GetEntry(jentry);   nbytes += nb;
-    if (mult > arraySize)
-         {
-         if (reportError()) cout<< "AmptEventReader::execute() n particles is " << mult << " and exceeds capacity " << arraySize << endl;
-         postTaskError();
-         return;
-         }
-    event->eventNumber     = eventNo;
-    event->impactParameter = impact;
-    event->nProjectile     = Nproj;
-    event->nTarget         = Ntarg;
-    event->nParticleTotal  = Nparttotal;
-    event->multiplicity    = mult;
-    if (eventFilter->accept(*event)) seekingEvent = false;
     }
+    nb = fChain->GetEntry(jentry);
+    nbytes += nb;
+    if (mult > arraySize) {
+      if (reportError())
+        cout << "AmptEventReader::execute() n particles is " << mult << " and exceeds capacity " << arraySize << endl;
+      postTaskError();
+      return;
+    }
+    event->eventNumber = eventNo;
+    event->impactParameter = impact;
+    event->nProjectile = Nproj;
+    event->nTarget = Ntarg;
+    event->nParticleTotal = Nparttotal;
+    event->multiplicity = mult;
+    if (eventFilter->accept(*event))
+      seekingEvent = false;
+  }
   int thePid;
   double charge, p_x, p_y, p_z, p_e, mass;
   Particle aParticle;
-  Particle * particle;
+  Particle* particle;
   int particleAccepted = 0;
 
-   //------------------- Randomizing the particle phi --------------Starts
-  double eventAngle= TMath::TwoPi() * gRandom->Rndm();
+  //------------------- Randomizing the particle phi --------------Starts
+  double eventAngle = TMath::TwoPi() * gRandom->Rndm();
   double cosPhi = cos(eventAngle);
   double sinPhi = sin(eventAngle);
 
-   for (int iParticle; iParticle<mult; iParticle++)
-    {
+  for (int iParticle; iParticle < mult; iParticle++) {
     thePid = pid[iParticle];
-    if ( thePid == 211 || thePid == 321  || thePid ==2212 )
+    if (thePid == 211 || thePid == 321 || thePid == 2212)
       charge = 1;
-    else if (thePid ==-211 || thePid ==-321 || thePid==-2212)
+    else if (thePid == -211 || thePid == -321 || thePid == -2212)
       charge = -1;
     else
       charge = 0;
-    p_x  = cosPhi*px[iParticle] - sinPhi*py[iParticle];
-    p_y  = sinPhi*px[iParticle] + cosPhi*py[iParticle];
-    p_z  = pz[iParticle];
+    p_x = cosPhi * px[iParticle] - sinPhi * py[iParticle];
+    p_y = sinPhi * px[iParticle] + cosPhi * py[iParticle];
+    p_z = pz[iParticle];
     mass = m[iParticle];
-    p_e  =sqrt(p_x*p_x + p_y*p_y + p_z*p_z + mass*mass);
-    aParticle.setPidPxPyPzE(thePid, charge, p_x,p_y,p_z,p_e);
-    //if (reportDebug("AmptEventReader","execute()",getName())) aParticle.printProperties(cout);
-    if (particleFilter->accept(aParticle))
-      {
+    p_e = sqrt(p_x * p_x + p_y * p_y + p_z * p_z + mass * mass);
+    aParticle.setPidPxPyPzE(thePid, charge, p_x, p_y, p_z, p_e);
+    // if (reportDebug("AmptEventReader","execute()",getName())) aParticle.printProperties(cout);
+    if (particleFilter->accept(aParticle)) {
       particle = particleFactory->getNextObject();
       *particle = aParticle;
       particleAccepted++;
-      }
     }
+  }
   event->nParticles = particleAccepted;
-  if (reportDebug("AmptEventReader","execute()",getName()))
-    {
+  if (reportDebug("AmptEventReader", "execute()", getName())) {
     event->printProperties(cout);
     cout << "AmptEventReader::execute() event completed!" << endl;
-    }
+  }
 }
 
 Int_t AmptEventReader::GetEntry(Long64_t entry)
 {
   // Read contents of entry.
-  if (!fChain) return 0;
+  if (!fChain)
+    return 0;
   return fChain->GetEntry(entry);
 }
 
 Long64_t AmptEventReader::LoadTree(Long64_t entry)
 {
   // Set the environment to read one entry
-  if (!fChain) return -5;
+  if (!fChain)
+    return -5;
   Long64_t centry = fChain->LoadTree(entry);
-  if (centry < 0) return centry;
+  if (centry < 0)
+    return centry;
   if (fChain->GetTreeNumber() != fCurrent) {
     fCurrent = fChain->GetTreeNumber();
     Notify();
@@ -202,9 +206,10 @@ Long64_t AmptEventReader::LoadTree(Long64_t entry)
   return centry;
 }
 
-void AmptEventReader::Init(TTree *tree)
+void AmptEventReader::Init(TTree* tree)
 {
-  if (!tree) return;
+  if (!tree)
+    return;
   fChain = tree;
   fCurrent = -1;
   fChain->SetMakeClass(1);
@@ -235,7 +240,8 @@ Bool_t AmptEventReader::Notify()
 
 void AmptEventReader::Show(Long64_t entry)
 {
-  if (!fChain) return;
+  if (!fChain)
+    return;
   fChain->Show(entry);
 }
 
@@ -243,5 +249,3 @@ Int_t AmptEventReader::Cut(Long64_t entry)
 {
   return 1;
 }
-
-

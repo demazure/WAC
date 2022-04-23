@@ -7,26 +7,17 @@
 //
 
 #include "ParticlePairFilter.hpp"
-ClassImp(ParticlePairFilter);
+ClassImp(ParticlePairFilter)
 
-//////////////////////////////////////////////////////////////////////////////////////////
-// CTOR
-//////////////////////////////////////////////////////////////////////////////////////////
-ParticlePairFilter::ParticlePairFilter(double minDpt,
-              double maxDpt,
-              double minDphi,
-              double maxDphi,
-              double minDeta,
-              double maxDeta)
-:
-min_dpt    (minDpt),
-max_dpt    (maxDpt),
-min_dphi   (minDphi),
-max_dphi   (maxDphi),
-min_deta   (minDeta),
-max_deta   (maxDeta)
+  //////////////////////////////////////////////////////////////////////////////////////////
+  // CTOR
+  //////////////////////////////////////////////////////////////////////////////////////////
+  ParticlePairFilter::ParticlePairFilter(double minDpt, double maxDpt,
+                                         double minDphi, double maxDphi,
+                                         double minDeta, double maxDeta)
+  : min_dpt(minDpt), max_dpt(maxDpt), min_dphi(minDphi), max_dphi(maxDphi), min_deta(minDeta), max_deta(maxDeta)
 {
-// no ops
+  // no ops
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -34,13 +25,13 @@ max_deta   (maxDeta)
 //////////////////////////////////////////////////////////////////////////////////////////
 ParticlePairFilter::~ParticlePairFilter()
 {
-// no ops
+  // no ops
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Accept/reject the given pair of particles
 //////////////////////////////////////////////////////////////////////////////////////////
-bool ParticlePairFilter::accept(Particle & particle1, Particle &  particle2)
+bool ParticlePairFilter::accept(Particle&, Particle&)
 {
   return true; // accept all for now...
 }

@@ -13,14 +13,12 @@
 
 class TrackAndPairConfiguration : public TaskConfiguration
 {
-public:
-
-  TrackAndPairConfiguration(const TString & name, int version);
+ public:
+  TrackAndPairConfiguration(const TString& name, int version);
   virtual ~TrackAndPairConfiguration();
-  virtual void printConfiguration(ostream & os);
+  virtual void printConfiguration(ostream& os);
 
-   ClassDef(TrackAndPairConfiguration,0)
+  ClassDef(TrackAndPairConfiguration, 0)
 };
-
 
 #endif /* WAC_TrackAndPairConfiguration */

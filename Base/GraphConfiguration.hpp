@@ -27,53 +27,53 @@ using namespace std;
 
 class GraphConfiguration
 {
-public:
+ public:
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Data Members
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   int npx;
   int npy;
-  
+
   int lineColor;
   int lineStyle;
   int lineWidth;
-  
+
   int markerColor;
   int markerStyle;
   float markerSize;
-  
-  int   nXDivisions;
+
+  int nXDivisions;
   float xTitleSize;
   float xTitleOffset;
   float xLabelSize;
   float xLabelOffset;
   TString xTitle;
-  
-  int   nYDivisions;
+
+  int nYDivisions;
   float yTitleSize;
   float yTitleOffset;
   float yLabelSize;
   float yLabelOffset;
   TString yTitle;
-  
-  int   nZDivisions;
+
+  int nZDivisions;
   float zTitleSize;
   float zTitleOffset;
   float zLabelSize;
   float zLabelOffset;
   TString zTitle;
-  
+
   TString plotOption;
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Member functrions
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  GraphConfiguration(int d=1, int type=1);
-  GraphConfiguration(const GraphConfiguration & source);
+  GraphConfiguration(int d = 1, int type = 1);
+  GraphConfiguration(const GraphConfiguration& source);
 
-  virtual ~GraphConfiguration(){}
+  virtual ~GraphConfiguration() {}
 
-  ClassDef(GraphConfiguration,0)
+  ClassDef(GraphConfiguration, 0)
 };
 
 #endif

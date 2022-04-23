@@ -5,7 +5,7 @@
  * All rights reserved.
  * Based on the ROOT package and environment
  *
- * For the licensing terms see LICENSE.  
+ * For the licensing terms see LICENSE.
  **********************************************************************/
 #ifndef WAC_Nucleon
 #define WAC_Nucleon
@@ -21,21 +21,22 @@
 //                 redundant but memory is cheap
 // radius        : radius of the nucleon used in collisions
 // ***************************************************************************
-class Nucleon : public  TObject 
+class Nucleon : public TObject
 {
-public:
+ public:
+  enum NucleonType { Proton,
+                     Neutron,
+                     Unknown };
 
-  enum NucleonType   { Proton, Neutron, Unknown};
-
-  NucleonType  nucleonType;
-  double x,y,z, r, phi, theta; // memory is cheap...
-  bool   wounded;
+  NucleonType nucleonType;
+  double x, y, z, r, phi, theta; // memory is cheap...
+  bool wounded;
 
   Nucleon();
-  //Nucleon(double r, double theta, double phi, NucleonType  nucleonType=Proton);
+  // Nucleon(double r, double theta, double phi, NucleonType  nucleonType=Proton);
   virtual ~Nucleon()
   {
-  // no ops.
+    // no ops.
   }
 
   virtual void reset();
@@ -46,15 +47,14 @@ public:
 
   virtual void setWounded(bool _wounded)
   {
-  wounded = _wounded;
+    wounded = _wounded;
   }
   virtual bool isWounded() const
   {
-  return wounded;
+    return wounded;
   }
 
-  ClassDef(Nucleon,0)
-  
+  ClassDef(Nucleon, 0)
 };
 
 #endif /* Nucleon_hpp */

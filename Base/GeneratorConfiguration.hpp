@@ -9,35 +9,32 @@
 
 class GeneratorConfiguration : public TaskConfiguration
 {
-public:
-
-  GeneratorConfiguration(const TString & name, const TString & type, const TString & version);
+ public:
+  GeneratorConfiguration(const TString& name, const TString& type, const TString& version);
   virtual ~GeneratorConfiguration();
-  virtual void printConfiguration(ostream & os);
+  virtual void printConfiguration(ostream& os);
 
   // ////////////////////////////////////////////
   //  Data Members
   // ////////////////////////////////////////////
 
   TString dataInputPath;
-   TString dataInputFileName; // can use templates...
-   int dataFileMinIndex;
+  TString dataInputFileName; // can use templates...
+  int dataFileMinIndex;
   int dataFileMaxIndex;
 
+  double impactParameterMinimum;
+  double impactParameterMaximum;
+  double ptMinimum;
+  double ptMaximum;
+  double yMinimum;
+  double yMaximum;
+  double etaMinimum;
+  double etaMaximum;
+  bool chargedOnly;
+  TString eventsSource;
 
-  double   impactParameterMinimum;
-  double   impactParameterMaximum;
-  double   ptMinimum;
-  double   ptMaximum;
-  double   yMinimum;
-  double   yMaximum;
-  double   etaMinimum;
-  double   etaMaximum;
-  bool     chargedOnly;
-  TString  eventsSource;
-
-   ClassDef(GeneratorConfiguration,0)
+  ClassDef(GeneratorConfiguration, 0)
 };
-
 
 #endif /*WAC_GeneratorConfiguration*/

@@ -22,17 +22,28 @@
 // case  999:  accepts all
 //////////////////////////////////////////////////////////////////////////////////////////
 
-
-
 class ParticleFilter
 {
-public:
-
-  enum ChargeSelection   { AllCharges, Negative, Positive, Charged, Neutral };
-  enum SpeciesSelection  { AllSpecies, Photon, Lepton, Electron, Muon, Hadron, Pion, Kaon, Baryon, Proton, Lambda };
+ public:
+  enum ChargeSelection { AllCharges,
+                         Negative,
+                         Positive,
+                         Charged,
+                         Neutral };
+  enum SpeciesSelection { AllSpecies,
+                          Photon,
+                          Lepton,
+                          Electron,
+                          Muon,
+                          Hadron,
+                          Pion,
+                          Kaon,
+                          Baryon,
+                          Proton,
+                          Lambda };
 
   ParticleFilter(SpeciesSelection pidRequested,
-                  ChargeSelection  chargeRequested,
+                 ChargeSelection chargeRequested,
                  double minPt,
                  double maxPt,
                  double minEta,
@@ -40,7 +51,7 @@ public:
                  double minY,
                  double maxY);
   virtual ~ParticleFilter();
-  bool accept(Particle & particle);
+  bool accept(Particle& particle);
   TString getName();
   TString getTitle();
 
@@ -48,10 +59,8 @@ public:
   // Data Members
   //////////////////////////////////////////////////////////////////////////////////////////
 
-
-
   SpeciesSelection pidRequested;
-  ChargeSelection  chargeRequested;
+  ChargeSelection chargeRequested;
   double min_pt;
   double max_pt;
   double min_eta;
@@ -59,8 +68,7 @@ public:
   double min_y;
   double max_y;
 
-
-  ClassDef(ParticleFilter,0)
+  ClassDef(ParticleFilter, 0)
 };
 
 #endif /* WAC_ParticleFilter */

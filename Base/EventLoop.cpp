@@ -15,18 +15,19 @@
  */
 
 #include "EventLoop.hpp"
-ClassImp(EventLoop);
+ClassImp(EventLoop)
 
-EventLoop::EventLoop()
-:
-TaskCollection("EventLoop",nullptr,100)
+  EventLoop::EventLoop()
+  : TaskCollection("EventLoop", nullptr, 100)
 {
-  if (reportDebug())  cout << "EventLoop::CTOR Started" << endl;
+  if (reportDebug())
+    cout << "EventLoop::CTOR Started" << endl;
 }
 
 EventLoop::~EventLoop()
 {
-   if (reportDebug())  cout << "EventLoop::DTOR Started" << endl;
+  if (reportDebug())
+    cout << "EventLoop::DTOR Started" << endl;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -34,26 +35,32 @@ EventLoop::~EventLoop()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void EventLoop::run(long nEvents, int nReport)
 {
-  if (reportInfo("EventLoop",getName(),"run(...)")) cout << "Running for nEvents: " << nEvents << endl;
+  if (reportInfo("EventLoop", getName(), "run(...)"))
+    cout << "Running for nEvents: " << nEvents << endl;
   postTaskOk();
   initialize();
-  if (!isTaskOk())
-    {
-    if (reportWarning("EventLoop",getName(),"run(...)")) cout << "Initialization failed. Abort." << endl;
+  if (!isTaskOk()) {
+    if (reportWarning("EventLoop", getName(), "run(...)"))
+      cout << "Initialization failed. Abort." << endl;
     return;
+  }
+  for (long iEvent = 0; iEvent < nEvents; iEvent++) {
+    if (isTaskOk())
+      reset();
+    if (isTaskOk())
+      execute();
+    if (isTaskOk() && iEvent % nReport == 0) {
+      if (reportInfo("EventLoop", getName(), "run(...)"))
+        cout << "Completed event # " << iEvent << endl;
     }
-  for (long iEvent=0; iEvent<nEvents; iEvent++)
-    {
-    if (isTaskOk()) reset();
-    if (isTaskOk()) execute();
-    if (isTaskOk() && iEvent%nReport==0 )
-      {
-      if (reportInfo("EventLoop",getName(),"run(...)")) cout << "Completed event # " << iEvent << endl;
-      }
-    }
-  if (isTaskOk()) finalize();
+  }
+  if (isTaskOk())
+    finalize();
 
-  if (reportInfo("EventLoop",getName(),"run(...)"))  cout << "Completed nEvents: " << nEvents << endl;
-  if (reportInfo("EventLoop",getName(),"run(...)"))  cout << "Task finished with status : " << getTaskStatusName() << endl;
-  if (reportDebug("EventLoop",getName(),"run(...)")) cout << "Completed." << endl;
+  if (reportInfo("EventLoop", getName(), "run(...)"))
+    cout << "Completed nEvents: " << nEvents << endl;
+  if (reportInfo("EventLoop", getName(), "run(...)"))
+    cout << "Task finished with status : " << getTaskStatusName() << endl;
+  if (reportDebug("EventLoop", getName(), "run(...)"))
+    cout << "Completed." << endl;
 }

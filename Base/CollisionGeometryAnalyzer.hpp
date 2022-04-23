@@ -16,21 +16,20 @@
 
 class CollisionGeometryAnalyzer : public Task
 {
-public:
-
-  CollisionGeometryAnalyzer(const TString & name,
-                            CollisionGeometryConfiguration * configuration,
-                            CollisionGeometry * collisionGeometry);
+ public:
+  CollisionGeometryAnalyzer(const TString& name,
+                            CollisionGeometryConfiguration* configuration,
+                            CollisionGeometry* collisionGeometry);
   virtual ~CollisionGeometryAnalyzer();
   virtual void initialize();
-  virtual void saveHistograms(TFile * outputFile);
+  virtual void saveHistograms(TFile* outputFile);
   void execute();
   virtual void calculateDerivedHistograms();
-  
-  CollisionGeometry * collisionGeometry;
-  CollisionGeometryHistograms * collisionGeometryHistograms;
 
-  ClassDef(CollisionGeometryAnalyzer,0)
+  CollisionGeometry* collisionGeometry;
+  CollisionGeometryHistograms* collisionGeometryHistograms;
+
+  ClassDef(CollisionGeometryAnalyzer, 0)
 };
 
 #endif /* WAC_CollisionGeometryAnalyzer */

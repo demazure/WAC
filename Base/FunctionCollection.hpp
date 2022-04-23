@@ -33,27 +33,27 @@ using namespace std;
 
 class FunctionCollection
 {
-public:
+ public:
   /////////////////////////////////////////////////////////////
   // Data Members
   /////////////////////////////////////////////////////////////
-  int    nFunctionCapacity;
-  int    nFunctions;
-  TF1   ** functions;
-  
+  int nFunctionCapacity;
+  int nFunctions;
+  TF1** functions;
+
   /////////////////////////////////////////////////////////////
   // Member functions
   /////////////////////////////////////////////////////////////
-  FunctionCollection(int functionCapacity=20);
-  FunctionCollection(const FunctionCollection & a);
+  FunctionCollection(int functionCapacity = 20);
+  FunctionCollection(const FunctionCollection& a);
   virtual ~FunctionCollection();
-  void addToList(TF1 * f);
-  TF1 * getFunction(int i);
-  void setDefaultOptions(bool color=0);
-  void setFunctionProperties(TF1 * f, const GraphConfiguration & graphConfiguration);
-  void plotAllFunctions(const TString & outputPath, bool doPrint=false);
+  void addToList(TF1* f);
+  TF1* getFunction(int i);
+  void setDefaultOptions(bool color = 0);
+  void setFunctionProperties(TF1* f, const GraphConfiguration& graphConfiguration);
+  void plotAllFunctions(const TString& outputPath, bool doPrint = false);
 
-  ClassDef(FunctionCollection,0)
+  ClassDef(FunctionCollection, 0)
 }; // FunctionCollection
 
 #endif /* FunctionCollection_hpp */

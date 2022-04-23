@@ -16,29 +16,31 @@
 
 #include "ParticlePairHistos.hpp"
 
-ClassImp(ParticlePairHistos);
+ClassImp(ParticlePairHistos)
 
-ParticlePairHistos::ParticlePairHistos(const TString & name,
-                                       AnalysisConfiguration * configuration,
-                                       LogLevel  debugLevel)
-:
-Histograms(name,configuration,150,debugLevel)
+  ParticlePairHistos::ParticlePairHistos(const TString& name,
+                                         AnalysisConfiguration* configuration,
+                                         LogLevel debugLevel)
+  : Histograms(name, configuration, 150, debugLevel)
 {
-  if (reportDebug()) cout << "ParticlePairHistos::CTOR() Started." << endl;
+  if (reportDebug())
+    cout << "ParticlePairHistos::CTOR() Started." << endl;
   initialize();
-  if (reportDebug()) cout << "ParticlePairHistos::CTOR() Completed." << endl;
+  if (reportDebug())
+    cout << "ParticlePairHistos::CTOR() Completed." << endl;
 }
 
-ParticlePairHistos::ParticlePairHistos(TFile * inputFile,
-                                       const TString & name,
-                                       AnalysisConfiguration * configuration,
-                                       LogLevel  debugLevel)
-:
-Histograms(name,configuration,150,debugLevel)
+ParticlePairHistos::ParticlePairHistos(TFile* inputFile,
+                                       const TString& name,
+                                       AnalysisConfiguration* configuration,
+                                       LogLevel debugLevel)
+  : Histograms(name, configuration, 150, debugLevel)
 {
-  if (reportDebug()) cout << "ParticlePairHistos::CTOR() Started." << endl;
+  if (reportDebug())
+    cout << "ParticlePairHistos::CTOR() Started." << endl;
   loadHistograms(inputFile);
-  if (reportDebug()) cout << "ParticlePairHistos::CTOR() Completed." << endl;
+  if (reportDebug())
+    cout << "ParticlePairHistos::CTOR() Completed." << endl;
 }
 
 ParticlePairHistos::~ParticlePairHistos()
@@ -48,47 +50,48 @@ ParticlePairHistos::~ParticlePairHistos()
 
 void ParticlePairHistos::initialize()
 {
-  if (reportDebug()) cout << "ParticlePairHistos::initialize() Started." << endl;
-  AnalysisConfiguration & ac = *(AnalysisConfiguration*) getConfiguration();
+  if (reportDebug())
+    cout << "ParticlePairHistos::initialize() Started." << endl;
+  AnalysisConfiguration& ac = *(AnalysisConfiguration*)getConfiguration();
   TString bn = getHistoBaseName();
-  ac.range_pt       = ac.max_pt  - ac.min_pt;
-  ac.range_phi      = ac.max_phi - ac.min_phi;
-  ac.range_eta      = ac.max_eta - ac.min_eta;
-  ac.range_y        = ac.max_y   - ac.min_y;
-  ac.nBins_phiEta   = ac.nBins_eta * ac.nBins_phi;
+  ac.range_pt = ac.max_pt - ac.min_pt;
+  ac.range_phi = ac.max_phi - ac.min_phi;
+  ac.range_eta = ac.max_eta - ac.min_eta;
+  ac.range_y = ac.max_y - ac.min_y;
+  ac.nBins_phiEta = ac.nBins_eta * ac.nBins_phi;
   ac.nBins_phiEtaPt = ac.nBins_eta * ac.nBins_phi * ac.nBins_pt;
-  ac.nBins_phiY     = ac.nBins_y   * ac.nBins_phi;
-  ac.nBins_phiYPt   = ac.nBins_y   * ac.nBins_phi * ac.nBins_pt;
+  ac.nBins_phiY = ac.nBins_y * ac.nBins_phi;
+  ac.nBins_phiYPt = ac.nBins_y * ac.nBins_phi * ac.nBins_pt;
 
-  h_n2_ptPt           = createHistogram(bn+TString("n2_ptPt"),          ac.nBins_pt,     ac.min_pt, ac.max_pt, ac.nBins_pt, ac.min_pt, ac.max_pt,      "p_{T,1}",     "p_{T,2}", "N_{2}", scaled, saved, plotted, notPrinted);
-  h_n2_etaEta         = createHistogram(bn+TString("n2_etaEta"),        ac.nBins_eta,    ac.min_eta, ac.max_eta, ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta_{1}",    "#eta_{2}", "N_{2}", scaled, saved, plotted, notPrinted);
-  h_n2_phiPhi         = createHistogram(bn+TString("n2_phiPhi"),        ac.nBins_phi,    ac.min_phi, ac.max_phi, ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi_{1}", "#varphi_{2}", "N_{2}", scaled, saved, notPlotted, notPrinted);
+  h_n2_ptPt = createHistogram(bn + TString("n2_ptPt"), ac.nBins_pt, ac.min_pt, ac.max_pt, ac.nBins_pt, ac.min_pt, ac.max_pt, "p_{T,1}", "p_{T,2}", "N_{2}", scaled, saved, plotted, notPrinted);
+  h_n2_etaEta = createHistogram(bn + TString("n2_etaEta"), ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta_{1}", "#eta_{2}", "N_{2}", scaled, saved, plotted, notPrinted);
+  h_n2_phiPhi = createHistogram(bn + TString("n2_phiPhi"), ac.nBins_phi, ac.min_phi, ac.max_phi, ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi_{1}", "#varphi_{2}", "N_{2}", scaled, saved, notPlotted, notPrinted);
 #ifdef OPTIMIZEADDBINCONTENT
   /* big histograms are forced to be created without sumw2 structure for it will not be used */
   bool defsumw2 = TH1::GetDefaultSumw2();
   TH1::SetDefaultSumw2(false);
 #endif // OPTIMIZEADDBINCONTENT
-  h_n2_phiEtaPhiEta   = createHistogram(bn+TString("n2_phiEtaPhiEta"),  ac.nBins_phiEta, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiEta), ac.nBins_phiEta, 0.0, static_cast<double>(ac.nBins_phiEta), "#eta_{1}x#varphi_{1}","#eta_{2}x#varphi_{2}", "N_{2}", scaled, saved, notPlotted, notPrinted,false);
-  h_npt_phiEtaPhiEta  = createHistogram(bn+TString("npt_phiEtaPhiEta"), ac.nBins_phiEta, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiEta), ac.nBins_phiEta, 0.0, static_cast<double>(ac.nBins_phiEta), "#eta_{1}x#varphi_{1}","#eta_{2}x#varphi_{2}", "Nxp_{T}", scaled, saved, notPlotted, notPrinted,false);
-  h_ptn_phiEtaPhiEta  = createHistogram(bn+TString("ptn_phiEtaPhiEta"), ac.nBins_phiEta, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiEta), ac.nBins_phiEta, 0.0, static_cast<double>(ac.nBins_phiEta), "#eta_{1}x#varphi_{1}","#eta_{2}x#varphi_{2}", "p_{T}xN", scaled, saved, notPlotted, notPrinted,false);
-  h_ptpt_phiEtaPhiEta = createHistogram(bn+TString("ptpt_phiEtaPhiEta"),ac.nBins_phiEta, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiEta), ac.nBins_phiEta, 0.0, static_cast<double>(ac.nBins_phiEta), "#eta_{1}x#varphi_{1}","#eta_{2}x#varphi_{2}", "p_{T}xp_{T}", scaled, saved, notPlotted, notPrinted,false);
+  h_n2_phiEtaPhiEta = createHistogram(bn + TString("n2_phiEtaPhiEta"), ac.nBins_phiEta, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiEta), ac.nBins_phiEta, 0.0, static_cast<double>(ac.nBins_phiEta), "#eta_{1}x#varphi_{1}", "#eta_{2}x#varphi_{2}", "N_{2}", scaled, saved, notPlotted, notPrinted, false);
+  h_npt_phiEtaPhiEta = createHistogram(bn + TString("npt_phiEtaPhiEta"), ac.nBins_phiEta, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiEta), ac.nBins_phiEta, 0.0, static_cast<double>(ac.nBins_phiEta), "#eta_{1}x#varphi_{1}", "#eta_{2}x#varphi_{2}", "Nxp_{T}", scaled, saved, notPlotted, notPrinted, false);
+  h_ptn_phiEtaPhiEta = createHistogram(bn + TString("ptn_phiEtaPhiEta"), ac.nBins_phiEta, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiEta), ac.nBins_phiEta, 0.0, static_cast<double>(ac.nBins_phiEta), "#eta_{1}x#varphi_{1}", "#eta_{2}x#varphi_{2}", "p_{T}xN", scaled, saved, notPlotted, notPrinted, false);
+  h_ptpt_phiEtaPhiEta = createHistogram(bn + TString("ptpt_phiEtaPhiEta"), ac.nBins_phiEta, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiEta), ac.nBins_phiEta, 0.0, static_cast<double>(ac.nBins_phiEta), "#eta_{1}x#varphi_{1}", "#eta_{2}x#varphi_{2}", "p_{T}xp_{T}", scaled, saved, notPlotted, notPrinted, false);
 
-  ac.nBins_Deta = ac.nBins_eta*2-1;
-  ac.min_Deta = ac.min_eta-ac.max_eta;
-  ac.max_Deta = ac.max_eta-ac.min_eta;
-  ac.nBins_Dphi      = ac.nBins_phi;
-  ac.nBins_Dphi_shft = ac.nBins_phi/4;
-  ac.width_Dphi    = TMath::TwoPi()/ac.nBins_Dphi;
-  ac.min_Dphi      = -ac.width_Dphi/2.;
-  ac.max_Dphi      = TMath::TwoPi() - ac.width_Dphi/2.;
-  ac.min_Dphi_shft   = ac.min_Dphi - ac.width_Dphi*double(ac.nBins_Dphi/4);
-  ac.max_Dphi_shft   = ac.max_Dphi - ac.width_Dphi*double(ac.nBins_Dphi/4);
-  h_n2_detaDphi_o       = createHistogram(bn+TString("n2_detaDphi_o"),     ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta","#Delta#varphi", "N_{2}", scaled, saved, notPlotted, notPrinted,false);
-  h_npt_detaDphi_o      = createHistogram(bn+TString("npt_detaDphi_o"),    ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta","#Delta#varphi", "Nxp_{T}", scaled, saved, notPlotted, notPrinted,false);
-  h_ptn_detaDphi_o      = createHistogram(bn+TString("ptn_detaDphi_o"),    ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta","#Delta#varphi", "p_{T}xN", scaled, saved, notPlotted, notPrinted,false);
-  h_ptpt_detaDphi_o     = createHistogram(bn+TString("ptpt_detaDphi_o"),   ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta","#Delta#varphi", "p_{T}xp_{T}", scaled, saved, notPlotted, notPrinted,false);
-  h_n1n1_detaDphi_o     = createHistogram(bn+TString("n1n1_detaDphi_o"),   ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta","#Delta#varphi", "n_{1}*n_{1}", scaled, saved, notPlotted, notPrinted,false);
-  h_pt1pt1_detaDphi_o   = createHistogram(bn+TString("pt1pt1_detaDphi_o"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta","#Delta#varphi", "p_{T}*p_{T}", scaled, saved, notPlotted, notPrinted,false);
+  ac.nBins_Deta = ac.nBins_eta * 2 - 1;
+  ac.min_Deta = ac.min_eta - ac.max_eta;
+  ac.max_Deta = ac.max_eta - ac.min_eta;
+  ac.nBins_Dphi = ac.nBins_phi;
+  ac.nBins_Dphi_shft = ac.nBins_phi / 4;
+  ac.width_Dphi = TMath::TwoPi() / ac.nBins_Dphi;
+  ac.min_Dphi = -ac.width_Dphi / 2.;
+  ac.max_Dphi = TMath::TwoPi() - ac.width_Dphi / 2.;
+  ac.min_Dphi_shft = ac.min_Dphi - ac.width_Dphi * double(ac.nBins_Dphi / 4);
+  ac.max_Dphi_shft = ac.max_Dphi - ac.width_Dphi * double(ac.nBins_Dphi / 4);
+  h_n2_detaDphi_o = createHistogram(bn + TString("n2_detaDphi_o"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta", "#Delta#varphi", "N_{2}", scaled, saved, notPlotted, notPrinted, false);
+  h_npt_detaDphi_o = createHistogram(bn + TString("npt_detaDphi_o"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta", "#Delta#varphi", "Nxp_{T}", scaled, saved, notPlotted, notPrinted, false);
+  h_ptn_detaDphi_o = createHistogram(bn + TString("ptn_detaDphi_o"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta", "#Delta#varphi", "p_{T}xN", scaled, saved, notPlotted, notPrinted, false);
+  h_ptpt_detaDphi_o = createHistogram(bn + TString("ptpt_detaDphi_o"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta", "#Delta#varphi", "p_{T}xp_{T}", scaled, saved, notPlotted, notPrinted, false);
+  h_n1n1_detaDphi_o = createHistogram(bn + TString("n1n1_detaDphi_o"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta", "#Delta#varphi", "n_{1}*n_{1}", scaled, saved, notPlotted, notPrinted, false);
+  h_pt1pt1_detaDphi_o = createHistogram(bn + TString("pt1pt1_detaDphi_o"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta", "#Delta#varphi", "p_{T}*p_{T}", scaled, saved, notPlotted, notPrinted, false);
 #ifdef OPTIMIZEADDBINCONTENT
   /* big histograms are forced to be created without sumw2 structure for it will not be used */
   h_n2_phiEtaPhiEta->SetBit(TH1::kIsNotW);
@@ -113,32 +116,30 @@ void ParticlePairHistos::initialize()
   h_pt1pt1_detaDphi_o->Sumw2(false);
   TH1::SetDefaultSumw2(defsumw2);
 #endif // OPTIMIZEADDBINCONTENT
-  h_npt_etaEta        = createHistogram(bn+TString("npt_etaEta"),       ac.nBins_eta,    ac.min_eta, ac.max_eta, ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta_{1}",    "#eta_{2}", "n x p_{T}", scaled, saved, notPlotted, notPrinted);
-  h_ptn_etaEta        = createHistogram(bn+TString("ptn_etaEta"),       ac.nBins_eta,    ac.min_eta, ac.max_eta, ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta_{1}",    "#eta_{2}", "p_{T} x n", scaled, saved, notPlotted, notPrinted);
-  h_ptpt_etaEta       = createHistogram(bn+TString("ptpt_etaEta"),      ac.nBins_eta,    ac.min_eta, ac.max_eta, ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta_{1}",    "#eta_{2}", "p_{T}xp_{T}", scaled, saved, plotted, notPrinted);
-  h_npt_phiPhi        = createHistogram(bn+TString("npt_phiPhi"),       ac.nBins_phi,    ac.min_phi, ac.max_phi, ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi_{1}", "#varphi_{2}", "n x p_{T}", scaled, saved, notPlotted, notPrinted);
-  h_ptn_phiPhi        = createHistogram(bn+TString("ptn_phiPhi"),       ac.nBins_phi,    ac.min_phi, ac.max_phi, ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi_{1}", "#varphi_{2}", "p_{T} x n", scaled, saved, notPlotted, notPrinted);
-  h_ptpt_phiPhi       = createHistogram(bn+TString("ptpt_phiPhi"),      ac.nBins_phi,    ac.min_phi, ac.max_phi, ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi_{1}", "#varphi_{2}", "p_{T}xp_{T}", scaled, saved, plotted, notPrinted);
-  if (ac.fillQ3D)
-    {
-    h_n2_Q3D   = createHistogram(bn+TString("n2_Q3D"),ac.nBins_DeltaPlong, ac.min_DeltaPlong, ac.max_DeltaPlong,
-                                 ac.nBins_DeltaPside, ac.min_DeltaPside, ac.max_DeltaPside,ac.nBins_DeltaPout,  ac.min_DeltaPout,  ac.max_DeltaPout,
-                                 "Q_{long} (GeV/c)", "Q_{side}  (GeV/c)", "Q_{out}  (GeV/c)","Yield", scaled, saved, notPlotted, notPrinted);
-    h_mInv_Lab = createHistogram(bn+TString("n2_mInvLab"),  100, static_cast<double>(0.0), 1.0, "m_{inv} (GeV/c^{2})", "yield", scaled, saved, plotted, notPrinted);
-    h_beta     = createHistogram(bn+TString("n2_beta"),  100, static_cast<double>(0.0), 1.0, "#beta", "yield", scaled, saved, plotted, notPrinted);
-    }
-  if (ac.fillY)
-    {
-    h_n2_yY         = createHistogram(bn+TString("n2_yY"),        ac.nBins_y,    ac.min_y, ac.max_y, ac.nBins_y, ac.min_y, ac.max_y, "y_{1}","y_{2}", "N_{2}", scaled, saved, notPlotted, notPrinted);
+  h_npt_etaEta = createHistogram(bn + TString("npt_etaEta"), ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta_{1}", "#eta_{2}", "n x p_{T}", scaled, saved, notPlotted, notPrinted);
+  h_ptn_etaEta = createHistogram(bn + TString("ptn_etaEta"), ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta_{1}", "#eta_{2}", "p_{T} x n", scaled, saved, notPlotted, notPrinted);
+  h_ptpt_etaEta = createHistogram(bn + TString("ptpt_etaEta"), ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta_{1}", "#eta_{2}", "p_{T}xp_{T}", scaled, saved, plotted, notPrinted);
+  h_npt_phiPhi = createHistogram(bn + TString("npt_phiPhi"), ac.nBins_phi, ac.min_phi, ac.max_phi, ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi_{1}", "#varphi_{2}", "n x p_{T}", scaled, saved, notPlotted, notPrinted);
+  h_ptn_phiPhi = createHistogram(bn + TString("ptn_phiPhi"), ac.nBins_phi, ac.min_phi, ac.max_phi, ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi_{1}", "#varphi_{2}", "p_{T} x n", scaled, saved, notPlotted, notPrinted);
+  h_ptpt_phiPhi = createHistogram(bn + TString("ptpt_phiPhi"), ac.nBins_phi, ac.min_phi, ac.max_phi, ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi_{1}", "#varphi_{2}", "p_{T}xp_{T}", scaled, saved, plotted, notPrinted);
+  if (ac.fillQ3D) {
+    h_n2_Q3D = createHistogram(bn + TString("n2_Q3D"), ac.nBins_DeltaPlong, ac.min_DeltaPlong, ac.max_DeltaPlong,
+                               ac.nBins_DeltaPside, ac.min_DeltaPside, ac.max_DeltaPside, ac.nBins_DeltaPout, ac.min_DeltaPout, ac.max_DeltaPout,
+                               "Q_{long} (GeV/c)", "Q_{side}  (GeV/c)", "Q_{out}  (GeV/c)", "Yield", scaled, saved, notPlotted, notPrinted);
+    h_mInv_Lab = createHistogram(bn + TString("n2_mInvLab"), 100, static_cast<double>(0.0), 1.0, "m_{inv} (GeV/c^{2})", "yield", scaled, saved, plotted, notPrinted);
+    h_beta = createHistogram(bn + TString("n2_beta"), 100, static_cast<double>(0.0), 1.0, "#beta", "yield", scaled, saved, plotted, notPrinted);
+  }
+  if (ac.fillY) {
+    h_n2_yY = createHistogram(bn + TString("n2_yY"), ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_y, ac.min_y, ac.max_y, "y_{1}", "y_{2}", "N_{2}", scaled, saved, notPlotted, notPrinted);
 #ifdef OPTIMIZEADDBINCONTENT
     /* big histograms are forced to be created without sumw2 structure for it will not be used */
     bool defsumw2 = TH1::GetDefaultSumw2();
     TH1::SetDefaultSumw2(false);
 #endif // OPTIMIZEADDBINCONTENT
-    h_n2_phiYPhiY   = createHistogram(bn+TString("n2_phiYPhiY"),  ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}","y_{2}x#varphi_{2}", "N_{2}", scaled, saved, notPlotted, notPrinted,false);
-    h_npt_phiYPhiY  = createHistogram(bn+TString("npt_phiYPhiY"), ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}","y_{2}x#varphi_{2}", "Nxp_{T}", scaled, saved, notPlotted, notPrinted,false);
-    h_ptn_phiYPhiY  = createHistogram(bn+TString("ptn_phiYPhiY"), ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}","y_{2}x#varphi_{2}", "p_{T}xN", scaled, saved, notPlotted, notPrinted,false);
-    h_ptpt_phiYPhiY = createHistogram(bn+TString("ptpt_phiYPhiY"),ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}","y_{2}x#varphi_{2}", "p_{T}xp_{T}", scaled, saved, notPlotted, notPrinted,false);
+    h_n2_phiYPhiY = createHistogram(bn + TString("n2_phiYPhiY"), ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}", "y_{2}x#varphi_{2}", "N_{2}", scaled, saved, notPlotted, notPrinted, false);
+    h_npt_phiYPhiY = createHistogram(bn + TString("npt_phiYPhiY"), ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}", "y_{2}x#varphi_{2}", "Nxp_{T}", scaled, saved, notPlotted, notPrinted, false);
+    h_ptn_phiYPhiY = createHistogram(bn + TString("ptn_phiYPhiY"), ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}", "y_{2}x#varphi_{2}", "p_{T}xN", scaled, saved, notPlotted, notPrinted, false);
+    h_ptpt_phiYPhiY = createHistogram(bn + TString("ptpt_phiYPhiY"), ac.nBins_phiY, static_cast<double>(0.0), static_cast<double>(ac.nBins_phiY), ac.nBins_phiY, 0.0, static_cast<double>(ac.nBins_phiY), "y_{1}x#varphi_{1}", "y_{2}x#varphi_{2}", "p_{T}xp_{T}", scaled, saved, notPlotted, notPrinted, false);
 #ifdef OPTIMIZEADDBINCONTENT
     /* big histograms are forced to be created without sumw2 structure for it will not be used */
     h_n2_phiYPhiY->SetBit(TH1::kIsNotW);
@@ -151,10 +152,10 @@ void ParticlePairHistos::initialize()
     h_ptpt_phiYPhiY->Sumw2(false);
     TH1::SetDefaultSumw2(defsumw2);
 #endif // OPTIMIZEADDBINCONTENT
-    h_npt_yY        = createHistogram(bn+TString("npt_yY"),       ac.nBins_y,    ac.min_y, ac.max_y, ac.nBins_y, ac.min_y, ac.max_y, "y_{1}","y_{2}", "n x p_{T}",   scaled, saved, notPlotted, notPrinted);
-    h_ptn_yY        = createHistogram(bn+TString("ptn_yY"),       ac.nBins_y,    ac.min_y, ac.max_y, ac.nBins_y, ac.min_y, ac.max_y, "y_{1}","y_{2}", "p_{T} x n",   scaled, saved, notPlotted, notPrinted);
-    h_ptpt_yY       = createHistogram(bn+TString("ptpt_yY"),      ac.nBins_y,    ac.min_y, ac.max_y, ac.nBins_y, ac.min_y, ac.max_y, "y_{1}","y_{2}", "p_{T}xp_{T}", scaled, saved, plotted, notPrinted);
-    }
+    h_npt_yY = createHistogram(bn + TString("npt_yY"), ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_y, ac.min_y, ac.max_y, "y_{1}", "y_{2}", "n x p_{T}", scaled, saved, notPlotted, notPrinted);
+    h_ptn_yY = createHistogram(bn + TString("ptn_yY"), ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_y, ac.min_y, ac.max_y, "y_{1}", "y_{2}", "p_{T} x n", scaled, saved, notPlotted, notPrinted);
+    h_ptpt_yY = createHistogram(bn + TString("ptpt_yY"), ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_y, ac.min_y, ac.max_y, "y_{1}", "y_{2}", "p_{T}xp_{T}", scaled, saved, plotted, notPrinted);
+  }
 
   //    if (ac.fill6D)
   //    {
@@ -164,24 +165,28 @@ void ParticlePairHistos::initialize()
   //    {
   //      h_n2_ptPhiEtaPtPhiEta  = createHistogram(bn+TString("ptpt_phiyptphiy"), ac.nBins_phiEtaPt, 0.0, double(ac.nBins_phiEtaPt), ac.nBins_phiEtaPt, 0.0, double(ac.nBins_phiEtaPt), "#y_{1}x#varphi_{1}xp_{T,1}","y_{2}x#varphi_{2}xp_{T,1}", "N_{2}", scaled, saved, notPlotted, notPrinted);
   //    }
-  if (reportDebug()) cout << "ParticlePairHistos::initialize() Completed." << endl;
+  if (reportDebug())
+    cout << "ParticlePairHistos::initialize() Completed." << endl;
 }
 
-void ParticlePairHistos::fill(Particle & particle1, Particle & particle2, double weight)
+void ParticlePairHistos::fill(Particle& particle1, Particle& particle2, double weight)
 {
-  double pt1   = particle1.pt;
-  double eta1  = particle1.eta;
-  double phi1  = particle1.phi; if (phi1<0) phi1 += TMath::TwoPi();
+  double pt1 = particle1.pt;
+  double eta1 = particle1.eta;
+  double phi1 = particle1.phi;
+  if (phi1 < 0)
+    phi1 += TMath::TwoPi();
 
-  double pt2   = particle2.pt;
-  double eta2  = particle2.eta;
-  double phi2  = particle2.phi; if (phi2<0) phi2 += TMath::TwoPi();
+  double pt2 = particle2.pt;
+  double eta2 = particle2.eta;
+  double phi2 = particle2.phi;
+  if (phi2 < 0)
+    phi2 += TMath::TwoPi();
 
-  AnalysisConfiguration & ac = * (AnalysisConfiguration*) getConfiguration();
-  h_n2_ptPt    ->Fill(pt1,  pt2,  weight);
+  AnalysisConfiguration& ac = *(AnalysisConfiguration*)getConfiguration();
+  h_n2_ptPt->Fill(pt1, pt2, weight);
   // delayed fill h_n2_etaEta  ->Fill(eta1, eta2, weight);
   // delayed fill h_n2_phiPhi  ->Fill(phi1, phi2, weight);
-
 
   // delayed fill h_ptn_etaEta ->Fill(eta1, eta2, weight*pt1);
   // delayed fill h_npt_etaEta ->Fill(eta1, eta2, weight*pt2);
@@ -192,48 +197,48 @@ void ParticlePairHistos::fill(Particle & particle1, Particle & particle2, double
 
   int iPhiEta1 = particle1.ixEtaPhi;
   int iPhiEta2 = particle2.ixEtaPhi;
-  double deta = eta1-eta2;
-  double dphi = ac.getDphiShifted(phi1-phi2);
+  double deta = eta1 - eta2;
+  double dphi = ac.getDphiShifted(phi1 - phi2);
 
   bool wrongix = iPhiEta1 < 0 || iPhiEta2 < 0;
 
   if (!wrongix) {
 #ifdef OPTIMIZEADDBINCONTENT
-    int binno = (iPhiEta2+1)*(h_n2_phiEtaPhiEta->GetNbinsX()+2)+(iPhiEta1+1);
+    int binno = (iPhiEta2 + 1) * (h_n2_phiEtaPhiEta->GetNbinsX() + 2) + (iPhiEta1 + 1);
     double nentries = h_n2_phiEtaPhiEta->GetEntries() + 1;
-    h_n2_phiEtaPhiEta  ->AddBinContent(binno, weight);
-    h_ptn_phiEtaPhiEta ->AddBinContent(binno, weight*pt1);
-    h_npt_phiEtaPhiEta ->AddBinContent(binno, weight*pt2);
-    h_ptpt_phiEtaPhiEta->AddBinContent(binno, weight*pt1*pt2);
+    h_n2_phiEtaPhiEta->AddBinContent(binno, weight);
+    h_ptn_phiEtaPhiEta->AddBinContent(binno, weight * pt1);
+    h_npt_phiEtaPhiEta->AddBinContent(binno, weight * pt2);
+    h_ptpt_phiEtaPhiEta->AddBinContent(binno, weight * pt1 * pt2);
     h_n2_phiEtaPhiEta->SetEntries(nentries);
     h_ptn_phiEtaPhiEta->SetEntries(nentries);
     h_npt_phiEtaPhiEta->SetEntries(nentries);
     h_ptpt_phiEtaPhiEta->SetEntries(nentries);
 
-    binno = h_n2_detaDphi_o->Fill(deta,dphi,weight);
+    binno = h_n2_detaDphi_o->Fill(deta, dphi, weight);
     nentries = h_n2_detaDphi_o->GetEntries();
-    h_ptn_detaDphi_o ->AddBinContent(binno, weight*pt1);
-    h_npt_detaDphi_o ->AddBinContent(binno, weight*pt2);
-    h_ptpt_detaDphi_o->AddBinContent(binno, weight*pt1*pt2);
+    h_ptn_detaDphi_o->AddBinContent(binno, weight * pt1);
+    h_npt_detaDphi_o->AddBinContent(binno, weight * pt2);
+    h_ptpt_detaDphi_o->AddBinContent(binno, weight * pt1 * pt2);
     h_n1n1_detaDphi_o->AddBinContent(binno, weight);
-    h_pt1pt1_detaDphi_o->AddBinContent(binno, weight*pt1*pt2);
-    h_ptn_detaDphi_o ->SetEntries(nentries);
-    h_npt_detaDphi_o ->SetEntries(nentries);
+    h_pt1pt1_detaDphi_o->AddBinContent(binno, weight * pt1 * pt2);
+    h_ptn_detaDphi_o->SetEntries(nentries);
+    h_npt_detaDphi_o->SetEntries(nentries);
     h_ptpt_detaDphi_o->SetEntries(nentries);
     h_n1n1_detaDphi_o->SetEntries(nentries);
     h_pt1pt1_detaDphi_o->SetEntries(nentries);
 #else
-    h_n2_phiEtaPhiEta  ->Fill(iPhiEta1+0.5, iPhiEta2+0.5, weight);
-    h_ptn_phiEtaPhiEta ->Fill(iPhiEta1+0.5, iPhiEta2+0.5, weight*pt1);
-    h_npt_phiEtaPhiEta ->Fill(iPhiEta1+0.5, iPhiEta2+0.5, weight*pt2);
-    h_ptpt_phiEtaPhiEta->Fill(iPhiEta1+0.5, iPhiEta2+0.5, weight*pt1*pt2);
+    h_n2_phiEtaPhiEta->Fill(iPhiEta1 + 0.5, iPhiEta2 + 0.5, weight);
+    h_ptn_phiEtaPhiEta->Fill(iPhiEta1 + 0.5, iPhiEta2 + 0.5, weight * pt1);
+    h_npt_phiEtaPhiEta->Fill(iPhiEta1 + 0.5, iPhiEta2 + 0.5, weight * pt2);
+    h_ptpt_phiEtaPhiEta->Fill(iPhiEta1 + 0.5, iPhiEta2 + 0.5, weight * pt1 * pt2);
 
-    h_n2_detaDphi_o->Fill(deta,dphi,weight);
-    h_ptn_detaDphi_o ->Fill(deta,dphi,weight*pt1);
-    h_npt_detaDphi_o ->Fill(deta,dphi,weight*pt2);
-    h_ptpt_detaDphi_o->Fill(deta,dphi,weight*pt1*pt2);
-    h_n1n1_detaDphi_o->Fill(deta,dphi,weight);
-    h_pt1pt1_detaDphi_o->Fill(deta,dphi,weight*pt1*pt2);
+    h_n2_detaDphi_o->Fill(deta, dphi, weight);
+    h_ptn_detaDphi_o->Fill(deta, dphi, weight * pt1);
+    h_npt_detaDphi_o->Fill(deta, dphi, weight * pt2);
+    h_ptpt_detaDphi_o->Fill(deta, dphi, weight * pt1 * pt2);
+    h_n1n1_detaDphi_o->Fill(deta, dphi, weight);
+    h_pt1pt1_detaDphi_o->Fill(deta, dphi, weight * pt1 * pt2);
 #endif // OPTIMIZEADDBINCONTENT
   }
 
@@ -246,16 +251,12 @@ void ParticlePairHistos::fill(Particle & particle1, Particle & particle2, double
   //        h_n2_ptPhiEtaPtPhiEta->Fill(iPtPhiEta1, iPtPhiEta2, weight);
   //      }
 
-  if (ac.fillY)
-    {
-    double y1    = particle1.y;
-    double y2    = particle2.y;
+  if (ac.fillY) {
 
     // delayed fill h_n2_yY  ->Fill(y1, y2, weight);
     // delayed fill h_ptn_yY ->Fill(y1, y2, weight*pt1);
     // delayed fill h_npt_yY ->Fill(y1, y2, weight*pt2);
     // delayed fill h_ptpt_yY->Fill(y1, y2, weight*pt1*pt2);
-
 
     int iPhiY1 = particle1.ixYPhi;
     int iPhiY2 = particle2.ixYPhi;
@@ -263,21 +264,21 @@ void ParticlePairHistos::fill(Particle & particle1, Particle & particle2, double
 
     if (!wrongix) {
 #ifdef OPTIMIZEADDBINCONTENT
-      int binno = (iPhiY2+1)*(h_n2_phiYPhiY->GetNbinsX()+2)+(iPhiY1+1);
+      int binno = (iPhiY2 + 1) * (h_n2_phiYPhiY->GetNbinsX() + 2) + (iPhiY1 + 1);
       double nentries = h_n2_phiEtaPhiEta->GetEntries() + 1;
-      h_n2_phiYPhiY  ->AddBinContent(binno, weight);
-      h_ptn_phiYPhiY ->AddBinContent(binno, weight*pt1);
-      h_npt_phiYPhiY ->AddBinContent(binno, weight*pt2);
-      h_ptpt_phiYPhiY->AddBinContent(binno, weight*pt1*pt2);
+      h_n2_phiYPhiY->AddBinContent(binno, weight);
+      h_ptn_phiYPhiY->AddBinContent(binno, weight * pt1);
+      h_npt_phiYPhiY->AddBinContent(binno, weight * pt2);
+      h_ptpt_phiYPhiY->AddBinContent(binno, weight * pt1 * pt2);
       h_n2_phiYPhiY->SetEntries(nentries);
       h_ptn_phiYPhiY->SetEntries(nentries);
       h_npt_phiYPhiY->SetEntries(nentries);
       h_ptpt_phiYPhiY->SetEntries(nentries);
 #else
-      h_n2_phiYPhiY  ->Fill(iPhiY1+0.5, iPhiY2+0.5, weight);
-      h_ptn_phiYPhiY ->Fill(iPhiY1+0.5, iPhiY2+0.5, weight*pt1);
-      h_npt_phiYPhiY ->Fill(iPhiY1+0.5, iPhiY2+0.5, weight*pt2);
-      h_ptpt_phiYPhiY->Fill(iPhiY1+0.5, iPhiY2+0.5, weight*pt1*pt2);
+      h_n2_phiYPhiY->Fill(iPhiY1 + 0.5, iPhiY2 + 0.5, weight);
+      h_ptn_phiYPhiY->Fill(iPhiY1 + 0.5, iPhiY2 + 0.5, weight * pt1);
+      h_npt_phiYPhiY->Fill(iPhiY1 + 0.5, iPhiY2 + 0.5, weight * pt2);
+      h_ptpt_phiYPhiY->Fill(iPhiY1 + 0.5, iPhiY2 + 0.5, weight * pt1 * pt2);
 #endif // OPTIMIZEADDBINCONTENT
     }
 
@@ -289,90 +290,78 @@ void ParticlePairHistos::fill(Particle & particle1, Particle & particle2, double
     //          double iPtPhiY2 = 0.1 + double(ac.nBins_phi*ac.nBins_pt*iY2 + ac.nBins_pt*iPhi2 + iPt2);
     //          h_n2_ptPhiYPtPhiY->Fill(iPtPhiY1, iPtPhiY2, weight);
     //        }
-    }
+  }
 
-  if (ac.fillQ3D)
-    {
-    double Qlong, Qside, Qout, Qinv;
-    double Qlong1, Qside1, Qout1;
+  if (ac.fillQ3D) {
+    double Qlong, Qside, Qout;
 
-    double px1   = particle1.px;
-    double py1   = particle1.py;
-    double pz1   = particle1.pz;
-    double e1    = particle1.e;
+    double px1 = particle1.px;
+    double py1 = particle1.py;
+    double pz1 = particle1.pz;
+    double e1 = particle1.e;
 
-    double px2   = particle2.px;
-    double py2   = particle2.py;
-    double pz2   = particle2.pz;
-    double e2    = particle2.e;
+    double px2 = particle2.px;
+    double py2 = particle2.py;
+    double pz2 = particle2.pz;
+    double e2 = particle2.e;
 
-    double pt,s,Mlong,roots;
-    double ptot[4],q[4];
-    const int g[4]={1,-1,-1,-1};
-    int alpha;
-    Qinv=0.0;
-    s=0.0;
-    ptot[0] = e1  + e2;
+    double pt, s, Mlong, roots;
+    double ptot[4], q[4];
+    ptot[0] = e1 + e2;
     ptot[1] = px1 + px2;
     ptot[2] = py1 + py2;
     ptot[3] = pz1 + pz2;
-    q[0] = e1  - e2;
+    q[0] = e1 - e2;
     q[1] = px1 - px2;
     q[2] = py1 - py2;
     q[3] = pz1 - pz2;
-    s = ptot[0]*ptot[0] - ptot[1]*ptot[1] - ptot[2]*ptot[2] - ptot[3]*ptot[3];
-    Qinv = -(q[0]*q[0] - q[1]*q[1] - q[2]*q[2] - q[3]*q[3]);
-    pt=sqrt(ptot[1]*ptot[1]+ptot[2]*ptot[2]);
-    Mlong=sqrt(s+pt*pt);
-    roots=sqrt(s);
+    s = ptot[0] * ptot[0] - ptot[1] * ptot[1] - ptot[2] * ptot[2] - ptot[3] * ptot[3];
+    pt = sqrt(ptot[1] * ptot[1] + ptot[2] * ptot[2]);
+    Mlong = sqrt(s + pt * pt);
+    roots = sqrt(s);
 
-    if (pt>0)
-      {
-      Qside = (ptot[1]*q[2]-ptot[2]*q[1])/pt;
-      Qlong = (ptot[0]*q[3]-ptot[3]*q[0])/Mlong;
-      Qout  = (roots/Mlong)*(ptot[1]*q[1]+ptot[2]*q[2])/pt;
-      }
-    else
-      {
+    if (pt > 0) {
+      Qside = (ptot[1] * q[2] - ptot[2] * q[1]) / pt;
+      Qlong = (ptot[0] * q[3] - ptot[3] * q[0]) / Mlong;
+      Qout = (roots / Mlong) * (ptot[1] * q[1] + ptot[2] * q[2]) / pt;
+    } else {
       Qlong = q[3];
       Qside = q[2];
-      Qout  = q[1];
-      }
-
-    h_n2_Q3D->Fill(Qlong, Qside, Qout,weight);
+      Qout = q[1];
     }
 
+    h_n2_Q3D->Fill(Qlong, Qside, Qout, weight);
+  }
 }
 
-// complete filling the addicional histograms by projecting the 
+// complete filling the addicional histograms by projecting the
 // higher dimensional ones
 void ParticlePairHistos::completeFill()
 {
-  AnalysisConfiguration & ac = * (AnalysisConfiguration*) getConfiguration();
+  AnalysisConfiguration& ac = *(AnalysisConfiguration*)getConfiguration();
 
   int nbinseta = h_n2_etaEta->GetNbinsX();
   int nbinsphi = h_n2_phiPhi->GetNbinsX();
 
-  project_n2XYXY_n2XX(h_n2_phiEtaPhiEta,h_n2_etaEta,nbinseta,nbinsphi);
-  project_n2XYXY_n2YY(h_n2_phiEtaPhiEta,h_n2_phiPhi,nbinseta,nbinsphi);
+  project_n2XYXY_n2XX(h_n2_phiEtaPhiEta, h_n2_etaEta, nbinseta, nbinsphi);
+  project_n2XYXY_n2YY(h_n2_phiEtaPhiEta, h_n2_phiPhi, nbinseta, nbinsphi);
 
-  project_n2XYXY_n2XX(h_ptn_phiEtaPhiEta,h_ptn_etaEta,nbinseta,nbinsphi);
-  project_n2XYXY_n2XX(h_npt_phiEtaPhiEta,h_npt_etaEta,nbinseta,nbinsphi);
-  project_n2XYXY_n2XX(h_ptpt_phiEtaPhiEta,h_ptpt_etaEta,nbinseta,nbinsphi);
+  project_n2XYXY_n2XX(h_ptn_phiEtaPhiEta, h_ptn_etaEta, nbinseta, nbinsphi);
+  project_n2XYXY_n2XX(h_npt_phiEtaPhiEta, h_npt_etaEta, nbinseta, nbinsphi);
+  project_n2XYXY_n2XX(h_ptpt_phiEtaPhiEta, h_ptpt_etaEta, nbinseta, nbinsphi);
 
-  project_n2XYXY_n2YY(h_ptn_phiEtaPhiEta,h_ptn_phiPhi,nbinseta,nbinsphi);
-  project_n2XYXY_n2YY(h_npt_phiEtaPhiEta,h_npt_phiPhi,nbinseta,nbinsphi);
-  project_n2XYXY_n2YY(h_ptpt_phiEtaPhiEta,h_ptpt_phiPhi,nbinseta,nbinsphi);
+  project_n2XYXY_n2YY(h_ptn_phiEtaPhiEta, h_ptn_phiPhi, nbinseta, nbinsphi);
+  project_n2XYXY_n2YY(h_npt_phiEtaPhiEta, h_npt_phiPhi, nbinseta, nbinsphi);
+  project_n2XYXY_n2YY(h_ptpt_phiEtaPhiEta, h_ptpt_phiPhi, nbinseta, nbinsphi);
 
-  if (ac.fillY)
-    {
-      int nbinsy = h_n2_yY->GetNbinsX();
+  if (ac.fillY) {
+    int nbinsy = h_n2_yY->GetNbinsX();
 
-      project_n2XYXY_n2XX(h_n2_phiYPhiY,h_n2_yY,nbinsy,nbinsphi);
-      project_n2XYXY_n2XX(h_ptn_phiYPhiY,h_ptn_yY,nbinsy,nbinsphi);
-      project_n2XYXY_n2XX(h_npt_phiYPhiY,h_npt_yY,nbinsy,nbinsphi);
-      project_n2XYXY_n2XX(h_ptpt_phiYPhiY,h_ptpt_yY,nbinsy,nbinsphi);
-    }
+    project_n2XYXY_n2XX(h_n2_phiYPhiY, h_n2_yY, nbinsy, nbinsphi);
+    project_n2XYXY_n2XX(h_ptn_phiYPhiY, h_ptn_yY, nbinsy, nbinsphi);
+    project_n2XYXY_n2XX(h_npt_phiYPhiY, h_npt_yY, nbinsy, nbinsphi);
+    project_n2XYXY_n2XX(h_ptpt_phiYPhiY, h_ptpt_yY, nbinsy, nbinsphi);
+  }
 }
 
 //  void fill(TLorentzVector & p1, TLorentzVector & p2, double weight)
@@ -508,54 +497,50 @@ void ParticlePairHistos::completeFill()
 //  }
 
 //________________________________________________________________________
-void ParticlePairHistos::loadHistograms(TFile * inputFile)
+void ParticlePairHistos::loadHistograms(TFile* inputFile)
 {
-  if (!inputFile)
-    {
+  if (!inputFile) {
     cout << "-Fatal- Attempting to load ParticleHistos from an invalid file pointer" << endl;
     return;
-    }
-  AnalysisConfiguration & ac = *(AnalysisConfiguration*) getConfiguration();
-   TString bn = getHistoBaseName();
-  h_n2_ptPt           = loadH2(inputFile, bn+TString("n2_ptPt"),true);
-  h_n2_etaEta         = loadH2(inputFile, bn+TString("n2_etaEta"),true);
-  h_n2_phiPhi         = loadH2(inputFile, bn+TString("n2_phiPhi"),true);
-  h_n2_phiEtaPhiEta   = loadH2(inputFile, bn+TString("n2_phiEtaPhiEta"),true);
-  h_npt_phiEtaPhiEta  = loadH2(inputFile, bn+TString("npt_phiEtaPhiEta"),true);
-  h_ptn_phiEtaPhiEta  = loadH2(inputFile, bn+TString("ptn_phiEtaPhiEta"),true);
-  h_ptpt_phiEtaPhiEta = loadH2(inputFile, bn+TString("ptpt_phiEtaPhiEta"),true);
-  h_npt_etaEta        = loadH2(inputFile, bn+TString("npt_etaEta"),true);
-  h_ptn_etaEta        = loadH2(inputFile, bn+TString("ptn_etaEta"),true);
-  h_ptpt_etaEta       = loadH2(inputFile, bn+TString("ptpt_etaEta"),true);
-  h_npt_phiPhi        = loadH2(inputFile, bn+TString("npt_phiPhi"),true);
-  h_ptn_phiPhi        = loadH2(inputFile, bn+TString("ptn_phiPhi"),true);
-  h_ptpt_phiPhi       = loadH2(inputFile, bn+TString("ptpt_phiPhi"),true);
-  h_n2_detaDphi_o       = loadH2(inputFile, bn+TString("n2_detaDphi_o"),true);
-  h_npt_detaDphi_o      = loadH2(inputFile, bn+TString("npt_detaDphi_o"),true);
-  h_ptn_detaDphi_o      = loadH2(inputFile, bn+TString("ptn_detaDphi_o"),true);
-  h_ptpt_detaDphi_o     = loadH2(inputFile, bn+TString("ptpt_detaDphi_o"),true);
-  h_n1n1_detaDphi_o     = loadH2(inputFile, bn+TString("n1n1_detaDphi_o"),true);
-  h_pt1pt1_detaDphi_o   = loadH2(inputFile, bn+TString("pt1pt1_detaDphi_o"),true);
+  }
+  AnalysisConfiguration& ac = *(AnalysisConfiguration*)getConfiguration();
+  TString bn = getHistoBaseName();
+  h_n2_ptPt = loadH2(inputFile, bn + TString("n2_ptPt"), true);
+  h_n2_etaEta = loadH2(inputFile, bn + TString("n2_etaEta"), true);
+  h_n2_phiPhi = loadH2(inputFile, bn + TString("n2_phiPhi"), true);
+  h_n2_phiEtaPhiEta = loadH2(inputFile, bn + TString("n2_phiEtaPhiEta"), true);
+  h_npt_phiEtaPhiEta = loadH2(inputFile, bn + TString("npt_phiEtaPhiEta"), true);
+  h_ptn_phiEtaPhiEta = loadH2(inputFile, bn + TString("ptn_phiEtaPhiEta"), true);
+  h_ptpt_phiEtaPhiEta = loadH2(inputFile, bn + TString("ptpt_phiEtaPhiEta"), true);
+  h_npt_etaEta = loadH2(inputFile, bn + TString("npt_etaEta"), true);
+  h_ptn_etaEta = loadH2(inputFile, bn + TString("ptn_etaEta"), true);
+  h_ptpt_etaEta = loadH2(inputFile, bn + TString("ptpt_etaEta"), true);
+  h_npt_phiPhi = loadH2(inputFile, bn + TString("npt_phiPhi"), true);
+  h_ptn_phiPhi = loadH2(inputFile, bn + TString("ptn_phiPhi"), true);
+  h_ptpt_phiPhi = loadH2(inputFile, bn + TString("ptpt_phiPhi"), true);
+  h_n2_detaDphi_o = loadH2(inputFile, bn + TString("n2_detaDphi_o"), true);
+  h_npt_detaDphi_o = loadH2(inputFile, bn + TString("npt_detaDphi_o"), true);
+  h_ptn_detaDphi_o = loadH2(inputFile, bn + TString("ptn_detaDphi_o"), true);
+  h_ptpt_detaDphi_o = loadH2(inputFile, bn + TString("ptpt_detaDphi_o"), true);
+  h_n1n1_detaDphi_o = loadH2(inputFile, bn + TString("n1n1_detaDphi_o"), true);
+  h_pt1pt1_detaDphi_o = loadH2(inputFile, bn + TString("pt1pt1_detaDphi_o"), true);
 
-  if (ac.fillY)
-    {
-    h_n2_yY         = loadH2(inputFile, bn+TString("n2_yY"),true);
-    h_n2_phiYPhiY   = loadH2(inputFile, bn+TString("n2_phiYPhiY"),true);
-    h_npt_phiYPhiY  = loadH2(inputFile, bn+TString("npt_phiYPhiY"),true);
-    h_ptn_phiYPhiY  = loadH2(inputFile, bn+TString("ptn_phiYPhiY"),true);
-    h_ptpt_phiYPhiY = loadH2(inputFile, bn+TString("ptpt_phiYPhiY"),true);
-    h_npt_yY        = loadH2(inputFile, bn+TString("npt_yY"),true);
-    h_ptn_yY        = loadH2(inputFile, bn+TString("ptn_yY"),true);
-    h_ptpt_yY       = loadH2(inputFile, bn+TString("ptpt_yY"),true);
+  if (ac.fillY) {
+    h_n2_yY = loadH2(inputFile, bn + TString("n2_yY"), true);
+    h_n2_phiYPhiY = loadH2(inputFile, bn + TString("n2_phiYPhiY"), true);
+    h_npt_phiYPhiY = loadH2(inputFile, bn + TString("npt_phiYPhiY"), true);
+    h_ptn_phiYPhiY = loadH2(inputFile, bn + TString("ptn_phiYPhiY"), true);
+    h_ptpt_phiYPhiY = loadH2(inputFile, bn + TString("ptpt_phiYPhiY"), true);
+    h_npt_yY = loadH2(inputFile, bn + TString("npt_yY"), true);
+    h_ptn_yY = loadH2(inputFile, bn + TString("ptn_yY"), true);
+    h_ptpt_yY = loadH2(inputFile, bn + TString("ptpt_yY"), true);
+  }
+  if (ac.fill6D) {
+    h_n2_ptPhiEtaPtPhiEta = loadH2(inputFile, bn + TString("n2_ptPhiEtaPtPhiEta"), true);
+    if (ac.fillY) {
+      h_n2_ptPhiYPtPhiY = loadH2(inputFile, bn + TString("n2_ptPhiYPtPhiY"), true);
     }
-  if (ac.fill6D)
-    {
-    h_n2_ptPhiEtaPtPhiEta = loadH2(inputFile, bn+TString("n2_ptPhiEtaPtPhiEta"),true);
-    if (ac.fillY)
-      {
-      h_n2_ptPhiYPtPhiY = loadH2(inputFile, bn+TString("n2_ptPhiYPtPhiY"),true);
-      }
-    }
+  }
   /* the histograms are not owned */
   bOwnTheHistograms = false;
   return;

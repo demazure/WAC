@@ -1,8 +1,4 @@
 #include "UrQMDEvent.hpp"
 
 ClassImp(UrQMDParticle)
-ClassImp(UrQMDEvent)
-
-
-
-
+  ClassImp(UrQMDEvent)

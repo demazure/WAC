@@ -14,16 +14,18 @@
 
 class EventFilter
 {
-public:
+ public:
+  enum EventSelection { MinBias,
+                        Centrality,
+                        Multiplicity,
+                        ImpactParameter,
+                        Other };
 
-  enum EventSelection   { MinBias, Centrality, Multiplicity, ImpactParameter, Other };
-
-
-   EventFilter(EventSelection eventSelectionRequested,
-               double minimum,
-               double maximum);
+  EventFilter(EventSelection eventSelectionRequested,
+              double minimum,
+              double maximum);
   virtual ~EventFilter();
-  virtual bool accept(Event & event);
+  virtual bool accept(Event& event);
 
   TString getName();
   TString getTitle();
@@ -32,7 +34,7 @@ public:
   double minimum;
   double maximum;
 
-  ClassDef(EventFilter,0)
+  ClassDef(EventFilter, 0)
 };
 
 #endif /* WAC_EventFilter */

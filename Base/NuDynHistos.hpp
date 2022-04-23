@@ -13,20 +13,19 @@
 
 class NuDynHistos : public Histograms
 {
-public:
-
-  NuDynHistos(const TString & collectionName,
-              int  * identicalUsed,
-                      AnalysisConfiguration * analysisConfiguration,
-                      LogLevel  debugLevel);
-  NuDynHistos(TFile * inputFile,
-                      const TString & collectionName,
-                      AnalysisConfiguration * analysisConfiguration,
-                      LogLevel  debugLevel);
+ public:
+  NuDynHistos(const TString& collectionName,
+              int* identicalUsed,
+              AnalysisConfiguration* analysisConfiguration,
+              LogLevel debugLevel);
+  NuDynHistos(TFile* inputFile,
+              const TString& collectionName,
+              AnalysisConfiguration* analysisConfiguration,
+              LogLevel debugLevel);
   virtual ~NuDynHistos();
   virtual void createHistograms();
-  virtual void loadHistograms(TFile * inputFile);
-  virtual void fill(double mult, double cent, double * n,  double weight);
+  virtual void loadHistograms(TFile* inputFile);
+  virtual void fill(double mult, double cent, double* n, double weight);
 
   virtual int sameFilter(int i1, int i2);
 
@@ -56,33 +55,29 @@ public:
   // etc
 
   // Min bias all included
-  TH1 * h_events;
-  TProfile ** h_f1;
-  TProfile ** h_f2;
-  TProfile ** h_f3;
-  TProfile ** h_f4;
-
+  TH1* h_events;
+  TProfile** h_f1;
+  TProfile** h_f2;
+  TProfile** h_f3;
+  TProfile** h_f4;
 
   // vs Mult measured in fiducial
-   TH1 * h_events_vsMult;
-  TProfile ** h_f1_vsMult;
-  TProfile ** h_f2_vsMult;
-  TProfile ** h_f3_vsMult;
-  TProfile ** h_f4_vsMult;
+  TH1* h_events_vsMult;
+  TProfile** h_f1_vsMult;
+  TProfile** h_f2_vsMult;
+  TProfile** h_f3_vsMult;
+  TProfile** h_f4_vsMult;
 
   // vs Centrality
-  TH1 * h_events_vsCent;
-  TProfile ** h_f1_vsCent;
-  TProfile ** h_f2_vsCent;
-  TProfile ** h_f3_vsCent;
-  TProfile ** h_f4_vsCent;
+  TH1* h_events_vsCent;
+  TProfile** h_f1_vsCent;
+  TProfile** h_f2_vsCent;
+  TProfile** h_f3_vsCent;
+  TProfile** h_f4_vsCent;
 
-  int * identical;
+  int* identical;
 
-  ClassDef(NuDynHistos,0)
+  ClassDef(NuDynHistos, 0)
 };
 
 #endif /* WAC_NuDynHistos  */
-
-
-

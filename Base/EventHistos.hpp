@@ -13,30 +13,28 @@
 
 class EventHistos : public Histograms
 {
-public:
-  
-  
+ public:
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   // CTOR
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  EventHistos(const TString & name,
-              AnalysisConfiguration * configuration,
-              LogLevel  debugLevel);
-  EventHistos(TFile * inputFile,
-              const TString & name,
-              AnalysisConfiguration * configuration,
-              LogLevel  debugLevel);
+  EventHistos(const TString& name,
+              AnalysisConfiguration* configuration,
+              LogLevel debugLevel);
+  EventHistos(TFile* inputFile,
+              const TString& name,
+              AnalysisConfiguration* configuration,
+              LogLevel debugLevel);
   virtual ~EventHistos();
   virtual void initialize();
-  void loadHistograms(TFile * inputFile);
+  void loadHistograms(TFile* inputFile);
   void fill(double mult, double weight);
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Data Members -- Computed
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  TH1 * h_nPartTot;
+  TH1* h_nPartTot;
 
-    ClassDef(EventHistos,0)
+  ClassDef(EventHistos, 0)
 };
 
 #endif /* WAC_EventHistos */

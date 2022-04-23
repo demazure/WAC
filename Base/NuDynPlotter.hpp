@@ -6,33 +6,32 @@
 
 class NuDynPlotter : public Plotter
 {
-public:
-  
+ public:
   NuDynPlotter();
   virtual ~NuDynPlotter();
-  void makePlots(const TString & canvasNameBase,
-                 NuDynHistos * nuDynHistosUsed,
-                 NuDynDerivedHistos * nuDynDerivedHistosUsed,
-                 CanvasConfiguration * canvasConfigurationUsed,
-                 GraphConfiguration  ** graphConfigurationsUsed);
+  void makePlots(const TString& canvasNameBase,
+                 NuDynHistos* nuDynHistosUsed,
+                 NuDynDerivedHistos* nuDynDerivedHistosUsed,
+                 CanvasConfiguration* canvasConfigurationUsed,
+                 GraphConfiguration** graphConfigurationsUsed);
 
-  void makeComparisonPlots(const TString & canvasNameBase,
-                           CanvasConfiguration * canvasConfiguration,
+  void makeComparisonPlots(const TString& canvasNameBase,
+                           CanvasConfiguration* canvasConfiguration,
                            int nGraphs,
-                           NuDynHistos ** nuDynHistos,
-                           NuDynDerivedHistos ** nuDynDerivedHistos,
-                           TString ** histLabels,
-                           GraphConfiguration  ** graphConfigurations);
+                           NuDynHistos** nuDynHistos,
+                           NuDynDerivedHistos** nuDynDerivedHistos,
+                           TString** histLabels,
+                           GraphConfiguration** graphConfigurations);
 
-  void makeNudynComparisonPlots(const TString & canvasNameBase,
-                                CanvasConfiguration * canvasConfiguration,
+  void makeNudynComparisonPlots(const TString& canvasNameBase,
+                                CanvasConfiguration* canvasConfiguration,
                                 int nGraphs,
-                                NuDynHistos ** nuDynHistos,
-                                NuDynDerivedHistos ** nuDynDerivedHistos,
-                                TString ** histLabels,
-                                GraphConfiguration  ** graphConfigurations);
+                                NuDynHistos** nuDynHistos,
+                                NuDynDerivedHistos** nuDynDerivedHistos,
+                                TString** histLabels,
+                                GraphConfiguration** graphConfigurations);
 
-  ClassDef(NuDynPlotter,0)
+  ClassDef(NuDynPlotter, 0)
 };
 
 #endif /* WAC_NuDynPlotter */

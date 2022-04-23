@@ -26,24 +26,23 @@
 
 class TwoPartCorrelationAnalyzer : public Task
 {
-public:
-
+ public:
   //////////////////////////////////////////////////////////////
   // CTOR
   //////////////////////////////////////////////////////////////
-  TwoPartCorrelationAnalyzer(const TString &  name,
-                             TaskConfiguration * configuration,
-                             Event * event,
-                             EventFilter * eventFilter,
-                             ParticleFilter * particleFilter1,
-                             ParticleFilter * particleFilter2);
+  TwoPartCorrelationAnalyzer(const TString& name,
+                             TaskConfiguration* configuration,
+                             Event* event,
+                             EventFilter* eventFilter,
+                             ParticleFilter* particleFilter1,
+                             ParticleFilter* particleFilter2);
   virtual ~TwoPartCorrelationAnalyzer();
   virtual void execute();
   virtual void createHistograms();
-  virtual void loadHistograms(TFile * inputFile);
-  virtual void loadBaseHistograms(TFile * inputFile);
-  virtual void saveHistograms(TFile * outputFile);
-  virtual void addHistogramsToExtList(TList *list, bool all=false);
+  virtual void loadHistograms(TFile* inputFile);
+  virtual void loadBaseHistograms(TFile* inputFile);
+  virtual void saveHistograms(TFile* outputFile);
+  virtual void addHistogramsToExtList(TList* list, bool all = false);
   virtual void scaleHistograms(double factor);
   virtual void calculateDerivedHistograms();
 
@@ -51,28 +50,26 @@ public:
   // Data Members
   //////////////////////////////////////////////////////////////
 
-  EventFilter * eventFilter;
-  ParticleFilter * particleFilter1;
-  ParticleFilter * particleFilter2;
+  EventFilter* eventFilter;
+  ParticleFilter* particleFilter1;
+  ParticleFilter* particleFilter2;
 
   TString partName1;
   TString partName2;
 
+  EventHistos* event_Histos;
+  ParticleHistos* particle1_Histos;
+  ParticleHistos* particle2_Histos;
+  ParticlePairHistos* pair11_Histos;
+  ParticlePairHistos* pair22_Histos;
+  ParticlePairHistos* pair12_Histos;
+  ParticlePairDerivedHistos* pair11_DerivedHistos;
+  ParticlePairDerivedHistos* pair22_DerivedHistos;
+  ParticlePairDerivedHistos* pair12_DerivedHistos;
+  ParticlePairCombinedHistos* pair12_CIHistos;
+  ParticlePairCombinedHistos* pair12_CDHistos;
 
-  EventHistos                * event_Histos;
-  ParticleHistos             * particle1_Histos;
-  ParticleHistos             * particle2_Histos;
-  ParticlePairHistos         * pair11_Histos;
-  ParticlePairHistos         * pair22_Histos;
-  ParticlePairHistos         * pair12_Histos;
-  ParticlePairDerivedHistos  * pair11_DerivedHistos;
-  ParticlePairDerivedHistos  * pair22_DerivedHistos;
-  ParticlePairDerivedHistos  * pair12_DerivedHistos;
-  ParticlePairCombinedHistos * pair12_CIHistos;
-  ParticlePairCombinedHistos * pair12_CDHistos;
-
-   ClassDef(TwoPartCorrelationAnalyzer,0)
+  ClassDef(TwoPartCorrelationAnalyzer, 0)
 };
-
 
 #endif /* WAC_TwoPartCorrelationAnalyzer */
