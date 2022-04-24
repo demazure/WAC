@@ -43,28 +43,25 @@ pythia8->ReadString("HardQCD:all = on");
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 class PythiaConfiguration : public TaskConfiguration
 {
-public:
-  
-  PythiaConfiguration(int    beam,
-                      int    target,
+ public:
+  PythiaConfiguration(int beam,
+                      int target,
                       double energy,
-                      int    nOptions,
-                      TString ** options);
-  virtual ~PythiaConfiguration(){}
-  void printConfiguration(ostream & os);
+                      int nOptions,
+                      TString** options);
+  virtual ~PythiaConfiguration() {}
+  void printConfiguration(ostream& os);
 
   ////////////////////////////////////////////////////
   // Data Members
   ////////////////////////////////////////////////////
-  int    beam;  // PDG Code   proton is 2212
-  int    target;
+  int beam; // PDG Code   proton is 2212
+  int target;
   double energy; // in GeV
-  int    nOptions;
-  TString ** options;
+  int nOptions;
+  TString** options;
 
-
-
-ClassDef(PythiaConfiguration,0)
+  ClassDef(PythiaConfiguration, 0)
 };
 
 #endif /* WAC_PythiaConfiguration */

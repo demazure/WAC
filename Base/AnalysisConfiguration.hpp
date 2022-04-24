@@ -65,9 +65,9 @@ class AnalysisConfiguration : public TaskConfiguration
   double max_y;
   double range_y;
   int nBins_phi;
-  double min_phi;
-  double max_phi;
-  double range_phi;
+  float min_phi;
+  float max_phi;
+  float range_phi;
   int nBins_phiEta;
   int nBins_phiEtaPt;
   int nBins_phiY;

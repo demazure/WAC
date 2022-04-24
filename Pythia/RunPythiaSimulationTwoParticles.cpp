@@ -6,6 +6,7 @@
 #include <fstream>
 #include <TStyle.h>
 #include <TROOT.h>
+#include <TMath.h>
 #include "Event.hpp"
 #include "AnalysisConfiguration.hpp"
 #include "TwoPartCorrelationAnalyzer.hpp"
@@ -14,17 +15,16 @@
 #include "ParticleFilter.hpp"
 #include "PythiaConfiguration.hpp"
 #include "PythiaEventGenerator.hpp"
-#include "NuDynTask.hpp"
+#include "TwoPartCorrelationAnalyzer.hpp"
+//#include <time.h>
 
 int main()
 {
   time_t begin, end; // time_t is a datatype to store time values.
   time(&begin);      // note time before execution
-  cout << "<INFO> PYTHIA Model Analysis - Starting" << endl;
 
-  //  long nEventsRequested = 100;
-  long nEventsRequested = 1000;
-  int nEventsReport = 100000;
+  long nEventsRequested = 1000000;
+  int nEventsReport = 10000;
 
   // ==========================
   // Event Section
@@ -53,8 +53,8 @@ int main()
   ParticleFilter* particleFilterGen = new ParticleFilter(ParticleFilter::Hadron,
                                                          ParticleFilter::Charged,
                                                          0.2, 100.0,
-                                                         -1.0, 1.0,
-                                                         -5.0, 5.0);
+                                                         -6.0, 6.0,
+                                                         -10.0, 10.0);
   Task* generator = new PythiaEventGenerator("PYTHIA", pc, event, eventFilterGen, particleFilterGen);
 
   // ==========================
@@ -63,8 +63,8 @@ int main()
   AnalysisConfiguration* ac = new AnalysisConfiguration("PYTHIA", "PYTHIA", "1.0");
   ac->loadHistograms = false;
   ac->createHistograms = true;
-  ac->scaleHistograms = true;
-  ac->calculateDerivedHistograms = true;
+  ac->scaleHistograms = false;
+  ac->calculateDerivedHistograms = false;
   ac->saveHistograms = true;
   ac->resetHistograms = false;
   ac->clearHistograms = false;
@@ -72,51 +72,46 @@ int main()
   ac->inputPath = "Input/";
   ac->rootInputFileName = "";
   ac->outputPath = "Output/";
-  ac->rootOuputFileName = "PYTHIA_softOnHardOff_NuDyn_";
+  ac->rootOuputFileName = "PYTHIA_softOnHardOff_Pairs_";
+  ac->histoBaseName = "TEST";
 
-  ac->nBins_pt = 40;
+  ac->nBins_pt = 28;
   ac->min_pt = 0.2;
-  ac->max_pt = 2.0;
+  ac->max_pt = 3.0;
   ac->nBins_eta = 20;
-  ac->min_eta = -2;
-  ac->max_eta = 2;
+  ac->min_eta = -1;
+  ac->max_eta = 1;
   ac->nBins_y = 20;
   ac->min_y = -2;
   ac->max_y = 2;
   ac->nBins_phi = 36;
   ac->min_phi = 0.0;
-  ac->max_phi = 2.0 * 3.1415927;
+  ac->max_phi = float(TMath::TwoPi());
 
-  ac->nuDynVsMult = true;
-  ac->nuDynVsCent = false;
-  ac->nBins_mult = 100;
-  ac->min_mult = 0.0;
-  ac->max_mult = 200.0;
-  ac->nBins_cent = 20;
-  ac->min_cent = 0.0;
-  ac->max_cent = 100.0;
+  ac->fillPairs = true;
+  ac->fill3D = false;
+  ac->fill6D = false;
+  ac->fillQ3D = false;
+  ac->fillY = false;
 
-  EventFilter* eventFilter = new EventFilter(EventFilter::MinBias, 0.0, 0.0);
-  ParticleFilter* particleFilter_HP = new ParticleFilter(ParticleFilter::Hadron, ParticleFilter::Positive, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y);
-  ParticleFilter* particleFilter_HM = new ParticleFilter(ParticleFilter::Hadron, ParticleFilter::Negative, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y);
-  ParticleFilter* particleFilter_PiP = new ParticleFilter(ParticleFilter::Pion, ParticleFilter::Positive, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y);
-  ParticleFilter* particleFilter_PiM = new ParticleFilter(ParticleFilter::Pion, ParticleFilter::Negative, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y);
-  ParticleFilter* particleFilter_KP = new ParticleFilter(ParticleFilter::Kaon, ParticleFilter::Positive, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y);
-  ParticleFilter* particleFilter_KM = new ParticleFilter(ParticleFilter::Kaon, ParticleFilter::Negative, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y);
-  ParticleFilter* particleFilter_PP = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Positive, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y);
-  ParticleFilter* particleFilter_PM = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y);
-
-  int nAnalysisTasks = 4;
+  TString taskName;
+  int nAnalysisTasks = 20;
   Task** analysisTasks = new Task*[nAnalysisTasks];
 
-  analysisTasks[0] = new NuDynTask(ac->rootOuputFileName + "HPHPHPHP", ac, event, eventFilter, particleFilter_HP, particleFilter_HP, particleFilter_HP, particleFilter_HP);
-  analysisTasks[1] = new NuDynTask(ac->rootOuputFileName + "HPHPHPHM", ac, event, eventFilter, particleFilter_HP, particleFilter_HP, particleFilter_HP, particleFilter_HM);
-  analysisTasks[2] = new NuDynTask(ac->rootOuputFileName + "HPHPHMHM", ac, event, eventFilter, particleFilter_HP, particleFilter_HP, particleFilter_HM, particleFilter_HM);
-  analysisTasks[3] = new NuDynTask(ac->rootOuputFileName + "HPHMHMHM", ac, event, eventFilter, particleFilter_HP, particleFilter_HM, particleFilter_HM, particleFilter_HM);
+  EventFilter* eventFilter = new EventFilter(EventFilter::MinBias, 0.0, 0.0);
+  int nParticleFilters = 2;
+  ParticleFilter** particleFilters = new ParticleFilter*[nParticleFilters];
+  particleFilters[0] = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Positive, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y);
+  particleFilters[1] = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y);
+
+  int iTask = 0;
+  analysisTasks[iTask++] = new TwoPartCorrelationAnalyzer("NarrowPPPM", ac, event, eventFilter, particleFilters[0], particleFilters[1]); // P+ vs P-
+  nAnalysisTasks = iTask;
 
   // ==========================
   // Event Loop
   // ==========================
+
   EventLoop* eventLoop = new EventLoop();
   eventLoop->addTask(generator);
   for (int iAnalysisTask = 0; iAnalysisTask < nAnalysisTasks; iAnalysisTask++) {
@@ -124,13 +119,8 @@ int main()
   }
   eventLoop->run(nEventsRequested, nEventsReport);
 
-  cout << "<INFO> PYTHIA Analysis - Completed" << endl;
+  cout << "<INFO> PYTHIA Model Analysis - Pair Differential Correlations Histograms  - Completed" << endl;
   time(&end); // note time after execution
   double difference = difftime(end, begin);
   cout << "<INFO> in " << difference << " seconds";
 }
-
-//  TwoPartCorrelationAnalyzer  * ana1 = new TwoPartCorrelationAnalyzer ("PYTHIA_TPCA_ALL",  ac,  event, eventFilter,particleFilter_HP,particleFilter_HM);
-//  TwoPartCorrelationAnalyzer  * ana2 = new TwoPartCorrelationAnalyzer ("PYTHIA_TPCA_PiPi", ac,  event, eventFilter,particleFilter_PiP,particleFilter_PiM);
-//  TwoPartCorrelationAnalyzer  * ana3 = new TwoPartCorrelationAnalyzer ("PYTHIA_TPCA_KK",   ac,  event, eventFilter,particleFilter_KP,particleFilter_KM);
-//  TwoPartCorrelationAnalyzer  * ana4 = new TwoPartCorrelationAnalyzer ("PYTHIA_TPCA_PP",   ac,  event, eventFilter,particleFilter_PP,particleFilter_PM);

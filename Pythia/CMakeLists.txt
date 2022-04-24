@@ -19,8 +19,13 @@ add_executable(RunPythiaSimulationSingleParticles RunPythiaSimulationSingleParti
 target_include_directories(RunPythiaSimulationSingleParticles PUBLIC Base WacPythia ${EXTRA_INCLUDES})
 target_link_libraries(RunPythiaSimulationSingleParticles Base WacPythia Base EG PYTHIA8 EGPYTHIA8 ${ROOT_LIBRARIES} ${EXTRA_LIBS} ${CMAKE_DL_LIBS})
 
+add_executable(RunPythiaSimulationTwoParticles RunPythiaSimulationTwoParticles.cpp)
+target_include_directories(RunPythiaSimulationTwoParticles PUBLIC Base WacPythia ${EXTRA_INCLUDES})
+target_link_libraries(RunPythiaSimulationTwoParticles Base WacPythia Base EG PYTHIA8 EGPYTHIA8 ${ROOT_LIBRARIES} ${EXTRA_LIBS} ${CMAKE_DL_LIBS})
+
 install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/libPythia.rootmap" "${CMAKE_CURRENT_BINARY_DIR}/libPythia_rdict.pcm" DESTINATION "$ENV{WAC_LIB}")
 install(TARGETS WacPythia  LIBRARY DESTINATION "$ENV{WAC_LIB}") 
 install(TARGETS RunPythiaSimulation DESTINATION "$ENV{WAC_BIN}") 
 install(TARGETS RunPythiaSimulationSingleParticles DESTINATION "$ENV{WAC_BIN}") 
+install(TARGETS RunPythiaSimulationTwoParticles DESTINATION "$ENV{WAC_BIN}")
 

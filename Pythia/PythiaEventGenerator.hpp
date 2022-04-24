@@ -18,28 +18,27 @@
 
 class PythiaEventGenerator : public Task
 {
-public:
-
-  PythiaEventGenerator(const TString & name,
-                  TaskConfiguration * configuration,
-                  Event * event,
-                  EventFilter * ef,
-                  ParticleFilter * pf);
+ public:
+  PythiaEventGenerator(const TString& name,
+                       TaskConfiguration* configuration,
+                       Event* event,
+                       EventFilter* ef,
+                       ParticleFilter* pf);
   virtual ~PythiaEventGenerator();
   virtual void initialize();
   virtual void finalize();
   virtual void reset();
   void execute();
 
-  int nMax; //  = 10000;
+  int nMax;                //  = 10000;
   TClonesArray* particles; // = new TClonesArray("TParticle", nMax);
 
   TPythia8* pythia8; // = new TPythia8();
 
-  EventFilter * eventFilter;
-  ParticleFilter * particleFilter;
+  EventFilter* eventFilter;
+  ParticleFilter* particleFilter;
 
-  ClassDef(PythiaEventGenerator,0)
+  ClassDef(PythiaEventGenerator, 0)
 };
 
 #endif /* WAC_PythiaEventGenerator */

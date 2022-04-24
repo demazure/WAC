@@ -17,7 +17,7 @@
 
 int main()
 {
-  Int_t nev  = 100;
+  Int_t nev = 100;
   Int_t ndeb = 0;
 
   // Load libraries
@@ -46,229 +46,220 @@ int main()
   // Initialize
   pythia8->Initialize(2212 /* p */, 2212 /* p */, 14000. /* TeV */);
 
-  AnalysisConfiguration * ac = new AnalysisConfiguration();
-  ac->outputPath               = "../PythiaOutput/";
-  ac->baseName                 = "Pythia";
-  ac->configFileName           = "Pythia.txt";
-  ac->rootOutputFileName       = "Pythia.root";
-  cout<<"================================================================"<<endl;
-  cout<<""<<endl;
-  cout<<"         running for = "<<ac->baseName<<endl;
-  cout<<""<<endl;
-  cout<<"================================================================"<<endl;
+  AnalysisConfiguration* ac = new AnalysisConfiguration();
+  ac->outputPath = "../PythiaOutput/";
+  ac->baseName = "Pythia";
+  ac->configFileName = "Pythia.txt";
+  ac->rootOutputFileName = "Pythia.root";
+  cout << "================================================================" << endl;
+  cout << "" << endl;
+  cout << "         running for = " << ac->baseName << endl;
+  cout << "" << endl;
+  cout << "================================================================" << endl;
 
+  ac->nBins_pt = 4;
+  ac->min_pt = 0.2;
+  ac->max_pt = 2.2;
+  ac->nBins_eta = 10;
+  ac->min_eta = -2.0;
+  ac->max_eta = 2.0;
+  ac->nBins_phi = 6;
+  ac->min_phi = 0.0;
+  ac->max_phi = 2.0 * 3.1415927;
 
-  ac->nBins_pt    = 4;
-  ac->min_pt      = 0.2;
-  ac->max_pt      = 2.2;
-  ac->nBins_eta   = 10;
-  ac->min_eta     = -2.0;
-  ac->max_eta     = 2.0;
-  ac->nBins_phi   = 6;
-  ac->min_phi     = 0.0;
-  ac->max_phi     = 2.0*3.1415927;
+  //  ac->nBins_DeltaPlong = 10;
+  //  ac->min_DeltaPlong   = -1.0;
+  //  ac->max_DeltaPlong   =  1.0;
+  //  ac->nBins_DeltaPside = 10;
+  //  ac->min_DeltaPside   = -1.0;
+  //  ac->max_DeltaPside   =  1.0;
+  //  ac->nBins_DeltaPout  = 10;
+  //  ac->min_DeltaPout    = -1.0;
+  //  ac->max_DeltaPout    =  1.0;
 
-//  ac->nBins_DeltaPlong = 10;
-//  ac->min_DeltaPlong   = -1.0;
-//  ac->max_DeltaPlong   =  1.0;
-//  ac->nBins_DeltaPside = 10;
-//  ac->min_DeltaPside   = -1.0;
-//  ac->max_DeltaPside   =  1.0;
-//  ac->nBins_DeltaPout  = 10;
-//  ac->min_DeltaPout    = -1.0;
-//  ac->max_DeltaPout    =  1.0;
+  //  ac->fillPairs        = true;
+  //  ac->fill3D           = false;
+  //  ac->fill6D           = false;
+  //  ac->fillQ3D          = true;
+  //  ac->fillY            = true;
 
-//  ac->fillPairs        = true;
-//  ac->fill3D           = false;
-//  ac->fill6D           = false;
-//  ac->fillQ3D          = true;
-//  ac->fillY            = true;
+  TFile* outputFile = new TFile(ac->rootOutputFileName, "RECREATE");
 
-  TFile * outputFile = new TFile(ac->rootOutputFileName,"RECREATE");
-
-  ParticleHistosMPA * p = new ParticleHistosMPA("P",ac,"P",1);
-  ParticleHistosMPA * n = new ParticleHistosMPA("N",ac,"N",1);
-  ParticlePairHistosMPA * nn = new ParticlePairHistosMPA("NN",ac,"NN",1);
-  ParticlePairHistosMPA * pp = new ParticlePairHistosMPA("PP",ac,"PP",1);
-  ParticlePairHistosMPA * pn = new ParticlePairHistosMPA("PN",ac,"PN",1);
-   cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
-   cout << " XXXXXXXXXXXXXXXXXXXXXXX 3a XXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
-  ParticleTripletHistosMPA * ppp = new ParticleTripletHistosMPA("PPP",ac,"PPP",0);
-  ParticleTripletHistosMPA * ppn = new ParticleTripletHistosMPA("PPN",ac,"PPN",0);
-  ParticleTripletHistosMPA * pnn = new ParticleTripletHistosMPA("PNN",ac,"PNN",0);
-  ParticleTripletHistosMPA * nnn = new ParticleTripletHistosMPA("NNN",ac,"NNN",0);
-   cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
-   cout << " XXXXXXXXXXXXXXXXXXXXXXX 4 XXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
-  ParticleQuadHistosMPA * pppp = new ParticleQuadHistosMPA("PPPP",ac,"PPPP",1);
-  ParticleQuadHistosMPA * pppn = new ParticleQuadHistosMPA("PPPN",ac,"PPPN",0);
-  ParticleQuadHistosMPA * ppnn = new ParticleQuadHistosMPA("PPNN",ac,"PPNN",0);
-  ParticleQuadHistosMPA * pnnn = new ParticleQuadHistosMPA("PNNN",ac,"PNNN",0);
-  ParticleQuadHistosMPA * nnnn = new ParticleQuadHistosMPA("NNNN",ac,"NNNN",0);
+  ParticleHistosMPA* p = new ParticleHistosMPA("P", ac, "P", 1);
+  ParticleHistosMPA* n = new ParticleHistosMPA("N", ac, "N", 1);
+  ParticlePairHistosMPA* nn = new ParticlePairHistosMPA("NN", ac, "NN", 1);
+  ParticlePairHistosMPA* pp = new ParticlePairHistosMPA("PP", ac, "PP", 1);
+  ParticlePairHistosMPA* pn = new ParticlePairHistosMPA("PN", ac, "PN", 1);
+  cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
+  cout << " XXXXXXXXXXXXXXXXXXXXXXX 3a XXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
+  ParticleTripletHistosMPA* ppp = new ParticleTripletHistosMPA("PPP", ac, "PPP", 0);
+  ParticleTripletHistosMPA* ppn = new ParticleTripletHistosMPA("PPN", ac, "PPN", 0);
+  ParticleTripletHistosMPA* pnn = new ParticleTripletHistosMPA("PNN", ac, "PNN", 0);
+  ParticleTripletHistosMPA* nnn = new ParticleTripletHistosMPA("NNN", ac, "NNN", 0);
+  cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
+  cout << " XXXXXXXXXXXXXXXXXXXXXXX 4 XXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
+  ParticleQuadHistosMPA* pppp = new ParticleQuadHistosMPA("PPPP", ac, "PPPP", 1);
+  ParticleQuadHistosMPA* pppn = new ParticleQuadHistosMPA("PPPN", ac, "PPPN", 0);
+  ParticleQuadHistosMPA* ppnn = new ParticleQuadHistosMPA("PPNN", ac, "PPNN", 0);
+  ParticleQuadHistosMPA* pnnn = new ParticleQuadHistosMPA("PNNN", ac, "PNNN", 0);
+  ParticleQuadHistosMPA* nnnn = new ParticleQuadHistosMPA("NNNN", ac, "NNNN", 0);
 
   cout << " XXXXXXXXXXXXXXXXXXXXXXX 5 XXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
 
   // Event loop
-  for (Int_t iev = 0; iev < nev; iev++)
-    {
+  for (Int_t iev = 0; iev < nev; iev++) {
     pythia8->GenerateEvent();
-    if (iev < ndeb) pythia8->EventListing();
-    pythia8->ImportParticles(particles,"Final");
+    if (iev < ndeb)
+      pythia8->EventListing();
+    pythia8->ImportParticles(particles, "Final");
     Int_t np = particles->GetEntriesFast();
     // Particle loop
 
-     cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
-     cout << " XXXXXXXXXXXXXXXXXXXXX ANALYZE XXXXXXXXXXXXXXXXXXXXXXXX " << endl;
+    cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
+    cout << " XXXXXXXXXXXXXXXXXXXXX ANALYZE XXXXXXXXXXXXXXXXXXXXXXXX " << endl;
     Int_t ist1, ist2, ist3, ist4, pdg1, pdg2, pdg3, pdg4;
     Float_t charge1, charge2, charge3, charge4;
     TParticle* part1;
     TParticle* part2;
     TParticle* part3;
     TParticle* part4;
- // Positive codes are final particles.
+    // Positive codes are final particles.
 
-    if (np>nMax)
-      {
+    if (np > nMax) {
       cout << " ARRAY TOO SMALL - STOP -- np:" << np << " nMax:" << nMax << endl;
       exit(0);
-      }
+    }
 
-    for (Int_t iPart1 = 0; iPart1 < np; iPart1++)
-      {
-      TParticle & part1 = * (TParticle*) particles->At(iPart1);
+    for (Int_t iPart1 = 0; iPart1 < np; iPart1++) {
+      TParticle& part1 = *(TParticle*)particles->At(iPart1);
       ist1 = part1.GetStatusCode();
-      if (ist1 <= 0) continue;
+      if (ist1 <= 0)
+        continue;
       pdg1 = part1.GetPdgCode();
       charge1 = TDatabasePDG::Instance()->GetParticle(pdg1)->Charge();
-      if (charge1 == 0.) continue;
+      if (charge1 == 0.)
+        continue;
 
-       cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
-       cout << " XXXXXXXXXXXXXXXXXXXXX Fill 1  XXXXXXXXXXXXXXXXXXXXXXXX " << endl;
+      cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
+      cout << " XXXXXXXXXXXXXXXXXXXXX Fill 1  XXXXXXXXXXXXXXXXXXXXXXXX " << endl;
 
       // fill singles
-      if (charge1>0)
-        p->fill(part1,1.0);
+      if (charge1 > 0)
+        p->fill(part1, 1.0);
       else
-        n->fill(part1,1.0);
+        n->fill(part1, 1.0);
 
-       cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
-       cout << " XXXXXXXXXXXXXXXXXXXXX Fill 2  XXXXXXXXXXXXXXXXXXXXXXXX " << endl;
+      cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
+      cout << " XXXXXXXXXXXXXXXXXXXXX Fill 2  XXXXXXXXXXXXXXXXXXXXXXXX " << endl;
 
-      for (Int_t iPart2 = 0; iPart2 < iPart1; iPart2++)
-        {
-        //if (iPart2==iPart1) continue;
-        TParticle & part2 = *(TParticle*) particles->At(iPart2);
+      for (Int_t iPart2 = 0; iPart2 < iPart1; iPart2++) {
+        // if (iPart2==iPart1) continue;
+        TParticle& part2 = *(TParticle*)particles->At(iPart2);
         ist2 = part2.GetStatusCode();
-        if (ist2 <= 0) continue;
+        if (ist2 <= 0)
+          continue;
         pdg2 = part2.GetPdgCode();
         charge2 = TDatabasePDG::Instance()->GetParticle(pdg2)->Charge();
-        if (charge2 == 0.) continue;
+        if (charge2 == 0.)
+          continue;
 
         // fill pairs
-          if (charge1>0)  // px
-            {
-            if (charge2>0)  // pp
-              {
-              pp->fill(part1,part2,1.0);
-              }
-            else   // pn
-              {
-              pn->fill(part1,part2,1.0);
-              }
-            }
-          else // nx
-            {
-            if (charge2>0)  // np
-              {
-              pn->fill(part2,part1,1.0);
-              }
-            else   // nn
-              {
-              nn->fill(part1,part2,1.0);
-              }
-            }
-        //continue;
-        //cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
-        //cout << " XXXXXXXXXXXXXXXXXXXXX Fill 3  XXXXXXXXXXXXXXXXXXXXXXXX " << endl;
-
-        for (Int_t iPart3 = 0; iPart3 < iPart2; iPart3++)
+        if (charge1 > 0) // px
+        {
+          if (charge2 > 0) // pp
           {
-          //if (iPart3==iPart1) continue;
-          //if (iPart3==iPart2) continue;
-          TParticle & part3 = *(TParticle*) particles->At(iPart3);
+            pp->fill(part1, part2, 1.0);
+          } else // pn
+          {
+            pn->fill(part1, part2, 1.0);
+          }
+        } else // nx
+        {
+          if (charge2 > 0) // np
+          {
+            pn->fill(part2, part1, 1.0);
+          } else // nn
+          {
+            nn->fill(part1, part2, 1.0);
+          }
+        }
+        // continue;
+        // cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
+        // cout << " XXXXXXXXXXXXXXXXXXXXX Fill 3  XXXXXXXXXXXXXXXXXXXXXXXX " << endl;
+
+        for (Int_t iPart3 = 0; iPart3 < iPart2; iPart3++) {
+          // if (iPart3==iPart1) continue;
+          // if (iPart3==iPart2) continue;
+          TParticle& part3 = *(TParticle*)particles->At(iPart3);
           ist3 = part3.GetStatusCode();
-          if (ist3 <= 0) continue;
+          if (ist3 <= 0)
+            continue;
           pdg3 = part3.GetPdgCode();
           charge3 = TDatabasePDG::Instance()->GetParticle(pdg3)->Charge();
-          if (charge3 == 0.) continue;
+          if (charge3 == 0.)
+            continue;
 
           // fill triplets
-          if (charge1>0)  // pxx
+          if (charge1 > 0) // pxx
+          {
+            if (charge2 > 0) // ppx
             {
-            if (charge2>0)  // ppx
+              if (charge3 > 0) // ppp
               {
-              if (charge3>0) // ppp
-                {
                 // cout << " ================================================= " << endl;
                 // cout << " ======  ppp->fill(part1,part2,part3,1.0)   ======" << endl;
-                ppp->fill(part1,part2,part3,1.0);
-                }
-              else // ppn
-                {
+                ppp->fill(part1, part2, part3, 1.0);
+              } else // ppn
+              {
                 // cout << " ================================================= " << endl;
                 // cout << " ======  ppn->fill(part1,part2,part3,1.0)   ======" << endl;
-                ppn->fill(part1,part2,part3,1.0);
-                }
+                ppn->fill(part1, part2, part3, 1.0);
               }
-            else  // pnx
+            } else // pnx
+            {
+              if (charge3 > 0) // pnp
               {
-              if (charge3>0)  // pnp
-                {
                 // cout << " ================================================= " << endl;
                 // cout << " ======  ppn->fill(part1,part3,part2,1.0);   ======" << endl;
-                ppn->fill(part1,part3,part2,1.0);
-                }
-              else  // pnn
-                {
+                ppn->fill(part1, part3, part2, 1.0);
+              } else // pnn
+              {
                 // cout << " ================================================= " << endl;
                 // cout << " ======  pnn->fill(part1,part2,part3,1.0);   ======" << endl;
-                pnn->fill(part1,part2,part3,1.0);
-                }
+                pnn->fill(part1, part2, part3, 1.0);
               }
             }
-          else // nxx
+          } else // nxx
+          {
+            if (charge2 > 0) // npx
             {
-            if (charge2>0)  // npx
+              if (charge3 > 0) // npp
               {
-              if (charge3>0) // npp
-                {
                 // cout << " ================================================= " << endl;
                 // cout << " ======  ppn->fill(part2,part3,part1,1.0)   ======" << endl;
 
-                ppn->fill(part2,part3,part1,1.0);
-                }
-              else // npn
-                {
+                ppn->fill(part2, part3, part1, 1.0);
+              } else // npn
+              {
                 // cout << " ================================================= " << endl;
                 // cout << " ======  pnn->fill(part2,part1,part3,1.0);  ======" << endl;
-                pnn->fill(part2,part1,part3,1.0);
-                }
+                pnn->fill(part2, part1, part3, 1.0);
               }
-            else // nnx
+            } else // nnx
+            {
+              if (charge3 > 0) // nnp
               {
-              if (charge3>0) // nnp
-                {
                 // cout << " ================================================= " << endl;
                 // cout << " ======  pnn->fill(part3,part1,part2,1.0);  ======" << endl;
-                pnn->fill(part3,part1,part2,1.0);
-                }
-              else // nnn
-                {
+                pnn->fill(part3, part1, part2, 1.0);
+              } else // nnn
+              {
                 // cout << " ================================================= " << endl;
                 // cout << " ======  nnn->fill(part1,part2,part3,1.0);  ======" << endl;
-                nnn->fill(part1,part2,part3,1.0);
-                }
+                nnn->fill(part1, part2, part3, 1.0);
               }
             }
+          }
 
           //
           //          // cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
@@ -395,91 +386,88 @@ int main()
           //              }
           //
           //            } // iPart4
-          }  // iPart3
-        }   // iPart2
-      }    // iPart1
-    }     // event loop
+        } // iPart3
+      }   // iPart2
+    }     // iPart1
+  }       // event loop
 
   pythia8->PrintStatistics();
 
   cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
   cout << " XXXXXXXXXXXXXXXXXXXXXXX 1 XXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
 
-  double scale = 1.0/double(nev);
-  p->scale(scale,true);
-  n->scale(scale,true);
+  double scale = 1.0 / double(nev);
+  p->scale(scale, true);
+  n->scale(scale, true);
 
   cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
   cout << " XXXXXXXXXXXXXXXXXXXXXXX 2 pp XXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
 
-  pp->scale(scale,true);
+  pp->scale(scale, true);
 
   cout << " XXXXXXXXXXXXXXXXXXXXXXX 2 pn XXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
 
-  pn->scale(scale,true);
+  pn->scale(scale, true);
 
   cout << " XXXXXXXXXXXXXXXXXXXXXXX 2 nn XXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
 
-  nn->scale(scale,true);
+  nn->scale(scale, true);
 
   cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
   cout << " XXXXXXXXXXXXXXXXXXXXXXX 3 XXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
 
-  ppp->scale(scale,true);
-  ppn->scale(scale,true);
-  pnn->scale(scale,true);
-  nnn->scale(scale,true);
+  ppp->scale(scale, true);
+  ppn->scale(scale, true);
+  pnn->scale(scale, true);
+  nnn->scale(scale, true);
 
   cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
   cout << " XXXXXXXXXXXXXXXXXXXXXXX 4 XXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
 
-//  pppp->scale(scale,true);
-//  pppn->scale(scale,true);
-//  ppnn->scale(scale,true);
-//  pnnn->scale(scale,true);
-//  nnnn->scale(scale,true);
+  //  pppp->scale(scale,true);
+  //  pppn->scale(scale,true);
+  //  ppnn->scale(scale,true);
+  //  pnnn->scale(scale,true);
+  //  nnnn->scale(scale,true);
 
   cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
   cout << " XXXXXXXXXXXXXXXXXXXXXXX save XXXXXXXXXXXXXXXXXXXXXXXXXXXX " << endl;
 
-//  ParticleHistosMPADerived * pd = new ParticleHistosMPADerived("P",ac,"P",1);
-//  ParticleHistosMPADerived * nd = new ParticleHistosMPADerived("N",ac,"N",1);
-//  pd->calculateFrom(p);
-//  nd->calculateFrom(n);
-//
-//
-//  ParticlePairHistosMPADerived * nnd = new ParticlePairHistosMPADerived("NN",ac,"NN",1);
-//  ParticlePairHistosMPADerived * ppd = new ParticlePairHistosMPADerived("PP",ac,"PP",1);
-//  ParticlePairHistosMPADerived * pnd = new ParticlePairHistosMPADerived("PN",ac,"PN",1);
-//
-//  nnd->calculateDerivedHistograms(nd,nd,nn);
-//  ppd->calculateDerivedHistograms(pd,pd,pp);
-//  pnd->calculateDerivedHistograms(pd,nd,pn);
+  //  ParticleHistosMPADerived * pd = new ParticleHistosMPADerived("P",ac,"P",1);
+  //  ParticleHistosMPADerived * nd = new ParticleHistosMPADerived("N",ac,"N",1);
+  //  pd->calculateFrom(p);
+  //  nd->calculateFrom(n);
+  //
+  //
+  //  ParticlePairHistosMPADerived * nnd = new ParticlePairHistosMPADerived("NN",ac,"NN",1);
+  //  ParticlePairHistosMPADerived * ppd = new ParticlePairHistosMPADerived("PP",ac,"PP",1);
+  //  ParticlePairHistosMPADerived * pnd = new ParticlePairHistosMPADerived("PN",ac,"PN",1);
+  //
+  //  nnd->calculateDerivedHistograms(nd,nd,nn);
+  //  ppd->calculateDerivedHistograms(pd,pd,pp);
+  //  pnd->calculateDerivedHistograms(pd,nd,pn);
 
-
-  p->saveHistograms(outputFile,true);
-  n->saveHistograms(outputFile,true);
-  pp->saveHistograms(outputFile,true);
-  pn->saveHistograms(outputFile,true);
-  nn->saveHistograms(outputFile,true);
-//  pd->saveHistograms(outputFile,true);
-//  nd->saveHistograms(outputFile,true);
-//  ppd->saveHistograms(outputFile,true);
-//  pnd->saveHistograms(outputFile,true);
-//  nnd->saveHistograms(outputFile,true);
-  ppp->saveHistograms(outputFile,true);
-  ppn->saveHistograms(outputFile,true);
-  pnn->saveHistograms(outputFile,true);
-  nnn->saveHistograms(outputFile,true);
-//  pppp->saveHistograms(outputFile,true);
-//  pppn->saveHistograms(outputFile,true);
-//  ppnn->saveHistograms(outputFile,true);
-//  pnnn->saveHistograms(outputFile,true);
-//  nnnn->saveHistograms(outputFile,true);
+  p->saveHistograms(outputFile, true);
+  n->saveHistograms(outputFile, true);
+  pp->saveHistograms(outputFile, true);
+  pn->saveHistograms(outputFile, true);
+  nn->saveHistograms(outputFile, true);
+  //  pd->saveHistograms(outputFile,true);
+  //  nd->saveHistograms(outputFile,true);
+  //  ppd->saveHistograms(outputFile,true);
+  //  pnd->saveHistograms(outputFile,true);
+  //  nnd->saveHistograms(outputFile,true);
+  ppp->saveHistograms(outputFile, true);
+  ppn->saveHistograms(outputFile, true);
+  pnn->saveHistograms(outputFile, true);
+  nnn->saveHistograms(outputFile, true);
+  //  pppp->saveHistograms(outputFile,true);
+  //  pppn->saveHistograms(outputFile,true);
+  //  ppnn->saveHistograms(outputFile,true);
+  //  pnnn->saveHistograms(outputFile,true);
+  //  nnnn->saveHistograms(outputFile,true);
 
   outputFile->Close();
 
-
   return 0;
 }
-

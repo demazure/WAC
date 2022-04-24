@@ -18,13 +18,12 @@
 
 class EposEventReader : public Task
 {
-public:
-
-  EposEventReader(const TString & name,
-                  TaskConfiguration * configuration,
-                  Event * event,
-                  EventFilter * ef,
-                  ParticleFilter * pf);
+ public:
+  EposEventReader(const TString& name,
+                  TaskConfiguration* configuration,
+                  Event* event,
+                  EventFilter* ef,
+                  ParticleFilter* pf);
   virtual ~EposEventReader();
   virtual void initialize();
   virtual void reset();
@@ -32,7 +31,7 @@ public:
 
   Int_t GetEntry(Long64_t entry);
   Long64_t LoadTree(Long64_t entry);
-  void Init(TTree *tree);
+  void Init(TTree* tree);
   Bool_t Notify();
   void Show(Long64_t entry);
   Int_t Cut(Long64_t entry);
@@ -40,8 +39,8 @@ public:
   ////////////////////////////////////////////////////////////////////////////////////////
   // Data members
   ////////////////////////////////////////////////////////////////////////////////////////
-  TTree          *fChain;   //!pointer to the analyzed TTree or TChain
-  Int_t           fCurrent; //!current Tree number in a TChain
+  TTree* fChain;  //! pointer to the analyzed TTree or TChain
+  Int_t fCurrent; //! current Tree number in a TChain
 
   Long64_t nentries;
   Long64_t nbytes;
@@ -52,39 +51,39 @@ public:
   static const int arraySize = 30000;
 
   // Declaration of leaf types
-  Int_t           eventNo;
-  Int_t           mult;
-  Int_t           Nproj;
-  Int_t           Ntarg;
-  Float_t         impact;
-  Int_t           Nparttotal;
-  Int_t           pid[arraySize];   //[Mult]
-  Float_t         px[arraySize];   //[Mult]
-  Float_t         py[arraySize];   //[Mult]
-  Float_t         pz[arraySize];   //[Mult]
-  Float_t         m[arraySize];   //[Mult]
-  Float_t         Nx[arraySize];   //[Mult]
-  Float_t         Ny[arraySize];   //[Mult]
+  Int_t eventNo;
+  Int_t mult;
+  Int_t Nproj;
+  Int_t Ntarg;
+  Float_t impact;
+  Int_t Nparttotal;
+  Int_t pid[arraySize];  //[Mult]
+  Float_t px[arraySize]; //[Mult]
+  Float_t py[arraySize]; //[Mult]
+  Float_t pz[arraySize]; //[Mult]
+  Float_t m[arraySize];  //[Mult]
+  Float_t Nx[arraySize]; //[Mult]
+  Float_t Ny[arraySize]; //[Mult]
 
   // List of branches
-  TBranch        *b_eventNo;   //!
-  TBranch        *b_mult;   //!
-  TBranch        *b_Nproj;   //!
-  TBranch        *b_Ntarg;   //!
-  TBranch        *b_impact;   //!
-  TBranch        *b_Nparttotal;   //!
-  TBranch        *b_pid;   //!
-  TBranch        *b_px;   //!
-  TBranch        *b_py;   //!
-  TBranch        *b_pz;   //!
-  TBranch        *b_m;   //!
-  TBranch        *b_Nx;   //!
-  TBranch        *b_Ny;   //!
+  TBranch* b_eventNo;    //!
+  TBranch* b_mult;       //!
+  TBranch* b_Nproj;      //!
+  TBranch* b_Ntarg;      //!
+  TBranch* b_impact;     //!
+  TBranch* b_Nparttotal; //!
+  TBranch* b_pid;        //!
+  TBranch* b_px;         //!
+  TBranch* b_py;         //!
+  TBranch* b_pz;         //!
+  TBranch* b_m;          //!
+  TBranch* b_Nx;         //!
+  TBranch* b_Ny;         //!
 
-  EventFilter * eventFilter;
-  ParticleFilter * particleFilter;
+  EventFilter* eventFilter;
+  ParticleFilter* particleFilter;
 
-  ClassDef(EposEventReader,0)
+  ClassDef(EposEventReader, 0)
 };
 
 #endif /* WAC_EposEventReader */
