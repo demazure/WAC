@@ -1,9 +1,10 @@
-# hidden directories
+# GUI directories
 .DS_Store
 .vscode
 .cproject
 .project
 .settings
+*.user
 
 # install directories
 bin
