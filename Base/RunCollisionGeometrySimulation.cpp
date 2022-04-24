@@ -44,7 +44,7 @@ int main()
   ac->nNeutronsA = 208 - 82;
   ac->nProtonsB = 82;
   ac->nNeutronsB = 208 - 82;
-  ac->outputPath = "/Users/claudeapruneau/Documents/GitHub/run/GeometryStudies/";
+  ac->outputPath = "Output/";
   ac->rootOuputFileName = "CollisionGeometry";
   ac->histoBaseName = "geom";
   ac->minB = 0.0;

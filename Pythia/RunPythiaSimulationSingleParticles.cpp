@@ -71,9 +71,9 @@ int main()
   ac->resetHistograms        = false;
   ac->clearHistograms        = false;
   ac->forceHistogramsRewrite = true;
-  ac->inputPath              = "/Users/claudeapruneau/Documents/GitHub/run/PythiaStudies/";
+  ac->inputPath              = "Input/";
   ac->rootInputFileName      = "";
-  ac->outputPath             = "/Users/claudeapruneau/Documents/GitHub/run/PythiaStudies/";
+  ac->outputPath             = "Output/";
   ac->rootOuputFileName      =  "PYTHIA_softOnHardOff_Singles_";
   ac->histoBaseName = "TEST";
 
