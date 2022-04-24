@@ -87,7 +87,7 @@ add_definitions(-DOPTIMIZEADDBINCONTENT)
 
 add_executable(RunCollisionGeometrySimulation RunCollisionGeometrySimulation.cpp)
 target_include_directories(RunCollisionGeometrySimulation PUBLIC Base ${EXTRA_INCLUDES})
-target_link_libraries(RunCollisionGeometrySimulation Base ${WAC_ROOT_LIBRARIES} ${EXTRA_LIBS} ${CMAKE_DL_LIBS})
+target_link_libraries(RunCollisionGeometrySimulation Base  EG   ${ROOT_LIBRARIES} ${EXTRA_LIBS} ${CMAKE_DL_LIBS})
 
 
 install(FILES  "${CMAKE_CURRENT_BINARY_DIR}/libBase.rootmap" "${CMAKE_CURRENT_BINARY_DIR}/libBase_rdict.pcm" DESTINATION "$ENV{WAC_LIB}")

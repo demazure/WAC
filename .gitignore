@@ -10,7 +10,13 @@ bin
 lib
 build
 
+# input output and test directories
+Input
+Output
+Tests
+
 # intermediate or binary results
 *.d
 *.so
 *.pcm
+*.log
