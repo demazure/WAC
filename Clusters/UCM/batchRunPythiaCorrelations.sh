@@ -29,7 +29,7 @@ do
   WORKINGDIRECTORY=$BASEDIRECTORY/$PRODUCTIONDIRECTORY/$(printf "BUNCH%02d" $ijob)
   mkdir -p $WORKINGDIRECTORY/Output
 
-  sbatch -J batch__PythiaCorr --array=1 --chdir=$WORKINGDIRECTORY --time=03:00:00 -o $WORKINGDIRECTORY/Job_%A_%a.out -e $WORKINGDIRECTORY/Job_%A_%a.err /home/victorG/PROJECTS/WAC/Clusters/UCM/runPythiaCorrelations.sh
+  sbatch -J batch__PythiaCorr --array=1-100 --chdir=$WORKINGDIRECTORY --time=03:00:00 -o $WORKINGDIRECTORY/Job_%A_%a.out -e $WORKINGDIRECTORY/Job_%A_%a.err /home/victorG/PROJECTS/WAC/Clusters/UCM/runPythiaCorrelations.sh
 
   sleep 2s
 done

@@ -18,8 +18,13 @@
 #include "TwoPartCorrelationAnalyzer.hpp"
 //#include <time.h>
 
-int main()
+int main(int argc, char* argv[])
 {
+  if (argc > 2) {
+    Fatal("main", "Wrong number of arguments. Only job index expected");
+  }
+  int jobix = stoi(argv[1]);
+
   time_t begin, end; // time_t is a datatype to store time values.
   time(&begin);      // note time before execution
 
@@ -55,7 +60,7 @@ int main()
                                                          0.2, 100.0,
                                                          -6.0, 6.0,
                                                          -10.0, 10.0);
-  Task* generator = new PythiaEventGenerator("PYTHIA", pc, event, eventFilterGen, particleFilterGen);
+  PythiaEventGenerator* generator = new PythiaEventGenerator("PYTHIA", pc, event, eventFilterGen, particleFilterGen);
 
   // ==========================
   // Analysis Section
@@ -72,7 +77,7 @@ int main()
   ac->inputPath = "Input/";
   ac->rootInputFileName = "";
   ac->outputPath = "Output/";
-  ac->rootOuputFileName = "PYTHIA_softOnHardOff_Pairs_";
+  ac->rootOuputFileName = TString::Format("PYTHIA_softOnHardOff_Pairs_%03d_", jobix).Data();
   ac->histoBaseName = "TEST";
 
   ac->nBins_pt = 28;
@@ -84,7 +89,7 @@ int main()
   ac->nBins_y = 20;
   ac->min_y = -2;
   ac->max_y = 2;
-  ac->nBins_phi = 36;
+  ac->nBins_phi = 72;
   ac->min_phi = 0.0;
   ac->max_phi = float(TMath::TwoPi());
 
@@ -113,7 +118,7 @@ int main()
   // ==========================
 
   EventLoop* eventLoop = new EventLoop();
-  eventLoop->addTask(generator);
+  eventLoop->addTask((Task*)generator);
   for (int iAnalysisTask = 0; iAnalysisTask < nAnalysisTasks; iAnalysisTask++) {
     eventLoop->addTask(analysisTasks[iAnalysisTask]);
   }
