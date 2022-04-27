@@ -17,5 +17,5 @@ export LD_LIBRARY_PATH="$WAC_LIB:$PYTHIA8/lib:$LD_LIBRARY_PATH"
 TASKIX=$SLURM_ARRAY_TASK_ID
 
 # Execute application code
-RunPythiaSimulationTwoParticles $TASKIX
+RunPythiaSimulationTwoParticlesDiff $TASKIX
 

@@ -35,12 +35,14 @@ root_generate_dictionary(
   GeneralizedGaussianProfile.hpp
   GeneratorConfiguration.hpp
   TwoPartCorrelationAnalyzer.hpp
+  TwoPartDiffCorrelationAnalyzer.hpp
   Particle.hpp
   ParticleFilter.hpp
   ParticleHistos.hpp
   ParticleAnalyzer.hpp
   ParticlePlotter.hpp
   ParticlePairCombinedHistos.hpp
+  ParticlePairCombinedDiffHistos.hpp
   ParticlePairDerivedHistos.hpp
   ParticlePairDerivedDiffHistos.hpp
   ParticlePairFilter.hpp
@@ -94,12 +96,14 @@ add_library(Base SHARED
   GeneralizedGaussianProfile.cpp
   GeneratorConfiguration.cpp
   TwoPartCorrelationAnalyzer.cpp
+  TwoPartDiffCorrelationAnalyzer.cpp
   Particle.cpp
   ParticleFilter.cpp
   ParticleHistos.cpp
   ParticleAnalyzer.cpp
   ParticlePlotter.cpp
   ParticlePairCombinedHistos.cpp
+  ParticlePairCombinedDiffHistos.cpp
   ParticlePairDerivedHistos.cpp
   ParticlePairDerivedDiffHistos.cpp
   ParticlePairFilter.cpp

@@ -60,7 +60,11 @@ inline int ParticlePairDiffHistos::getGlobalDeltaEtaDeltaPhiIndex(Particle& p1, 
 
 inline int ParticlePairDiffHistos::getGlobalDeltaRapidityDeltaPhiIndex(Particle& p1, Particle& p2)
 {
-  return h_n2_DyDphi->GetBin(configuration->getDeltaRapidityIndex(p1, p2) + 1, configuration->getDeltaPhiIndex(p1, p2) + 1);
+  if (configuration->fillY) {
+    return h_n2_DyDphi->GetBin(configuration->getDeltaRapidityIndex(p1, p2) + 1, configuration->getDeltaPhiIndex(p1, p2) + 1);
+  } else {
+    return -1;
+  }
 }
 
 #endif /* ParticlePairDiffHistos  */
