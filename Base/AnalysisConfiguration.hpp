@@ -11,6 +11,7 @@
 #define WAC_AnalysisConfiguration
 #include "TMath.h"
 #include "TaskConfiguration.hpp"
+#include "Particle.hpp"
 #include "ParticleFilter.hpp"
 #include "ParticlePairFilter.hpp"
 #include "CanvasConfiguration.hpp"
@@ -31,9 +32,12 @@ class AnalysisConfiguration : public TaskConfiguration
   AnalysisConfiguration& operator=(const AnalysisConfiguration& source);
 
   void printConfiguration(ostream& os);
-  int getIxEtaPhi(double eta, double phi);
-  int getIxYPhi(double y, double phi);
-  double getDphiShifted(double dphi);
+  int getIxEtaPhi(float eta, float phi);
+  int getIxYPhi(float y, float phi);
+  float getDphiShifted(float dphi);
+  int getDeltaEtaIndex(Particle& particle1, Particle& particle2);
+  int getDeltaRapidityIndex(Particle& particle1, Particle& particle2);
+  int getDeltaPhiIndex(Particle& particle1, Particle& particle2);
 
   ////////////////////////////////////////////////////
   // Data Members
@@ -57,13 +61,13 @@ class AnalysisConfiguration : public TaskConfiguration
   double max_pt;
   double range_pt;
   int nBins_eta;
-  double min_eta;
-  double max_eta;
-  double range_eta;
+  float min_eta;
+  float max_eta;
+  float range_eta;
   int nBins_y;
-  double min_y;
-  double max_y;
-  double range_y;
+  float min_y;
+  float max_y;
+  float range_y;
   int nBins_phi;
   float min_phi;
   float max_phi;
@@ -75,6 +79,7 @@ class AnalysisConfiguration : public TaskConfiguration
 
   // pair multiplicity bin correction
   float binCorrPM;
+  float binCorrMP;
   float binCorrMM;
   float binCorrPP;
 
@@ -91,21 +96,22 @@ class AnalysisConfiguration : public TaskConfiguration
   double min_DeltaPout;
   double max_DeltaPout;
   double range_DeltaPout;
+
   int nBins_Dphi;
-  double min_Dphi;
-  double max_Dphi;
-  double width_Dphi;
+  float min_Dphi;
+  float max_Dphi;
+  float width_Dphi;
   int nBins_Dphi_shft;
-  double min_Dphi_shft;
-  double max_Dphi_shft;
+  float min_Dphi_shft;
+  float max_Dphi_shft;
   int nBins_Deta;
-  double min_Deta;
-  double max_Deta;
-  double width_Deta;
+  float min_Deta;
+  float max_Deta;
+  float width_Deta;
   int nBins_Dy;
-  double min_Dy;
-  double max_Dy;
-  double width_Dy;
+  float min_Dy;
+  float max_Dy;
+  float width_Dy;
 
   bool fillPairs;
   bool fill3D;
@@ -125,12 +131,12 @@ class AnalysisConfiguration : public TaskConfiguration
   ClassDef(AnalysisConfiguration, 0)
 };
 
-inline int AnalysisConfiguration::getIxEtaPhi(double eta, double phi)
+inline int AnalysisConfiguration::getIxEtaPhi(float eta, float phi)
 {
 
   if (!(eta < min_eta || eta > max_eta)) {
-    int iEta = int(double(nBins_eta) * (eta - min_eta) / range_eta);
-    int iPhi = int(double(nBins_phi) * (phi - min_phi) / range_phi);
+    int iEta = int(float(nBins_eta) * (eta - min_eta) / range_eta);
+    int iPhi = int(float(nBins_phi) * (phi - min_phi) / range_phi);
 
     if (iEta >= 0 && iPhi >= 0 && iEta < nBins_eta && iPhi < nBins_phi) {
       return nBins_phi * iEta + iPhi;
@@ -140,12 +146,12 @@ inline int AnalysisConfiguration::getIxEtaPhi(double eta, double phi)
   return -1;
 }
 
-inline int AnalysisConfiguration::getIxYPhi(double y, double phi)
+inline int AnalysisConfiguration::getIxYPhi(float y, float phi)
 {
 
   if (!(y < min_y || y > max_y)) {
-    int iY = int(double(nBins_y) * (y - min_y) / range_y);
-    int iPhi = int(double(nBins_phi) * (phi - min_phi) / range_phi);
+    int iY = int(float(nBins_y) * (y - min_y) / range_y);
+    int iPhi = int(float(nBins_phi) * (phi - min_phi) / range_phi);
 
     if (iY >= 0 && iPhi >= 0 && iY < nBins_y && iPhi < nBins_phi) {
       return nBins_phi * iY + iPhi;
@@ -155,16 +161,49 @@ inline int AnalysisConfiguration::getIxYPhi(double y, double phi)
   return -1;
 }
 
-double const kPI = TMath::Pi();
-double const kTWOPI = 2. * kPI;
+float const kPI = TMath::Pi();
+float const kTWOPI = TMath::TwoPi();
 
-inline double AnalysisConfiguration::getDphiShifted(double dphi)
+inline float AnalysisConfiguration::getDphiShifted(float dphi)
 {
   while (dphi >= max_Dphi_shft)
     dphi -= kTWOPI;
   while (dphi < min_Dphi_shft)
     dphi += kTWOPI;
   return dphi;
+}
+
+/// WARNING: for performance reasons no checks are done about the consistency
+/// of particles' eta and phi within the corresponding ranges so, it is suppossed
+/// the particles have been accepted and they are within that ranges
+/// IF THAT IS NOT THE CASE THE ROUTINE WILL PRODUCE NONSENSE RESULTS
+inline int AnalysisConfiguration::getDeltaEtaIndex(Particle& particle1, Particle& particle2)
+{
+  int ixEta1 = int(float(nBins_eta) * (particle1.eta - min_eta) / range_eta);
+  int ixEta2 = int(float(nBins_eta) * (particle2.eta - min_eta) / range_eta);
+
+  return ixEta1 - ixEta2 + nBins_eta - 1;
+}
+
+inline int AnalysisConfiguration::getDeltaRapidityIndex(Particle& particle1, Particle& particle2)
+{
+  int ixY1 = int(float(nBins_y) * (particle1.y - min_y) / range_y);
+  int ixY2 = int(float(nBins_y) * (particle2.y - min_y) / range_y);
+
+  return ixY1 - ixY2 + nBins_y - 1;
+}
+
+inline int AnalysisConfiguration::getDeltaPhiIndex(Particle& particle1, Particle& particle2)
+{
+  int ixPhi1 = int(float(nBins_phi) * (particle1.phi - min_phi) / range_phi);
+  int ixPhi2 = int(float(nBins_phi) * (particle2.phi - min_phi) / range_phi);
+
+  int deltaphi_ix = ixPhi1 - ixPhi2;
+  if (deltaphi_ix < 0) {
+    deltaphi_ix += nBins_phi;
+  }
+
+  return deltaphi_ix;
 }
 
 #endif /* WAC_AnalysisConfiguration */

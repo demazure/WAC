@@ -56,9 +56,11 @@
 #pragma link C++ class ParticlePlotter+;
 #pragma link C++ class ParticlePairCombinedHistos+;
 #pragma link C++ class ParticlePairDerivedHistos+;
-#pragma link C++ class ParticlePairFilter+;
+#pragma link C++ class ParticlePairDerivedDiffHistos + ;
+#pragma link C++ class ParticlePairFilter + ;
 #pragma link C++ class ParticlePairHistos+;
-#pragma link C++ class ParticleHistosMPA+;
+#pragma link C++ class ParticlePairDiffHistos + ;
+#pragma link C++ class ParticleHistosMPA + ;
 #pragma link C++ class ParticleHistosMPADerived+;
 #pragma link C++ class ParticlePairHistosMPA+;
 #pragma link C++ class ParticlePairHistosMPADerived+;

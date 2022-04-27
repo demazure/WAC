@@ -3077,14 +3077,6 @@ void HistogramCollection::reduce_n2xEtaPhi_n2DetaDphi(const TH2* source, TH2* ta
     target->Scale(factor);
   }
 
-  // double a1m = target->GetBinContent(nEtaBins-1,1);
-  // double a1  = target->GetBinContent(nEtaBins,1);
-  // double a1p = target->GetBinContent(nEtaBins+1,1);
-  // if (reportDebug()) cout << " a1m:" << a1m << endl;
-  // if (reportDebug()) cout << " a1 :" << a1 << endl;
-  // if (reportDebug()) cout << " a1p:" << a1p << endl;
-  // target->SetBinContent(nEtaBins,1,0.5*(a1m+a1p));
-
   delete[] numerator;
   delete[] numeratorErr;
   delete[] denominator;

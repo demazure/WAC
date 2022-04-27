@@ -6,26 +6,66 @@
 #include_directories(${CMAKE_SOURCE_DIR} ${ROOT_INCLUDE_DIRS})
 #add_definitions(${ROOT_CXX_FLAGS})
 
-root_generate_dictionary(G__Base CanvasCollection.hpp CanvasConfiguration.hpp TaskConfiguration.hpp EnhancedGraph.hpp
-  Factory.hpp FunctionCollection.hpp GraphConfiguration.hpp HistogramCollection.hpp
-  Histograms.hpp RandomGenerators.hpp RapidityGenerator.hpp Task.hpp TaskCollection.hpp
-  Property.hpp MessageLogger.hpp Plotter.hpp StatStudyHistograms.hpp StatStudyPlotter.hpp
-  StatStudyModel.hpp AnalysisConfiguration.hpp Event.hpp EventFilter.hpp
-  EventHistos.hpp EventLoop.hpp GeneralizedGaussianConfiguration.hpp
-  GeneralizedGaussianProfile.hpp GeneratorConfiguration.hpp
-  TwoPartCorrelationAnalyzer.hpp Particle.hpp ParticleFilter.hpp ParticleHistos.hpp
-  ParticleAnalyzer.hpp ParticlePlotter.hpp  ParticlePairCombinedHistos.hpp
-  ParticlePairDerivedHistos.hpp ParticlePairFilter.hpp
-  ParticlePairHistos.hpp TrackAndPairConfiguration.hpp
-  NuDynTask.hpp NuDynHistos.hpp NuDynDerivedHistos.hpp NuDynPlotter.hpp
-  CollisionGeometry.hpp CollisionGeometryConfiguration.hpp
-  CollisionGeometryAnalyzer.hpp CollisionGeometryGenerator.hpp
-  CollisionGeometryHistograms.hpp Nucleon.hpp Nucleus.hpp NucleusGenerator.hpp  LINKDEF BaseLinkDef.h)
+root_generate_dictionary(
+  G__Base CanvasCollection.hpp
+  CanvasConfiguration.hpp
+  TaskConfiguration.hpp
+  EnhancedGraph.hpp
+  Factory.hpp
+  FunctionCollection.hpp
+  GraphConfiguration.hpp
+  HistogramCollection.hpp
+  Histograms.hpp
+  RandomGenerators.hpp
+  RapidityGenerator.hpp
+  Task.hpp
+  TaskCollection.hpp
+  Property.hpp
+  MessageLogger.hpp
+  Plotter.hpp
+  StatStudyHistograms.hpp
+  StatStudyPlotter.hpp
+  StatStudyModel.hpp
+  AnalysisConfiguration.hpp
+  Event.hpp
+  EventFilter.hpp
+  EventHistos.hpp
+  EventLoop.hpp
+  GeneralizedGaussianConfiguration.hpp
+  GeneralizedGaussianProfile.hpp
+  GeneratorConfiguration.hpp
+  TwoPartCorrelationAnalyzer.hpp
+  Particle.hpp
+  ParticleFilter.hpp
+  ParticleHistos.hpp
+  ParticleAnalyzer.hpp
+  ParticlePlotter.hpp
+  ParticlePairCombinedHistos.hpp
+  ParticlePairDerivedHistos.hpp
+  ParticlePairDerivedDiffHistos.hpp
+  ParticlePairFilter.hpp
+  ParticlePairHistos.hpp
+  ParticlePairDiffHistos.hpp
+  TrackAndPairConfiguration.hpp
+  NuDynTask.hpp
+  NuDynHistos.hpp
+  NuDynDerivedHistos.hpp
+  NuDynPlotter.hpp
+  CollisionGeometry.hpp
+  CollisionGeometryConfiguration.hpp
+  CollisionGeometryAnalyzer.hpp
+  CollisionGeometryGenerator.hpp
+  CollisionGeometryHistograms.hpp
+  Nucleon.hpp
+  Nucleus.hpp
+  NucleusGenerator.hpp
+  LINKDEF BaseLinkDef.h
+  )
 
 ################################################################################################
 # Create a shared library with geneated dictionary
 ################################################################################################
-add_compile_options(-Wall -Wextra -pedantic)
+add_compile_options(-Wall -Wextra -Wpedantic)
 add_library(Base SHARED
   CanvasCollection.cpp
   CanvasConfiguration.cpp
@@ -61,8 +101,10 @@ add_library(Base SHARED
   ParticlePlotter.cpp
   ParticlePairCombinedHistos.cpp
   ParticlePairDerivedHistos.cpp
+  ParticlePairDerivedDiffHistos.cpp
   ParticlePairFilter.cpp
   ParticlePairHistos.cpp
+  ParticlePairDiffHistos.cpp
   TrackAndPairConfiguration.cpp
   NuDynTask.cpp
   NuDynHistos.cpp
