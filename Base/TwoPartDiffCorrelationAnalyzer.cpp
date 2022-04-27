@@ -383,14 +383,9 @@ void TwoPartDiffCorrelationAnalyzer::calculateDerivedHistograms()
   if (reportDebug())
     cout << "TwoPartDiffCorrelationAnalyzer::calculateDerivedHistograms() Starting" << endl;
   AnalysisConfiguration* analysisConfiguration = (AnalysisConfiguration*)getTaskConfiguration();
-  particle1_Histos->completeFill();
-  particle2_Histos->completeFill();
   if (analysisConfiguration->fillPairs) {
     particle1_Histos->calculateAverages();
     particle2_Histos->calculateAverages();
-    pair11_Histos->completeFill();
-    pair22_Histos->completeFill();
-    pair12_Histos->completeFill();
     pair11_Histos->calculateDerivedHistograms(particle1_Histos, particle1_Histos, analysisConfiguration->binCorrPP);
     pair22_Histos->calculateDerivedHistograms(particle2_Histos, particle2_Histos, analysisConfiguration->binCorrMM);
     pair12_Histos->calculateDerivedHistograms(particle1_Histos, particle2_Histos, analysisConfiguration->binCorrPM);
