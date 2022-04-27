@@ -229,20 +229,15 @@ void TwoPartDiffCorrelationAnalyzer::saveHistograms(TFile* outputFile)
     cout << "TwoPartDiffCorrelationAnalyzer::saveHistograms(...) saving pairs -- perhaps." << endl;
 
   if (analysisConfiguration->fillPairs) {
+    if (reportDebug())
+      cout << "TwoPartDiffCorrelationAnalyzer::saveHistograms(...) saving calculated histograms." << endl;
+
     pair11_Histos->saveHistograms(outputFile);
     pair22_Histos->saveHistograms(outputFile);
     pair12_Histos->saveHistograms(outputFile);
-    if (analysisConfiguration->calculateDerivedHistograms) {
-      if (reportDebug())
-        cout << "TwoPartDiffCorrelationAnalyzer::saveHistograms(...) saving calculated histograms." << endl;
-
-      pair11_Histos->saveHistograms(outputFile);
-      pair22_Histos->saveHistograms(outputFile);
-      pair12_Histos->saveHistograms(outputFile);
-      pair21_Histos->saveHistograms(outputFile);
-      pair12_CIHistos->saveHistograms(outputFile);
-      pair12_CDHistos->saveHistograms(outputFile);
-    }
+    pair21_Histos->saveHistograms(outputFile);
+    pair12_CIHistos->saveHistograms(outputFile);
+    pair12_CDHistos->saveHistograms(outputFile);
   }
   if (reportDebug())
     cout << "TwoPartDiffCorrelationAnalyzer::saveHistograms(...) Completed." << endl;
@@ -267,14 +262,9 @@ void TwoPartDiffCorrelationAnalyzer::addHistogramsToExtList(TList* list, bool al
     pair11_Histos->addHistogramsToExtList(list, all);
     pair22_Histos->addHistogramsToExtList(list, all);
     pair12_Histos->addHistogramsToExtList(list, all);
-    if (analysisConfiguration->calculateDerivedHistograms) {
-      pair11_Histos->addHistogramsToExtList(list, all);
-      pair22_Histos->addHistogramsToExtList(list, all);
-      pair12_Histos->addHistogramsToExtList(list, all);
-      pair21_Histos->addHistogramsToExtList(list, all);
-      pair12_CIHistos->addHistogramsToExtList(list, all);
-      pair12_CDHistos->addHistogramsToExtList(list, all);
-    }
+    pair21_Histos->addHistogramsToExtList(list, all);
+    pair12_CIHistos->addHistogramsToExtList(list, all);
+    pair12_CDHistos->addHistogramsToExtList(list, all);
   }
 
   if (reportDebug())
