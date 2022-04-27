@@ -32,4 +32,5 @@ install(TARGETS WacPythia  LIBRARY DESTINATION "$ENV{WAC_LIB}")
 install(TARGETS RunPythiaSimulation DESTINATION "$ENV{WAC_BIN}") 
 install(TARGETS RunPythiaSimulationSingleParticles DESTINATION "$ENV{WAC_BIN}") 
 install(TARGETS RunPythiaSimulationTwoParticles DESTINATION "$ENV{WAC_BIN}")
+install(TARGETS RunPythiaSimulationTwoParticlesDiff DESTINATION "$ENV{WAC_BIN}")
 
