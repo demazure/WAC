@@ -51,7 +51,6 @@ ParticlePairDerivedDiffHistos::ParticlePairDerivedDiffHistos(const TString& name
 {
   if (reportDebug())
     cout << "ParticlePairDerivedDiffHistos::CTOR() Started." << endl;
-  initialize();
   if (reportDebug())
     cout << "ParticlePairDerivedDiffHistos::CTOR() Completed." << endl;
 }
@@ -59,7 +58,7 @@ ParticlePairDerivedDiffHistos::ParticlePairDerivedDiffHistos(const TString& name
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // CTOR
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-ParticlePairDerivedDiffHistos::ParticlePairDerivedDiffHistos(TFile* inputFile,
+ParticlePairDerivedDiffHistos::ParticlePairDerivedDiffHistos(TFile*,
                                                              const TString& name,
                                                              AnalysisConfiguration* configuration,
                                                              LogLevel debugLevel)
@@ -100,7 +99,6 @@ ParticlePairDerivedDiffHistos::ParticlePairDerivedDiffHistos(TFile* inputFile,
 {
   if (reportDebug())
     cout << "ParticlePairDerivedDiffHistos::CTOR(TFile * inputFile,...) Started." << endl;
-  loadHistograms(inputFile);
   if (reportDebug())
     cout << "ParticlePairDerivedDiffHistos::CTOR(TFile * inputFile,...) Completed." << endl;
 }
