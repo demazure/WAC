@@ -50,12 +50,10 @@ class ParticlePairDerivedDiffHistos : public ParticlePairDiffHistos
   TH2* h_pt1pt1_DetaDphi;
 
   TH2* h_R2_DetaDphi;
-  TH2* h_DptDpt_DetaDphi;
   TH2* h_P2_DetaDphi;
   TH2* h_G2_DetaDphi;
 
   TH2* h_R2_DetaDphi_shft;
-  TH2* h_DptDpt_DetaDphi_shft;
   TH2* h_P2_DetaDphi_shft;
   TH2* h_G2_DetaDphi_shft;
 
@@ -72,12 +70,10 @@ class ParticlePairDerivedDiffHistos : public ParticlePairDiffHistos
   TH2* h_pt1pt1_DyDphi;
 
   TH2* h_R2_DyDphi;
-  TH2* h_DptDpt_DyDphi;
   TH2* h_P2_DyDphi;
   TH2* h_G2_DyDphi;
 
   TH2* h_R2_DyDphi_shft;
-  TH2* h_DptDpt_DyDphi_shft;
   TH2* h_P2_DyDphi_shft;
   TH2* h_G2_DyDphi_shft;
 
