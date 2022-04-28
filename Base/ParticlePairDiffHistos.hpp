@@ -33,7 +33,7 @@ class ParticlePairDiffHistos : public Histograms
   void initialize();
   int getGlobalDeltaEtaDeltaPhiIndex(Particle& p1, Particle& p2);
   int getGlobalDeltaRapidityDeltaPhiIndex(Particle& p1, Particle& p2);
-  void fill(int globalpseudoix, int globalrapix, Particle& particle1, Particle& particle2, double weight1, double weight2, double pTavg1 = 0.0, double pTavg2 = 0.0);
+  void fill(Particle& particle1, Particle& particle2, double weight1, double weight2, double pTavg1 = 0.0, double pTavg2 = 0.0);
   void loadHistograms(TFile* inputFile);
 
   ////////////////////////////////////////////////////////////////////////////

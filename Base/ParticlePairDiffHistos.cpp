@@ -113,8 +113,9 @@ void ParticlePairDiffHistos::initialize()
     cout << "ParticlePairDiffHistos::initialize() Completed." << endl;
 }
 
-void ParticlePairDiffHistos::fill(int globaletabinno, int globalybinno, Particle& particle1, Particle& particle2, double weight1, double weight2, double pTavg1, double pTavg2)
+void ParticlePairDiffHistos::fill(Particle& particle1, Particle& particle2, double weight1, double weight2, double pTavg1, double pTavg2)
 {
+  int globaletabinno = getGlobalDeltaEtaDeltaPhiIndex(particle1, particle2);
   h_n2_ptPt->Fill(particle1.pt, particle2.pt, weight1 * weight2);
   h_n2_DetaDphi->AddBinContent(globaletabinno, weight1 * weight2);
   h_ptpt_DetaDphi->AddBinContent(globaletabinno, weight1 * particle1.pt * weight2 * particle2.pt);
@@ -124,6 +125,7 @@ void ParticlePairDiffHistos::fill(int globaletabinno, int globalybinno, Particle
   h_dptdpt_DetaDphi->SetEntries(h_n2_ptPt->GetEntries());
 
   if (configuration->fillY) {
+    int globalybinno = getGlobalDeltaRapidityDeltaPhiIndex(particle1, particle2);
     h_n2_DyDphi->AddBinContent(globalybinno, weight1 * weight2);
     h_ptpt_DyDphi->AddBinContent(globalybinno, weight1 * particle1.pt * weight2 * particle2.pt);
     h_dptdpt_DyDphi->AddBinContent(globalybinno, (weight1 * particle1.pt - pTavg1) * (weight2 * particle2.pt - pTavg2));

@@ -14,6 +14,7 @@
  Class defining Two Particle Correlation Analyzer Task
  */
 
+#include <TString.h>
 #include "TwoPartDiffCorrelationAnalyzer.hpp"
 #include "AnalysisConfiguration.hpp"
 
@@ -346,17 +347,14 @@ void TwoPartDiffCorrelationAnalyzer::execute()
         accept12 = particleFilter1->accept(particle2);
         accept22 = particleFilter2->accept(particle2);
 
-        /* TODO: to incorporate <pT> in eta,phi for DpTDpT extraction */
-        int globalpseudobin = pair11_Histos->getGlobalDeltaEtaDeltaPhiIndex(particle1, particle2);
-        int globalrapiditybin = pair11_Histos->getGlobalDeltaRapidityDeltaPhiIndex(particle1, particle2);
         if (accept11 && accept12)
-          pair11_Histos->fill(globalpseudobin, globalrapiditybin, particle1, particle2, 1.0, 1.0);
+          pair11_Histos->fill(particle1, particle2, 1.0, 1.0);
         if (accept21 && accept22)
-          pair22_Histos->fill(globalpseudobin, globalrapiditybin, particle1, particle2, 1.0, 1.0);
+          pair22_Histos->fill(particle1, particle2, 1.0, 1.0);
         if (accept11 && accept22)
-          pair12_Histos->fill(globalpseudobin, globalrapiditybin, particle1, particle2, 1.0, 1.0);
+          pair12_Histos->fill(particle1, particle2, 1.0, 1.0);
         if (accept21 && accept12)
-          pair21_Histos->fill(globalpseudobin, globalrapiditybin, particle1, particle2, 1.0, 1.0);
+          pair21_Histos->fill(particle1, particle2, 1.0, 1.0);
       }
     }
   }
@@ -373,6 +371,8 @@ void TwoPartDiffCorrelationAnalyzer::calculateDerivedHistograms()
   if (reportDebug())
     cout << "TwoPartDiffCorrelationAnalyzer::calculateDerivedHistograms() Starting" << endl;
   AnalysisConfiguration* analysisConfiguration = (AnalysisConfiguration*)getTaskConfiguration();
+  particle1_Histos->completeFill();
+  particle2_Histos->completeFill();
   if (analysisConfiguration->fillPairs) {
     particle1_Histos->calculateAverages();
     particle2_Histos->calculateAverages();
