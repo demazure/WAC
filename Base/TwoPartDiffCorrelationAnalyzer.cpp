@@ -406,6 +406,7 @@ void TwoPartDiffCorrelationAnalyzer::scaleHistograms(double factor)
     pair11_Histos->scale(factor);
     pair22_Histos->scale(factor);
     pair12_Histos->scale(factor);
+    pair21_Histos->scale(factor);
   }
   if (reportDebug())
     cout << "TwoPartDiffCorrelationAnalyzer::scale(..) Completed" << endl;
