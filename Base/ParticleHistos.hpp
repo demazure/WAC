@@ -41,7 +41,6 @@ class ParticleHistos : public Histograms
   TH1* h_n1_phi;
   TH2* h_n1_ptEta;
   TH2* h_n1_phiEta;
-  TH2* h_n1_phiEta_c; // for convolution, i.e. 2*(eta bins) -1 bins
   TH3* h_n1_ptPhiEta;
   TH1* h_spt_phi;
   TH1* h_spt_eta;
@@ -59,7 +58,7 @@ class ParticleHistos : public Histograms
   TH1* h_pt_y;
   TH2* h_pt_phiY;
 
-  ClassDef(ParticleHistos, 1)
+  ClassDef(ParticleHistos, 2)
 };
 
 #endif /* WAC_ParticleHistos  */
