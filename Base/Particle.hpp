@@ -36,7 +36,8 @@ class Particle
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   long pid;
   long charge;
-  double px, py, pz, e, pt, y, eta, phi;
+  double px, py, pz, e, pt, y, eta;
+  float phi;
   int ixEtaPhi, ixYPhi;
 
   static int factorySize;

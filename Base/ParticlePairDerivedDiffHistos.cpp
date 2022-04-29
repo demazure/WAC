@@ -233,8 +233,6 @@ void ParticlePairDerivedDiffHistos::reduce(const TH2* source, TH2* target, int n
     numeratorErr[k] = 0;
   }
 
-  TString name = target->GetName();
-
   i = 1;
   for (iEta = 0; iEta < nEtaBins; ++iEta) {
     for (iPhi = 0; iPhi < nPhiBins; ++iPhi) {
@@ -251,7 +249,6 @@ void ParticlePairDerivedDiffHistos::reduce(const TH2* source, TH2* target, int n
           index = (dEta - 1) * nPhiBins + dPhi - 1;
           numerator[index] += v1;
           numeratorErr[index] += ev1 * ev1;
-          // cout << " " << name << "  iEta:" << iEta << " iPhi:" << iPhi << " jEta:" << jEta << " jPhi:" << jPhi << " v1:" << v1 << " ev1:" << ev1 << endl;
           ++j;
         }
       }
@@ -261,8 +258,6 @@ void ParticlePairDerivedDiffHistos::reduce(const TH2* source, TH2* target, int n
 
   for (dEta = 0; dEta < 2 * nEtaBins - 1; ++dEta) {
     for (dPhi = 0; dPhi < nPhiBins; ++dPhi) {
-      // v1   = target->GetBinContent(dEta+1,dPhi+1);
-      // ev1  = target->GetBinError(dEta+1,dPhi+1);
       index = dEta * nPhiBins + dPhi;
       v1 = numerator[index];
       ev1 = numeratorErr[index];

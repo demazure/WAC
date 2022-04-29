@@ -114,7 +114,7 @@ void Particle::setPxPyPzE(double p_x, double p_y, double p_z, double p_e)
   pt = sqrt(px * px + py * py);
   phi = atan2(py, px);
   if (phi < 0)
-    phi += 2.0 * TMath::Pi();
+    phi += 2.0 * float(TMath::Pi());
   double theta = atan2(pt, pz);
   eta = -log(tan(theta / 2.0));
   double plus = e + pz;
@@ -138,7 +138,7 @@ void Particle::setPidPxPyPzE(long thePid, long theCharge, double p_x, double p_y
   pt = sqrt(px * px + py * py);
   phi = atan2(py, px);
   if (phi < 0)
-    phi += 2.0 * TMath::Pi();
+    phi += 2.0 * float(TMath::Pi());
   double theta = atan2(pt, pz);
   eta = -log(tan(theta / 2.0));
   double plus = e + pz;
@@ -155,7 +155,7 @@ void Particle::setPidPtPhiYEta(long _id, long _ch, double _pT, double _phi, doub
 {
   pid = _id;
   charge = _ch;
-  phi = TVector2::Phi_0_2pi(_phi);
+  phi = float(TVector2::Phi_0_2pi(_phi));
   pt = TMath::Abs(_pT);
   eta = _eta;
   y = _y;

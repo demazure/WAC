@@ -70,8 +70,8 @@ void ParticlePairDiffHistos::initialize()
   ac.width_Dphi = kTWOPI / ac.nBins_Dphi;
   ac.min_Dphi = -ac.width_Dphi / 2.;
   ac.max_Dphi = kTWOPI - ac.width_Dphi / 2.;
-  ac.min_Dphi_shft = ac.min_Dphi - ac.width_Dphi * double(ac.nBins_Dphi / 4);
-  ac.max_Dphi_shft = ac.max_Dphi - ac.width_Dphi * double(ac.nBins_Dphi / 4);
+  ac.min_Dphi_shft = ac.min_Dphi - ac.width_Dphi * ac.nBins_Dphi_shft;
+  ac.max_Dphi_shft = ac.max_Dphi - ac.width_Dphi * ac.nBins_Dphi_shft;
   ac.nBins_Dy = 2 * ac.nBins_y - 1;
   ac.width_Dy = (ac.max_y - ac.min_y) / ac.nBins_Dy;
   ac.min_Dy = ac.min_y - ac.max_y;
