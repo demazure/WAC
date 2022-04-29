@@ -379,7 +379,7 @@ void TwoPartDiffCorrelationAnalyzer::calculateDerivedHistograms()
     pair11_Histos->calculateDerivedHistograms(particle1_Histos, particle1_Histos, analysisConfiguration->binCorrPP);
     pair22_Histos->calculateDerivedHistograms(particle2_Histos, particle2_Histos, analysisConfiguration->binCorrMM);
     pair12_Histos->calculateDerivedHistograms(particle1_Histos, particle2_Histos, analysisConfiguration->binCorrPM);
-    pair21_Histos->calculateDerivedHistograms(particle1_Histos, particle2_Histos, analysisConfiguration->binCorrMP);
+    pair21_Histos->calculateDerivedHistograms(particle2_Histos, particle1_Histos, analysisConfiguration->binCorrMP);
     pair12_CIHistos->calculate(pair11_Histos, pair22_Histos, pair12_Histos, pair21_Histos, 0.25, 0.25, 0.25, 0.25);
     pair12_CDHistos->calculate(pair11_Histos, pair22_Histos, pair12_Histos, pair21_Histos, -0.25, -0.25, 0.25, 0.25);
   } else {
