@@ -332,7 +332,7 @@ void ParticlePairDerivedDiffHistos::calculateDerivedHistograms(ParticleHistos* p
   /* calculate BF from R2 */
   double rho1_2 = part2Histos->h_n1_phiEta->Integral() / (kTWOPI * (configuration->max_eta - configuration->min_eta));
   h_R2bf12_DetaDphi_shft->Reset();
-  h_R2bf12_DetaDphi_shft->Add(h_R2_DetaDphi, rho1_2);
+  h_R2bf12_DetaDphi_shft->Add(h_R2_DetaDphi_shft, rho1_2);
 
   if (configuration->fillY) {
     calculateN1N1_H2H2H2(part1Histos->h_n1_phiY, part2Histos->h_n1_phiY, h_n1n1_phiYPhiY, 1.0, 1.0);
@@ -380,7 +380,7 @@ void ParticlePairDerivedDiffHistos::calculateDerivedHistograms(ParticleHistos* p
     /* calculate BF from R2 */
     double rho1_2 = part2Histos->h_n1_phiY->Integral() / (kTWOPI * (configuration->max_y - configuration->min_y));
     h_R2bf12_DyDphi_shft->Reset();
-    h_R2bf12_DyDphi_shft->Add(h_R2_DyDphi, rho1_2);
+    h_R2bf12_DyDphi_shft->Add(h_R2_DyDphi_shft, rho1_2);
   }
   if (reportDebug())
     cout << "ParticlePairDerivedDiffHistos::calculateDerivedHistograms() completed." << endl;
