@@ -176,9 +176,6 @@ void ParticleAnalyzer::execute()
       }
     }
   }
-  for (int iFilter = 0; iFilter < nParticleFilters; iFilter++) {
-    particleHistos[iFilter]->fillMultiplicity(nAccepted[iFilter], 1.0);
-  }
   // if (reportDebug()) cout << "ParticleAnalyzer::execute() Completed" << endl;
 }
 
@@ -191,6 +188,7 @@ void ParticleAnalyzer::scaleHistograms(double factor)
   if (reportDebug())
     cout << "ParticleAnalyzer::scaleHistograms(..) Scale all primary histograms by " << factor << endl;
   for (int iFilter = 0; iFilter < nParticleFilters; iFilter++) {
+    particleHistos[iFilter]->completeFill();
     particleHistos[iFilter]->scale(factor);
   }
   if (reportDebug())

@@ -37,7 +37,7 @@ void ParticleHistos::createHistograms()
 {
   AnalysisConfiguration& ac = *getConfiguration();
   TString bn = getHistoBaseName();
-  h_n1 = createHistogram(bn + TString("n1"), 1000, 0.0, 1000.0, "n_1", "N", scaled, saved, plotted, notPrinted);
+  h_n1eta = createHistogram(bn + TString("n1eta"), 1000, 0.0, 0.0, "n_1(#eta)", "N", scaled, saved, plotted, notPrinted);
   h_n1_pt = createHistogram(bn + TString("n1_pt"), ac.nBins_pt, ac.min_pt, ac.max_pt, "p_{T}", "N", scaled, saved, plotted, notPrinted);
   h_n1_ptXS = createHistogram(bn + TString("n1_ptXS"), ac.nBins_pt, ac.min_pt, ac.max_pt, "p_{T}", "1/p_{T} dN/p_{T}", scaled, saved, plotted, notPrinted);
   h_n1_eta = createHistogram(bn + TString("n1_eta"), ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta", "N", scaled, saved, plotted, notPrinted);
@@ -52,6 +52,7 @@ void ParticleHistos::createHistograms()
   h_pt_phiEta = createHistogram(bn + TString("pt1_phiEta"), ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_phi, ac.min_phi, ac.max_phi, "#eta", "#varphi", "#LTp_{T}#GT", notScaled, saved, notPlotted, notPrinted);
 
   if (ac.fillY) {
+    h_n1y = createHistogram(bn + TString("n1y"), 1000, 0.0, 0.0, "n_1(#y)", "N", scaled, saved, plotted, notPrinted);
     h_n1_y = createHistogram(bn + TString("n1_y"), ac.nBins_y, ac.min_y, ac.max_y, "y", "N", scaled, saved, plotted, notPrinted);
     h_n1_ptY = createHistogram(bn + TString("n1_ptY"), ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_pt, ac.min_pt, ac.max_pt, "#eta", "p_{T}", "N", scaled, saved, notPlotted, notPrinted);
     h_n1_phiY = createHistogram(bn + TString("n1_phiY"), ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_phi, ac.min_phi, ac.max_phi, "y", "#varphi", "N", scaled, saved, notPlotted, notPrinted);
@@ -87,7 +88,7 @@ void ParticleHistos::loadHistograms(TFile* inputFile)
   }
   AnalysisConfiguration& ac = *getConfiguration();
   TString bn = getHistoBaseName();
-  h_n1 = loadH1(inputFile, bn + TString("n1"), true);
+  h_n1eta = loadH1(inputFile, bn + TString("n1eta"), true);
   h_n1_pt = loadH1(inputFile, bn + TString("n1_pt"), true);
   h_n1_ptXS = loadH1(inputFile, bn + TString("n1_ptXS"), true);
   h_n1_eta = loadH1(inputFile, bn + TString("n1_eta"), true);
@@ -104,6 +105,7 @@ void ParticleHistos::loadHistograms(TFile* inputFile)
     h_n1_ptPhiEta = loadH3(inputFile, bn + TString("n1_ptPhiEta"), true);
   }
   if (ac.fillY) {
+    h_n1y = loadH1(inputFile, bn + TString("n1y"), true);
     h_n1_y = loadH1(inputFile, bn + TString("n1_Y"), true);
     h_n1_ptY = loadH2(inputFile, bn + TString("n1_ptY"), true);
     h_n1_phiY = loadH2(inputFile, bn + TString("n1_phiY"), true);
@@ -176,11 +178,6 @@ void ParticleHistos::fill(TLorentzVector& p, double weight)
   }
 }
 
-void ParticleHistos::fillMultiplicity(double nAccepted, double weight)
-{
-  h_n1->Fill(nAccepted, weight);
-}
-
 // complete filling the addicional histograms by projecting the
 // higher dimensional ones
 void ParticleHistos::completeFill()
@@ -188,6 +185,7 @@ void ParticleHistos::completeFill()
   AnalysisConfiguration& ac = *getConfiguration();
 
   TH1* h_eta = h_n1_phiEta->ProjectionX();
+  h_n1eta->Fill(h_eta->Integral() - h_n1_eta->Integral());
   h_n1_eta->Reset();
   h_n1_eta->Add(h_eta);
   TH1* h_phi = h_n1_phiEta->ProjectionY();
@@ -206,6 +204,7 @@ void ParticleHistos::completeFill()
 
   if (ac.fillY) {
     TH1* h_y = h_n1_phiY->ProjectionX();
+    h_n1y->Fill(h_y->Integral() - h_n1_y->Integral());
     h_n1_y->Reset();
     h_n1_y->Add(h_y);
     TH1* h_pty = h_spt_phiY->ProjectionX();
