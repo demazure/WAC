@@ -76,8 +76,8 @@ int main(int argc, char* argv[])
   AnalysisConfiguration* ac = new AnalysisConfiguration("PYTHIA", "PYTHIA", "1.0");
   ac->loadHistograms = false;
   ac->createHistograms = true;
-  ac->scaleHistograms = true;
-  ac->calculateDerivedHistograms = true;
+  ac->scaleHistograms = false;
+  ac->calculateDerivedHistograms = false;
   ac->saveHistograms = true;
   ac->resetHistograms = false;
   ac->clearHistograms = false;
@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
   ac->inputPath = "Input/";
   ac->rootInputFileName = "";
   ac->outputPath = "Output/";
-  ac->rootOuputFileName = TString::Format("PYTHIA_softOnHardOff_Pairs_%03d_", jobix).Data();
+  ac->rootOuputFileName = TString::Format("PYTHIA8_Pairs_%03d_", jobix).Data();
   ac->histoBaseName = "TEST";
 
   ac->nBins_pt = nBins_pt;
