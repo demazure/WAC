@@ -26,6 +26,16 @@ int main(int argc, char* argv[])
   time_t begin, end; // time_t is a datatype to store time values.
   time(&begin);      // note time before execution
 
+  // =========================
+  // Short configuration
+  // =========================
+  float min_eta = -1;
+  float max_eta = 1;
+  float min_pt = 0.2;
+  float max_pt = 3.0;
+  int nBins_eta = int((max_eta - min_eta) / 0.1);
+  int nBins_pt = int((max_pt - min_pt) / 0.1);
+
   long nEventsRequested = 1000000;
   int nEventsReport = 10000;
 
@@ -55,9 +65,9 @@ int main(int argc, char* argv[])
   EventFilter* eventFilterGen = new EventFilter(EventFilter::MinBias, 0.0, 0.0);
   ParticleFilter* particleFilterGen = new ParticleFilter(ParticleFilter::Hadron,
                                                          ParticleFilter::Charged,
-                                                         0.2, 100.0,
-                                                         -6.0, 6.0,
-                                                         -10.0, 10.0);
+                                                         min_pt, max_pt,
+                                                         min_eta, max_eta,
+                                                         min_eta, max_eta);
   PythiaEventGenerator* generator = new PythiaEventGenerator("PYTHIA", pc, event, eventFilterGen, particleFilterGen);
 
   // ==========================
@@ -78,15 +88,15 @@ int main(int argc, char* argv[])
   ac->rootOuputFileName = TString::Format("PYTHIA_softOnHardOff_Pairs_%03d_", jobix).Data();
   ac->histoBaseName = "TEST";
 
-  ac->nBins_pt = 28;
-  ac->min_pt = 0.2;
-  ac->max_pt = 3.0;
-  ac->nBins_eta = 20;
-  ac->min_eta = -1;
-  ac->max_eta = 1;
-  ac->nBins_y = 20;
-  ac->min_y = -2;
-  ac->max_y = 2;
+  ac->nBins_pt = nBins_pt;
+  ac->min_pt = min_pt;
+  ac->max_pt = max_pt;
+  ac->nBins_eta = nBins_eta;
+  ac->min_eta = min_eta;
+  ac->max_eta = max_eta;
+  ac->nBins_y = nBins_eta;
+  ac->min_y = min_eta;
+  ac->max_y = max_eta;
   ac->nBins_phi = 72;
   ac->min_phi = 0.0;
   ac->max_phi = kTWOPI;
