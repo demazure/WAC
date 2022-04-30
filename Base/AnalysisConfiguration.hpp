@@ -14,8 +14,6 @@
 #include "Particle.hpp"
 #include "ParticleFilter.hpp"
 #include "ParticlePairFilter.hpp"
-#include "CanvasConfiguration.hpp"
-#include "GraphConfiguration.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Configuration of a given analysis

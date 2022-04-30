@@ -381,62 +381,6 @@ void TwoPartCorrelationAnalyzer::calculateDerivedHistograms()
 }
 
 //////////////////////////////////////////////////////////////
-// plot histograms on screeen
-//////////////////////////////////////////////////////////////
-//  void plotHistograms(const TString & outputPath,
-//                              CanvasCollection & canvasCollection)
-//  {
-//    if (reportDebug())  cout << "TwoPartCorrelationAnalyzer::plotDerived() Starting" << endl;
-//    canvasCollection.createDirectory(outputPath);
-//
-//    if (analysisConfiguration->plotEventHistos)
-//    {
-//      //event_Histos ->plotHistograms(outputPath, canvasCollection);
-//    }
-//    if (analysisConfiguration->plotSingles)
-//    {
-//      particle1_Histos ->plotHistograms(outputPath, canvasCollection);
-//      particle2_Histos ->plotHistograms(outputPath, canvasCollection);
-//    }
-//
-//    if (analysisConfiguration->fillPairs)
-//    {
-//      if (analysisConfiguration->plotPairs)
-//      {
-//        pair11_Histos->plotHistograms(outputPath, canvasCollection);
-//        pair22_Histos->plotHistograms(outputPath, canvasCollection);
-//        pair12_Histos->plotHistograms(outputPath, canvasCollection);
-//      }
-//
-//      if (analysisConfiguration->calculateDerivedHistograms)
-//      {
-//        if (analysisConfiguration->plotDerivedPairs)
-//        {
-//          pair11_DerivedHistos ->plotHistograms(outputPath, canvasCollection);
-//          pair22_DerivedHistos ->plotHistograms(outputPath, canvasCollection);
-//          pair12_DerivedHistos ->plotHistograms(outputPath, canvasCollection);
-//        }
-//        if (analysisConfiguration->plotCombined)
-//        {
-//          pair12_CIHistos      ->plotHistograms(outputPath, canvasCollection);
-//          pair12_CDHistos      ->plotHistograms(outputPath, canvasCollection);
-//        }
-//      }
-//    }
-//
-//
-//
-//    //  // pt spectrum comparison with ALICE data
-//    //TH1 * ptparticle1 = particle1_Histos->h_n1_pt;
-//    //TString name = "BF_n_pt_P_vsAlice";
-//    //TCanvas * c = canvasCollection->createCanvas(name, *cc1D, 30);
-//    //hc->setHistoProperties(ptparticle1, *gc1D);
-//    //ptparticle1->Draw("P.E");
-//
-//    if (reportDebug())  cout << "TwoPartCorrelationAnalyzer::plotDerived() Completed" << endl;
-//  }
-
-//////////////////////////////////////////////////////////////
 // Scale all filled histograms by the given factor
 // Derived histograms are *NOT* scaled.
 //////////////////////////////////////////////////////////////

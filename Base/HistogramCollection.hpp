@@ -33,9 +33,6 @@
 #include "TLine.h"
 #include "TArrow.h"
 #include "TLegend.h"
-#include "GraphConfiguration.hpp"
-#include "CanvasConfiguration.hpp"
-#include "CanvasCollection.hpp"
 #include "MessageLogger.hpp"
 
 /// using namespace std;
@@ -147,16 +144,6 @@ class HistogramCollection : public MessageLogger
   void addHistogramsToExtList(TList* list, bool all = false);
   void saveHistograms(TFile* outputFile, bool saveAll = false);
   void scale(double factor, bool scaleAll = false);
-  void plotHistograms(const TString& outputPath,
-                      CanvasCollection& canvasCollection,
-                      CanvasConfiguration& cc1d,
-                      CanvasConfiguration& cc2d,
-                      GraphConfiguration& gc1D,
-                      GraphConfiguration& gc2D);
-  void setHistoProperties(TH1* h, const GraphConfiguration& graphConfiguration);
-  void setHistoProperties(TH2* h, const GraphConfiguration& graphConfiguration);
-  void setHistoProperties(TH1* h, const GraphConfiguration& graphConfiguration, const TString& xTitle, const TString& yTitle);
-  void setHistoProperties(TH2* h, const GraphConfiguration& graphConfiguration, const TString& xTitle, const TString& yTitle, const TString& zTitle);
   void addHistos(HistogramCollection* c1, double a1);
   void addHistos(HistogramCollection* c1, HistogramCollection* c2, double a1, double a2);
   void addHistos(HistogramCollection* c1, HistogramCollection* c2, HistogramCollection* c3, double a1, double a2, double a3);
