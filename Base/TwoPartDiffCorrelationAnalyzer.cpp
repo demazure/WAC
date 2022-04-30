@@ -397,7 +397,7 @@ void TwoPartDiffCorrelationAnalyzer::calculateDerivedHistograms()
       particle_Histos[i]->calculateAverages();
     }
     for (uint i = 0; i < partNames.size(); ++i) {
-      for (uint j = 0; i < partNames.size(); ++j) {
+      for (uint j = 0; j < partNames.size(); ++j) {
         /* TODO: we need to think about the bin width correction */
         pairs_Histos[i][j]->calculateDerivedHistograms(particle_Histos[i], particle_Histos[j], 1.0);
       }
