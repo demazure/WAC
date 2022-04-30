@@ -39,6 +39,7 @@ class Particle
   double px, py, pz, e, pt, y, eta;
   float phi;
   int ixEtaPhi, ixYPhi;
+  int ixID; ///< the index of the filter which accepted the particle (kind of PID index)
 
   static int factorySize;
   static Factory<Particle>* factory;

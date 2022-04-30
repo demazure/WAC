@@ -35,8 +35,7 @@ class TwoPartDiffCorrelationAnalyzer : public Task
                                  TaskConfiguration* configuration,
                                  Event* event,
                                  EventFilter* eventFilter,
-                                 ParticleFilter* particleFilter1,
-                                 ParticleFilter* particleFilter2);
+                                 std::vector<ParticleFilter*> particleFilters);
   virtual ~TwoPartDiffCorrelationAnalyzer();
   virtual void execute();
   virtual void createHistograms();
@@ -52,21 +51,15 @@ class TwoPartDiffCorrelationAnalyzer : public Task
   //////////////////////////////////////////////////////////////
 
   EventFilter* eventFilter;
-  ParticleFilter* particleFilter1;
-  ParticleFilter* particleFilter2;
+  std::vector<ParticleFilter*> particleFilters;
 
-  TString partName1;
-  TString partName2;
+  std::vector<TString> partNames;
 
   EventHistos* event_Histos;
-  ParticleHistos* particle1_Histos;
-  ParticleHistos* particle2_Histos;
-  ParticlePairDerivedDiffHistos* pair11_Histos;
-  ParticlePairDerivedDiffHistos* pair22_Histos;
-  ParticlePairDerivedDiffHistos* pair12_Histos;
-  ParticlePairDerivedDiffHistos* pair21_Histos;
-  ParticlePairCombinedDiffHistos* pair12_CIHistos;
-  ParticlePairCombinedDiffHistos* pair12_CDHistos;
+  std::vector<ParticleHistos*> particle_Histos;
+  std::vector<std::vector<ParticlePairDerivedDiffHistos*>> pairs_Histos;
+  std::vector<std::vector<ParticlePairCombinedDiffHistos*>> pairs_CIHistos;
+  std::vector<std::vector<ParticlePairCombinedDiffHistos*>> pairs_CDHistos;
 
   ClassDef(TwoPartDiffCorrelationAnalyzer, 1)
 };

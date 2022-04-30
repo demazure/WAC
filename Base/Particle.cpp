@@ -29,7 +29,8 @@ Particle::Particle()
     eta(0.0),
     phi(0.0),
     ixEtaPhi(-1),
-    ixYPhi(-1)
+    ixYPhi(-1),
+    ixID(-1)
 {
   // no op
 }
@@ -58,6 +59,7 @@ Particle::Particle(const Particle& other)
     phi = other.phi;
     ixEtaPhi = other.ixEtaPhi;
     ixYPhi = other.ixYPhi;
+    ixID = other.ixID;
   }
 }
 
@@ -76,6 +78,7 @@ Particle& Particle::operator=(const Particle& other)
     phi = other.phi;
     ixEtaPhi = other.ixEtaPhi;
     ixYPhi = other.ixYPhi;
+    ixID = other.ixID;
   }
   return *this;
 }
@@ -165,6 +168,7 @@ void Particle::setPidPtPhiYEta(long _id, long _ch, double _pT, double _phi, doub
   e = 1.0 / TMath::TanH(_y);
   ixEtaPhi = -1;
   ixYPhi = -1;
+  ixID = -1;
 }
 
 void Particle::boost(double ax, double ay, double az)

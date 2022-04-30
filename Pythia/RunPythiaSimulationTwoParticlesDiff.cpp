@@ -112,13 +112,12 @@ int main(int argc, char* argv[])
   Task** analysisTasks = new Task*[nAnalysisTasks];
 
   EventFilter* eventFilter = new EventFilter(EventFilter::MinBias, 0.0, 0.0);
-  int nParticleFilters = 2;
-  ParticleFilter** particleFilters = new ParticleFilter*[nParticleFilters];
-  particleFilters[0] = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Positive, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y);
-  particleFilters[1] = new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y);
+  std::vector<ParticleFilter*> particleFilters;
+  particleFilters.push_back(new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Positive, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
+  particleFilters.push_back(new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
 
   int iTask = 0;
-  analysisTasks[iTask++] = new TwoPartDiffCorrelationAnalyzer("NarrowPPPM", ac, event, eventFilter, particleFilters[0], particleFilters[1]); // P+ vs P-
+  analysisTasks[iTask++] = new TwoPartDiffCorrelationAnalyzer("NarrowPPPM", ac, event, eventFilter, particleFilters); // P+ vs P-
   nAnalysisTasks = iTask;
 
   // ==========================
