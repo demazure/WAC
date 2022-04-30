@@ -28,7 +28,7 @@ void ParticlePlotter::makePlots(const TString& canvasNameBase,
   // canvasConfiguration->setAxes(CanvasConfiguration::Linear);
 
   for (int iSet = 0; iSet < nSets; iSet++) {
-    histograms[iSet] = particleHistos[iSet]->h_n1eta;
+    histograms[iSet] = particleHistos[iSet]->h_n1;
   }
   canvasConfiguration->setAxes(CanvasConfiguration::LogY);
   plot(nSets, canvasNameBase + histNames + "_MultDist", canvasConfiguration, graphConfigurations,
