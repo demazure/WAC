@@ -60,13 +60,13 @@ TString ParticleFilter::getName()
       name = "Pi";
       break;
     case Kaon:
-      name = "K";
+      name = "Ka";
       break;
     case Baryon:
       name = "B";
       break;
     case Proton:
-      name = "P";
+      name = "Pr";
       break;
     case Lambda:
       name = "Lam";
