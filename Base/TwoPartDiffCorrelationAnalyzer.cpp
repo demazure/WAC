@@ -330,15 +330,21 @@ void TwoPartDiffCorrelationAnalyzer::execute()
     }
   }
 
+  int nAccepted1 = 0;
+  int nAccepted2 = 0;
   for (int iParticle1 = 0; iParticle1 < event->nParticles; iParticle1++) {
     Particle& particle1 = *event->getParticleAt(iParticle1);
     accept11 = particleFilter1->accept(particle1);
     accept21 = particleFilter2->accept(particle1);
 
-    if (accept11)
+    if (accept11) {
       particle1_Histos->fill(particle1, 1.0);
-    if (accept21)
+      nAccepted1++;
+    }
+    if (accept21) {
       particle2_Histos->fill(particle1, 1.0);
+      nAccepted2++;
+    }
     if (analysisConfiguration->fillPairs) {
       for (int iParticle2 = 0; iParticle2 < event->nParticles; iParticle2++) {
         if (iParticle1 == iParticle2)
@@ -358,6 +364,8 @@ void TwoPartDiffCorrelationAnalyzer::execute()
       }
     }
   }
+  particle1_Histos->fillMultiplicity(nAccepted1, 1.0);
+  particle2_Histos->fillMultiplicity(nAccepted2, 1.0);
   eventsProcessed++;
   if (reportDebug())
     cout << "TwoPartDiffCorrelationAnalyzer::execute() Completed" << endl;

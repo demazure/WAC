@@ -191,6 +191,7 @@ void ParticleAnalyzer::scaleHistograms(double factor)
   if (reportDebug())
     cout << "ParticleAnalyzer::scaleHistograms(..) Scale all primary histograms by " << factor << endl;
   for (int iFilter = 0; iFilter < nParticleFilters; iFilter++) {
+    particleHistos[iFilter]->completeFill();
     particleHistos[iFilter]->scale(factor);
   }
   if (reportDebug())
