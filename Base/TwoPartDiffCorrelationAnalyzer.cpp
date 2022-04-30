@@ -237,8 +237,10 @@ void TwoPartDiffCorrelationAnalyzer::saveHistograms(TFile* outputFile)
     pair22_Histos->saveHistograms(outputFile);
     pair12_Histos->saveHistograms(outputFile);
     pair21_Histos->saveHistograms(outputFile);
-    pair12_CIHistos->saveHistograms(outputFile);
-    pair12_CDHistos->saveHistograms(outputFile);
+    if (analysisConfiguration->calculateDerivedHistograms) {
+      pair12_CIHistos->saveHistograms(outputFile);
+      pair12_CDHistos->saveHistograms(outputFile);
+    }
   }
   if (reportDebug())
     cout << "TwoPartDiffCorrelationAnalyzer::saveHistograms(...) Completed." << endl;
@@ -264,8 +266,10 @@ void TwoPartDiffCorrelationAnalyzer::addHistogramsToExtList(TList* list, bool al
     pair22_Histos->addHistogramsToExtList(list, all);
     pair12_Histos->addHistogramsToExtList(list, all);
     pair21_Histos->addHistogramsToExtList(list, all);
-    pair12_CIHistos->addHistogramsToExtList(list, all);
-    pair12_CDHistos->addHistogramsToExtList(list, all);
+    if (analysisConfiguration->calculateDerivedHistograms) {
+      pair12_CIHistos->addHistogramsToExtList(list, all);
+      pair12_CDHistos->addHistogramsToExtList(list, all);
+    }
   }
 
   if (reportDebug())
