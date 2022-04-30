@@ -76,17 +76,17 @@ TwoPartDiffCorrelationAnalyzer::~TwoPartDiffCorrelationAnalyzer()
   for (auto pf : particle_Histos) {
     delete pf;
   }
-  for (auto v : pairs_Histos) {
+  for (auto& v : pairs_Histos) {
     for (auto ph : v) {
       delete ph;
     }
   }
-  for (auto v : pairs_CIHistos) {
+  for (auto& v : pairs_CIHistos) {
     for (auto ph : v) {
       delete ph;
     }
   }
-  for (auto v : pairs_CDHistos) {
+  for (auto& v : pairs_CDHistos) {
     for (auto ph : v) {
       delete ph;
     }
@@ -115,6 +115,11 @@ void TwoPartDiffCorrelationAnalyzer::createHistograms()
       }
     }
     if (ac->calculateDerivedHistograms) {
+      for (uint i = 0; i < partNames.size(); ++i) {
+        for (uint j = 0; j < partNames.size(); ++j) {
+          pairs_Histos[i][j]->createDerivedHistograms();
+        }
+      }
       for (uint i = 0; i < partNames.size(); ++i) {
         for (uint j = 0; j < partNames.size() - (i + 1); ++j) {
           pairs_CIHistos[i][j] = new ParticlePairCombinedDiffHistos(partNames[i] + partNames[j + i + 1] + "CI", ac, debugLevel);
