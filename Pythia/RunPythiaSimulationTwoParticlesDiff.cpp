@@ -113,11 +113,15 @@ int main(int argc, char* argv[])
 
   EventFilter* eventFilter = new EventFilter(EventFilter::MinBias, 0.0, 0.0);
   std::vector<ParticleFilter*> particleFilters;
-  particleFilters.push_back(new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Positive, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
-  particleFilters.push_back(new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative, ac->min_pt + 0.001, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
+  particleFilters.push_back(new ParticleFilter(ParticleFilter::Pion, ParticleFilter::Positive, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
+  particleFilters.push_back(new ParticleFilter(ParticleFilter::Pion, ParticleFilter::Negative, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
+  particleFilters.push_back(new ParticleFilter(ParticleFilter::Kaon, ParticleFilter::Positive, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
+  particleFilters.push_back(new ParticleFilter(ParticleFilter::Kaon, ParticleFilter::Negative, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
+  particleFilters.push_back(new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Positive, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
+  particleFilters.push_back(new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
 
   int iTask = 0;
-  analysisTasks[iTask++] = new TwoPartDiffCorrelationAnalyzer("NarrowPPPM", ac, event, eventFilter, particleFilters); // P+ vs P-
+  analysisTasks[iTask++] = new TwoPartDiffCorrelationAnalyzer("NarrowPiKaP", ac, event, eventFilter, particleFilters); // P+ vs P-
   nAnalysisTasks = iTask;
 
   // ==========================
