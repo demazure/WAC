@@ -37,14 +37,7 @@ class ParticlePairDerivedDiffHistos : public ParticlePairDiffHistos
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   // Data Members - Computed
   //////////////////////////////////////////////////////////////////////////////////////////////////////
-  TH2* h_n1n1_phiEtaPhiEta;
-  TH2* h_n1n1_etaEta;
-  TH2* h_n1n1_phiPhi;
   TH2* h_n1n1_ptPt;
-
-  TH2* h_pt1pt1_phiEtaPhiEta;
-  TH2* h_pt1pt1_etaEta;
-  TH2* h_pt1pt1_phiPhi;
 
   TH2* h_n1n1_DetaDphi;
   TH2* h_pt1pt1_DetaDphi;
@@ -60,12 +53,6 @@ class ParticlePairDerivedDiffHistos : public ParticlePairDiffHistos
   TH2* h_R2bf12_DetaDphi_shft;
 
   // vs Y ////////
-  TH2* h_n1n1_phiYPhiY;
-  TH2* h_n1n1_yY;
-
-  TH2* h_pt1pt1_phiYPhiY;
-  TH2* h_pt1pt1_yY;
-
   TH2* h_n1n1_DyDphi;
   TH2* h_pt1pt1_DyDphi;
 
