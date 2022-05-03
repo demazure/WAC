@@ -26,7 +26,6 @@ class ParticlePairDerivedDiffHistos : public ParticlePairDiffHistos
                                 AnalysisConfiguration* configuration,
                                 LogLevel debugLevel);
   virtual ~ParticlePairDerivedDiffHistos();
-  void loadHistograms(TFile* inputFile);
   void createDerivedHistograms();
   double calculateWeightCorrection(TFile* fRaw, TFile* fCal);
   void calculateDerivedHistograms(ParticleHistos* part1Histos,

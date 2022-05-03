@@ -44,11 +44,11 @@ ParticlePairDerivedDiffHistos::ParticlePairDerivedDiffHistos(const TString& name
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // CTOR
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-ParticlePairDerivedDiffHistos::ParticlePairDerivedDiffHistos(TFile*,
+ParticlePairDerivedDiffHistos::ParticlePairDerivedDiffHistos(TFile* inputFile,
                                                              const TString& name,
                                                              AnalysisConfiguration* configuration,
                                                              LogLevel debugLevel)
-  : ParticlePairDiffHistos(name, configuration, debugLevel),
+  : ParticlePairDiffHistos(inputFile, name, configuration, debugLevel),
     h_n1n1_ptPt(nullptr),
     h_n1n1_DetaDphi(nullptr),
     h_pt1pt1_DetaDphi(nullptr),
@@ -82,54 +82,6 @@ ParticlePairDerivedDiffHistos::~ParticlePairDerivedDiffHistos()
 {
   if (reportDebug())
     cout << "ParticlePairDerivedDiffHistos::DTOR() No ops." << endl;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-// Load histograms
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-void ParticlePairDerivedDiffHistos::loadHistograms(TFile* inputFile)
-{
-  ParticlePairDiffHistos::loadHistograms(inputFile);
-  if (reportDebug())
-    cout << "ParticlePairDerivedDiffHistos::loadHistograms(...)" << endl;
-
-  AnalysisConfiguration& ac = *getConfiguration();
-  TString bn = getHistoBaseName();
-  if (ac.calculateDerivedHistograms) {
-    h_n1n1_ptPt = loadH2(inputFile, bn + TString("n1n1_ptPt"));
-
-    h_n1n1_DetaDphi = loadH2(inputFile, bn + TString("n1n1_DetaDphi"));
-    h_pt1pt1_DetaDphi = loadH2(inputFile, bn + TString("pt1pt1_DetaDphi"));
-
-    h_R2_DetaDphi = loadH2(inputFile, bn + TString("R2_DetaDphi"));
-    h_P2_DetaDphi = loadH2(inputFile, bn + TString("P2_DetaDphi"));
-    h_G2_DetaDphi = loadH2(inputFile, bn + TString("G2_DetaDphi"));
-
-    h_R2_DetaDphi_shft = loadH2(inputFile, bn + TString("R2_DetaDphi_shft"));
-    h_P2_DetaDphi_shft = loadH2(inputFile, bn + TString("P2_DetaDphi_shft"));
-    h_G2_DetaDphi_shft = loadH2(inputFile, bn + TString("G2_DetaDphi_shft"));
-
-    h_G2_DetaDphi_shft = loadH2(inputFile, bn + TString("R2bf12_DetaDphi_shft"));
-
-    if (ac.fillY) {
-      h_n1n1_DyDphi = loadH2(inputFile, bn + TString("n1n1_DyDphi"));
-      h_pt1pt1_DyDphi = loadH2(inputFile, bn + TString("pt1pt1_DyDphi"));
-
-      h_R2_DyDphi = loadH2(inputFile, bn + TString("R2_DyDphi"));
-      h_P2_DetaDphi = loadH2(inputFile, bn + TString("P2_DetaDphi"));
-      h_G2_DyDphi = loadH2(inputFile, bn + TString("G2_DyDphi"));
-
-      h_R2_DyDphi_shft = loadH2(inputFile, bn + TString("R2_DyDphi_shft"));
-      h_P2_DyDphi_shft = loadH2(inputFile, bn + TString("P2_DyDphi_shft"));
-      h_G2_DyDphi_shft = loadH2(inputFile, bn + TString("G2_DyDphi_shft"));
-
-      h_G2_DyDphi_shft = loadH2(inputFile, bn + TString("R2bf12_DyDphi_shft"));
-    }
-    /* the histograms are not owned */
-    bOwnTheHistograms = false;
-  }
-  if (reportDebug())
-    cout << "ParticlePairDerivedDiffHistos::loadHistograms() Completed." << endl;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
