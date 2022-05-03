@@ -359,7 +359,7 @@ int main(int argc, char* argv[])
     char* cfname[ncorrfcomb] = {nullptr};
     for (int i = 0; i < ncorrfcomb; ++i) {
       cfname[i] = new char[std::strlen(corrfname[i]) + 1];
-      strlcpy(cfname[i], corrfname[i], std::strlen(corrfname[i]));
+      sprintf(cfname[i], "%s", corrfname[i]);
     }
     outputfile->cd();
     for (int ipart = 0; ipart < npart; ++ipart) {
