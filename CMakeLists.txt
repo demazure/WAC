@@ -12,6 +12,7 @@ cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 ################################################################################################
 project(WAC VERSION 1.0 DESCRIPTION "Wayne State Code" LANGUAGES CXX)
 
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
 set(WAC_ROOT "${WAC_ROOT}")
 
 #option(USE_ECCENTRICITY "Use eccentricity lib" OFF)
@@ -52,4 +53,5 @@ endif()
 add_subdirectory(Base)
 add_subdirectory(Pythia)
 add_subdirectory(Urqmd)
+add_subdirectory(Utils)
 

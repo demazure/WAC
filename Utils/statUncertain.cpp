@@ -41,7 +41,7 @@ const char* partname[npart] = {"PiP", "PiM", "KaP", "KaM", "PrP", "PrM"};
 const char* combname[ncomb] = {"CI", "CD"};
 const int ncorrpart = 3;
 const int ncorrfcomb = 4;
-char* cfname[ncorrfcomb] = {"P2", "R2", "G2", "R2BF"};
+const char* corrfname[ncorrfcomb] = {"P2", "R2", "G2", "R2BF"};
 
 std::vector<std::string> centfname = {
   "MB"};
@@ -259,8 +259,13 @@ TList *extractSampleResults(AnalysisConfiguration *ac, int icent,int isample) {
 /////////////////////////////////////////////////////////////////////////////////////////
 // produce results with statistic uncertainties out of a set of sub-samples
 /////////////////////////////////////////////////////////////////////////////////////////
-void statUncertain(Option_t *opt)
+int main(int argc, char* argv[])
 {
+  if (argc > 2 or argc < 1) {
+    Fatal("main", "Wrong number of arguments. Use statUncertain option");
+  }
+
+  Option_t* opt = argv[1];
 
   TTimeStamp now = TTimeStamp();
   if (!TString(opt).Contains("verb"))
@@ -351,6 +356,11 @@ void statUncertain(Option_t *opt)
     Bool_t oldstatus = TH1::AddDirectoryStatus();
     TH1::AddDirectory(kFALSE);
 
+    char* cfname[ncorrfcomb] = {nullptr};
+    for (int i = 0; i < ncorrfcomb; ++i) {
+      cfname[i] = new char[std::strlen(corrfname[i]) + 1];
+      strlcpy(cfname[i], corrfname[i], std::strlen(corrfname[i]));
+    }
     outputfile->cd();
     for (int ipart = 0; ipart < npart; ++ipart) {
       for (int jpart = 0; jpart < npart; ++jpart) {
@@ -366,8 +376,8 @@ void statUncertain(Option_t *opt)
     char* cfnamecomb[ncorrfcomb * ncomb] = {nullptr};
     for (int i = 0; i < ncorrfcomb; ++i) {
       for (int j = 0; j < ncomb; ++j) {
-        cfnamecomb[i * ncomb + j] = new char[std::strlen(cfname[i]) + strlen(combname[j]) + 1];
-        sprintf(cfnamecomb[i * ncomb + j], "%s%s", cfname[i], combname[j]);
+        cfnamecomb[i * ncomb + j] = new char[std::strlen(corrfname[i]) + strlen(combname[j]) + 1];
+        sprintf(cfnamecomb[i * ncomb + j], "%s%s", corrfname[i], combname[j]);
       }
     }
     int ilst = npart * npart;
@@ -383,6 +393,12 @@ void statUncertain(Option_t *opt)
       }
     }
 
+    for (auto aname : cfname) {
+      delete aname;
+    }
+    for (auto aname : cfnamecomb) {
+      delete aname;
+    }
     /* back to normal */
     TH1::AddDirectory(oldstatus);
   }
