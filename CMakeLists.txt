@@ -53,5 +53,6 @@ endif()
 add_subdirectory(Base)
 add_subdirectory(Pythia)
 add_subdirectory(Urqmd)
+add_subdirectory(MixedEvents)
 add_subdirectory(Utils)
 
