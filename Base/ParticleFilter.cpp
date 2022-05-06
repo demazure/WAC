@@ -69,7 +69,7 @@ TString ParticleFilter::getName()
       name = "Pr";
       break;
     case Lambda:
-      name = "Lam";
+      name = "La";
       break;
   }
 

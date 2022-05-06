@@ -88,10 +88,10 @@ inline bool ParticleFilter::accept(Particle& particle)
       accepting = true;
       break;
     case Negative:
-      accepting = (charge < 0);
+      accepting = (charge < 0) or ((charge == 0) and (particle.pid < 0)); /* we have to consider the particle antiparticle for neutral */
       break;
     case Positive:
-      accepting = (charge > 0);
+      accepting = (charge > 0) or ((charge == 0) and (particle.pid > 0)); /* we have to consider the particle antiparticle for neutral */
       break;
     case Charged:
       accepting = (charge != 0);
