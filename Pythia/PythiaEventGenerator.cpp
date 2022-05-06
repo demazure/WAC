@@ -84,23 +84,18 @@ void PythiaEventGenerator::execute()
 
   Factory<Particle>* particleFactory = Particle::getFactory();
   int nparts;
-  bool seekingEvent = true;
-  while (seekingEvent) {
-    pythia8->GenerateEvent();
-    if (reportDebug())
-      pythia8->EventListing();
-    if (reportDebug())
-      cout << "PythiaEventGenerator::execute() Calling pythia8->ImportParticles()" << endl;
+  pythia8->GenerateEvent();
+  if (reportDebug())
+    pythia8->EventListing();
+  if (reportDebug())
+    cout << "PythiaEventGenerator::execute() Calling pythia8->ImportParticles()" << endl;
 
-    pythia8->ImportParticles(particles, "Final");
-    if (reportDebug())
-      cout << "PythiaEventGenerator::execute() pythia8->ImportParticles() completed" << endl;
-    nparts = particles->GetEntriesFast();
-    if (reportDebug())
-      cout << "PythiaEventGenerator::execute() with nparts:" << nparts << endl;
-    if (nparts > 2)
-      seekingEvent = false;
-  }
+  pythia8->ImportParticles(particles, "Final");
+  if (reportDebug())
+    cout << "PythiaEventGenerator::execute() pythia8->ImportParticles() completed" << endl;
+  nparts = particles->GetEntriesFast();
+  if (reportDebug())
+    cout << "PythiaEventGenerator::execute() with nparts:" << nparts << endl;
   if (nparts > nMax) {
     if (reportError())
       cout << " ARRAY TOO SMALL np>nMax. nparts:" << nparts << " nMax:" << nMax << endl;
@@ -108,8 +103,7 @@ void PythiaEventGenerator::execute()
     // exit(0);
   }
 
-  int thePid;
-  double charge, mass, p_x, p_y, p_z, p_e;
+  double charge, p_x, p_y, p_z, p_e;
   Particle* particle;
   int particleAccepted = 0;
   int particleCounted = 0;
@@ -130,9 +124,6 @@ void PythiaEventGenerator::execute()
     if (ist <= 0)
       continue;
     int pdg = part.GetPdgCode();
-    mass = TDatabasePDG::Instance()->GetParticle(pdg)->Mass();
-    if (mass < 0.002)
-      continue; // no photons, electrons...
     charge = TDatabasePDG::Instance()->GetParticle(pdg)->Charge();
     p_x = cosPhi * part.Px() - sinPhi * part.Py();
     p_y = sinPhi * part.Px() + cosPhi * part.Py();
