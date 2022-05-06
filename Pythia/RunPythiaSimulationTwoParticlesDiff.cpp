@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
   float min_eta = -1;
   float max_eta = 1;
   float min_pt = 0.2;
-  float max_pt = 3.0;
+  float max_pt = 2.5;
   int nBins_eta = int((max_eta - min_eta) / 0.1);
   int nBins_pt = int((max_pt - min_pt) / 0.1);
 
@@ -56,15 +56,16 @@ int main(int argc, char* argv[])
   pythiaOptions[nOptions++] = new TString("Next:numberShowProcess = 0");         // print process record n times
   pythiaOptions[nOptions++] = new TString("Next:numberShowEvent = 0");
   pythiaOptions[nOptions++] = new TString("SoftQCD:all = on"); // Allow total sigma = elastic/SD/DD/ND
+  pythiaOptions[nOptions++] = new TString("Tune:pp = 14");     // Monash 2013
                                                                // pythiaOptions[nOptions++] = new TString("HardQCD:all = on");
   PythiaConfiguration* pc = new PythiaConfiguration(2212 /* p */,
                                                     2212 /* p */,
-                                                    14000.0, /* energy in GeV */
+                                                    7000.0, /* energy in GeV */
                                                     nOptions,
                                                     pythiaOptions);
   EventFilter* eventFilterGen = new EventFilter(EventFilter::MinBias, 0.0, 0.0);
-  ParticleFilter* particleFilterGen = new ParticleFilter(ParticleFilter::Hadron,
-                                                         ParticleFilter::Charged,
+  ParticleFilter* particleFilterGen = new ParticleFilter(ParticleFilter::AllSpecies,
+                                                         ParticleFilter::AllCharges,
                                                          min_pt, max_pt,
                                                          min_eta, max_eta,
                                                          min_eta, max_eta);
@@ -119,9 +120,12 @@ int main(int argc, char* argv[])
   particleFilters.push_back(new ParticleFilter(ParticleFilter::Kaon, ParticleFilter::Negative, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
   particleFilters.push_back(new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Positive, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
   particleFilters.push_back(new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
+  particleFilters.push_back(new ParticleFilter(ParticleFilter::Lambda, ParticleFilter::Positive, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
+  particleFilters.push_back(new ParticleFilter(ParticleFilter::Lambda, ParticleFilter::Negative, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
 
   int iTask = 0;
-  analysisTasks[iTask++] = new TwoPartDiffCorrelationAnalyzer("NarrowPiKaP", ac, event, eventFilter, particleFilters); // P+ vs P-
+  analysisTasks[iTask++] = new TwoPartDiffCorrelationAnalyzer("NarrowPiKaPrLa", ac, event, eventFilter, particleFilters);
+  //  analysisTasks[iTask - 1]->reportLevel = MessageLogger::Debug;
   nAnalysisTasks = iTask;
 
   // ==========================
@@ -138,5 +142,5 @@ int main(int argc, char* argv[])
   cout << "<INFO> PYTHIA Model Analysis - Pair Differential Correlations Histograms  - Completed" << endl;
   time(&end); // note time after execution
   double difference = difftime(end, begin);
-  cout << "<INFO> in " << difference << " seconds";
+  cout << "<INFO> in " << difference << " seconds" << endl;
 }
