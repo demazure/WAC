@@ -334,6 +334,9 @@ void TwoPartDiffCorrelationAnalyzer::execute()
 
   /* process the singles building the particle indexes to hurry up the pairs process */
   std::vector<int> nAccepted = {int(partNames.size()), 0};
+  for (uint i = 0; i < partNames.size(); ++i) {
+    nAccepted[i] = 0;
+  }
   for (int iParticle = 0; iParticle < event->nParticles; iParticle++) {
     if (reportDebug())
       cout << "TwoPartDiffCorrelationAnalyzer::analyze(...) particle: " << iParticle << endl;
@@ -348,7 +351,7 @@ void TwoPartDiffCorrelationAnalyzer::execute()
       continue;
     }
     particle_Histos[ixID]->fill(*particle, 1.0);
-    nAccepted[ixID]++;
+    nAccepted[ixID] += 1;
     if (reportDebug()) {
       cout << "  accepted as: " << particleFilters[particle->ixID]->getName() << endl;
     }
