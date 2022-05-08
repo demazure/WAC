@@ -52,7 +52,7 @@ void PythiaEventGenerator::initialize()
 
   PythiaConfiguration* pc = (PythiaConfiguration*)getTaskConfiguration();
   for (int iOption = 0; iOption < pc->nOptions; iOption++) {
-    pythia8->ReadString(*pc->options[iOption]);
+    pythia8->ReadString(pc->options[iOption]->Data());
   }
   pythia8->Initialize(pc->beam, pc->target, pc->energy);
   // pythia8->Initialize(2212 /* p */, 2212 /* p */, 14000. /* GeV */);
