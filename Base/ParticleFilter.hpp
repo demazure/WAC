@@ -40,7 +40,8 @@ class ParticleFilter
                           Kaon,
                           Baryon,
                           Proton,
-                          Lambda };
+                          Lambda,
+                          ALambda };
 
   ParticleFilter(SpeciesSelection pidRequested,
                  ChargeSelection chargeRequested,
@@ -88,10 +89,10 @@ inline bool ParticleFilter::accept(Particle& particle)
       accepting = true;
       break;
     case Negative:
-      accepting = (charge < 0) or ((charge == 0) and (particle.pid < 0)); /* we have to consider the particle antiparticle for neutral */
+      accepting = (charge < 0);
       break;
     case Positive:
-      accepting = (charge > 0) or ((charge == 0) and (particle.pid > 0)); /* we have to consider the particle antiparticle for neutral */
+      accepting = (charge > 0);
       break;
     case Charged:
       accepting = (charge != 0);
@@ -135,7 +136,10 @@ inline bool ParticleFilter::accept(Particle& particle)
       accepting = (pid == 2212);
       break;
     case Lambda:
-      accepting = (pid == 3122);
+      accepting = (particle.pid == 3122);
+      break;
+    case ALambda:
+      accepting = (particle.pid == -3122);
       break;
   }
 

@@ -71,6 +71,9 @@ TString ParticleFilter::getName()
     case Lambda:
       name = "La";
       break;
+    case ALambda:
+      name = "ALa";
+      break;
   }
 
   if (pidRequested == Photon)
@@ -135,6 +138,9 @@ TString ParticleFilter::getTitle()
       break;
     case Lambda:
       name = "Lambda";
+      break;
+    case ALambda:
+      name = "ALambda";
       break;
   }
 
