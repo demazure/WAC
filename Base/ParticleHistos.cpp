@@ -38,6 +38,7 @@ void ParticleHistos::createHistograms()
   AnalysisConfiguration& ac = *getConfiguration();
   TString bn = getHistoBaseName();
   h_n1 = createHistogram(bn + TString("n1"), 1000, 0.0, 1000.0, "n_1", "N", scaled, saved, plotted, notPrinted);
+  h_n1_pid = createHistogram(bn + TString("n1_pid"), 100, 0.5, 100.5, "PID", "N", scaled, saved, plotted, notPrinted);
   h_n1_pt = createHistogram(bn + TString("n1_pt"), ac.nBins_pt, ac.min_pt, ac.max_pt, "p_{T}", "N", scaled, saved, plotted, notPrinted);
   h_n1_ptXS = createHistogram(bn + TString("n1_ptXS"), ac.nBins_pt, ac.min_pt, ac.max_pt, "p_{T}", "1/p_{T} dN/p_{T}", scaled, saved, plotted, notPrinted);
   h_n1_eta = createHistogram(bn + TString("n1_eta"), ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta", "N", scaled, saved, plotted, notPrinted);
@@ -88,6 +89,7 @@ void ParticleHistos::loadHistograms(TFile* inputFile)
   AnalysisConfiguration& ac = *getConfiguration();
   TString bn = getHistoBaseName();
   h_n1 = loadH1(inputFile, bn + TString("n1"), true);
+  h_n1_pid = loadH1(inputFile, bn + TString("n1_pid"), true);
   h_n1_pt = loadH1(inputFile, bn + TString("n1_pt"), true);
   h_n1_ptXS = loadH1(inputFile, bn + TString("n1_ptXS"), true);
   h_n1_eta = loadH1(inputFile, bn + TString("n1_eta"), true);
@@ -128,6 +130,7 @@ void ParticleHistos::fill(Particle& particle, double weight)
   if (phi < 0)
     phi += TMath::TwoPi();
   AnalysisConfiguration& ac = *getConfiguration();
+  h_n1_pid->Fill(TString::Format("%ld", particle.pid), 1);
   h_n1_pt->Fill(pt, weight);
   h_n1_ptXS->Fill(pt, weight / pt);
   // delayed fill h_n1_eta    ->Fill(eta, weight);

@@ -35,6 +35,7 @@ class ParticleHistos : public Histograms
   // Data Members - Histograms
   ////////////////////////////////////////////////////////////////////////////
   TH1* h_n1;
+  TH1* h_n1_pid;
   TH1* h_n1_pt;
   TH1* h_n1_ptXS; // 1/pt dN/dptdy
   TH1* h_n1_eta;
@@ -58,7 +59,7 @@ class ParticleHistos : public Histograms
   TH1* h_pt_y;
   TH2* h_pt_phiY;
 
-  ClassDef(ParticleHistos, 2)
+  ClassDef(ParticleHistos, 3)
 };
 
 #endif /* WAC_ParticleHistos  */
