@@ -36,6 +36,9 @@ set(WAC_ROOT_LIBRARIES ROOT::Core ROOT::MathCore ROOT::Hist ROOT::Tree ROOT::Gra
 
 add_library(EG SHARED IMPORTED)
 add_library(PYTHIA8 SHARED IMPORTED)
+# address of Pythia8 xmldoc
+add_definitions(-DPYTHIA8XMLPATH="$ENV{PYTHIA8}/share/Pythia8/xmldoc")
+
 
 if (NOT DEFINED ENV{MYHOME})
 find_library(EGPythia8 EGPythia8)
