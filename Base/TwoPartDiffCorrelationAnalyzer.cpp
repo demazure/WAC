@@ -26,6 +26,7 @@ TwoPartDiffCorrelationAnalyzer::TwoPartDiffCorrelationAnalyzer(const TString& na
   : Task(name, configuration, event),
     eventFilter(ef),
     particleFilters(particleFilters),
+    nAccepted(particleFilters.size()),
     event_Histos(nullptr),
     particle_Histos{particleFilters.size(), nullptr},
     pairs_Histos{particleFilters.size(), {particleFilters.size(), nullptr}}
@@ -333,7 +334,6 @@ void TwoPartDiffCorrelationAnalyzer::execute()
   }
 
   /* process the singles building the particle indexes to hurry up the pairs process */
-  std::vector<int> nAccepted = {int(partNames.size()), 0};
   for (uint i = 0; i < partNames.size(); ++i) {
     nAccepted[i] = 0;
   }

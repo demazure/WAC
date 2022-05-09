@@ -54,6 +54,7 @@ class TwoPartDiffCorrelationAnalyzer : public Task
   std::vector<ParticleFilter*> particleFilters;
 
   std::vector<TString> partNames;
+  std::vector<int> nAccepted;
 
   EventHistos* event_Histos;
   std::vector<ParticleHistos*> particle_Histos;
