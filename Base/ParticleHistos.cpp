@@ -37,7 +37,7 @@ void ParticleHistos::createHistograms()
 {
   AnalysisConfiguration& ac = *getConfiguration();
   TString bn = getHistoBaseName();
-  h_n1 = createHistogram(bn + TString("n1"), 1000, 0.0, 1000.0, "n_1", "N", scaled, saved, plotted, notPrinted);
+  h_n1 = createHistogram(bn + TString("n1"), 1000, -0.5, 999.5, "n_1", "N", scaled, saved, plotted, notPrinted);
   h_n1_pid = createHistogram(bn + TString("n1_pid"), 100, 0.5, 100.5, "PID", "N", scaled, saved, plotted, notPrinted);
   h_n1_pt = createHistogram(bn + TString("n1_pt"), ac.nBins_pt, ac.min_pt, ac.max_pt, "p_{T}", "N", scaled, saved, plotted, notPrinted);
   h_n1_ptXS = createHistogram(bn + TString("n1_ptXS"), ac.nBins_pt, ac.min_pt, ac.max_pt, "p_{T}", "1/p_{T} dN/p_{T}", scaled, saved, plotted, notPrinted);
