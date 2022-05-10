@@ -90,15 +90,14 @@ void PythiaEventGenerator::execute()
   if (reportDebug())
     cout << "PythiaEventGenerator::execute() Calling pythia8->ImportParticles()" << endl;
 
-  pythia8->ImportParticles(particles, "Final");
-  if (reportDebug())
+  nparts = pythia8->ImportParticles(particles, "Final");
+  if (reportDebug()) {
     cout << "PythiaEventGenerator::execute() pythia8->ImportParticles() completed" << endl;
-  nparts = particles->GetEntriesFast();
-  if (reportDebug())
     cout << "PythiaEventGenerator::execute() with nparts:" << nparts << endl;
+  }
   if (nparts > nMax) {
     if (reportError())
-      cout << " ARRAY TOO SMALL np>nMax. nparts:" << nparts << " nMax:" << nMax << endl;
+      cout << " ARRAY TOO SMALL np>nMax. nparts: " << nparts << " nMax: " << nMax << endl;
     postTaskFatal();
     // exit(0);
   }
