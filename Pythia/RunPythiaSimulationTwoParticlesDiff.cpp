@@ -140,6 +140,7 @@ int main(int argc, char* argv[])
   particleFilters.push_back(new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
   particleFilters.push_back(new ParticleFilter(ParticleFilter::Lambda, ParticleFilter::Neutral, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
   particleFilters.push_back(new ParticleFilter(ParticleFilter::ALambda, ParticleFilter::Neutral, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
+  particleFilters.push_back(new ParticleFilter(ParticleFilter::Photon, ParticleFilter::Neutral, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
 
   int iTask = 0;
   /* the two-particle analyzer */
@@ -147,12 +148,12 @@ int main(int argc, char* argv[])
   analysisTasks[iTask - 1]->reportLevel = logLevel;
 
   /* single particle analysis filters */
-  int nParticleFilters = 1;
+  /* int nParticleFilters = 1;
   ParticleFilter** singleParticleFilters = new ParticleFilter*[nParticleFilters];
   singleParticleFilters[0] = new ParticleFilter(ParticleFilter::AllSpecies, ParticleFilter::AllCharges, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y);
   analysisTasks[iTask++] = new ParticleAnalyzer("SinglesPythia", ac, event, eventFilter, nParticleFilters, singleParticleFilters);
   analysisTasks[iTask - 1]->reportLevel = logLevel;
-  nAnalysisTasks = iTask;
+  nAnalysisTasks = iTask; */
 
   // ==========================
   // Event Loop
