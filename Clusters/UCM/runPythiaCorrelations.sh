@@ -15,7 +15,8 @@ export DYLD_LIBRARY_PATH="$WAC_LIB:$PYTHIA8/lib:$DYLD_LIBRARY_PATH"
 export LD_LIBRARY_PATH="$WAC_LIB:$PYTHIA8/lib:$LD_LIBRARY_PATH"
 
 TASKIX=$SLURM_ARRAY_TASK_ID
+SEED=$(( SLURM_ARRAY_TASK_ID + SLURM_ARRAY_JOB_ID*1000 ))
 
 # Execute application code
-RunPythiaSimulationTwoParticlesDiff $TASKIX
+RunPythiaSimulationTwoParticlesDiff $TASKIX $SEED
 
