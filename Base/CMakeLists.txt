@@ -16,6 +16,7 @@ set(SOURCE_FILES
   MessageLogger.cpp
   AnalysisConfiguration.cpp
   Event.cpp
+  EventPool.cpp
   EventFilter.cpp
   EventHistos.cpp
   EventLoop.cpp
@@ -24,6 +25,7 @@ set(SOURCE_FILES
   GeneratorConfiguration.cpp
   TwoPartCorrelationAnalyzer.cpp
   TwoPartDiffCorrelationAnalyzer.cpp
+  TwoPartDiffCorrelationAnalyzerME.cpp
   Particle.cpp
   ParticleFilter.cpp
   ParticleHistos.cpp
@@ -48,6 +50,7 @@ set(HEADER_FILES
   MessageLogger.hpp
   AnalysisConfiguration.hpp
   Event.hpp
+  EventPool.hpp
   EventFilter.hpp
   EventHistos.hpp
   EventLoop.hpp
@@ -56,6 +59,7 @@ set(HEADER_FILES
   GeneratorConfiguration.hpp
   TwoPartCorrelationAnalyzer.hpp
   TwoPartDiffCorrelationAnalyzer.hpp
+  TwoPartDiffCorrelationAnalyzerME.hpp
   Particle.hpp
   ParticleFilter.hpp
   ParticleHistos.hpp

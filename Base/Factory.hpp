@@ -43,7 +43,7 @@ class Factory : public TObject
     : TObject(),
       capacity(0),
       index(0),
-      objects(0)
+      objects(nullptr)
   {
     // no ops
   }

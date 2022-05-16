@@ -18,6 +18,7 @@
 #define WAC_ParticlePairDiffHistos
 
 #include "Histograms.hpp"
+#include "EventPool.hpp"
 
 class ParticlePairDiffHistos : public Histograms
 {
@@ -31,9 +32,12 @@ class ParticlePairDiffHistos : public Histograms
                          LogLevel debugLevel);
   virtual ~ParticlePairDiffHistos();
   void initialize();
-  int getGlobalDeltaEtaDeltaPhiIndex(Particle& p1, Particle& p2);
-  int getGlobalDeltaRapidityDeltaPhiIndex(Particle& p1, Particle& p2);
-  void fill(Particle& particle1, Particle& particle2, double weight1, double weight2, double pTavg1 = 0.0, double pTavg2 = 0.0);
+  template <typename ParticleType1, typename ParticleType2>
+  int getGlobalDeltaEtaDeltaPhiIndex(ParticleType1& p1, ParticleType2& p2);
+  template <typename ParticleType1, typename ParticleType2>
+  int getGlobalDeltaRapidityDeltaPhiIndex(ParticleType1& p1, ParticleType2& p2);
+  template <typename ParticleType1, typename ParticleType2>
+  void fill(ParticleType1& particle1, ParticleType2& particle2, double weight1, double weight2, double pTavg1 = 0.0, double pTavg2 = 0.0);
   void loadHistograms(TFile* inputFile);
 
   ////////////////////////////////////////////////////////////////////////////
@@ -52,17 +56,42 @@ class ParticlePairDiffHistos : public Histograms
   ClassDef(ParticlePairDiffHistos, 1)
 };
 
-inline int ParticlePairDiffHistos::getGlobalDeltaEtaDeltaPhiIndex(Particle& p1, Particle& p2)
+template <typename ParticleType1, typename ParticleType2>
+inline int ParticlePairDiffHistos::getGlobalDeltaEtaDeltaPhiIndex(ParticleType1& p1, ParticleType2& p2)
 {
   return h_n2_DetaDphi->GetBin(configuration->getDeltaEtaIndex(p1, p2) + 1, configuration->getDeltaPhiIndex(p1, p2) + 1);
 }
 
-inline int ParticlePairDiffHistos::getGlobalDeltaRapidityDeltaPhiIndex(Particle& p1, Particle& p2)
+template <typename ParticleType1, typename ParticleType2>
+inline int ParticlePairDiffHistos::getGlobalDeltaRapidityDeltaPhiIndex(ParticleType1& p1, ParticleType2& p2)
 {
   if (configuration->fillY) {
     return h_n2_DyDphi->GetBin(configuration->getDeltaRapidityIndex(p1, p2) + 1, configuration->getDeltaPhiIndex(p1, p2) + 1);
   } else {
     return -1;
+  }
+}
+
+template <typename ParticleType1, typename ParticleType2>
+void ParticlePairDiffHistos::fill(ParticleType1& particle1, ParticleType2& particle2, double weight1, double weight2, double pTavg1, double pTavg2)
+{
+  int globaletabinno = getGlobalDeltaEtaDeltaPhiIndex(particle1, particle2);
+  h_n2_ptPt->Fill(particle1.pt, particle2.pt, weight1 * weight2);
+  h_n2_DetaDphi->AddBinContent(globaletabinno, weight1 * weight2);
+  h_ptpt_DetaDphi->AddBinContent(globaletabinno, weight1 * particle1.pt * weight2 * particle2.pt);
+  h_dptdpt_DetaDphi->AddBinContent(globaletabinno, (weight1 * particle1.pt - pTavg1) * (weight2 * particle2.pt - pTavg2));
+  h_n2_DetaDphi->SetEntries(h_n2_ptPt->GetEntries());
+  h_ptpt_DetaDphi->SetEntries(h_n2_ptPt->GetEntries());
+  h_dptdpt_DetaDphi->SetEntries(h_n2_ptPt->GetEntries());
+
+  if (configuration->fillY) {
+    int globalybinno = getGlobalDeltaRapidityDeltaPhiIndex(particle1, particle2);
+    h_n2_DyDphi->AddBinContent(globalybinno, weight1 * weight2);
+    h_ptpt_DyDphi->AddBinContent(globalybinno, weight1 * particle1.pt * weight2 * particle2.pt);
+    h_dptdpt_DyDphi->AddBinContent(globalybinno, (weight1 * particle1.pt - pTavg1) * (weight2 * particle2.pt - pTavg2));
+    h_n2_DyDphi->SetEntries(h_n2_ptPt->GetEntries());
+    h_ptpt_DyDphi->SetEntries(h_n2_ptPt->GetEntries());
+    h_dptdpt_DyDphi->SetEntries(h_n2_ptPt->GetEntries());
   }
 }
 

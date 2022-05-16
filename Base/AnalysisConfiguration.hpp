@@ -12,6 +12,7 @@
 #include "TMath.h"
 #include "TaskConfiguration.hpp"
 #include "Particle.hpp"
+#include "EventPool.hpp"
 #include "ParticleFilter.hpp"
 #include "ParticlePairFilter.hpp"
 
@@ -33,9 +34,12 @@ class AnalysisConfiguration : public TaskConfiguration
   int getIxEtaPhi(float eta, float phi);
   int getIxYPhi(float y, float phi);
   float getDphiShifted(float dphi);
-  int getDeltaEtaIndex(Particle& particle1, Particle& particle2);
-  int getDeltaRapidityIndex(Particle& particle1, Particle& particle2);
-  int getDeltaPhiIndex(Particle& particle1, Particle& particle2);
+  template <typename ParticleType1, typename ParticleType2>
+  int getDeltaEtaIndex(ParticleType1& particle1, ParticleType2& particle2);
+  template <typename ParticleType1, typename ParticleType2>
+  int getDeltaRapidityIndex(ParticleType1& particle1, ParticleType2& particle2);
+  template <typename ParticleType1, typename ParticleType2>
+  int getDeltaPhiIndex(ParticleType1& particle1, ParticleType2& particle2);
 
   ////////////////////////////////////////////////////
   // Data Members
@@ -175,7 +179,8 @@ inline float AnalysisConfiguration::getDphiShifted(float dphi)
 /// of particles' eta and phi within the corresponding ranges so, it is suppossed
 /// the particles have been accepted and they are within that ranges
 /// IF THAT IS NOT THE CASE THE ROUTINE WILL PRODUCE NONSENSE RESULTS
-inline int AnalysisConfiguration::getDeltaEtaIndex(Particle& particle1, Particle& particle2)
+template <typename ParticleType1, typename ParticleType2>
+inline int AnalysisConfiguration::getDeltaEtaIndex(ParticleType1& particle1, ParticleType2& particle2)
 {
   int ixEta1 = int(float(nBins_eta) * (particle1.eta - min_eta) / range_eta);
   int ixEta2 = int(float(nBins_eta) * (particle2.eta - min_eta) / range_eta);
@@ -183,7 +188,8 @@ inline int AnalysisConfiguration::getDeltaEtaIndex(Particle& particle1, Particle
   return ixEta1 - ixEta2 + nBins_eta - 1;
 }
 
-inline int AnalysisConfiguration::getDeltaRapidityIndex(Particle& particle1, Particle& particle2)
+template <typename ParticleType1, typename ParticleType2>
+inline int AnalysisConfiguration::getDeltaRapidityIndex(ParticleType1& particle1, ParticleType2& particle2)
 {
   int ixY1 = int(float(nBins_y) * (particle1.y - min_y) / range_y);
   int ixY2 = int(float(nBins_y) * (particle2.y - min_y) / range_y);
@@ -191,7 +197,8 @@ inline int AnalysisConfiguration::getDeltaRapidityIndex(Particle& particle1, Par
   return ixY1 - ixY2 + nBins_y - 1;
 }
 
-inline int AnalysisConfiguration::getDeltaPhiIndex(Particle& particle1, Particle& particle2)
+template <typename ParticleType1, typename ParticleType2>
+inline int AnalysisConfiguration::getDeltaPhiIndex(ParticleType1& particle1, ParticleType2& particle2)
 {
   int ixPhi1 = int(float(nBins_phi) * (particle1.phi - min_phi) / range_phi);
   int ixPhi2 = int(float(nBins_phi) * (particle2.phi - min_phi) / range_phi);

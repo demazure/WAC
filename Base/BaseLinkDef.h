@@ -19,9 +19,12 @@
 #pragma link C++ class GeneratorConfiguration+;
 #pragma link C++ class TwoPartCorrelationAnalyzer+;
 #pragma link C++ class TwoPartDiffCorrelationAnalyzer + ;
-#pragma link C++ class Factory<Particle>+;
-#pragma link C++ class Particle+;
-#pragma link C++ class ParticleFilter+;
+#pragma link C++ class TwoPartDiffCorrelationAnalyzerME + ;
+#pragma link C++ class Factory < Particle> + ;
+#pragma link C++ class Factory < MiniParticle> + ;
+#pragma link C++ class Particle + ;
+#pragma link C++ class MiniParticle + ;
+#pragma link C++ class ParticleFilter + ;
 #pragma link C++ class ParticleHistos+;
 #pragma link C++ class ParticleAnalyzer+;
 #pragma link C++ class ParticlePairCombinedHistos+;
