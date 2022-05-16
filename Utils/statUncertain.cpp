@@ -35,9 +35,9 @@
 #include "../Base/AnalysisConfiguration.hpp"
 #include "../Base/TwoPartDiffCorrelationAnalyzer.hpp"
 
-const int npart = 6;
+const int npart = 9;
 const int ncomb = 2;
-const char* partname[npart] = {"PiP", "PiM", "KaP", "KaM", "PrP", "PrM"};
+const char* partname[npart] = {"PiP", "PiM", "KaP", "KaM", "PrP", "PrM", "La0", "ALa0", "Gam"};
 const char* combname[ncomb] = {"CI", "CD"};
 const int ncorrpart = 3;
 const int ncorrfcomb = 4;
@@ -48,16 +48,16 @@ std::vector<std::string> centfname = {
 int ncent = centfname.size();
 
 std::vector<std::string> samplesfnames = {
-  "BUNCH01/Output/PYTHIA8_PiKaPr_%s.root",
-  "BUNCH02/Output/PYTHIA8_PiKaPr_%s.root",
-  "BUNCH03/Output/PYTHIA8_PiKaPr_%s.root",
-  "BUNCH04/Output/PYTHIA8_PiKaPr_%s.root",
-  "BUNCH05/Output/PYTHIA8_PiKaPr_%s.root",
-  "BUNCH06/Output/PYTHIA8_PiKaPr_%s.root",
-  "BUNCH07/Output/PYTHIA8_PiKaPr_%s.root",
-  "BUNCH08/Output/PYTHIA8_PiKaPr_%s.root",
-  "BUNCH09/Output/PYTHIA8_PiKaPr_%s.root",
-  "BUNCH10/Output/PYTHIA8_PiKaPr_%s.root",
+  "BUNCH01/Output/PYTHIA8_PiKaPrLaGa_%s.root",
+  "BUNCH02/Output/PYTHIA8_PiKaPrLaGa_%s.root",
+  "BUNCH03/Output/PYTHIA8_PiKaPrLaGa_%s.root",
+  "BUNCH04/Output/PYTHIA8_PiKaPrLaGa_%s.root",
+  "BUNCH05/Output/PYTHIA8_PiKaPrLaGa_%s.root",
+  "BUNCH06/Output/PYTHIA8_PiKaPrLaGa_%s.root",
+  "BUNCH07/Output/PYTHIA8_PiKaPrLaGa_%s.root",
+  "BUNCH08/Output/PYTHIA8_PiKaPrLaGa_%s.root",
+  "BUNCH09/Output/PYTHIA8_PiKaPrLaGa_%s.root",
+  "BUNCH10/Output/PYTHIA8_PiKaPrLaGa_%s.root",
 };
 int nsamples = samplesfnames.size();
 
@@ -162,6 +162,9 @@ TList *extractSampleResults(AnalysisConfiguration *ac, int icent,int isample) {
   particleFilters.push_back(new ParticleFilter(ParticleFilter::Kaon, ParticleFilter::Negative, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
   particleFilters.push_back(new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Positive, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
   particleFilters.push_back(new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
+  particleFilters.push_back(new ParticleFilter(ParticleFilter::Lambda, ParticleFilter::Neutral, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
+  particleFilters.push_back(new ParticleFilter(ParticleFilter::ALambda, ParticleFilter::Neutral, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
+  particleFilters.push_back(new ParticleFilter(ParticleFilter::Photon, ParticleFilter::Neutral, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
 
   EventFilter* eventFilter = new EventFilter(EventFilter::MinBias, 0, 0);
 
