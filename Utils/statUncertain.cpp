@@ -34,10 +34,11 @@
 #include "TRandom.h"
 #include "../Base/AnalysisConfiguration.hpp"
 #include "../Base/TwoPartDiffCorrelationAnalyzer.hpp"
+#include "../Base/TwoPartDiffCorrelationAnalyzerME.hpp"
 
-const int npart = 9;
+const int npart = 6;
 const int ncomb = 2;
-const char* partname[npart] = {"PiP", "PiM", "KaP", "KaM", "PrP", "PrM", "La0", "ALa0", "Gam"};
+const char* partname[npart] = {"PiP", "PiM", "KaP", "KaM", "PrP", "PrM"};
 const char* combname[ncomb] = {"CI", "CD"};
 const int ncorrpart = 3;
 const int ncorrfcomb = 4;
@@ -48,16 +49,16 @@ std::vector<std::string> centfname = {
 int ncent = centfname.size();
 
 std::vector<std::string> samplesfnames = {
-  "BUNCH01/Output/PYTHIA8_PiKaPrLaGa_%s.root",
-  "BUNCH02/Output/PYTHIA8_PiKaPrLaGa_%s.root",
-  "BUNCH03/Output/PYTHIA8_PiKaPrLaGa_%s.root",
-  "BUNCH04/Output/PYTHIA8_PiKaPrLaGa_%s.root",
-  "BUNCH05/Output/PYTHIA8_PiKaPrLaGa_%s.root",
-  "BUNCH06/Output/PYTHIA8_PiKaPrLaGa_%s.root",
-  "BUNCH07/Output/PYTHIA8_PiKaPrLaGa_%s.root",
-  "BUNCH08/Output/PYTHIA8_PiKaPrLaGa_%s.root",
-  "BUNCH09/Output/PYTHIA8_PiKaPrLaGa_%s.root",
-  "BUNCH10/Output/PYTHIA8_PiKaPrLaGa_%s.root",
+  "BUNCH01/Output/PYTHIA8_PiKaPr_%s_ME.root",
+  "BUNCH02/Output/PYTHIA8_PiKaPr_%s_ME.root",
+  "BUNCH03/Output/PYTHIA8_PiKaPr_%s_ME.root",
+  "BUNCH04/Output/PYTHIA8_PiKaPr_%s_ME.root",
+  "BUNCH05/Output/PYTHIA8_PiKaPr_%s_ME.root",
+  "BUNCH06/Output/PYTHIA8_PiKaPr_%s_ME.root",
+  "BUNCH07/Output/PYTHIA8_PiKaPr_%s_ME.root",
+  "BUNCH08/Output/PYTHIA8_PiKaPr_%s_ME.root",
+  "BUNCH09/Output/PYTHIA8_PiKaPr_%s_ME.root",
+  "BUNCH10/Output/PYTHIA8_PiKaPr_%s_ME.root",
 };
 int nsamples = samplesfnames.size();
 
@@ -149,7 +150,8 @@ TList* extractMeanAndStDevFromSubSets(const TObjArray& listsarray, const TString
   return list;
 }
 
-TList *extractSampleResults(AnalysisConfiguration *ac, int icent,int isample) {
+TList* extractSampleResults(Option_t* opt, AnalysisConfiguration* ac, int icent, int isample)
+{
 
   /* we will control what goes to the directory tree */
   Bool_t oldstatus = TH1::AddDirectoryStatus();
@@ -162,15 +164,12 @@ TList *extractSampleResults(AnalysisConfiguration *ac, int icent,int isample) {
   particleFilters.push_back(new ParticleFilter(ParticleFilter::Kaon, ParticleFilter::Negative, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
   particleFilters.push_back(new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Positive, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
   particleFilters.push_back(new ParticleFilter(ParticleFilter::Proton, ParticleFilter::Negative, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
-  particleFilters.push_back(new ParticleFilter(ParticleFilter::Lambda, ParticleFilter::Neutral, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
-  particleFilters.push_back(new ParticleFilter(ParticleFilter::ALambda, ParticleFilter::Neutral, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
-  particleFilters.push_back(new ParticleFilter(ParticleFilter::Photon, ParticleFilter::Neutral, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));
 
   EventFilter* eventFilter = new EventFilter(EventFilter::MinBias, 0, 0);
 
   Event *event = Event::getEvent();
 
-  TwoPartDiffCorrelationAnalyzer* eventanalyzer = new TwoPartDiffCorrelationAnalyzer("NarrowPiKaP", ac, event, eventFilter, particleFilters);
+  TwoPartDiffCorrelationAnalyzerME* eventanalyzer = new TwoPartDiffCorrelationAnalyzerME("NarrowPiKaPrLa", ac, event, eventFilter, particleFilters);
 
   eventanalyzer->setReportLevel(MessageLogger::Error);
 
@@ -206,6 +205,34 @@ TList *extractSampleResults(AnalysisConfiguration *ac, int icent,int isample) {
         plist->Add(h2->Clone(TString::Format("%s%s_Sub%02d", h2->GetName(), centfname[icent].c_str(), isample)));
       }
       list->Add(plist);
+    }
+  }
+
+  if (TString(opt).Contains("me")) {
+    /* the pair single histos from ME */
+    for (int ipart = 0; ipart < npart; ++ipart) {   /* first component of the pair */
+      for (int jpart = 0; jpart < npart; ++jpart) { /* second component of the pair */
+        TList* plist = new TList();                 /* a list per pair */
+        plist->SetOwner(kTRUE);
+        for (int icf = 0; icf < ncorrpart; ++icf) { /* the individual pair cf */
+          TH2* h2 = NULL;
+          switch (icf) {
+            case 0: /* P2 */
+              h2 = eventanalyzer->pairs_Histos_me[ipart][jpart]->h_P2_DetaDphi_shft;
+              break;
+            case 1: /* R2 */
+              h2 = eventanalyzer->pairs_Histos_me[ipart][jpart]->h_R2_DetaDphi_shft;
+              break;
+            case 2: /* G2 */
+              h2 = eventanalyzer->pairs_Histos_me[ipart][jpart]->h_G2_DetaDphi_shft;
+              break;
+            default:
+              Fatal("extractSampleResults", "Wrong correlator index");
+          }
+          plist->Add(h2->Clone(TString::Format("%s%s_Sub%02d", h2->GetName(), centfname[icent].c_str(), isample)));
+        }
+        list->Add(plist);
+      }
     }
   }
 
@@ -301,7 +328,7 @@ int main(int argc, char* argv[])
     float min_eta = -1;
     float max_eta = 1;
     float min_pt = 0.2;
-    float max_pt = 3.0;
+    float max_pt = 2.5;
     int nBins_eta = int((max_eta - min_eta) / 0.1);
     int nBins_pt = int((max_pt - min_pt) / 0.1);
 
@@ -340,7 +367,7 @@ int main(int argc, char* argv[])
 
     for (Int_t isamp = 0; isamp < nsamples; isamp++) {
       Warning("statUncertain", "Processing sample %d for centrality %s", isamp, centfname[icent].c_str());
-      TList* list = extractSampleResults(ac, icent, isamp);
+      TList* list = extractSampleResults(opt, ac, icent, isamp);
 
       for (Int_t ilst = 0; ilst < nmainlists; ++ilst) {
         pairslists[ilst][isamp] = list->At(ilst);
@@ -376,6 +403,19 @@ int main(int argc, char* argv[])
         delete meanhlist;
       }
     }
+    if (TString(opt).Contains("me")) {
+      int ilst = npart * npart;
+      for (int ipart = 0; ipart < npart; ++ipart) {
+        for (int jpart = 0; jpart < npart; ++jpart) {
+          TString pattern = TString::Format("Pythia8_%s%s%%s_DetaDphi_shft_%s", partname[ipart], partname[jpart], centfname[icent].c_str());
+          TList* meanhlist = extractMeanAndStDevFromSubSets(pairslists[ilst++], pattern, cfname);
+          for (int ixh = 0; ixh < meanhlist->GetEntries(); ixh++) {
+            meanhlist->At(ixh)->Write();
+          }
+          delete meanhlist;
+        }
+      }
+    }
     char* cfnamecomb[ncorrfcomb * ncomb] = {nullptr};
     for (int i = 0; i < ncorrfcomb; ++i) {
       for (int j = 0; j < ncomb; ++j) {
@@ -384,10 +424,13 @@ int main(int argc, char* argv[])
       }
     }
     int ilst = npart * npart;
+    if (TString(opt).Contains("me")) {
+      ilst *= 2;
+    }
     for (int ipart = 0; ipart < npart; ++ipart) {
       for (int jpart = 0; jpart < npart - (ipart + 1); ++jpart) {
         TString pattern = TString::Format("Pythia8_%s%s%%s_DetaDphi_shft_%s", partname[ipart], partname[ipart + 1 + jpart], centfname[icent].c_str());
-        TList* meanhlist = extractMeanAndStDevFromSubSets(pairslists[ilst], pattern, cfnamecomb);
+        TList* meanhlist = extractMeanAndStDevFromSubSets(pairslists[ilst++], pattern, cfnamecomb);
         for (int ixh = 0; ixh < meanhlist->GetEntries(); ixh++) {
           meanhlist->At(ixh)->Write();
         }

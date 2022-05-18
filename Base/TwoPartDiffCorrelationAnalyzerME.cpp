@@ -462,6 +462,8 @@ void TwoPartDiffCorrelationAnalyzerME::calculateDerivedHistograms()
       for (uint j = 0; j < partNames.size(); ++j) {
         /* TODO: we need to think about the bin width correction */
         pairs_Histos[i][j]->calculateDerivedHistograms(particle_Histos[i], particle_Histos[j], 1.0);
+        /* TODO: we have to think about the normalization here */
+        pairs_Histos_me[i][j]->calculateDerivedHistograms(particle_Histos[i], particle_Histos[j], 1.0);
       }
     }
     for (uint i = 0; i < partNames.size(); ++i) {
