@@ -435,7 +435,6 @@ int main(int argc, char* argv[])
           meanhlist->At(ixh)->Write();
         }
         delete meanhlist;
-        ilst++;
       }
     }
 
