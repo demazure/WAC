@@ -407,7 +407,7 @@ int main(int argc, char* argv[])
       int ilst = npart * npart;
       for (int ipart = 0; ipart < npart; ++ipart) {
         for (int jpart = 0; jpart < npart; ++jpart) {
-          TString pattern = TString::Format("Pythia8_%s%s%%s_DetaDphi_shft_%s", partname[ipart], partname[jpart], centfname[icent].c_str());
+          TString pattern = TString::Format("Pythia8_%s%s%%s_DetaDphi_shft_me_%s", partname[ipart], partname[jpart], centfname[icent].c_str());
           TList* meanhlist = extractMeanAndStDevFromSubSets(pairslists[ilst++], pattern, cfname);
           for (int ixh = 0; ixh < meanhlist->GetEntries(); ixh++) {
             meanhlist->At(ixh)->Write();
