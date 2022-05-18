@@ -358,8 +358,8 @@ int main(int argc, char* argv[])
     ac->forceHistogramsRewrite = false;
     ac->calculateDerivedHistograms = true;
 
-    /* the pair single histos plus the pair combined histos */
-    int nmainlists = npart * npart + npart * (npart - 1) / 2;
+    /* the pair single histos, optionally the mixed events pair single histos, plus the pair combined histos   */
+    int nmainlists = (TString(opt).Contains("me")) ? 2 * npart * npart + npart * (npart - 1) / 2 : npart * npart + npart * (npart - 1) / 2;
     std::vector<TObjArray> pairslists(nmainlists, TObjArray(nsamples));
     for (int ilst = 0; ilst < nmainlists; ++ilst) {
       pairslists[ilst].SetOwner(kTRUE);
