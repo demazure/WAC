@@ -150,6 +150,28 @@ TH1* HistogramCollection::createHistogram(const TString& name,
 }
 
 ////////////////////////////////////////////////////////////////////////
+TH1* HistogramCollection::createHistogram(const TString& name,
+                                          std::vector<double> edges,
+                                          const TString& title_x,
+                                          const TString& title_y,
+                                          bool scale,
+                                          bool save,
+                                          bool plot,
+                                          bool print,
+                                          bool sumw2)
+{
+  // createHistogram new 1D historgram
+  if (reportDebug())
+    cout << "Creating  1D histo " << name << " with " << edges.size() - 1 << " non uniform nBins:" << endl;
+  TH1* h;
+  h = new TH1F(name, name, edges.size() - 1, edges.data());
+  h->GetXaxis()->SetTitle(title_x);
+  h->GetYaxis()->SetTitle(title_y);
+  addToList(h, scale, save, plot, print, sumw2);
+  return h;
+}
+
+////////////////////////////////////////////////////////////////////////
 TH2* HistogramCollection::createHistogram(const TString& name,
                                           int n_x, double min_x, double max_x,
                                           int n_y, double min_y, double max_y,
@@ -191,6 +213,78 @@ TH2* HistogramCollection::createHistogram(const TString& name,
     cout << "Creating  2D histo " << name << " with " << n_x << " vs " << n_y << " non uniform nBins:" << endl;
   TH2* h;
   h = new TH2F(name, name, n_x, xbins, n_y, min_y, max_y);
+  h->GetXaxis()->SetTitle(title_x);
+  h->GetYaxis()->SetTitle(title_y);
+  h->GetZaxis()->SetTitle(title_z);
+  addToList(h, scale, save, plot, print, sumw2);
+  return h;
+}
+
+////////////////////////////////////////////////////////////////////////
+TH2* HistogramCollection::createHistogram(const TString& name,
+                                          std::vector<double> xedges, int n_y, double min_y, double max_y,
+                                          const TString& title_x,
+                                          const TString& title_y,
+                                          const TString& title_z,
+                                          bool scale,
+                                          bool save,
+                                          bool plot,
+                                          bool print,
+                                          bool sumw2)
+
+{
+  if (reportDebug())
+    cout << "Creating  2D histo " << name << " with " << xedges.size() - 1 << " vs " << n_y << " non uniform nBins:" << endl;
+  TH2* h;
+  h = new TH2F(name, name, xedges.size() - 1, xedges.data(), n_y, min_y, max_y);
+  h->GetXaxis()->SetTitle(title_x);
+  h->GetYaxis()->SetTitle(title_y);
+  h->GetZaxis()->SetTitle(title_z);
+  addToList(h, scale, save, plot, print, sumw2);
+  return h;
+}
+
+////////////////////////////////////////////////////////////////////////
+TH2* HistogramCollection::createHistogram(const TString& name,
+                                          int n_x, double min_x, double max_x, std::vector<double> yedges,
+                                          const TString& title_x,
+                                          const TString& title_y,
+                                          const TString& title_z,
+                                          bool scale,
+                                          bool save,
+                                          bool plot,
+                                          bool print,
+                                          bool sumw2)
+
+{
+  if (reportDebug())
+    cout << "Creating  2D histo " << name << " with " << n_x << " vs " << yedges.size() - 1 << " non uniform nBins:" << endl;
+  TH2* h;
+  h = new TH2F(name, name, n_x, min_x, max_x, yedges.size() - 1, yedges.data());
+  h->GetXaxis()->SetTitle(title_x);
+  h->GetYaxis()->SetTitle(title_y);
+  h->GetZaxis()->SetTitle(title_z);
+  addToList(h, scale, save, plot, print, sumw2);
+  return h;
+}
+
+////////////////////////////////////////////////////////////////////////
+TH2* HistogramCollection::createHistogram(const TString& name,
+                                          std::vector<double> xedges, std::vector<double> yedges,
+                                          const TString& title_x,
+                                          const TString& title_y,
+                                          const TString& title_z,
+                                          bool scale,
+                                          bool save,
+                                          bool plot,
+                                          bool print,
+                                          bool sumw2)
+
+{
+  if (reportDebug())
+    cout << "Creating  2D histo " << name << " with " << xedges.size() - 1 << " vs " << yedges.size() - 1 << " non uniform nBins:" << endl;
+  TH2* h;
+  h = new TH2F(name, name, xedges.size() - 1, xedges.data(), yedges.size() - 1, yedges.data());
   h->GetXaxis()->SetTitle(title_x);
   h->GetYaxis()->SetTitle(title_y);
   h->GetZaxis()->SetTitle(title_z);

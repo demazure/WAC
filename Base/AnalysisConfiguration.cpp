@@ -36,6 +36,7 @@ ClassImp(AnalysisConfiguration)
     min_pt(0.0),
     max_pt(2.0),
     range_pt(2.0),
+    bin_edges_pt{},
     nBins_eta(20),
     min_eta(-2.0),
     max_eta(2.0),
@@ -121,6 +122,7 @@ AnalysisConfiguration::AnalysisConfiguration(const AnalysisConfiguration& source
     min_pt(source.min_pt),
     max_pt(source.max_pt),
     range_pt(source.range_pt),
+    bin_edges_pt(source.bin_edges_pt),
     nBins_eta(source.nBins_eta),
     min_eta(source.min_eta),
     max_eta(source.max_eta),
@@ -201,6 +203,7 @@ AnalysisConfiguration& AnalysisConfiguration::operator=(const AnalysisConfigurat
   min_pt = source.min_pt;
   max_pt = source.max_pt;
   range_pt = source.range_pt;
+  bin_edges_pt = source.bin_edges_pt;
   nBins_eta = source.nBins_eta;
   min_eta = source.min_eta;
   max_eta = source.max_eta;
@@ -294,4 +297,17 @@ void AnalysisConfiguration::printConfiguration(ostream& os)
     << "        -+ bin correction: " << binCorrMP << endl
     << "        ++ bin correction: " << binCorrPP << endl
     << "        -- bin correction: " << binCorrMM << endl;
+  if (bin_edges_pt.size() > 0) {
+    os
+      << "         -- Pt bins edges: ";
+    int edgeno = 0;
+    for (double edge : bin_edges_pt) {
+      if ((edgeno + 1) % 8 == 0) {
+        os << endl
+           << "                           ";
+      }
+      os << edge << ", ";
+      edgeno++;
+    }
+  }
 }

@@ -62,6 +62,7 @@ class AnalysisConfiguration : public TaskConfiguration
   double min_pt;
   double max_pt;
   double range_pt;
+  std::vector<double> bin_edges_pt;
   int nBins_eta;
   float min_eta;
   float max_eta;

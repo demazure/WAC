@@ -95,7 +95,11 @@ void ParticlePairDerivedDiffHistos::createDerivedHistograms()
   AnalysisConfiguration& ac = *(AnalysisConfiguration*)getConfiguration();
   TString bn = getHistoBaseName();
 
-  h_n1n1_ptPt = createHistogram(bn + TString("n1n1_ptPt"), ac.nBins_pt, ac.min_pt, ac.max_pt, ac.nBins_pt, ac.min_pt, ac.max_pt, "p_{T,1}", "p_{T,2}", "<n_{1}><n_{2}>", notScaled, saved, plotted, notPrinted);
+  if (ac.bin_edges_pt.size() > 0) {
+    h_n1n1_ptPt = createHistogram(bn + TString("n1n1_ptPt"), ac.bin_edges_pt, ac.bin_edges_pt, "p_{T,1}", "p_{T,2}", "<n_{1}><n_{2}>", notScaled, saved, plotted, notPrinted);
+  } else {
+    h_n1n1_ptPt = createHistogram(bn + TString("n1n1_ptPt"), ac.nBins_pt, ac.min_pt, ac.max_pt, ac.nBins_pt, ac.min_pt, ac.max_pt, "p_{T,1}", "p_{T,2}", "<n_{1}><n_{2}>", notScaled, saved, plotted, notPrinted);
+  }
 
   h_n1n1_DetaDphi = createHistogram(bn + TString("n1n1_DetaDphi"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi, ac.max_Dphi, "#Delta#eta", "#Delta#varphi", "<n_{1}><n_{1}>", notScaled, saved, plotted, notPrinted);
   h_pt1pt1_DetaDphi = createHistogram(bn + TString("pt1pt1_DetaDphi"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi, ac.max_Dphi, "#Delta#eta", "#Delta#varphi", "pt1pt1", notScaled, saved, plotted, notPrinted);

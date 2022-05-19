@@ -39,11 +39,20 @@ void ParticleHistos::createHistograms()
   TString bn = getHistoBaseName();
   h_n1 = createHistogram(bn + TString("n1"), 1000, -0.5, 999.5, "n_1", "N", scaled, saved, plotted, notPrinted);
   h_n1_pid = createHistogram(bn + TString("n1_pid"), 100, 0.5, 100.5, "PID", "N", scaled, saved, plotted, notPrinted);
-  h_n1_pt = createHistogram(bn + TString("n1_pt"), ac.nBins_pt, ac.min_pt, ac.max_pt, "p_{T}", "N", scaled, saved, plotted, notPrinted);
-  h_n1_ptXS = createHistogram(bn + TString("n1_ptXS"), ac.nBins_pt, ac.min_pt, ac.max_pt, "p_{T}", "1/p_{T} dN/p_{T}", scaled, saved, plotted, notPrinted);
+  if (ac.bin_edges_pt.size() > 0) {
+    h_n1_pt = createHistogram(bn + TString("n1_pt"), ac.bin_edges_pt, "p_{T}", "N", scaled, saved, plotted, notPrinted);
+    h_n1_ptXS = createHistogram(bn + TString("n1_ptXS"), ac.bin_edges_pt, "p_{T}", "1/p_{T} dN/p_{T}", scaled, saved, plotted, notPrinted);
+  } else {
+    h_n1_pt = createHistogram(bn + TString("n1_pt"), ac.nBins_pt, ac.min_pt, ac.max_pt, "p_{T}", "N", scaled, saved, plotted, notPrinted);
+    h_n1_ptXS = createHistogram(bn + TString("n1_ptXS"), ac.nBins_pt, ac.min_pt, ac.max_pt, "p_{T}", "1/p_{T} dN/p_{T}", scaled, saved, plotted, notPrinted);
+  }
   h_n1_eta = createHistogram(bn + TString("n1_eta"), ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta", "N", scaled, saved, plotted, notPrinted);
   h_n1_phi = createHistogram(bn + TString("n1_phi"), ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi", "N", scaled, saved, plotted, notPrinted);
-  h_n1_ptEta = createHistogram(bn + TString("n1_ptEta"), ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_pt, ac.min_pt, ac.max_pt, "#eta", "p_{T}", "N", scaled, saved, plotted, notPrinted);
+  if (ac.bin_edges_pt.size() > 0) {
+    h_n1_ptEta = createHistogram(bn + TString("n1_ptEta"), ac.nBins_eta, ac.min_eta, ac.max_eta, ac.bin_edges_pt, "#eta", "p_{T}", "N", scaled, saved, plotted, notPrinted);
+  } else {
+    h_n1_ptEta = createHistogram(bn + TString("n1_ptEta"), ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_pt, ac.min_pt, ac.max_pt, "#eta", "p_{T}", "N", scaled, saved, plotted, notPrinted);
+  }
   h_n1_phiEta = createHistogram(bn + TString("n1_phiEta"), ac.nBins_eta, ac.min_eta, ac.max_eta, ac.nBins_phi, ac.min_phi, ac.max_phi, "#eta", "#varphi", "N", scaled, saved, plotted, notPrinted);
   h_spt_phi = createHistogram(bn + TString("sumpt1_phi"), ac.nBins_phi, ac.min_phi, ac.max_phi, "#varphi", "#sum p_{T}", scaled, saved, plotted, notPrinted);
   h_spt_eta = createHistogram(bn + TString("sumpt1_eta"), ac.nBins_eta, ac.min_eta, ac.max_eta, "#eta", "#sum p_{T}", scaled, saved, plotted, notPrinted);
@@ -54,7 +63,11 @@ void ParticleHistos::createHistograms()
 
   if (ac.fillY) {
     h_n1_y = createHistogram(bn + TString("n1_y"), ac.nBins_y, ac.min_y, ac.max_y, "y", "N", scaled, saved, plotted, notPrinted);
-    h_n1_ptY = createHistogram(bn + TString("n1_ptY"), ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_pt, ac.min_pt, ac.max_pt, "#eta", "p_{T}", "N", scaled, saved, notPlotted, notPrinted);
+    if (ac.bin_edges_pt.size() > 0) {
+      h_n1_ptY = createHistogram(bn + TString("n1_ptY"), ac.nBins_y, ac.min_y, ac.max_y, ac.bin_edges_pt, "#eta", "p_{T}", "N", scaled, saved, notPlotted, notPrinted);
+    } else {
+      h_n1_ptY = createHistogram(bn + TString("n1_ptY"), ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_pt, ac.min_pt, ac.max_pt, "#eta", "p_{T}", "N", scaled, saved, notPlotted, notPrinted);
+    }
     h_n1_phiY = createHistogram(bn + TString("n1_phiY"), ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_phi, ac.min_phi, ac.max_phi, "y", "#varphi", "N", scaled, saved, notPlotted, notPrinted);
     h_spt_y = createHistogram(bn + TString("sumpt1_y"), ac.nBins_y, ac.min_y, ac.max_y, "y", "#sum p_{T}", scaled, saved, notPlotted, notPrinted);
     h_spt_phiY = createHistogram(bn + TString("sumpt1_phiY"), ac.nBins_y, ac.min_y, ac.max_y, ac.nBins_phi, ac.min_phi, ac.max_phi, "y", "#varphi", "#sum p_{T}", scaled, saved, notPlotted, notPrinted);

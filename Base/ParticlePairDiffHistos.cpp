@@ -52,6 +52,9 @@ void ParticlePairDiffHistos::initialize()
     cout << "ParticlePairDiffHistos::initialize() Started." << endl;
   AnalysisConfiguration& ac = *(AnalysisConfiguration*)getConfiguration();
   TString bn = getHistoBaseName();
+  if (ac.bin_edges_pt.size() > 0) {
+    ac.nBins_pt = ac.bin_edges_pt.size() - 1;
+  }
   ac.range_pt = ac.max_pt - ac.min_pt;
   ac.range_phi = ac.max_phi - ac.min_phi;
   ac.range_eta = ac.max_eta - ac.min_eta;
@@ -81,7 +84,11 @@ void ParticlePairDiffHistos::initialize()
   bool defsumw2 = TH1::GetDefaultSumw2();
   TH1::SetDefaultSumw2(false);
 
-  h_n2_ptPt = createHistogram(bn + TString("n2_ptPt"), ac.nBins_pt, ac.min_pt, ac.max_pt, ac.nBins_pt, ac.min_pt, ac.max_pt, "p_{T,1}", "p_{T,2}", "N_{2}", scaled, saved, plotted, notPrinted);
+  if (ac.bin_edges_pt.size() > 0) {
+    h_n2_ptPt = createHistogram(bn + TString("n2_ptPt"), ac.bin_edges_pt, ac.bin_edges_pt, "p_{T,1}", "p_{T,2}", "N_{2}", scaled, saved, plotted, notPrinted);
+  } else {
+    h_n2_ptPt = createHistogram(bn + TString("n2_ptPt"), ac.nBins_pt, ac.min_pt, ac.max_pt, ac.nBins_pt, ac.min_pt, ac.max_pt, "p_{T,1}", "p_{T,2}", "N_{2}", scaled, saved, plotted, notPrinted);
+  }
   h_n2_DetaDphi = createHistogram(bn + TString("n2_DetaDphi"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi, ac.max_Dphi, "#Delta#eta", "#Delta#varphi", "n_{2}", scaled, saved, notPlotted, notPrinted, false);
   h_ptpt_DetaDphi = createHistogram(bn + TString("ptpt_DetaDphi"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi, ac.max_Dphi, "#Delta#eta", "#Delta#varphi", "p_{T}xp_{T}", scaled, saved, notPlotted, notPrinted, false);
   h_dptdpt_DetaDphi = createHistogram(bn + TString("dptdpt_DetaDphi"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi, ac.max_Dphi, "#Delta#eta", "#Delta#varphi", "(p_{T}-<p_{T}>)x(p_{T}-<p_{T}>)", scaled, saved, notPlotted, notPrinted, false);
@@ -122,6 +129,9 @@ void ParticlePairDiffHistos::loadHistograms(TFile* inputFile)
   }
   AnalysisConfiguration& ac = *(AnalysisConfiguration*)getConfiguration();
   TString bn = getHistoBaseName();
+  if (ac.bin_edges_pt.data()) {
+    ac.nBins_pt = ac.bin_edges_pt.size() - 1;
+  }
   ac.range_pt = ac.max_pt - ac.min_pt;
   ac.range_phi = ac.max_phi - ac.min_phi;
   ac.range_eta = ac.max_eta - ac.min_eta;
