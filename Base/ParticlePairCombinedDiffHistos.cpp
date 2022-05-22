@@ -14,11 +14,9 @@ ParticlePairCombinedDiffHistos::ParticlePairCombinedDiffHistos(const TString& na
     h_R2_DetaDphi_shft(nullptr),
     h_P2_DetaDphi_shft(nullptr),
     h_G2_DetaDphi_shft(nullptr),
-    h_R2BF_DetaDphi_shft(nullptr),
     h_R2_DyDphi_shft(nullptr),
     h_P2_DyDphi_shft(nullptr),
-    h_G2_DyDphi_shft(nullptr),
-    h_R2BF_DyDphi_shft(nullptr)
+    h_G2_DyDphi_shft(nullptr)
 {
   if (reportDebug())
     cout << "ParticlePairCombinedDiffHistos::CTOR() Started." << endl;
@@ -35,11 +33,9 @@ ParticlePairCombinedDiffHistos::ParticlePairCombinedDiffHistos(TFile* inputFile,
     h_R2_DetaDphi_shft(nullptr),
     h_P2_DetaDphi_shft(nullptr),
     h_G2_DetaDphi_shft(nullptr),
-    h_R2BF_DetaDphi_shft(nullptr),
     h_R2_DyDphi_shft(nullptr),
     h_P2_DyDphi_shft(nullptr),
-    h_G2_DyDphi_shft(nullptr),
-    h_R2BF_DyDphi_shft(nullptr)
+    h_G2_DyDphi_shft(nullptr)
 {
   if (reportDebug())
     cout << "ParticlePairCombinedDiffHistos::CTOR(TFile * inputFile,...) Started." << endl;
@@ -70,13 +66,11 @@ void ParticlePairCombinedDiffHistos::loadHistograms(TFile* inputFile)
   h_R2_DetaDphi_shft = loadH2(inputFile, bn + TString("R2_DetaDphi_shft"));
   h_P2_DetaDphi_shft = loadH2(inputFile, bn + TString("P2_DetaDphi_shft"));
   h_G2_DetaDphi_shft = loadH2(inputFile, bn + TString("G2_DetaDphi_shft"));
-  h_R2BF_DetaDphi_shft = loadH2(inputFile, bn + TString("R2BF_DetaDphi_shft"));
 
   if (configuration->fillY) {
     h_R2_DyDphi_shft = loadH2(inputFile, bn + TString("R2_DyDphi_shft"));
     h_P2_DyDphi_shft = loadH2(inputFile, bn + TString("P2_DyDphi_shft"));
     h_G2_DyDphi_shft = loadH2(inputFile, bn + TString("G2_DyDphi_shft"));
-    h_R2BF_DyDphi_shft = loadH2(inputFile, bn + TString("R2BF_DyDphi_shft"));
   }
   if (reportDebug())
     cout << "ParticlePairCombinedDiffHistos::loadHistograms(...) completed" << endl;
@@ -99,13 +93,11 @@ void ParticlePairCombinedDiffHistos::createHistograms()
   h_R2_DetaDphi_shft = createHistogram(bn + TString("R2_DetaDphi_shft"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta", "#Delta#varphi", "R_{2}", scaled, saved, plotted, printed);
   h_P2_DetaDphi_shft = createHistogram(bn + TString("P2_DetaDphi_shft"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta", "#Delta#varphi", "P_{2}", scaled, saved, plotted, printed);
   h_G2_DetaDphi_shft = createHistogram(bn + TString("G2_DetaDphi_shft"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta", "#Delta#varphi", "G_{2}", scaled, saved, plotted, printed);
-  h_R2BF_DetaDphi_shft = createHistogram(bn + TString("R2BF_DetaDphi_shft"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta", "#Delta#varphi", "BF_{2}", scaled, saved, plotted, printed);
 
   if (ac.fillY) {
     h_R2_DyDphi_shft = createHistogram(bn + TString("R2_DyDphi_shft"), ac.nBins_Dy, ac.min_Dy, ac.max_Dy, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta y", "#Delta#varphi", "R_{2}", scaled, saved, plotted, printed);
     h_P2_DyDphi_shft = createHistogram(bn + TString("P2_DyDphi_shft"), ac.nBins_Dy, ac.min_Dy, ac.max_Dy, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta y", "#Delta#varphi", "P_{2}", scaled, saved, plotted, printed);
     h_G2_DyDphi_shft = createHistogram(bn + TString("G2_DyDphi_shft"), ac.nBins_Dy, ac.min_Dy, ac.max_Dy, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta y", "#Delta#varphi", "G_{2}", scaled, saved, plotted, printed);
-    h_R2BF_DyDphi_shft = createHistogram(bn + TString("R2BF_DyDphi_shft"), ac.nBins_Dy, ac.min_Dy, ac.max_Dy, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta y", "#Delta#varphi", "BF_{2}", scaled, saved, plotted, printed);
   }
 
   if (reportDebug())
@@ -139,13 +131,6 @@ void ParticlePairCombinedDiffHistos::calculate(ParticlePairDerivedDiffHistos* pp
   h_G2_DetaDphi_shft->Add(pm->h_G2_DetaDphi_shft, apm);
   h_G2_DetaDphi_shft->Add(mp->h_G2_DetaDphi_shft, amp);
 
-  h_R2BF_DetaDphi_shft->Reset();
-  h_R2BF_DetaDphi_shft->Add(pp->h_R2bf12_DetaDphi_shft, mm->h_R2bf12_DetaDphi_shft, app, amm);
-  h_R2BF_DetaDphi_shft->Add(pm->h_R2bf12_DetaDphi_shft, apm);
-  h_R2BF_DetaDphi_shft->Add(mp->h_R2bf12_DetaDphi_shft, amp);
-  /* with the usual normalization the BF gets downscaled by a factor 2 so let's recover it */
-  h_R2BF_DetaDphi_shft->Scale(2.0);
-
   if (configuration->fillY) {
     h_R2_DetaDphi_shft->Reset();
     h_R2_DyDphi_shft->Add(pp->h_R2_DyDphi_shft, mm->h_R2_DyDphi_shft, app, amm);
@@ -161,13 +146,6 @@ void ParticlePairCombinedDiffHistos::calculate(ParticlePairDerivedDiffHistos* pp
     h_G2_DyDphi_shft->Add(pp->h_G2_DyDphi_shft, mm->h_G2_DyDphi_shft, app, amm);
     h_G2_DyDphi_shft->Add(pm->h_G2_DyDphi_shft, apm);
     h_G2_DyDphi_shft->Add(mp->h_G2_DyDphi_shft, amp);
-
-    h_R2BF_DetaDphi_shft->Reset();
-    h_R2BF_DyDphi_shft->Add(pp->h_R2bf12_DyDphi_shft, mm->h_R2bf12_DyDphi_shft, app, amm);
-    h_R2BF_DyDphi_shft->Add(pm->h_R2bf12_DyDphi_shft, apm);
-    h_R2BF_DyDphi_shft->Add(mp->h_R2bf12_DyDphi_shft, amp);
-    /* with the usual normalization the BF gets downscaled by a factor 2 so let's recover it */
-    h_R2BF_DyDphi_shft->Scale(2.0);
   }
 
   if (reportDebug())

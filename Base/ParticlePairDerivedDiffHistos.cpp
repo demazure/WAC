@@ -240,10 +240,10 @@ void ParticlePairDerivedDiffHistos::calculateDerivedHistograms(ParticleHistos* p
   h_P2_DetaDphi->Divide(h_n2_DetaDphi);
   shiftY(*h_P2_DetaDphi, *h_P2_DetaDphi_shft, configuration->nBins_Dphi_shft);
 
-  /* calculate BF from R2 */
-  double rho1_2 = part2Histos->h_n1_phiEta->Integral() / (kTWOPI * (configuration->max_eta - configuration->min_eta));
+  /* calculate BF component from R2 */
+  double rho1_1 = part1Histos->h_n1_phiEta->Integral() / (kTWOPI * (configuration->max_eta - configuration->min_eta));
   h_R2bf12_DetaDphi_shft->Reset();
-  h_R2bf12_DetaDphi_shft->Add(h_R2_DetaDphi_shft, rho1_2);
+  h_R2bf12_DetaDphi_shft->Add(h_R2_DetaDphi_shft, rho1_1);
 
   delete h_n1n1_phiEtaPhiEta;
   delete h_pt1pt1_phiEtaPhiEta;

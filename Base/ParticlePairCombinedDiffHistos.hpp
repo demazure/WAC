@@ -44,12 +44,10 @@ class ParticlePairCombinedDiffHistos : public Histograms
   TH2* h_R2_DetaDphi_shft;
   TH2* h_P2_DetaDphi_shft;
   TH2* h_G2_DetaDphi_shft;
-  TH2* h_R2BF_DetaDphi_shft;
 
   TH2* h_R2_DyDphi_shft;
   TH2* h_P2_DyDphi_shft;
   TH2* h_G2_DyDphi_shft;
-  TH2* h_R2BF_DyDphi_shft;
 
   ClassDef(ParticlePairCombinedDiffHistos, 1)
 };

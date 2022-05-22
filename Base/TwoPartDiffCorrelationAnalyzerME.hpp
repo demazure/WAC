@@ -25,6 +25,7 @@
 #include "ParticleHistos.hpp"
 #include "ParticlePairDiffHistos.hpp"
 #include "ParticlePairDerivedDiffHistos.hpp"
+#include "ParticlePairBalanceFunctionDiffHistos.hpp"
 #include "ParticlePairCombinedDiffHistos.hpp"
 
 #define EVENTPOOLSIZE 10
@@ -67,12 +68,14 @@ class TwoPartDiffCorrelationAnalyzerME : public Task
   std::vector<std::vector<ParticlePairDerivedDiffHistos*>> pairs_Histos;
   std::vector<std::vector<ParticlePairCombinedDiffHistos*>> pairs_CIHistos;
   std::vector<std::vector<ParticlePairCombinedDiffHistos*>> pairs_CDHistos;
+  std::vector<std::vector<ParticlePairBalanceFunctionDiffHistos*>> pairs_BFHistos;
 
   std::vector<std::vector<ParticlePairDerivedDiffHistos*>> pairs_Histos_me;
   std::vector<std::vector<ParticlePairCombinedDiffHistos*>> pairs_CIHistos_me;
   std::vector<std::vector<ParticlePairCombinedDiffHistos*>> pairs_CDHistos_me;
+  std::vector<std::vector<ParticlePairBalanceFunctionDiffHistos*>> pairs_BFHistos_me;
 
-  ClassDef(TwoPartDiffCorrelationAnalyzerME, 1)
+  ClassDef(TwoPartDiffCorrelationAnalyzerME, 2)
 };
 
 #endif /* TwoPartDiffCorrelationAnalyzerME_hpp */

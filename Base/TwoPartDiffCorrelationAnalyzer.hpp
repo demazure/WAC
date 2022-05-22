@@ -23,6 +23,7 @@
 #include "ParticleHistos.hpp"
 #include "ParticlePairDiffHistos.hpp"
 #include "ParticlePairDerivedDiffHistos.hpp"
+#include "ParticlePairBalanceFunctionDiffHistos.hpp"
 #include "ParticlePairCombinedDiffHistos.hpp"
 
 class TwoPartDiffCorrelationAnalyzer : public Task
@@ -61,8 +62,9 @@ class TwoPartDiffCorrelationAnalyzer : public Task
   std::vector<std::vector<ParticlePairDerivedDiffHistos*>> pairs_Histos;
   std::vector<std::vector<ParticlePairCombinedDiffHistos*>> pairs_CIHistos;
   std::vector<std::vector<ParticlePairCombinedDiffHistos*>> pairs_CDHistos;
+  std::vector<std::vector<ParticlePairBalanceFunctionDiffHistos*>> pairs_BFHistos;
 
-  ClassDef(TwoPartDiffCorrelationAnalyzer, 1)
+  ClassDef(TwoPartDiffCorrelationAnalyzer, 2)
 };
 
 #endif /* TwoPartDiffCorrelationAnalyzer_hpp */

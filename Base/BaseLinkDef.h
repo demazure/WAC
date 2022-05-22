@@ -28,6 +28,7 @@
 #pragma link C++ class ParticleHistos+;
 #pragma link C++ class ParticleAnalyzer+;
 #pragma link C++ class ParticlePairCombinedHistos+;
+#pragma link C++ class ParticlePairBalanceFunctionDiffHistos + ;
 #pragma link C++ class ParticlePairCombinedDiffHistos + ;
 #pragma link C++ class ParticlePairDerivedHistos + ;
 #pragma link C++ class ParticlePairDerivedDiffHistos + ;

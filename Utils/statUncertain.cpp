@@ -38,11 +38,12 @@
 
 const int npart = 6;
 const int ncomb = 2;
+/* always charged particles first, positive and negative after it */
 const char* partname[npart] = {"PiP", "PiM", "KaP", "KaM", "PrP", "PrM"};
 const char* combname[ncomb] = {"CI", "CD"};
 const int ncorrpart = 3;
-const int ncorrfcomb = 4;
-const char* corrfname[ncorrfcomb] = {"P2", "R2", "G2", "R2BF"};
+/* balance function go its own way */
+const char* corrfname[ncorrpart] = {"P2", "R2", "G2"};
 
 std::vector<std::string> centfname = {
   "MB"};
@@ -132,7 +133,7 @@ TList* extractMeanAndStDevFromSubSets(const TObjArray& listsarray, const TString
 
   /* first, some consistency checks */
   Int_t nhistos = ((TList*) listsarray[0])->GetEntries();
-  if (nhistos != ncorrpart && nhistos != ncorrfcomb * ncomb)
+  if (nhistos != ncorrpart && nhistos != (ncorrpart * ncomb + 1))
     Error("extractMeanAndStDevFromSubSets", "Inconsistent number of histograms to average");
   for (Int_t iset = 0; iset < listsarray.GetEntries(); iset++) {
     if (nhistos != ((TList*) listsarray[iset])->GetEntries()) {
@@ -236,12 +237,23 @@ TList* extractSampleResults(Option_t* opt, AnalysisConfiguration* ac, int icent,
     }
   }
 
+  /* the pair balance functions */
+  for (int ipart = 0; ipart < int(npart / 2); ++ipart) {
+    for (int jpart = 0; jpart < int(npart / 2); ++jpart) {
+      TList* plist = new TList(); /* a list per pair */
+      plist->SetOwner(kTRUE);
+      TH2* h2bf = h2bf = eventanalyzer->pairs_BFHistos[ipart][jpart]->h_R2BF_DetaDphi_shft;
+      plist->Add(h2bf->Clone(TString::Format("%s%s_Sub%02d", h2bf->GetName(), centfname[icent].c_str(), isample)));
+      list->Add(plist);
+    }
+  }
+
   /* the pair combined histos */
   for (int ipart = 0; ipart < npart; ++ipart) {                 /* first component of the pair */
     for (int jpart = 0; jpart < npart - (ipart + 1); ++jpart) { /* second component of the pair */
       TList* plist = new TList();                               /* a list per pair */
       plist->SetOwner(kTRUE);
-      for (int icf = 0; icf < ncorrfcomb; ++icf) { /* the individual pair cf */
+      for (int icf = 0; icf < ncorrpart; ++icf) { /* the individual pair cf */
         TH2* h2ci = nullptr;
         TH2* h2cd = nullptr;
         switch (icf) {
@@ -256,10 +268,6 @@ TList* extractSampleResults(Option_t* opt, AnalysisConfiguration* ac, int icent,
           case 2: /* G2 */
             h2ci = eventanalyzer->pairs_CIHistos[ipart][jpart]->h_G2_DetaDphi_shft;
             h2cd = eventanalyzer->pairs_CDHistos[ipart][jpart]->h_G2_DetaDphi_shft;
-            break;
-          case 3: /* R2BF */
-            h2ci = eventanalyzer->pairs_CIHistos[ipart][jpart]->h_R2BF_DetaDphi_shft;
-            h2cd = eventanalyzer->pairs_CDHistos[ipart][jpart]->h_R2BF_DetaDphi_shft;
             break;
           default:
             Fatal("extractSampleResults", "Wrong correlator index");
@@ -358,8 +366,8 @@ int main(int argc, char* argv[])
     ac->forceHistogramsRewrite = false;
     ac->calculateDerivedHistograms = true;
 
-    /* the pair single histos, optionally the mixed events pair single histos, plus the pair combined histos   */
-    int nmainlists = (TString(opt).Contains("me")) ? 2 * npart * npart + npart * (npart - 1) / 2 : npart * npart + npart * (npart - 1) / 2;
+    /* the pair single histos, optionally the mixed events pair single histos, the balance function, plus the pair combined histos   */
+    int nmainlists = (TString(opt).Contains("me")) ? 2 * npart * npart + int(npart / 2) * int(npart / 2) + npart * (npart - 1) / 2 : npart * npart + int(npart / 2) * int(npart / 2) + npart * (npart - 1) / 2;
     std::vector<TObjArray> pairslists(nmainlists, TObjArray(nsamples));
     for (int ilst = 0; ilst < nmainlists; ++ilst) {
       pairslists[ilst].SetOwner(kTRUE);
@@ -386,8 +394,8 @@ int main(int argc, char* argv[])
     Bool_t oldstatus = TH1::AddDirectoryStatus();
     TH1::AddDirectory(kFALSE);
 
-    char* cfname[ncorrfcomb] = {nullptr};
-    for (int i = 0; i < ncorrfcomb; ++i) {
+    char* cfname[ncorrpart] = {nullptr};
+    for (int i = 0; i < ncorrpart; ++i) {
       cfname[i] = new char[std::strlen(corrfname[i]) + 1];
       sprintf(cfname[i], "%s", corrfname[i]);
     }
@@ -416,17 +424,35 @@ int main(int argc, char* argv[])
         }
       }
     }
-    char* cfnamecomb[ncorrfcomb * ncomb] = {nullptr};
-    for (int i = 0; i < ncorrfcomb; ++i) {
+
+    /* the charge balance function */
+    int ilst = npart * npart;
+    if (TString(opt).Contains("me")) {
+      ilst *= 2;
+    }
+    char* bfname[1] = {nullptr};
+    bfname[0] = new char[std::strlen("R2BF") + 1];
+    sprintf(bfname[0], "R2BF");
+    for (int ipart = 0; ipart < int(npart / 2); ++ipart) {
+      for (int jpart = 0; jpart < int(npart / 2); ++jpart) {
+        TString pattern = TString::Format("Pythia8_%s%s%%s_DetaDphi_shft_%s", partname[ipart], partname[ipart + 1 + jpart], centfname[icent].c_str());
+        TList* meanhlist = extractMeanAndStDevFromSubSets(pairslists[ilst++], pattern, bfname);
+        for (int ixh = 0; ixh < meanhlist->GetEntries(); ixh++) {
+          meanhlist->At(ixh)->Write();
+        }
+        delete meanhlist;
+      }
+    }
+
+    /* the CI, CD, combinations */
+    char* cfnamecomb[ncorrpart * ncomb] = {nullptr};
+    for (int i = 0; i < ncorrpart; ++i) {
       for (int j = 0; j < ncomb; ++j) {
         cfnamecomb[i * ncomb + j] = new char[std::strlen(corrfname[i]) + strlen(combname[j]) + 1];
         sprintf(cfnamecomb[i * ncomb + j], "%s%s", corrfname[i], combname[j]);
       }
     }
-    int ilst = npart * npart;
-    if (TString(opt).Contains("me")) {
-      ilst *= 2;
-    }
+    /* we keep tracking with the previous ilst content */
     for (int ipart = 0; ipart < npart; ++ipart) {
       for (int jpart = 0; jpart < npart - (ipart + 1); ++jpart) {
         TString pattern = TString::Format("Pythia8_%s%s%%s_DetaDphi_shft_%s", partname[ipart], partname[ipart + 1 + jpart], centfname[icent].c_str());

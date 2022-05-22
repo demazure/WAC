@@ -31,8 +31,8 @@ int main(int argc, char* argv[])
   // =========================
   // Short configuration
   // =========================
-  float min_eta = -1;
-  float max_eta = 1;
+  float min_eta = -4;
+  float max_eta = 4;
   float min_pt = 0.0;
   float max_pt = 1e6;
   int nBins_eta = int((max_eta - min_eta) / 0.1);
@@ -135,6 +135,11 @@ int main(int argc, char* argv[])
   int nAnalysisTasks = 20;
   Task** analysisTasks = new Task*[nAnalysisTasks];
 
+  /* for having the balance function correctly extracted the particle filters have to follow certain order */
+  /* - charged particle should come always first                                                           */
+  /* - particles of the same species, the positive has to come first and the negative immediately after    */
+  /* - after the charged particles the might come any number of neutral                                    */
+  /* - the balance function produced for neutrals will not have any sense                                  */
   EventFilter* eventFilter = new EventFilter(EventFilter::MinBias, 0.0, 0.0);
   std::vector<ParticleFilter*> particleFilters;
   particleFilters.push_back(new ParticleFilter(ParticleFilter::Pion, ParticleFilter::Positive, ac->min_pt, ac->max_pt, ac->min_eta, ac->max_eta, ac->min_y, ac->max_y));

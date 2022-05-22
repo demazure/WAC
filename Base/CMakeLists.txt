@@ -31,6 +31,7 @@ set(SOURCE_FILES
   ParticleHistos.cpp
   ParticleAnalyzer.cpp
   ParticlePairCombinedHistos.cpp
+  ParticlePairBalanceFunctionDiffHistos.cpp
   ParticlePairCombinedDiffHistos.cpp
   ParticlePairDerivedHistos.cpp
   ParticlePairDerivedDiffHistos.cpp
@@ -65,6 +66,7 @@ set(HEADER_FILES
   ParticleHistos.hpp
   ParticleAnalyzer.hpp
   ParticlePairCombinedHistos.hpp
+  ParticlePairBalanceFunctionDiffHistos.hpp
   ParticlePairCombinedDiffHistos.hpp
   ParticlePairDerivedHistos.hpp
   ParticlePairDerivedDiffHistos.hpp

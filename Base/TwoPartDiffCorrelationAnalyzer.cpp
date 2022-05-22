@@ -63,6 +63,9 @@ TwoPartDiffCorrelationAnalyzer::TwoPartDiffCorrelationAnalyzer(const TString& na
     pairs_CIHistos.push_back(std::vector<ParticlePairCombinedDiffHistos*>(particleFilters.size() - (i + 1), nullptr));
     pairs_CDHistos.push_back(std::vector<ParticlePairCombinedDiffHistos*>(particleFilters.size() - (i + 1), nullptr));
   }
+  for (uint i = 0; i < uint(particleFilters.size() / 2); ++i) {
+    pairs_BFHistos.push_back(std::vector<ParticlePairBalanceFunctionDiffHistos*>(uint(particleFilters.size() / 2), nullptr));
+  }
 }
 
 //////////////////////////////////////////////////////////////
@@ -88,6 +91,11 @@ TwoPartDiffCorrelationAnalyzer::~TwoPartDiffCorrelationAnalyzer()
     }
   }
   for (auto& v : pairs_CDHistos) {
+    for (auto ph : v) {
+      delete ph;
+    }
+  }
+  for (auto& v : pairs_BFHistos) {
     for (auto ph : v) {
       delete ph;
     }
@@ -127,6 +135,11 @@ void TwoPartDiffCorrelationAnalyzer::createHistograms()
           pairs_CDHistos[i][j] = new ParticlePairCombinedDiffHistos(partNames[i] + partNames[j + i + 1] + "CD", ac, debugLevel);
         }
       }
+      for (uint i = 0; i < uint(particleFilters.size() / 2); ++i) {
+        for (uint j = 0; j < uint(particleFilters.size() / 2); ++j) {
+          pairs_BFHistos[i][j] = new ParticlePairBalanceFunctionDiffHistos(TString::Format("%2s%2sR2BF", partNames[2 * i].Data(), partNames[2 * j].Data()), ac, debugLevel);
+        }
+      }
     }
   }
   if (reportDebug())
@@ -161,6 +174,11 @@ void TwoPartDiffCorrelationAnalyzer::loadHistograms(TFile* inputFile)
         for (uint j = 0; j < partNames.size() - (i + 1); ++j) {
           pairs_CIHistos[i][j] = new ParticlePairCombinedDiffHistos(inputFile, partNames[i] + partNames[j + i + 1] + "CI", analysisConfiguration, debugLevel);
           pairs_CDHistos[i][j] = new ParticlePairCombinedDiffHistos(inputFile, partNames[i] + partNames[j + i + 1] + "CD", analysisConfiguration, debugLevel);
+        }
+      }
+      for (uint i = 0; i < uint(particleFilters.size() / 2); ++i) {
+        for (uint j = 0; j < uint(particleFilters.size() / 2); ++j) {
+          pairs_BFHistos[i][j] = new ParticlePairBalanceFunctionDiffHistos(inputFile, TString::Format("%2s%2sR2BF", partNames[2 * i].Data(), partNames[2 * j].Data()), analysisConfiguration, debugLevel);
         }
       }
     }
@@ -203,6 +221,11 @@ void TwoPartDiffCorrelationAnalyzer::loadBaseHistograms(TFile* inputFile)
         for (uint j = 0; j < partNames.size() - (i + 1); ++j) {
           pairs_CIHistos[i][j] = new ParticlePairCombinedDiffHistos(partNames[i] + partNames[j + i + 1] + "CI", analysisConfiguration, debugLevel);
           pairs_CDHistos[i][j] = new ParticlePairCombinedDiffHistos(partNames[i] + partNames[j + i + 1] + "CD", analysisConfiguration, debugLevel);
+        }
+      }
+      for (uint i = 0; i < uint(particleFilters.size() / 2); ++i) {
+        for (uint j = 0; j < uint(particleFilters.size() / 2); ++j) {
+          pairs_BFHistos[i][j] = new ParticlePairBalanceFunctionDiffHistos(TString::Format("%2s%2sR2BF", partNames[2 * i].Data(), partNames[2 * j].Data()), analysisConfiguration, debugLevel);
         }
       }
     }
@@ -262,6 +285,11 @@ void TwoPartDiffCorrelationAnalyzer::saveHistograms(TFile* outputFile)
           pairs_CDHistos[i][j]->saveHistograms(outputFile);
         }
       }
+      for (uint i = 0; i < uint(particleFilters.size() / 2); ++i) {
+        for (uint j = 0; j < uint(particleFilters.size() / 2); ++j) {
+          pairs_BFHistos[i][j]->saveHistograms(outputFile);
+        }
+      }
     }
   }
   if (reportDebug())
@@ -295,6 +323,11 @@ void TwoPartDiffCorrelationAnalyzer::addHistogramsToExtList(TList* list, bool al
         for (uint j = 0; j < partNames.size() - (i + 1); ++j) {
           pairs_CIHistos[i][j]->addHistogramsToExtList(list, all);
           pairs_CDHistos[i][j]->addHistogramsToExtList(list, all);
+        }
+      }
+      for (uint i = 0; i < uint(particleFilters.size() / 2); ++i) {
+        for (uint j = 0; j < uint(particleFilters.size() / 2); ++j) {
+          pairs_BFHistos[i][j]->addHistogramsToExtList(list, all);
         }
       }
     }
@@ -409,6 +442,16 @@ void TwoPartDiffCorrelationAnalyzer::calculateDerivedHistograms()
       for (uint j = 0; j < partNames.size() - (i + 1); ++j) {
         pairs_CIHistos[i][j]->calculate(pairs_Histos[i][i], pairs_Histos[j + i + 1][j + i + 1], pairs_Histos[i][j + i + 1], pairs_Histos[j + i + 1][i], 0.25, 0.25, 0.25, 0.25);
         pairs_CDHistos[i][j]->calculate(pairs_Histos[i][i], pairs_Histos[j + i + 1][j + i + 1], pairs_Histos[i][j + i + 1], pairs_Histos[j + i + 1][i], -0.25, -0.25, 0.25, 0.25);
+      }
+    }
+    /* let's infer how many balance functions              */
+    /* only for charged so we assume half of the particles */
+    /* getting rid of the fractional part                  */
+    /* probably a better way would be to go through the    */
+    /* filters and actually do only what is needed         */
+    for (uint i = 0; i < uint(partNames.size() / 2); ++i) {
+      for (uint j = 0; j < uint(partNames.size() / 2); ++j) {
+        pairs_BFHistos[i][j]->calculate(pairs_Histos[2 * i][2 * j + 1], pairs_Histos[2 * i][2 * j], pairs_Histos[2 * i + 1][2 * j], pairs_Histos[2 * i + 1][2 * j + 1]);
       }
     }
   } else {

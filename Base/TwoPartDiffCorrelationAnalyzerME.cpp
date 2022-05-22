@@ -67,6 +67,10 @@ TwoPartDiffCorrelationAnalyzerME::TwoPartDiffCorrelationAnalyzerME(const TString
     pairs_CIHistos_me.push_back(std::vector<ParticlePairCombinedDiffHistos*>(particleFilters.size() - (i + 1), nullptr));
     pairs_CDHistos_me.push_back(std::vector<ParticlePairCombinedDiffHistos*>(particleFilters.size() - (i + 1), nullptr));
   }
+  for (uint i = 0; i < uint(particleFilters.size() / 2); ++i) {
+    pairs_BFHistos.push_back(std::vector<ParticlePairBalanceFunctionDiffHistos*>(uint(particleFilters.size() / 2), nullptr));
+    pairs_BFHistos_me.push_back(std::vector<ParticlePairBalanceFunctionDiffHistos*>(uint(particleFilters.size() / 2), nullptr));
+  }
 }
 
 //////////////////////////////////////////////////////////////
@@ -96,6 +100,11 @@ TwoPartDiffCorrelationAnalyzerME::~TwoPartDiffCorrelationAnalyzerME()
       delete ph;
     }
   }
+  for (auto& v : pairs_BFHistos) {
+    for (auto ph : v) {
+      delete ph;
+    }
+  }
   for (auto& v : pairs_Histos_me) {
     for (auto ph : v) {
       delete ph;
@@ -107,6 +116,11 @@ TwoPartDiffCorrelationAnalyzerME::~TwoPartDiffCorrelationAnalyzerME()
     }
   }
   for (auto& v : pairs_CDHistos_me) {
+    for (auto ph : v) {
+      delete ph;
+    }
+  }
+  for (auto& v : pairs_BFHistos_me) {
     for (auto ph : v) {
       delete ph;
     }
@@ -150,6 +164,12 @@ void TwoPartDiffCorrelationAnalyzerME::createHistograms()
           pairs_CDHistos_me[i][j] = new ParticlePairCombinedDiffHistos(partNames[i] + partNames[j + i + 1] + "CD_me", ac, debugLevel);
         }
       }
+      for (uint i = 0; i < uint(particleFilters.size() / 2); ++i) {
+        for (uint j = 0; j < uint(particleFilters.size() / 2); ++j) {
+          pairs_BFHistos[i][j] = new ParticlePairBalanceFunctionDiffHistos(TString::Format("%2s%2sR2BF", partNames[2 * i].Data(), partNames[2 * j].Data()), ac, debugLevel);
+          pairs_BFHistos_me[i][j] = new ParticlePairBalanceFunctionDiffHistos(TString::Format("%2s%2sR2BF_me", partNames[2 * i].Data(), partNames[2 * j].Data()), ac, debugLevel);
+        }
+      }
     }
   }
   if (reportDebug())
@@ -187,6 +207,12 @@ void TwoPartDiffCorrelationAnalyzerME::loadHistograms(TFile* inputFile)
           pairs_CDHistos[i][j] = new ParticlePairCombinedDiffHistos(inputFile, partNames[i] + partNames[j + i + 1] + "CD", analysisConfiguration, debugLevel);
           pairs_CIHistos_me[i][j] = new ParticlePairCombinedDiffHistos(inputFile, partNames[i] + partNames[j + i + 1] + "CI_me", analysisConfiguration, debugLevel);
           pairs_CDHistos_me[i][j] = new ParticlePairCombinedDiffHistos(inputFile, partNames[i] + partNames[j + i + 1] + "CD_me", analysisConfiguration, debugLevel);
+        }
+      }
+      for (uint i = 0; i < uint(particleFilters.size() / 2); ++i) {
+        for (uint j = 0; j < uint(particleFilters.size() / 2); ++j) {
+          pairs_BFHistos[i][j] = new ParticlePairBalanceFunctionDiffHistos(inputFile, TString::Format("%2s%2sR2BF", partNames[2 * i].Data(), partNames[2 * j].Data()), analysisConfiguration, debugLevel);
+          pairs_BFHistos_me[i][j] = new ParticlePairBalanceFunctionDiffHistos(inputFile, TString::Format("%2s%2sR2BF_me", partNames[2 * i].Data(), partNames[2 * j].Data()), analysisConfiguration, debugLevel);
         }
       }
     }
@@ -235,7 +261,13 @@ void TwoPartDiffCorrelationAnalyzerME::loadBaseHistograms(TFile* inputFile)
           pairs_CDHistos_me[i][j] = new ParticlePairCombinedDiffHistos(partNames[i] + partNames[j + i + 1] + "CD_me", analysisConfiguration, debugLevel);
         }
       }
-    }
+      for (uint i = 0; i < uint(particleFilters.size() / 2); ++i) {
+        for (uint j = 0; j < uint(particleFilters.size() / 2); ++j) {
+          pairs_BFHistos[i][j] = new ParticlePairBalanceFunctionDiffHistos(TString::Format("%2s%2sR2BF", partNames[2 * i].Data(), partNames[2 * j].Data()), analysisConfiguration, debugLevel);
+          pairs_BFHistos_me[i][j] = new ParticlePairBalanceFunctionDiffHistos(TString::Format("%2s%2sR2BF_me", partNames[2 * i].Data(), partNames[2 * j].Data()), analysisConfiguration, debugLevel);
+        }
+      }
+   }
   }
   if (reportDebug())
     cout << "TwoPartDiffCorrelationAnalyzerME::loadHistograms(...) Completed." << endl;
@@ -295,6 +327,12 @@ void TwoPartDiffCorrelationAnalyzerME::saveHistograms(TFile* outputFile)
           pairs_CDHistos_me[i][j]->saveHistograms(outputFile);
         }
       }
+      for (uint i = 0; i < uint(particleFilters.size() / 2); ++i) {
+        for (uint j = 0; j < uint(particleFilters.size() / 2); ++j) {
+          pairs_BFHistos[i][j]->saveHistograms(outputFile);
+          pairs_BFHistos_me[i][j]->saveHistograms(outputFile);
+        }
+      }
     }
   }
   if (reportDebug())
@@ -331,6 +369,12 @@ void TwoPartDiffCorrelationAnalyzerME::addHistogramsToExtList(TList* list, bool 
           pairs_CDHistos[i][j]->addHistogramsToExtList(list, all);
           pairs_CIHistos_me[i][j]->addHistogramsToExtList(list, all);
           pairs_CDHistos_me[i][j]->addHistogramsToExtList(list, all);
+        }
+      }
+      for (uint i = 0; i < uint(particleFilters.size() / 2); ++i) {
+        for (uint j = 0; j < uint(particleFilters.size() / 2); ++j) {
+          pairs_BFHistos[i][j]->addHistogramsToExtList(list, all);
+          pairs_BFHistos_me[i][j]->addHistogramsToExtList(list, all);
         }
       }
     }
@@ -470,6 +514,16 @@ void TwoPartDiffCorrelationAnalyzerME::calculateDerivedHistograms()
       for (uint j = 0; j < partNames.size() - (i + 1); ++j) {
         pairs_CIHistos[i][j]->calculate(pairs_Histos[i][i], pairs_Histos[j + i + 1][j + i + 1], pairs_Histos[i][j + i + 1], pairs_Histos[j + i + 1][i], 0.25, 0.25, 0.25, 0.25);
         pairs_CDHistos[i][j]->calculate(pairs_Histos[i][i], pairs_Histos[j + i + 1][j + i + 1], pairs_Histos[i][j + i + 1], pairs_Histos[j + i + 1][i], -0.25, -0.25, 0.25, 0.25);
+      }
+    }
+    /* let's infer how many balance functions              */
+    /* only for charged so we assume half of the particles */
+    /* getting rid of the fractional part                  */
+    /* probably a better way would be to go through the    */
+    /* filters and actually do only what is needed         */
+    for (uint i = 0; i < uint(partNames.size() / 2); ++i) {
+      for (uint j = 0; j < uint(partNames.size() / 2); ++j) {
+        pairs_BFHistos[i][j]->calculate(pairs_Histos[2 * i][2 * j + 1], pairs_Histos[2 * i][2 * j], pairs_Histos[2 * i + 1][2 * j], pairs_Histos[2 * i + 1][2 * j + 1]);
       }
     }
   } else {
