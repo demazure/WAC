@@ -50,16 +50,16 @@ std::vector<std::string> centfname = {
 int ncent = centfname.size();
 
 std::vector<std::string> samplesfnames = {
-  "BUNCH01/Output/PYTHIA8_PiKaPr_%s_ME.root",
-  "BUNCH02/Output/PYTHIA8_PiKaPr_%s_ME.root",
-  "BUNCH03/Output/PYTHIA8_PiKaPr_%s_ME.root",
-  "BUNCH04/Output/PYTHIA8_PiKaPr_%s_ME.root",
-  "BUNCH05/Output/PYTHIA8_PiKaPr_%s_ME.root",
-  "BUNCH06/Output/PYTHIA8_PiKaPr_%s_ME.root",
-  "BUNCH07/Output/PYTHIA8_PiKaPr_%s_ME.root",
-  "BUNCH08/Output/PYTHIA8_PiKaPr_%s_ME.root",
-  "BUNCH09/Output/PYTHIA8_PiKaPr_%s_ME.root",
-  "BUNCH10/Output/PYTHIA8_PiKaPr_%s_ME.root",
+  "BUNCH01/Output/PYTHIA8_PiKaPr_%s.root",
+  "BUNCH02/Output/PYTHIA8_PiKaPr_%s.root",
+  "BUNCH03/Output/PYTHIA8_PiKaPr_%s.root",
+  "BUNCH04/Output/PYTHIA8_PiKaPr_%s.root",
+  "BUNCH05/Output/PYTHIA8_PiKaPr_%s.root",
+  "BUNCH06/Output/PYTHIA8_PiKaPr_%s.root",
+  "BUNCH07/Output/PYTHIA8_PiKaPr_%s.root",
+  "BUNCH08/Output/PYTHIA8_PiKaPr_%s.root",
+  "BUNCH09/Output/PYTHIA8_PiKaPr_%s.root",
+  "BUNCH10/Output/PYTHIA8_PiKaPr_%s.root",
 };
 int nsamples = samplesfnames.size();
 
@@ -133,7 +133,7 @@ TList* extractMeanAndStDevFromSubSets(const TObjArray& listsarray, const TString
 
   /* first, some consistency checks */
   Int_t nhistos = ((TList*) listsarray[0])->GetEntries();
-  if (nhistos != ncorrpart && nhistos != (ncorrpart * ncomb + 1))
+  if (nhistos != ncorrpart and nhistos != (ncorrpart * ncomb) and nhistos != 1)
     Error("extractMeanAndStDevFromSubSets", "Inconsistent number of histograms to average");
   for (Int_t iset = 0; iset < listsarray.GetEntries(); iset++) {
     if (nhistos != ((TList*) listsarray[iset])->GetEntries()) {
@@ -170,7 +170,7 @@ TList* extractSampleResults(Option_t* opt, AnalysisConfiguration* ac, int icent,
 
   Event *event = Event::getEvent();
 
-  TwoPartDiffCorrelationAnalyzerME* eventanalyzer = new TwoPartDiffCorrelationAnalyzerME("NarrowPiKaPrLa", ac, event, eventFilter, particleFilters);
+  TwoPartDiffCorrelationAnalyzer* eventanalyzer = new TwoPartDiffCorrelationAnalyzer("NarrowPiKaPrLa", ac, event, eventFilter, particleFilters);
 
   eventanalyzer->setReportLevel(MessageLogger::Error);
 
@@ -209,6 +209,7 @@ TList* extractSampleResults(Option_t* opt, AnalysisConfiguration* ac, int icent,
     }
   }
 
+#ifdef MIXED_EVENTS /* TODO: we have to template this */
   if (TString(opt).Contains("me")) {
     /* the pair single histos from ME */
     for (int ipart = 0; ipart < npart; ++ipart) {   /* first component of the pair */
@@ -236,6 +237,7 @@ TList* extractSampleResults(Option_t* opt, AnalysisConfiguration* ac, int icent,
       }
     }
   }
+#endif
 
   /* the pair balance functions */
   for (int ipart = 0; ipart < int(npart / 2); ++ipart) {
@@ -333,14 +335,19 @@ int main(int argc, char* argv[])
     // =========================
     // Short configuration
     // =========================
-    float min_eta = -1;
-    float max_eta = 1;
-    float min_pt = 0.2;
-    float max_pt = 2.5;
+    float min_eta = -4;
+    float max_eta = 4;
+    float min_pt = 0.0;
+    float max_pt = 1e6;
     int nBins_eta = int((max_eta - min_eta) / 0.1);
     int nBins_pt = int((max_pt - min_pt) / 0.1);
 
-    ac->nBins_pt = nBins_pt;
+    ac->bin_edges_pt = {0.0,
+                        0.10, 0.12, 0.14, 0.16, 0.18, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55,
+                        0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.0, 1.1, 1.2, 1.3, 1.4,
+                        1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.2, 2.4, 2.6, 2.8, 3.0, 3.2, 3.4,
+                        3.6, 3.8, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 8.0, 10.0, 13.0, 20.0};
+    ac->nBins_pt = ac->bin_edges_pt.size() - 1;
     ac->min_pt = min_pt;
     ac->max_pt = max_pt;
     ac->nBins_eta = nBins_eta;
@@ -435,7 +442,7 @@ int main(int argc, char* argv[])
     sprintf(bfname[0], "R2BF");
     for (int ipart = 0; ipart < int(npart / 2); ++ipart) {
       for (int jpart = 0; jpart < int(npart / 2); ++jpart) {
-        TString pattern = TString::Format("Pythia8_%s%s%%s_DetaDphi_shft_%s", partname[ipart], partname[ipart + 1 + jpart], centfname[icent].c_str());
+        TString pattern = TString::Format("Pythia8_%.2s%.2s%%s_DetaDphi_shft_%s", partname[ipart * 2], partname[jpart * 2], centfname[icent].c_str());
         TList* meanhlist = extractMeanAndStDevFromSubSets(pairslists[ilst++], pattern, bfname);
         for (int ixh = 0; ixh < meanhlist->GetEntries(); ixh++) {
           meanhlist->At(ixh)->Write();
