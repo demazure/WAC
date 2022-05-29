@@ -254,6 +254,13 @@ class HistogramCollection : public MessageLogger
                         bool plot = true,
                         bool print = true,
                         bool sumw2 = false);
+  TProfile2D* loadProfile2D(TFile* inputFile,
+                            const TString& histoName,
+                            bool scale = false,
+                            bool save = false,
+                            bool plot = true,
+                            bool print = true,
+                            bool sumw2 = false);
   TH1* cloneH1(const TH1* h1, const TString& histoName);
   TH2* cloneH2(const TH2* h2, const TString& histoName);
   TH3* cloneH3(const TH3* h3, const TString& histoName);

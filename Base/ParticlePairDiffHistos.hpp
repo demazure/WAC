@@ -37,6 +37,12 @@ class ParticlePairDiffHistos : public Histograms
   template <typename ParticleType1, typename ParticleType2>
   int getGlobalDeltaRapidityDeltaPhiIndex(ParticleType1& p1, ParticleType2& p2);
   template <typename ParticleType1, typename ParticleType2>
+  float getDeltaEta(ParticleType1& particle1, ParticleType2& particle2);
+  template <typename ParticleType1, typename ParticleType2>
+  float getDeltaY(ParticleType1& particle1, ParticleType2& particle2);
+  template <typename ParticleType1, typename ParticleType2>
+  float getDeltaPhi(ParticleType1& particle1, ParticleType2& particle2);
+  template <typename ParticleType1, typename ParticleType2>
   void fill(ParticleType1& particle1, ParticleType2& particle2, double weight1, double weight2, double pTavg1 = 0.0, double pTavg2 = 0.0);
   void loadHistograms(TFile* inputFile);
 
@@ -46,15 +52,44 @@ class ParticlePairDiffHistos : public Histograms
   TH2* h_n2_ptPt;
 
   TH2* h_n2_DetaDphi;
+  TProfile2D* p_n2_DetaDphi;
   TH2* h_ptpt_DetaDphi;
   TH2* h_dptdpt_DetaDphi;
 
   TH2* h_n2_DyDphi;
+  TProfile2D* p_n2_DyDphi;
   TH2* h_ptpt_DyDphi;
   TH2* h_dptdpt_DyDphi;
 
-  ClassDef(ParticlePairDiffHistos, 1)
+  ClassDef(ParticlePairDiffHistos, 2)
 };
+
+/// WARNING: for performance reasons no checks are done about the consistency
+/// of particles' eta and phi within the corresponding ranges so, it is suppossed
+/// the particles have been accepted and they are within that ranges
+/// IF THAT IS NOT THE CASE THE ROUTINE WILL PRODUCE NONSENSE RESULTS
+template <typename ParticleType1, typename ParticleType2>
+inline float ParticlePairDiffHistos::getDeltaEta(ParticleType1& particle1, ParticleType2& particle2)
+{
+  return particle1.eta - particle2.eta;
+}
+
+template <typename ParticleType1, typename ParticleType2>
+inline float ParticlePairDiffHistos::getDeltaY(ParticleType1& particle1, ParticleType2& particle2)
+{
+  return particle1.y - particle2.y;
+}
+
+template <typename ParticleType1, typename ParticleType2>
+inline float ParticlePairDiffHistos::getDeltaPhi(ParticleType1& particle1, ParticleType2& particle2)
+{
+  float dphi = particle1.phi - particle2.phi;
+  while (dphi >= kTWOPI)
+    dphi -= kTWOPI;
+  while (dphi < 0)
+    dphi += kTWOPI;
+  return dphi;
+}
 
 template <typename ParticleType1, typename ParticleType2>
 inline int ParticlePairDiffHistos::getGlobalDeltaEtaDeltaPhiIndex(ParticleType1& p1, ParticleType2& p2)
@@ -76,7 +111,10 @@ template <typename ParticleType1, typename ParticleType2>
 void ParticlePairDiffHistos::fill(ParticleType1& particle1, ParticleType2& particle2, double weight1, double weight2, double pTavg1, double pTavg2)
 {
   int globaletabinno = getGlobalDeltaEtaDeltaPhiIndex(particle1, particle2);
+  float deltaeta = getDeltaEta(particle1, particle2);
+  float deltaphi = getDeltaPhi(particle1, particle2);
   h_n2_ptPt->Fill(particle1.pt, particle2.pt, weight1 * weight2);
+  p_n2_DetaDphi->Fill(deltaeta, deltaphi, weight1 * weight2);
   h_n2_DetaDphi->AddBinContent(globaletabinno, weight1 * weight2);
   h_ptpt_DetaDphi->AddBinContent(globaletabinno, weight1 * particle1.pt * weight2 * particle2.pt);
   h_dptdpt_DetaDphi->AddBinContent(globaletabinno, (weight1 * particle1.pt - pTavg1) * (weight2 * particle2.pt - pTavg2));
@@ -86,7 +124,9 @@ void ParticlePairDiffHistos::fill(ParticleType1& particle1, ParticleType2& parti
 
   if (configuration->fillY) {
     int globalybinno = getGlobalDeltaRapidityDeltaPhiIndex(particle1, particle2);
+    float deltay = getDeltaY(particle1, particle2);
     h_n2_DyDphi->AddBinContent(globalybinno, weight1 * weight2);
+    p_n2_DyDphi->Fill(deltay, deltaphi, weight1 * weight2);
     h_ptpt_DyDphi->AddBinContent(globalybinno, weight1 * particle1.pt * weight2 * particle2.pt);
     h_dptdpt_DyDphi->AddBinContent(globalybinno, (weight1 * particle1.pt - pTavg1) * (weight2 * particle2.pt - pTavg2));
     h_n2_DyDphi->SetEntries(h_n2_ptPt->GetEntries());

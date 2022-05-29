@@ -1794,7 +1794,7 @@ TH3* HistogramCollection::loadH3(TFile* inputFile,
   return h;
 }
 
-/// Load the given 3D histogram (name) from the given TFile
+/// Load the given 1D profile (name) from the given TFile
 /// No test is //done to verify that the file is properly opened.
 TProfile* HistogramCollection::loadProfile(TFile* inputFile,
                                            const TString& histoName,
@@ -1807,7 +1807,26 @@ TProfile* HistogramCollection::loadProfile(TFile* inputFile,
   TProfile* h = (TProfile*)inputFile->Get(histoName);
   if (!h) {
     if (reportDebug())
-      cout << "Could not load histogram " << histoName << endl;
+      cout << "Could not load profile " << histoName << endl;
+  }
+  addToList(h, scale, save, plot, print, sumw2);
+  return h;
+}
+
+/// Load the given 2D profile (name) from the given TFile
+/// No test is //done to verify that the file is properly opened.
+TProfile2D* HistogramCollection::loadProfile2D(TFile* inputFile,
+                                               const TString& histoName,
+                                               bool scale,
+                                               bool save,
+                                               bool plot,
+                                               bool print,
+                                               bool sumw2)
+{
+  TProfile2D* h = (TProfile2D*)inputFile->Get(histoName);
+  if (!h) {
+    if (reportDebug())
+      cout << "Could not load 2D profile " << histoName << endl;
   }
   addToList(h, scale, save, plot, print, sumw2);
   return h;
