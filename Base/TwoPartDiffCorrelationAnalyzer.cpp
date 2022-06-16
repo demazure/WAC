@@ -17,6 +17,7 @@
 #include <TString.h>
 #include "TwoPartDiffCorrelationAnalyzer.hpp"
 #include "AnalysisConfiguration.hpp"
+#include "weight.h"
 
 //////////////////////////////////////////////////////////////
 // CTOR

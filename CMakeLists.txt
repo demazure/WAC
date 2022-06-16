@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 ################################################################################################
 # Project WAC
 ################################################################################################
-project(WAC VERSION 1.0 DESCRIPTION "Wayne State Code" LANGUAGES CXX)
+project(WAC VERSION 1.0 DESCRIPTION "Wayne State Code" LANGUAGES CXX Fortran)
 
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 set(WAC_ROOT "${WAC_ROOT}")
@@ -31,7 +31,7 @@ find_library(PYTHIA8 pythia8 PATHS $ENV{PYTHIA8}/lib)
 add_compile_options(-pthread -std=c++17 -m64)
 
 #---Define useful ROOT functions and macros (e.g. ROOT_GENERATE_DICTIONARY)
-include_directories(${CMAKE_SOURCE_DIR} ${ROOT_INCLUDE_DIRS} $ENV{MYHOME} "Base" "Pythia" "Urqmd" $ENV{PYTHIA8}/include)
+include_directories(${CMAKE_SOURCE_DIR} ${ROOT_INCLUDE_DIRS} $ENV{MYHOME} "Base" "Pythia" "Urqmd" "Weights" $ENV{PYTHIA8}/include)
 set(WAC_ROOT_LIBRARIES ROOT::Core ROOT::MathCore ROOT::Hist ROOT::Tree ROOT::Graf ROOT::Physics ROOT::Gpad)
 
 add_library(EG SHARED IMPORTED)
@@ -55,6 +55,7 @@ add_subdirectory(Home)
 endif()
 add_subdirectory(Base)
 add_subdirectory(Pythia)
+add_subdirectory(Weights)
 add_subdirectory(Urqmd)
 add_subdirectory(Utils)
 

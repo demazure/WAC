@@ -27,6 +27,10 @@ Particle::Particle()
     pt(0.0),
     y(0.0),
     eta(0.0),
+    Posx(0.0),
+    Posy(0.0),
+    Posz(0.0),
+    Post(0.0),
     phi(0.0),
     ixEtaPhi(-1),
     ixYPhi(-1),
@@ -56,6 +60,10 @@ Particle::Particle(const Particle& other)
     pt = other.pt;
     y = other.y;
     eta = other.eta;
+    Posx = other.Posx;
+    Posy = other.Posy;
+    Posz = other.Posz;
+    Post = other.Post;
     phi = other.phi;
     ixEtaPhi = other.ixEtaPhi;
     ixYPhi = other.ixYPhi;
@@ -75,6 +83,10 @@ Particle& Particle::operator=(const Particle& other)
     pt = other.pt;
     y = other.y;
     eta = other.eta;
+    Posx = other.Posx;
+    Posy = other.Posy;
+    Posz = other.Posz;
+    Post = other.Post;
     phi = other.phi;
     ixEtaPhi = other.ixEtaPhi;
     ixYPhi = other.ixYPhi;
@@ -105,6 +117,10 @@ void Particle::printProperties(ostream& output)
   output << "       e: " << e << endl;
   output << "       y: " << y << endl;
   output << "     eta: " << eta << endl;
+  output << "     x: " << Posx << endl;
+  output << "     y: " << Posy << endl;
+  output << "     z: " << Posz << endl;
+  output << "     t: " << Post << endl;
   output << "     phi: " << phi << endl;
 }
 
@@ -138,6 +154,10 @@ void Particle::setPidPxPyPzE(long thePid, long theCharge, double p_x, double p_y
   py = p_y;
   pz = p_z;
   e = p_e;
+  Posx = Posx;
+  Posy = Posy;
+  Posz = Posz;
+  Post = Post;
   pt = sqrt(px * px + py * py);
   phi = atan2(py, px);
   if (phi < 0)

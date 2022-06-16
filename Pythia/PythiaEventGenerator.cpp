@@ -128,7 +128,11 @@ void PythiaEventGenerator::execute()
     p_y = sinPhi * part.Px() + cosPhi * part.Py();
     p_z = part.Pz();
     p_e = part.Energy();
-    aParticle.setPidPxPyPzE(pdg, charge, p_x, p_y, p_z, p_e);
+    Posx = part.Vx();
+    Posy = part.Vy();
+    Posz = part.Vz();
+    Post = part.T();
+    aParticle.setPidPxPyPzE(pdg, charge, p_x, p_y, p_z, p_e, Posx, Posy, Posz, Post);
     // aParticle.printProperties(cout);
     // if (reportDebug()) cout << "PythiaEventGenerator::execute() calling filter " << endl;
     particleCounted++;

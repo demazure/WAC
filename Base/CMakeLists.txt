@@ -85,7 +85,7 @@ add_compile_options(-Wall -Wextra -Wpedantic)
 add_library(Base SHARED ${HEADER_FILES} BaseLinkDef.h ${SOURCE_FILES} G__Base.cxx)
 
 
-target_link_libraries(Base ${WAC_ROOT_LIBRARIES} ${EXTRA_LIBS} )
+target_link_libraries(Base Weights ${WAC_ROOT_LIBRARIES} ${EXTRA_LIBS} )
 target_include_directories(Base  PUBLIC Base ${EXTRA_INCLUDES} ) 
 
 # optimization for big histogram access within the pair inner loop

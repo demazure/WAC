@@ -25,7 +25,7 @@ class Particle
   Particle& operator=(const Particle& other);
   void printProperties(ostream& output);
   void setPxPyPzE(double p_x, double p_y, double p_z, double p_e);
-  void setPidPxPyPzE(long pid, long charge, double p_x, double p_y, double p_z, double p_e);
+  void setPidPxPyPzE(long pid, long charge, double p_x, double p_y, double p_z, double p_e, double Posx, double Posy, double Posz, double Post);
   void setPidPtPhiYEta(long _id, long _ch, double _pT, double _phi, double _y, double _eta);
 
   void boost(double ax, double ay, double az);
@@ -37,6 +37,7 @@ class Particle
   long pid;
   long charge;
   double px, py, pz, e, pt, y, eta;
+  double Posx, Posy, Posz, Post;
   float phi;
   int ixEtaPhi, ixYPhi;
   int ixID; ///< the index of the filter which accepted the particle (kind of PID index)
