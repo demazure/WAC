@@ -25,6 +25,7 @@ ParticlePairDerivedDiffHistos::ParticlePairDerivedDiffHistos(const TString& name
     h_P2_DetaDphi_shft(nullptr),
     h_G2_DetaDphi_shft(nullptr),
     h_R2bf12_DetaDphi_shft(nullptr),
+    p_PrattBf_DetaDphi_shft(nullptr),
     h_n1n1_DyDphi(nullptr),
     h_pt1pt1_DyDphi(nullptr),
     h_R2_DyDphi(nullptr),
@@ -33,7 +34,8 @@ ParticlePairDerivedDiffHistos::ParticlePairDerivedDiffHistos(const TString& name
     h_R2_DyDphi_shft(nullptr),
     h_P2_DyDphi_shft(nullptr),
     h_G2_DyDphi_shft(nullptr),
-    h_R2bf12_DyDphi_shft(nullptr)
+    h_R2bf12_DyDphi_shft(nullptr),
+    p_PrattBf_DyDphi_shft(nullptr)
 {
   if (reportDebug())
     cout << "ParticlePairDerivedDiffHistos::CTOR() Started." << endl;
@@ -59,6 +61,7 @@ ParticlePairDerivedDiffHistos::ParticlePairDerivedDiffHistos(TFile* inputFile,
     h_P2_DetaDphi_shft(nullptr),
     h_G2_DetaDphi_shft(nullptr),
     h_R2bf12_DetaDphi_shft(nullptr),
+    p_PrattBf_DetaDphi_shft(nullptr),
     h_n1n1_DyDphi(nullptr),
     h_pt1pt1_DyDphi(nullptr),
     h_R2_DyDphi(nullptr),
@@ -67,7 +70,8 @@ ParticlePairDerivedDiffHistos::ParticlePairDerivedDiffHistos(TFile* inputFile,
     h_R2_DyDphi_shft(nullptr),
     h_P2_DyDphi_shft(nullptr),
     h_G2_DyDphi_shft(nullptr),
-    h_R2bf12_DyDphi_shft(nullptr)
+    h_R2bf12_DyDphi_shft(nullptr),
+    p_PrattBf_DyDphi_shft(nullptr)
 {
   if (reportDebug())
     cout << "ParticlePairDerivedDiffHistos::CTOR(TFile * inputFile,...) Started." << endl;
@@ -112,7 +116,8 @@ void ParticlePairDerivedDiffHistos::createDerivedHistograms()
   h_P2_DetaDphi_shft = createHistogram(bn + TString("P2_DetaDphi_shft"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta", "#Delta#varphi", "P_{2}", notScaled, saved, plotted, notPrinted);
   h_G2_DetaDphi_shft = createHistogram(bn + TString("G2_DetaDphi_shft"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta", "#Delta#varphi", "G_{2}", notScaled, saved, plotted, notPrinted);
 
-  h_R2bf12_DetaDphi_shft = createHistogram(bn + TString("R2bf12_DetaDphi_shft"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta", "#Delta#varphi", "n_{2}^{12}/n_{1}^{2}", notScaled, saved, plotted, notPrinted);
+  h_R2bf12_DetaDphi_shft = createHistogram(bn + TString("R2bf12_DetaDphi_shft"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta#eta", "#Delta#varphi", "#rho_{1_{1}}R_{2}^{12}", notScaled, saved, plotted, notPrinted);
+  p_PrattBf_DetaDphi_shft = createProfile(bn + TString("PrattBf_DetaDphi_shft"), ac.nBins_Deta, ac.min_Deta, ac.max_Deta, ac.nBins_Dphi, ac.min_Dphi, ac.max_Dphi, "#Delta#eta", "#Delta#varphi", "#rho_{2}^{12}/#rho_{1_{2}}", notScaled, saved, plotted, notPrinted);
 
   if (ac.fillY) {
     h_n1n1_DyDphi = createHistogram(bn + TString("n1n1_DyDphi"), ac.nBins_Dy, ac.min_Dy, ac.max_Dy, ac.nBins_Dphi, ac.min_Dphi, ac.max_Dphi, "#Delta y", "#Delta#varphi", "<n_{1}><n_{1}>", notScaled, saved, plotted, notPrinted);
@@ -126,7 +131,8 @@ void ParticlePairDerivedDiffHistos::createDerivedHistograms()
     h_P2_DyDphi_shft = createHistogram(bn + TString("P2_DyDphi_shft"), ac.nBins_Dy, ac.min_Dy, ac.max_Dy, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta y", "#Delta#varphi", "P_{2}", notScaled, saved, notPlotted, notPrinted);
     h_G2_DyDphi_shft = createHistogram(bn + TString("G2_DyDphi_shft"), ac.nBins_Dy, ac.min_Dy, ac.max_Dy, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta y", "#Delta#varphi", "G_{2}", notScaled, saved, notPlotted, notPrinted);
 
-    h_R2bf12_DyDphi_shft = createHistogram(bn + TString("R2bf12_DyDphi_shft"), ac.nBins_Dy, ac.min_Dy, ac.max_Dy, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta y", "#Delta#varphi", "n_{2}^{12}/n_{1}^{2}", notScaled, saved, notPlotted, notPrinted);
+    h_R2bf12_DyDphi_shft = createHistogram(bn + TString("R2bf12_DyDphi_shft"), ac.nBins_Dy, ac.min_Dy, ac.max_Dy, ac.nBins_Dphi, ac.min_Dphi_shft, ac.max_Dphi_shft, "#Delta y", "#Delta#varphi", "#rho_{1_{1}}R_{2}^{12}", notScaled, saved, notPlotted, notPrinted);
+    p_PrattBf_DyDphi_shft = createProfile(bn + TString("PrattBf_DyDphi_shft"), ac.nBins_Dy, ac.min_Dy, ac.max_Dy, ac.nBins_Dphi, ac.min_Dphi, ac.max_Dphi, "#Delta y", "#Delta#varphi", "#rho_{2}^{12}/#rho_{1_{2}}", notScaled, saved, notPlotted, notPrinted);
   }
   if (reportDebug())
     cout << "ParticlePairDerivedDiffHistos::initialize() completed." << endl;
@@ -245,6 +251,11 @@ void ParticlePairDerivedDiffHistos::calculateDerivedHistograms(ParticleHistos* p
   h_R2bf12_DetaDphi_shft->Reset();
   h_R2bf12_DetaDphi_shft->Add(h_R2_DetaDphi_shft, rho1_1);
 
+  /* calculate Pratt's BF component */
+  double rho1_2 = part2Histos->h_n1_phiEta->Integral() / (kTWOPI * (configuration->max_eta - configuration->min_eta));
+  p_PrattBf_DetaDphi_shft->Reset();
+  p_PrattBf_DetaDphi_shft->Add(p_n2_DetaDphi, 1.0 / rho1_2);
+
   delete h_n1n1_phiEtaPhiEta;
   delete h_pt1pt1_phiEtaPhiEta;
   delete minusone;
@@ -300,9 +311,14 @@ void ParticlePairDerivedDiffHistos::calculateDerivedHistograms(ParticleHistos* p
     shiftY(*h_P2_DyDphi, *h_P2_DyDphi_shft, configuration->nBins_Dphi_shft);
 
     /* calculate BF from R2 */
-    double rho1_2 = part2Histos->h_n1_phiY->Integral() / (kTWOPI * (configuration->max_y - configuration->min_y));
+    double rho1_1 = part1Histos->h_n1_phiY->Integral() / (kTWOPI * (configuration->max_y - configuration->min_y));
     h_R2bf12_DyDphi_shft->Reset();
-    h_R2bf12_DyDphi_shft->Add(h_R2_DyDphi_shft, rho1_2);
+    h_R2bf12_DyDphi_shft->Add(h_R2_DyDphi_shft, rho1_1);
+
+    /* calculate Pratt's BF component */
+    double rho1_2 = part2Histos->h_n1_phiY->Integral() / (kTWOPI * (configuration->max_y - configuration->min_y));
+    p_PrattBf_DyDphi_shft->Reset();
+    p_PrattBf_DyDphi_shft->Add(p_n2_DyDphi, 1.0 / rho1_2);
 
     delete h_n1n1_phiYPhiY;
     delete h_pt1pt1_phiYPhiY;

@@ -122,7 +122,7 @@ TH2 *extractHistoMeanAndStDevFromSubSets(const TObjArray &listsarray, Int_t ih, 
   }
 }
 
-TList* extractMeanAndStDevFromSubSets(const TObjArray& listsarray, const TString& pattern, char** name)
+TList* extractMeanAndStDevFromSubSets(const TObjArray& listsarray, const TString& pattern, const char* name[])
 {
   /* basically we receive an array of histograms lists */
   /* each array item corresponds to a results subset   */
@@ -244,8 +244,14 @@ TList* extractSampleResults(Option_t* opt, AnalysisConfiguration* ac, int icent,
     for (int jpart = 0; jpart < int(npart / 2); ++jpart) {
       TList* plist = new TList(); /* a list per pair */
       plist->SetOwner(kTRUE);
-      TH2* h2bf = h2bf = eventanalyzer->pairs_BFHistos[ipart][jpart]->h_R2BF_DetaDphi_shft;
-      plist->Add(h2bf->Clone(TString::Format("%s%s_Sub%02d", h2bf->GetName(), centfname[icent].c_str(), isample)));
+      auto addToList = [plist, icent, isample](auto h) {
+        plist->Add(h->Clone(TString::Format("%s%s_Sub%02d", h->GetName(), centfname[icent].c_str(), isample)));
+      };
+      addToList(eventanalyzer->pairs_BFHistos[ipart][jpart]->h_R2BF_DetaDphi_shft);
+      addToList(eventanalyzer->pairs_BFHistos[ipart][jpart]->h_R2BF_Pratt_1bar2_DetaDphi_shft);
+      addToList(eventanalyzer->pairs_BFHistos[ipart][jpart]->h_R2BF_Pratt_bar12_DetaDphi_shft);
+      addToList(eventanalyzer->pairs_BFHistos[ipart][jpart]->p_PrattBF_1bar2_DetaDphi_shft);
+      addToList(eventanalyzer->pairs_BFHistos[ipart][jpart]->p_PrattBF_bar12_DetaDphi_shft);
       list->Add(plist);
     }
   }
@@ -401,17 +407,12 @@ int main(int argc, char* argv[])
     Bool_t oldstatus = TH1::AddDirectoryStatus();
     TH1::AddDirectory(kFALSE);
 
-    char* cfname[ncorrpart] = {nullptr};
-    for (int i = 0; i < ncorrpart; ++i) {
-      cfname[i] = new char[std::strlen(corrfname[i]) + 1];
-      sprintf(cfname[i], "%s", corrfname[i]);
-    }
     outputfile->cd();
     for (int ipart = 0; ipart < npart; ++ipart) {
       for (int jpart = 0; jpart < npart; ++jpart) {
         int ilst = ipart * npart + jpart;
         TString pattern = TString::Format("Pythia8_%s%s%%s_DetaDphi_shft_%s", partname[ipart], partname[jpart], centfname[icent].c_str());
-        TList* meanhlist = extractMeanAndStDevFromSubSets(pairslists[ilst], pattern, cfname);
+        TList* meanhlist = extractMeanAndStDevFromSubSets(pairslists[ilst], pattern, corrfname);
         for (int ixh = 0; ixh < meanhlist->GetEntries(); ixh++) {
           meanhlist->At(ixh)->Write();
         }
@@ -423,7 +424,7 @@ int main(int argc, char* argv[])
       for (int ipart = 0; ipart < npart; ++ipart) {
         for (int jpart = 0; jpart < npart; ++jpart) {
           TString pattern = TString::Format("Pythia8_%s%s%%s_DetaDphi_shft_me_%s", partname[ipart], partname[jpart], centfname[icent].c_str());
-          TList* meanhlist = extractMeanAndStDevFromSubSets(pairslists[ilst++], pattern, cfname);
+          TList* meanhlist = extractMeanAndStDevFromSubSets(pairslists[ilst++], pattern, corrfname);
           for (int ixh = 0; ixh < meanhlist->GetEntries(); ixh++) {
             meanhlist->At(ixh)->Write();
           }
@@ -437,13 +438,17 @@ int main(int argc, char* argv[])
     if (TString(opt).Contains("me")) {
       ilst *= 2;
     }
-    char* bfname[1] = {nullptr};
-    bfname[0] = new char[std::strlen("R2BF") + 1];
-    sprintf(bfname[0], "R2BF");
+    const char* bfnames[5] = {
+      "R2BF",
+      "R2BFPratt1bar2",
+      "R2BFPrattbar12",
+      "PrattBF1bar2",
+      "PrattBFbar12",
+    };
     for (int ipart = 0; ipart < int(npart / 2); ++ipart) {
       for (int jpart = 0; jpart < int(npart / 2); ++jpart) {
         TString pattern = TString::Format("Pythia8_%.2s%.2s%%s_DetaDphi_shft_%s", partname[ipart * 2], partname[jpart * 2], centfname[icent].c_str());
-        TList* meanhlist = extractMeanAndStDevFromSubSets(pairslists[ilst++], pattern, bfname);
+        TList* meanhlist = extractMeanAndStDevFromSubSets(pairslists[ilst++], pattern, bfnames);
         for (int ixh = 0; ixh < meanhlist->GetEntries(); ixh++) {
           meanhlist->At(ixh)->Write();
         }
@@ -452,11 +457,12 @@ int main(int argc, char* argv[])
     }
 
     /* the CI, CD, combinations */
-    char* cfnamecomb[ncorrpart * ncomb] = {nullptr};
+    const char* cfnamecomb[ncorrpart * ncomb] = {nullptr};
     for (int i = 0; i < ncorrpart; ++i) {
       for (int j = 0; j < ncomb; ++j) {
-        cfnamecomb[i * ncomb + j] = new char[std::strlen(corrfname[i]) + strlen(combname[j]) + 1];
-        sprintf(cfnamecomb[i * ncomb + j], "%s%s", corrfname[i], combname[j]);
+        char* buffer;
+        cfnamecomb[i * ncomb + j] = buffer = new char[std::strlen(corrfname[i]) + strlen(combname[j]) + 1];
+        sprintf(buffer, "%s%s", corrfname[i], combname[j]);
       }
     }
     /* we keep tracking with the previous ilst content */
@@ -471,9 +477,6 @@ int main(int argc, char* argv[])
       }
     }
 
-    for (auto aname : cfname) {
-      delete aname;
-    }
     for (auto aname : cfnamecomb) {
       delete aname;
     }

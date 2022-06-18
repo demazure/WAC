@@ -41,9 +41,18 @@ class ParticlePairBalanceFunctionDiffHistos : public Histograms
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   TH2* h_R2BF_DetaDphi_shft;
-  TH2* h_R2BF_DyDphi_shft;
+  TH2* h_R2BF_Pratt_1bar2_DetaDphi_shft;
+  TH2* h_R2BF_Pratt_bar12_DetaDphi_shft;
+  TProfile2D* p_PrattBF_1bar2_DetaDphi_shft;
+  TProfile2D* p_PrattBF_bar12_DetaDphi_shft;
 
-  ClassDef(ParticlePairBalanceFunctionDiffHistos, 1)
+  TH2* h_R2BF_DyDphi_shft;
+  TH2* h_R2BF_Pratt_1bar2_DyDphi_shft;
+  TH2* h_R2BF_Pratt_bar12_DyDphi_shft;
+  TProfile2D* p_PrattBF_1bar2_DyDphi_shft;
+  TProfile2D* p_PrattBF_bar12_DyDphi_shft;
+
+  ClassDef(ParticlePairBalanceFunctionDiffHistos, 2)
 };
 
 #endif /* ParticlePairBalanceFunctionDiffHistos_hpp */

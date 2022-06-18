@@ -50,6 +50,7 @@ class ParticlePairDerivedDiffHistos : public ParticlePairDiffHistos
   TH2* h_G2_DetaDphi_shft;
 
   TH2* h_R2bf12_DetaDphi_shft;
+  TProfile2D* p_PrattBf_DetaDphi_shft;
 
   // vs Y ////////
   TH2* h_n1n1_DyDphi;
@@ -64,8 +65,9 @@ class ParticlePairDerivedDiffHistos : public ParticlePairDiffHistos
   TH2* h_G2_DyDphi_shft;
 
   TH2* h_R2bf12_DyDphi_shft;
+  TProfile2D* p_PrattBf_DyDphi_shft;
 
-  ClassDef(ParticlePairDerivedDiffHistos, 1)
+  ClassDef(ParticlePairDerivedDiffHistos, 2)
 };
 
 #endif /* ParticlePairDerivedDiffHistos */
