@@ -252,9 +252,10 @@ void ParticlePairDerivedDiffHistos::calculateDerivedHistograms(ParticleHistos* p
   h_R2bf12_DetaDphi_shft->Add(h_R2_DetaDphi_shft, rho1_1);
 
   /* calculate Pratt's BF component */
-  double rho1_2 = part2Histos->h_n1_phiEta->Integral() / (kTWOPI * (configuration->max_eta - configuration->min_eta));
+  /* in principle the second single division should be automatically incorporated by the profiles when the same sign combination is substracted */
+  // double rho1_2 = part2Histos->h_n1_phiEta->Integral() / (kTWOPI * (configuration->max_eta - configuration->min_eta));
   p_PrattBf_DetaDphi_shft->Reset();
-  p_PrattBf_DetaDphi_shft->Add(p_n2_DetaDphi, 1.0 / rho1_2);
+  p_PrattBf_DetaDphi_shft->Add(p_n2_DetaDphi, 1.0);
 
   delete h_n1n1_phiEtaPhiEta;
   delete h_pt1pt1_phiEtaPhiEta;

@@ -126,7 +126,8 @@ void ParticlePairBalanceFunctionDiffHistos::createHistograms()
 void ParticlePairBalanceFunctionDiffHistos::calculate(ParticlePairDerivedDiffHistos* bfpm,
                                                       ParticlePairDerivedDiffHistos* bfpp,
                                                       ParticlePairDerivedDiffHistos* bfmp,
-                                                      ParticlePairDerivedDiffHistos* bfmm)
+                                                      ParticlePairDerivedDiffHistos* bfmm,
+                                                      float nevents)
 {
   if (reportDebug())
     cout << "ParticlePairBalanceFunctionDiffHistos::calculate() started" << endl;
@@ -141,8 +142,10 @@ void ParticlePairBalanceFunctionDiffHistos::calculate(ParticlePairDerivedDiffHis
   h_R2BF_Pratt_bar12_DetaDphi_shft->Add(bfmp->h_R2bf12_DetaDphi_shft, bfpp->h_R2bf12_DetaDphi_shft, 1.0, -1.0);
   p_PrattBF_1bar2_DetaDphi_shft->Reset();
   p_PrattBF_1bar2_DetaDphi_shft->Add(bfpm->p_PrattBf_DetaDphi_shft, bfmm->p_PrattBf_DetaDphi_shft, 1.0, -1.0);
+  p_PrattBF_1bar2_DetaDphi_shft->Scale(nevents);
   p_PrattBF_bar12_DetaDphi_shft->Reset();
   p_PrattBF_bar12_DetaDphi_shft->Add(bfmp->p_PrattBf_DetaDphi_shft, bfpp->p_PrattBf_DetaDphi_shft, 1.0, -1.0);
+  p_PrattBF_bar12_DetaDphi_shft->Scale(nevents);
 
   if (configuration->fillY) {
     h_R2BF_DetaDphi_shft->Reset();
@@ -155,8 +158,10 @@ void ParticlePairBalanceFunctionDiffHistos::calculate(ParticlePairDerivedDiffHis
     h_R2BF_Pratt_bar12_DyDphi_shft->Add(bfmp->h_R2bf12_DyDphi_shft, bfpp->h_R2bf12_DyDphi_shft, 1.0, -1.0);
     p_PrattBF_1bar2_DyDphi_shft->Reset();
     p_PrattBF_1bar2_DyDphi_shft->Add(bfpm->p_PrattBf_DyDphi_shft, bfmm->p_PrattBf_DyDphi_shft, 1.0, -1.0);
+    p_PrattBF_1bar2_DyDphi_shft->Scale(nevents);
     p_PrattBF_bar12_DyDphi_shft->Reset();
     p_PrattBF_bar12_DyDphi_shft->Add(bfmp->p_PrattBf_DyDphi_shft, bfpp->p_PrattBf_DyDphi_shft, 1.0, -1.0);
+    p_PrattBF_bar12_DyDphi_shft->Scale(nevents);
   }
 
   if (reportDebug())
