@@ -44,6 +44,9 @@ const char* combname[ncomb] = {"CI", "CD"};
 const int ncorrpart = 3;
 /* balance function go its own way */
 const char* corrfname[ncorrpart] = {"P2", "R2", "G2"};
+/* balance function */
+const int nbf = 5;
+const char* bfnames[nbf] = {"R2BF", "R2BFPratt1bar2", "R2BFPrattbar12", "PrattBF1bar2", "PrattBFbar12"};
 
 std::vector<std::string> centfname = {
   "MB"};
@@ -133,7 +136,7 @@ TList* extractMeanAndStDevFromSubSets(const TObjArray& listsarray, const TString
 
   /* first, some consistency checks */
   Int_t nhistos = ((TList*) listsarray[0])->GetEntries();
-  if (nhistos != ncorrpart and nhistos != (ncorrpart * ncomb) and nhistos != 1)
+  if (nhistos != ncorrpart and nhistos != (ncorrpart * ncomb) and nhistos != nbf)
     Error("extractMeanAndStDevFromSubSets", "Inconsistent number of histograms to average");
   for (Int_t iset = 0; iset < listsarray.GetEntries(); iset++) {
     if (nhistos != ((TList*) listsarray[iset])->GetEntries()) {
@@ -172,9 +175,12 @@ TList* extractSampleResults(Option_t* opt, AnalysisConfiguration* ac, int icent,
 
   TwoPartDiffCorrelationAnalyzer* eventanalyzer = new TwoPartDiffCorrelationAnalyzer("NarrowPiKaPrLa", ac, event, eventFilter, particleFilters);
 
-  eventanalyzer->setReportLevel(MessageLogger::Error);
+  if (!TString(opt).Contains("verb"))
+    eventanalyzer->setReportLevel(MessageLogger::Error);
+  else
+    eventanalyzer->setReportLevel(MessageLogger::Info);
 
-  TFile *myfile = getSampleFile(icent,isample);
+  TFile* myfile = getSampleFile(icent, isample);
   if (myfile == nullptr) return nullptr;
 
   eventanalyzer->loadBaseHistograms(myfile);
@@ -438,13 +444,6 @@ int main(int argc, char* argv[])
     if (TString(opt).Contains("me")) {
       ilst *= 2;
     }
-    const char* bfnames[5] = {
-      "R2BF",
-      "R2BFPratt1bar2",
-      "R2BFPrattbar12",
-      "PrattBF1bar2",
-      "PrattBFbar12",
-    };
     for (int ipart = 0; ipart < int(npart / 2); ++ipart) {
       for (int jpart = 0; jpart < int(npart / 2); ++jpart) {
         TString pattern = TString::Format("Pythia8_%.2s%.2s%%s_DetaDphi_shft_%s", partname[ipart * 2], partname[jpart * 2], centfname[icent].c_str());
