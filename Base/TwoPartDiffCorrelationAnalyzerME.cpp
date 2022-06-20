@@ -166,8 +166,8 @@ void TwoPartDiffCorrelationAnalyzerME::createHistograms()
       }
       for (uint i = 0; i < uint(particleFilters.size() / 2); ++i) {
         for (uint j = 0; j < uint(particleFilters.size() / 2); ++j) {
-          pairs_BFHistos[i][j] = new ParticlePairBalanceFunctionDiffHistos(TString::Format("%2s%2sR2BF", partNames[2 * i].Data(), partNames[2 * j].Data()), ac, debugLevel);
-          pairs_BFHistos_me[i][j] = new ParticlePairBalanceFunctionDiffHistos(TString::Format("%2s%2sR2BF_me", partNames[2 * i].Data(), partNames[2 * j].Data()), ac, debugLevel);
+          pairs_BFHistos[i][j] = new ParticlePairBalanceFunctionDiffHistos(TString::Format("%.2s%.2s", partNames[2 * i].Data(), partNames[2 * j].Data()), ac, debugLevel);
+          pairs_BFHistos_me[i][j] = new ParticlePairBalanceFunctionDiffHistos(TString::Format("%.2s%.2s_me", partNames[2 * i].Data(), partNames[2 * j].Data()), ac, debugLevel);
         }
       }
     }
@@ -211,8 +211,8 @@ void TwoPartDiffCorrelationAnalyzerME::loadHistograms(TFile* inputFile)
       }
       for (uint i = 0; i < uint(particleFilters.size() / 2); ++i) {
         for (uint j = 0; j < uint(particleFilters.size() / 2); ++j) {
-          pairs_BFHistos[i][j] = new ParticlePairBalanceFunctionDiffHistos(inputFile, TString::Format("%2s%2sR2BF", partNames[2 * i].Data(), partNames[2 * j].Data()), analysisConfiguration, debugLevel);
-          pairs_BFHistos_me[i][j] = new ParticlePairBalanceFunctionDiffHistos(inputFile, TString::Format("%2s%2sR2BF_me", partNames[2 * i].Data(), partNames[2 * j].Data()), analysisConfiguration, debugLevel);
+          pairs_BFHistos[i][j] = new ParticlePairBalanceFunctionDiffHistos(inputFile, TString::Format("%.2s%.2s", partNames[2 * i].Data(), partNames[2 * j].Data()), analysisConfiguration, debugLevel);
+          pairs_BFHistos_me[i][j] = new ParticlePairBalanceFunctionDiffHistos(inputFile, TString::Format("%.2s%.2s_me", partNames[2 * i].Data(), partNames[2 * j].Data()), analysisConfiguration, debugLevel);
         }
       }
     }
@@ -263,8 +263,8 @@ void TwoPartDiffCorrelationAnalyzerME::loadBaseHistograms(TFile* inputFile)
       }
       for (uint i = 0; i < uint(particleFilters.size() / 2); ++i) {
         for (uint j = 0; j < uint(particleFilters.size() / 2); ++j) {
-          pairs_BFHistos[i][j] = new ParticlePairBalanceFunctionDiffHistos(TString::Format("%2s%2sR2BF", partNames[2 * i].Data(), partNames[2 * j].Data()), analysisConfiguration, debugLevel);
-          pairs_BFHistos_me[i][j] = new ParticlePairBalanceFunctionDiffHistos(TString::Format("%2s%2sR2BF_me", partNames[2 * i].Data(), partNames[2 * j].Data()), analysisConfiguration, debugLevel);
+          pairs_BFHistos[i][j] = new ParticlePairBalanceFunctionDiffHistos(TString::Format("%.2s%.2s", partNames[2 * i].Data(), partNames[2 * j].Data()), analysisConfiguration, debugLevel);
+          pairs_BFHistos_me[i][j] = new ParticlePairBalanceFunctionDiffHistos(TString::Format("%.2s%.2s_me", partNames[2 * i].Data(), partNames[2 * j].Data()), analysisConfiguration, debugLevel);
         }
       }
    }
