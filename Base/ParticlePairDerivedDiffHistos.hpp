@@ -32,6 +32,7 @@ class ParticlePairDerivedDiffHistos : public ParticlePairDiffHistos
                                   ParticleHistos* part2Histos,
                                   double bincorrection);
   void reduce(const TH2* source, TH2* target, int nEtaBins, int nPhiBins);
+  void downscale(const TH2* source, TH2* target, int nEtaBins, int nPhiBins);
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   // Data Members - Computed
@@ -50,6 +51,7 @@ class ParticlePairDerivedDiffHistos : public ParticlePairDiffHistos
   TH2* h_G2_DetaDphi_shft;
 
   TH2* h_R2bf12_DetaDphi_shft;
+  TH2* h_PrattBf_DetaDphi_shft;
   TProfile2D* p_PrattBf_DetaDphi_shft;
 
   // vs Y ////////
@@ -65,9 +67,10 @@ class ParticlePairDerivedDiffHistos : public ParticlePairDiffHistos
   TH2* h_G2_DyDphi_shft;
 
   TH2* h_R2bf12_DyDphi_shft;
+  TH2* h_PrattBf_DyDphi_shft;
   TProfile2D* p_PrattBf_DyDphi_shft;
 
-  ClassDef(ParticlePairDerivedDiffHistos, 2)
+  ClassDef(ParticlePairDerivedDiffHistos, 3)
 };
 
 #endif /* ParticlePairDerivedDiffHistos */

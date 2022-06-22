@@ -45,8 +45,8 @@ const int ncorrpart = 3;
 /* balance function go its own way */
 const char* corrfname[ncorrpart] = {"P2", "R2", "G2"};
 /* balance function */
-const int nbf = 5;
-const char* bfnames[nbf] = {"R2BF", "R2BFPratt1bar2", "R2BFPrattbar12", "PrattBF1bar2", "PrattBFbar12"};
+const int nbf = 8;
+const char* bfnames[nbf] = {"R2BF", "R2BFPratt1bar2", "R2BFPrattbar12", "N2PrattBF", "N2PrattBF1bar2", "N2PrattBFbar12", "PrattBF1bar2", "PrattBFbar12"};
 
 std::vector<std::string> centfname = {
   "MB"};
@@ -256,6 +256,9 @@ TList* extractSampleResults(Option_t* opt, AnalysisConfiguration* ac, int icent,
       addToList(eventanalyzer->pairs_BFHistos[ipart][jpart]->h_R2BF_DetaDphi_shft);
       addToList(eventanalyzer->pairs_BFHistos[ipart][jpart]->h_R2BF_Pratt_1bar2_DetaDphi_shft);
       addToList(eventanalyzer->pairs_BFHistos[ipart][jpart]->h_R2BF_Pratt_bar12_DetaDphi_shft);
+      addToList(eventanalyzer->pairs_BFHistos[ipart][jpart]->h_PrattBF_DetaDphi_shft);
+      addToList(eventanalyzer->pairs_BFHistos[ipart][jpart]->h_PrattBF_1bar2_DetaDphi_shft);
+      addToList(eventanalyzer->pairs_BFHistos[ipart][jpart]->h_PrattBF_bar12_DetaDphi_shft);
       addToList(eventanalyzer->pairs_BFHistos[ipart][jpart]->p_PrattBF_1bar2_DetaDphi_shft);
       addToList(eventanalyzer->pairs_BFHistos[ipart][jpart]->p_PrattBF_bar12_DetaDphi_shft);
       list->Add(plist);
