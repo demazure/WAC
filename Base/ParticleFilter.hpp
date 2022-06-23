@@ -41,7 +41,11 @@ class ParticleFilter
                           Baryon,
                           Proton,
                           Lambda,
-                          ALambda };
+                          ALambda,
+                          AString,
+                          MString,
+                          BString,
+                          Strings };
 
   ParticleFilter(SpeciesSelection pidRequested,
                  ChargeSelection chargeRequested,
@@ -140,6 +144,18 @@ inline bool ParticleFilter::accept(Particle& particle)
       break;
     case ALambda:
       accepting = (particle.pid == -3122);
+      break;
+    case AString:
+      accepting = (pid == 51);
+      break;
+    case MString:
+      accepting = (pid == 52);
+      break;
+    case BString:
+      accepting = (pid == 53);
+      break;
+    case Strings:
+      accepting = (pid == 51) || (pid == 52) || (pid == 53);
       break;
   }
 

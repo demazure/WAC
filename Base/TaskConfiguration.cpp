@@ -24,6 +24,8 @@ TaskConfiguration::TaskConfiguration()
     createHistograms(true),
     scaleHistograms(false),
     calculateDerivedHistograms(false),
+    essentialHistos(false),
+    withWeight(false),
     saveHistograms(true),
     resetHistograms(false),
     clearHistograms(false),
@@ -50,6 +52,8 @@ TaskConfiguration::TaskConfiguration(const TString& theName, const TString& theT
     createHistograms(true),
     scaleHistograms(false),
     calculateDerivedHistograms(false),
+    essentialHistos(false),
+    withWeight(false),
     saveHistograms(true),
     resetHistograms(false),
     clearHistograms(false),
@@ -71,6 +75,8 @@ TaskConfiguration::TaskConfiguration(const TaskConfiguration& source)
     createHistograms(source.createHistograms),
     scaleHistograms(source.scaleHistograms),
     calculateDerivedHistograms(source.calculateDerivedHistograms),
+    essentialHistos(source.essentialHistos),
+    withWeight(source.withWeight),
     saveHistograms(source.saveHistograms),
     resetHistograms(source.resetHistograms),
     clearHistograms(source.clearHistograms),
@@ -93,6 +99,8 @@ TaskConfiguration& TaskConfiguration::operator=(const TaskConfiguration& source)
   createHistograms = source.createHistograms;
   scaleHistograms = source.scaleHistograms;
   calculateDerivedHistograms = source.calculateDerivedHistograms;
+  essentialHistos = source.essentialHistos;
+  withWeight = source.withWeight;
   saveHistograms = source.saveHistograms;
   resetHistograms = source.resetHistograms;
   clearHistograms = source.clearHistograms;
@@ -135,6 +143,7 @@ void TaskConfiguration::printTaskConfiguration(ostream& os)
     << "             createHistograms: " << createHistograms << endl
     << "              scaleHistograms: " << scaleHistograms << endl
     << "   calculateDerivedHistograms: " << calculateDerivedHistograms << endl
+    << "                   withWeight: " << withWeight << endl
     << "               saveHistograms: " << saveHistograms << endl
     << "              resetHistograms: " << resetHistograms << endl
     << "              clearHistograms: " << clearHistograms << endl

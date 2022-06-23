@@ -29,8 +29,7 @@ class ParticlePairDerivedDiffHistos : public ParticlePairDiffHistos
   void createDerivedHistograms();
   double calculateWeightCorrection(TFile* fRaw, TFile* fCal);
   void calculateDerivedHistograms(ParticleHistos* part1Histos,
-                                  ParticleHistos* part2Histos,
-                                  double bincorrection);
+                                  ParticleHistos* part2Histos);
   void reduce(const TH2* source, TH2* target, int nEtaBins, int nPhiBins);
   void downscale(const TH2* source, TH2* target, int nEtaBins, int nPhiBins);
 
@@ -43,10 +42,14 @@ class ParticlePairDerivedDiffHistos : public ParticlePairDiffHistos
   TH2* h_pt1pt1_DetaDphi;
 
   TH2* h_R2_DetaDphi;
+  TH2* h_R2_DetaDphi_F;
+  TH2* h_R2_DetaDphi_af;
   TH2* h_P2_DetaDphi;
   TH2* h_G2_DetaDphi;
 
   TH2* h_R2_DetaDphi_shft;
+  TH2* h_R2_DetaDphi_F_shft;
+  TH2* h_R2_DetaDphi_af_shft;
   TH2* h_P2_DetaDphi_shft;
   TH2* h_G2_DetaDphi_shft;
 

@@ -52,6 +52,7 @@ class ParticlePairDiffHistos : public Histograms
   TH2* h_n2_ptPt;
 
   TH2* h_n2_DetaDphi;
+  TH2* h_n2_DetaDphi_w;
   TProfile2D* p_n2_DetaDphi;
   TH2* h_ptpt_DetaDphi;
   TH2* h_dptdpt_DetaDphi;
@@ -115,13 +116,17 @@ void ParticlePairDiffHistos::fill(ParticleType1& particle1, ParticleType2& parti
   float deltaphi = getDeltaPhi(particle1, particle2);
   h_n2_ptPt->Fill(particle1.pt, particle2.pt, weight1 * weight2);
   p_n2_DetaDphi->Fill(deltaeta, deltaphi, weight1 * weight2);
-  h_n2_DetaDphi->AddBinContent(globaletabinno, weight1 * weight2);
+  h_n2_DetaDphi->AddBinContent(globaletabinno, 1.);
   h_ptpt_DetaDphi->AddBinContent(globaletabinno, weight1 * particle1.pt * weight2 * particle2.pt);
   h_dptdpt_DetaDphi->AddBinContent(globaletabinno, (weight1 * particle1.pt - pTavg1) * (weight2 * particle2.pt - pTavg2));
   h_n2_DetaDphi->SetEntries(h_n2_ptPt->GetEntries());
   h_ptpt_DetaDphi->SetEntries(h_n2_ptPt->GetEntries());
   h_dptdpt_DetaDphi->SetEntries(h_n2_ptPt->GetEntries());
 
+  if (configuration->withWeight) {
+    h_n2_DetaDphi_w->AddBinContent(globaletabinno, weight1 * weight2);
+    h_n2_DetaDphi_w->SetEntries(h_n2_ptPt->GetEntries());
+  }
   if (configuration->fillY) {
     int globalybinno = getGlobalDeltaRapidityDeltaPhiIndex(particle1, particle2);
     float deltay = getDeltaY(particle1, particle2);

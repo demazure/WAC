@@ -101,6 +101,21 @@ double weight(int id1, int id2, double px1, double py1, double pz1, double e1, d
   double Wei;
   double Wein;
   double Weif;
+  
+  //std::cout << id1 << " " << id2 << " " << LL << ", " << '\n';
+  //std::cout << px1 << " " << py1 << " " << pz1 << " " << e1 << '\n';
+  //std::cout << px2 << " " << py2 << " " << pz2 << " " << e2 << '\n';
+  //std::cout << x1 << " " << y1 << " " << z1 << " " << t1 << '\n';
+  //std::cout << x2 << " " << y2 << " " << z2 << " " << t2 << '\n';
+  
   fsiw(1,Weif,Wei,Wein);
+  //std::cout << Weif << " " << Wei << " " << Wein << '\n';
+  if (isnan(Wei)) Wei=0.;
+  if (Wei<0.) Wei=0.;
+  if (Wei>5.) Wei=5.;
+  
+  
+  //std::cout << Wei << '\n';
+  
   return Wei;
 }

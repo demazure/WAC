@@ -261,7 +261,9 @@ C-----------------------------------------------------------------------
       EE=(E12*E1-P112)/AM12
       AKS=EE**2-AM1**2
       AK=DSQRT(AKS)
+
       
+CW      WRITE(6,38)'AK ',AK,'K ',PPX,PPY,PPZ,EE
 38    FORMAT(A7,E11.4,A7,4E11.4)
       RETURN
       END
@@ -332,6 +334,7 @@ C--   J=1,2 corresponds to isospin=0,2
       IMPLICIT REAL*8 (A-H,O-Z)
       COMMON/FSI_AAPI/AAPI(20,2)
       COMMON/FSI_C/HELP(20)/FSI_AM/AM,AMS,DM,SM,AM1S,AM2S
+
       
       OMS=X+AMS
       OM=DSQRT(OMS)
@@ -541,10 +544,7 @@ C---         In DATA we used Rea_TS from Paris potential Pignone (94)
 C---         rescaled by 1.67 to satisfy the atomic constraint.
 C---    Effective radius d is taken independent of TS from the phase
 C---    shift fit by Pirner et al. (91).
-      DATA AAPAPR/-0.94D0, -1.98D0,  .1D0,
-     1            -1.40D0,  0.37D0,  .1D0/ ! Re
-      DATA AAPAPI/ 0.3D0,   .267D0,-.01D0,
-     1             1.66D0,  .553D0,-.01D0/ ! Im
+
       END
 
       SUBROUTINE CPIPI ! LL=5: pi+pi- s-wave scattering amplitudes.
@@ -563,6 +563,7 @@ C---    shift fit by Pirner et al. (91).
       DATA AM1_2/.13498D0/     ! pi0 mass
       DATA AM1S_2/.0182196D0/  ! pi0 mass squared
       DATA cas/0.6667D0/,cbs/.3333D0/,cab/0.47140452D0/ ! cab=sqrt(cas*cbs)
+
       
       OM1=DSQRT(AM1S+AKS)
       SQ=2*OM1                 ! = M= eff. mass of channel 1=pi+pi-
@@ -1196,6 +1197,7 @@ C------------- inner (r*< AA) s-wave SI weight ------------------------------
       DMAA=(cas*(G1H-G1)+cbs*(G2H-G2))/DAKS  ! dRe(Maa)/dk^2
       DMBB=(cas*(G2H-G2)+cbs*(G1H-G1))/DAKS  ! dRe(Mbb)/dk^2
       DMBA=-cab*((G1H-G1)-(G2H-G2))/DAKS     ! dRe(Mba)/dk^2
+      WRITE(6,400)'dMaa dMbb dMba ',DMAA,DMBB,DMBA
 400   FORMAT(A15,3E12.4)
       RHOA=AA*AK
       CS=DSIN(RHOA)**2
@@ -1535,6 +1537,7 @@ C------------- inner (r*< AA) s-wave weight ---------------------------
       DMAA=(cas*G1RH+cbs*G2RH-RK11R)/DAKS  ! dRe(Maa)/dk^2
       DMBB=(cas*G2RH+cbs*G1RH-RK22R)/DAKS  ! dRe(Mbb)/dk^2
       DMBA=(-cab*(G1RH-G2RH)-RK12R)/DAKS   ! dRe(Mba)/dk^2
+CW      WRITE(6,400)'dMaa dMbb dMba ',DMAA,DMBB,DMBA
 400   FORMAT(A15,3E12.4)
        IF(ISPIN.EQ.1)THEN
        RHOA=AA*AK
@@ -1564,6 +1567,7 @@ C      i.e. removing other a'->a contributions:
       HH=HH+(CS*DREAL(C(ISPIN))-SS*HHH)/AKS
       HH=HH+(CC+ACH**2*SS)*HAA/(2*AK) 
       DW0(ISPIN)=(3/AA**3)*ACH*HH ! average inner (r*< AA) s-wave SI weight
+CW      WRITE(6,401)'JJ DW0 ',ISPIN,DW0(ISPIN)
 401   FORMAT(A15,I3,E12.4)
       ENDIF
 C------------- END inner (r*< AA) s-wave SI weight-----------------------
@@ -1722,15 +1726,21 @@ C     ===========================================
       COMMON/FSI_AAPIN/AAPIN(20,2)
       COMMON/FSI_SW/RB(10),EB(10),BK(10),CDK(10),SDK(10),
      1              SBKRB(10),SDKK(10)
-C      COMMON/FSI_FDH/FDH(60,10),RDH(60,10),EBH(30,10),RBH(60,10)
-      DIMENSION RHOH(60,10)
-      DIMENSION FDH(60,10),RDH(60,10),EBH(60,10),RBH(60,10)
-C      COMMON/FSI_RHOH/RHOH(60,10)
+      DIMENSION RHOH_DATA(60,10)
+      DIMENSION FDH_DATA(60,10),RDH_DATA(60,10),EBH_DATA(60,10)
+     s,RBH_DATA(60,10)
+      COMMON/FSI_FDH/FDH(60,10),RDH(60,10),EBH(60,10),RBH(60,10) 
+      COMMON/FSI_RHOH/RHOH(60,10)
       COMMON/FSI_AMCH/AM1H(60),AM2H(60),C1H(60),C2H(60),MSPINH(60)
+      DIMENSION AAPAPR_DATA(3,2),AAPAPI_DATA(3,2)
       COMMON/FSI_AAKK/AAKK(20)/FSI_AAPAP/AAPAPR(3,2),AAPAPI(3,2)
 
+      DATA AAPAPR_DATA/-0.94D0, -1.98D0,  .1D0,
+     1            -1.40D0,  0.37D0,  .1D0/ ! Re
+      DATA AAPAPI_DATA/ 0.3D0,   .267D0,-.01D0,
+     1             1.66D0,  .553D0,-.01D0/ ! Im
 
-      DATA RHOH/3*.25D0, 4*1.D0, 2*.3333D0, 8*1.D0,
+      DATA RHOH_DATA/3*.25D0, 4*1.D0, 2*.3333D0, 8*1.D0,
      1          .1111D0,1.D0,.25D0,1.D0,2*1.D0,
      1          .3333D0,.25D0,1.D0,3*.25D0, .25D0,
      1          2*1.D0,2*0.375D0,1.D0,25*0.D0,
@@ -1742,7 +1752,8 @@ C      COMMON/FSI_RHOH/RHOH(60,10)
      3          2*0.D0,2*0.D0,0.D0,25*0.D0, 420*0.D0/
      
 C---  Scattering length FD and effective radius RD in fm vs (LL,ISPIN)
-      DATA FDH/17.0D0,7.8D0,23.7D0,2230.1218D0,.225D0,.081D0,-.063D0,
+      DATA FDH_DATA/17.0D0,7.8D0,23.7D0,2230.1218D0,.225D0,.081D0,
+     s-.063D0,
      1  -.65D0,-2.73D0,
      1  .137D0,-.071D0,-.148D0,.112D0,2*1.D-6,
 c     1  -.360D0,   ! Martin'77 (K+p)
@@ -1761,7 +1772,8 @@ cc     2 -10.8D0,2*-5.4D0,4*0.D0,-6.35D0,-11.88D0,8*0.D0,9*0.D0,
      2  2*.1D-6,-5.79D0,.1D-6,.1D-6,25*0.D0,
      3     481       *0.D0/
 c--------|---------|---------|---------|---------|---------|---------|----------
-      DATA RDH/2.7D0,2.8D0,2.7D0,1.12139906D0,-44.36D0,64.0D0,784.9D0,
+      DATA RDH_DATA/2.7D0,2.8D0,2.7D0,1.12139906D0,-44.36D0,64.0D0,
+     s784.9D0,
      1  477.9D0, 2.27D0, 9*0.D0,-69.973D0, 6*0.D0,3.529D0,
      1  3.19D0,3.15D0,
      1  2.95D0, ! ND potential /\/\
@@ -1776,7 +1788,8 @@ C     1  10.6D0, ! NSC97e potential /\/\
      3     481            *0.D0/
 C---  Corresponding square well parameters RB (width in fm) and
 C--   EB =SQRT(-AM*U) (in GeV/c); U is the well height
-      DATA RBH/2.545739D0,   2.779789D0, 2.585795D0, 5.023544D0,
+      DATA RBH_DATA/2.545739D0,   2.779789D0, 2.585795D0,
+     s5.023544D0,
      1 .124673D0, .3925180D0,.09D0, 2.D0, 4.058058D0, 17*0.D0,
      1  2.252623D0, 2.278575D0,
      1  2.234089D0, ! ND potential /\/\
@@ -1789,7 +1802,8 @@ C     1  3.065796D0, ! NSC97e potential /\/\
                     ! not contributing in s-wave FSI approx.
      2  3*0.001D0,2*0.001D0,0.001D0,25*0.D0,
      3     511  *0.D0/
-      DATA EBH/.1149517D0,    .1046257D0,   .1148757D0, .1186010D0,
+      DATA EBH_DATA/.1149517D0,    .1046257D0,   .1148757D0,
+     s.1186010D0,
      1    .7947389D0,2.281208D0,8.7D0,.4D0,.1561219D0,17*0.D0,
      1    .1013293D0, .1020966D0,
      1    .1080476D0, ! ND potential /\/\
@@ -1853,17 +1867,19 @@ C==================================================================
 C---  fm to 1/GeV
       DO J1=1,60
         DO J2=1,10
-          FDH(J1,J2)=FDH(J1,J2)*W
-          RDH(J1,J2)=RDH(J1,J2)*W
-          RBH(J1,J2)=RBH(J1,J2)*W
+          FDH(J1,J2)=FDH_DATA(J1,J2)*W
+          RDH(J1,J2)=RDH_DATA(J1,J2)*W
+          RBH(J1,J2)=RBH_DATA(J1,J2)*W
+          EBH(J1,J2)=EBH_DATA(J1,J2)*1.
+          RHOH(J1,J2)=RHOH_DATA(J1,J2)*1.
         END DO
       END DO
 C---  fm to 1/GeV for pp-bar system
       IF(LL.EQ.30)THEN
       DO J1=1,3
         DO J2=1,2
-          AAPAPR(J1,J2)=AAPAPR(J1,J2)*W
-          AAPAPI(J1,J2)=AAPAPI(J1,J2)*W
+          AAPAPR(J1,J2)=AAPAPR_DATA(J1,J2)*W
+          AAPAPI(J1,J2)=AAPAPI_DATA(J1,J2)*W
         END DO
       END DO
       ENDIF
@@ -1992,7 +2008,6 @@ c++  This routine is used to init mass and charge of the nucleus.
 
 
       REAL*8 PP1(3),PP2(3)
-c      Print *,"momentum",pp1,pp2
       P1X=PP1(1)
       P1Y=PP1(2)
       P1Z=PP1(3)
@@ -2052,6 +2067,7 @@ C
       T=(E12*TS-RS12)/AM12
       RPS=X*X+Y*Y+Z*Z
       RP=DSQRT(RPS)
+CW      WRITE(6,38)'RP ',RP,'X ',X,Y,Z,T
 38    FORMAT(A7,E11.4,A7,4E11.4)
  
       CVK=(P12X*PPX+P12Y*PPY+P12Z*PPZ)/(P12*AK)
@@ -2106,6 +2122,7 @@ C-    {T,X,Y,Z} from the relative coordinates {TS,XS,YS,ZS} in NRF
       T=(E12*TS-RS12)/AM12
       RPS=X*X+Y*Y+Z*Z
       RP=DSQRT(RPS)
+C      WRITE(6,38)'RP ',RP,'X ',X,Y,Z,T
 38    FORMAT(A7,E11.4,A7,4E11.4)
 
       CVK=(P12X*PPX+P12Y*PPY+P12Z*PPZ)/(P12*AK)
@@ -2331,12 +2348,14 @@ c--------------------------------------------------------------------------
       RHOS=AK*RP
       HS=X*PPX+Y*PPY+Z*PPZ
 
+
 c---------------------
  20   CALL FF(RHOS,HS) ! calculates F12, F21 
                        ! F12 = sqrt(Ac)*F*plane wave 
                        !  -> plane wave if one of the particles is neutral
                        ! FF12, FF21 have been calculated in FSIPN 
                        ! FF12=FF21=1 if I3C=0
+
 
       ENDIF
 c----------------------! the strong interaction OFF (ISI=0)
@@ -2399,13 +2418,14 @@ c-----------------! the quantum statistics OFF (IQS=0)
       WEI=DREAL(PSI12)**2+DIMAG(PSI12)**2 ! w_coul
       DO 4 JJ=1,MSP
       WEI=WEI+RHO(JJ)*FF12S*DW0(JJ)       ! + average inner SI weight 
+      WRITE(6,38)'JJ ',JJ,'DW0 W ',DW0(JJ),WEI
  4    CONTINUE
       GOTO 10
       ELSE                    ! r* > AA
       IF(JRAT.NE.1) CALL FIRT
       DO 5 JJ=1,MSP
       GH=F(JJ)*C(JJ)           ! el. scattered s-wave due to SI
-      IF(ICH.EQ.1)GH=GH*ACHR  
+      IF(ICH.EQ.1)GH=GH*ACHR
       PSI12=F12+GH
       H=DREAL(PSI12)**2+DIMAG(PSI12)**2  ! |psi(12->12)|^2
 c      IF(AMU2_AMU1.NE.0.D0)THEN
@@ -2415,6 +2435,12 @@ c      IF(AK2S.LT.0.D0)HH=HH*DEXP(-2*RP*AK2)
 c      H=H+HH
 c      ENDIF
       WEI=WEI+RHO(JJ)*FF12S*H
+CW      WRITE(6,38)'JJ ',JJ,'F ',DREAL(F(JJ)),DIMAG(F(JJ))
+CW      WRITE(6,38)'JJ ',JJ,'C ',DREAL(C(JJ)),DIMAG(C(JJ))
+CW      WRITE(6,38)'JJ ',JJ,'GH ',DREAL(GH),DIMAG(GH)
+CW      WRITE(6,38)'JJ ',JJ,'F12+GH ',DREAL(F12+GH),DIMAG(F12+GH)
+CW      WRITE(6,38)'JJ ',JJ,'F21+GH ',DREAL(F21+GH),DIMAG(F21+GH)
+CW      WRITE(6,38)'JJ ',JJ,'H W ',H,WEI
 38    FORMAT(A7,I3,A7,2E11.4)
  5    CONTINUE
       ENDIF
@@ -2461,6 +2487,7 @@ C--   to the K+K-, pi+Xi- weights due to phi, Xi* resonance FSI
        HN1=FF12S
        IF(ICH.EQ.1)HN1=FF12S*ACH
        WEI=WEI+HN1*DW1_APP
+      WRITE(6,380)'WEIres ',WEI
       ENDIF
       RETURN
 c-------------------------------------------------------------

@@ -146,7 +146,7 @@ void Particle::setPxPyPzE(double p_x, double p_y, double p_z, double p_e)
     y = 0.5 * log(plus / minus);
 }
 
-void Particle::setPidPxPyPzE(long thePid, long theCharge, double p_x, double p_y, double p_z, double p_e)
+void Particle::setPidPxPyPzE(long thePid, long theCharge, double p_x, double p_y, double p_z, double p_e, double Pos_x, double Pos_y, double Pos_z, double Pos_t)
 {
   pid = thePid;
   charge = theCharge;
@@ -154,10 +154,10 @@ void Particle::setPidPxPyPzE(long thePid, long theCharge, double p_x, double p_y
   py = p_y;
   pz = p_z;
   e = p_e;
-  Posx = Posx;
-  Posy = Posy;
-  Posz = Posz;
-  Post = Post;
+  Posx = Pos_x;
+  Posy = Pos_y;
+  Posz = Pos_z;
+  Post = Pos_t;
   pt = sqrt(px * px + py * py);
   phi = atan2(py, px);
   if (phi < 0)

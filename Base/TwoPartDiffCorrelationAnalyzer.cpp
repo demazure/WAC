@@ -337,6 +337,11 @@ void TwoPartDiffCorrelationAnalyzer::addHistogramsToExtList(TList* list, bool al
     cout << "TwoPartDiffCorrelationAnalyzer::addHistogramsToExtList(...) Completed." << endl;
 }
 
+double pairw(Particle& particle1, Particle& particle2)
+{
+  return weight(particle1.pid, particle2.pid, particle1.px, particle1.py, particle1.pz, particle1.e, particle2.px, particle2.py, particle2.pz, particle2.e, particle1.Posx, particle1.Posy, particle1.Posz, particle1.Post, particle2.Posx, particle2.Posy, particle2.Posz, particle2.Post);
+}
+
 void TwoPartDiffCorrelationAnalyzer::execute()
 {
   if (reportDebug())
@@ -408,8 +413,8 @@ void TwoPartDiffCorrelationAnalyzer::execute()
         int ixID2 = particle2.ixID;
         if (ixID2 < 0)
           continue;
-
-        pairs_Histos[ixID1][ixID2]->fill(particle1, particle2, 1.0, 1.0);
+        if (analysisConfiguration->withWeight) pairs_Histos[ixID1][ixID2]->fill(particle1, particle2, 1.0, pairw(particle1, particle2));
+        else pairs_Histos[ixID1][ixID2]->fill(particle1, particle2, 1.0, 1.0);
       }
     }
   }
@@ -436,7 +441,7 @@ void TwoPartDiffCorrelationAnalyzer::calculateDerivedHistograms()
     for (uint i = 0; i < partNames.size(); ++i) {
       for (uint j = 0; j < partNames.size(); ++j) {
         /* TODO: we need to think about the bin width correction */
-        pairs_Histos[i][j]->calculateDerivedHistograms(particle_Histos[i], particle_Histos[j], 1.0);
+        pairs_Histos[i][j]->calculateDerivedHistograms(particle_Histos[i], particle_Histos[j]);
       }
     }
     for (uint i = 0; i < partNames.size(); ++i) {

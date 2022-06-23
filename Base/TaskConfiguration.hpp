@@ -45,6 +45,8 @@ class TaskConfiguration
   bool createHistograms;
   bool scaleHistograms;
   bool calculateDerivedHistograms;
+  bool essentialHistos;
+  bool withWeight;
   bool saveHistograms;
   bool resetHistograms;
   bool clearHistograms;

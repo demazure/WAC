@@ -74,6 +74,18 @@ TString ParticleFilter::getName()
     case ALambda:
       name = "ALa";
       break;
+    case AString:
+      name = "AStr";
+      break;
+    case MString:
+      name = "MStr";
+      break;
+    case BString:
+      name = "BStr";
+      break;
+    case Strings:
+      name = "Strs";
+      break;
   }
 
   if (pidRequested == Photon)
@@ -141,6 +153,18 @@ TString ParticleFilter::getTitle()
       break;
     case ALambda:
       name = "ALambda";
+      break;
+    case AString:
+      name = "AStr";
+      break;
+    case MString:
+      name = "MStr";
+      break;
+    case BString:
+      name = "BStr";
+      break;
+    case Strings:
+      name = "Strs";
       break;
   }
 
